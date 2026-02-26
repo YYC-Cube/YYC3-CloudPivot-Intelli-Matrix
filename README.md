@@ -414,6 +414,19 @@ VITE_GHOST_MODE=true
 
 ---
 
+## 📚 相关文档
+
+| 文档 | 说明 |
+|------|------|
+| [YYC³-CP-IM-CICD部署指南.md](docs/YYC³-CP-IM-CICD部署指南.md) | CI/CD 自动化部署完整指南 |
+| [YYC³-CP-IM-开源发布指导.md](docs/YYC³-CP-IM-开源发布指导.md) | 开源发布流程和仓库配置 |
+| [YYC³-CP-IM-最终测试报告-100%通过.md](docs/YYC³-CP-IM-最终测试报告-100%通过.md) | 测试覆盖率详细报告 |
+| [YYC³-CP-IM-CICD-智能自动化部署指南.md](docs/YYC³-CP-IM-CICD-智能自动化部署指南.md) | 高级 CI/CD 流水线配置 |
+| [YYC³-CP-IM-构建测试报告.md](docs/YYC³-CP-IM-构建测试报告.md) | 构建性能测试报告 |
+| [YYC³-CP-IM-开源准备完成报告.md](docs/YYC³-CP-IM-开源准备完成报告.md) | 开源准备就绪报告 |
+
+---
+
 ## 📄 许可证
 
 本项目采用 [MIT License](LICENSE) 开源协议。
