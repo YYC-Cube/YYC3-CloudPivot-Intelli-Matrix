@@ -76,7 +76,7 @@ export function FollowUpDrawer({
       setActiveTab("detail");
       setAiSuggestions([]);
     }
-  }, [item?.id]);
+  }, [item]);
 
   // Escape key to close
   useEffect(() => {

@@ -87,7 +87,7 @@ export function LoopStageCard({ meta, result, index: _index, isActive, showConne
           >
             {stCfg.label}
           </span>
-          {result.duration != null && (
+          {result.duration !== null && (
             <span className="flex items-center gap-0.5 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>
               <Clock className="w-2.5 h-2.5" />
               {(result.duration / 1000).toFixed(1)}s

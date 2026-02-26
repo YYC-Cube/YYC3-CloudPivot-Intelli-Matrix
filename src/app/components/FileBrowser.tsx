@@ -4,12 +4,13 @@
  * 文件浏览器组件 · 浏览 ~/.yyc3-cloudpivot/ 目录结构
  */
 
-import React from "react";
-import { Folder, FileText, FileJson, FileCode, ChevronRight, ArrowUp, Home,  } from "lucide-react";
+import { useState, useEffect } from "react";
+import type { LucideIcon } from "lucide-react";
+import { Folder, FileText, FileJson, FileCode, ChevronRight, ArrowUp, Home } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import type { FileItem } from "../types";
 
-const extIcon: Record<string, React.ElementType> = {
+const extIcon: Record<string, LucideIcon> = {
   log: FileText,
   json: FileJson,
   md: FileCode,
@@ -105,7 +106,7 @@ export function FileBrowser({
                 </div>
 
                 {/* Meta */}
-                {childCount != null && (
+                {childCount !== null && (
                   <span className="text-[rgba(0,212,255,0.2)] shrink-0" style={{ fontSize: "0.6rem" }}>
                     {childCount} 项
                   </span>

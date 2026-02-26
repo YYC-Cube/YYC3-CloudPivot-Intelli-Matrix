@@ -285,7 +285,9 @@ export function IntegratedTerminal({ open, onClose }: IntegratedTerminalProps) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, String(panelHeight));
-    } catch {}
+    } catch {
+      // Storage unavailable
+    }
   }, [panelHeight]);
 
   /* ── 拖拽调高 ─────────────────────────── */
