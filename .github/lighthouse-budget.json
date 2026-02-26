@@ -1,0 +1,82 @@
+{
+  "budgets": [
+    {
+      "path": "dist/assets/*.js",
+      "timings": [
+        {
+          "metric": "total",
+          "budget": 500
+        }
+      ],
+      "resourceSizes": [
+        {
+          "resourceType": "script",
+          "budget": 500
+        }
+      ],
+      "resourceCounts": [
+        {
+          "resourceType": "script",
+          "budget": 4
+        }
+      ]
+    },
+    {
+      "path": "dist/assets/*.css",
+      "timings": [
+        {
+          "metric": "total",
+          "budget": 50
+        }
+      ],
+      "resourceSizes": [
+        {
+          "resourceType": "stylesheet",
+          "budget": 50
+        }
+      ],
+      "resourceCounts": [
+        {
+          "resourceType": "stylesheet",
+          "budget": 2
+        }
+      ]
+    },
+    {
+      "path": "dist/*.png",
+      "resourceSizes": [
+        {
+          "resourceType": "image",
+          "budget": 200
+        }
+      ]
+    },
+    {
+      "path": "dist/*.jpg",
+      "resourceSizes": [
+        {
+          "resourceType": "image",
+          "budget": 150
+        }
+      ]
+    },
+    {
+      "path": "dist/*.svg",
+      "resourceSizes": [
+        {
+          "resourceType": "image",
+          "budget": 20
+        }
+      ]
+    },
+    {
+      "path": "index.html",
+      "resourceSizes": [
+        {
+          "resourceType": "document",
+          "budget": 5
+        }
+      ]
+    }
+  ]
+}
