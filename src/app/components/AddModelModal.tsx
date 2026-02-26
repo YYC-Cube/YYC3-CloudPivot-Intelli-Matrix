@@ -100,7 +100,7 @@ export function AddModelModal({
 
   // Handle submit
   const handleSubmit = () => {
-    if (!canSubmit || !selectedProviderId) {return;}
+    if (!canSubmit || !selectedProviderId) return;
     onAdd(
       selectedProviderId as ModelProviderId,
       selectedModel,
@@ -111,7 +111,7 @@ export function AddModelModal({
     onClose();
   };
 
-  if (!isOpen) {return null;}
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center" data-testid="add-model-modal">
