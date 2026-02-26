@@ -131,7 +131,7 @@ export function OperationLogStream({
                 </span>
 
                 {/* Duration */}
-                {entry.duration != null && (
+                {entry.duration !== null && (
                   <span className="text-[rgba(0,212,255,0.2)] shrink-0 hidden md:inline" style={{ fontSize: "0.58rem" }}>
                     {entry.duration}ms
                   </span>

@@ -31,7 +31,7 @@ function getLeafValue(obj: Record<string, any>, path: string): any {
   const parts = path.split(".");
   let current: any = obj;
   for (const p of parts) {
-    if (current == null) {return undefined;}
+    if (current === null) {return undefined;}
     current = current[p];
   }
   return current;

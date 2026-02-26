@@ -25,7 +25,7 @@ function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
   let result: any = obj;
   for (const k of keys) {
-    if (result == null) {return path;}
+    if (result === null) {return path;}
     result = result[k];
   }
   return typeof result === "string" ? result : path;

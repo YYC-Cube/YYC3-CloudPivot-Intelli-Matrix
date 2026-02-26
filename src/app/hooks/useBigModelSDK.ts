@@ -57,7 +57,9 @@ function loadSessions(): ChatSession[] {
 }
 
 function saveSessions(sessions: ChatSession[]) {
-  try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch {}
+  try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch {
+    // Storage unavailable
+  }
 }
 
 function loadStats(): SDKUsageStats {
@@ -68,7 +70,9 @@ function loadStats(): SDKUsageStats {
 }
 
 function saveStats(stats: SDKUsageStats) {
-  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch {}
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch {
+    // Storage unavailable
+  }
 }
 
 function defaultStats(): SDKUsageStats {
@@ -504,7 +508,7 @@ export function useBigModelSDK() {
       let buffer = "";
       let fullContent = "";
 
-      while (true) {
+      for (;;) {
         const { done, value } = await reader.read();
         if (done) {break;}
 
