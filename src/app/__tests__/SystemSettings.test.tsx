@@ -32,7 +32,7 @@ vi.mock("../components/GlassCard", () => ({
 }));
 
 vi.mock("../components/NetworkConfig", () => ({
-  NetworkConfig: () => <div data-testid="network-config" />,
+  default: () => <div data-testid="network-config" />,
 }));
 
 vi.mock("../components/YYC3Logo", () => ({

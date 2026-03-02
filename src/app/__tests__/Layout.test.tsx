@@ -94,35 +94,35 @@ vi.mock("../hooks/useKeyboardShortcuts", () => ({
 
 // Mock sub-components with data-testid
 vi.mock("../components/TopBar", () => ({
-  TopBar: (props: any) => <div data-testid="topbar" data-mobile={props.isMobile} />,
+  default: (props: any) => <div data-testid="topbar" data-mobile={props.isMobile} />,
 }));
 
 vi.mock("../components/Sidebar", () => ({
-  Sidebar: (props: any) => <div data-testid="sidebar" data-collapsed={props.collapsed} />,
+  default: (props: any) => <div data-testid="sidebar" data-collapsed={props.collapsed} />,
 }));
 
 vi.mock("../components/BottomNav", () => ({
-  BottomNav: () => <div data-testid="bottom-nav" />,
+  default: () => <div data-testid="bottom-nav" />,
 }));
 
 vi.mock("../components/AIAssistant", () => ({
-  AIAssistant: () => <div data-testid="ai-assistant" />,
+  default: () => <div data-testid="ai-assistant" />,
 }));
 
 vi.mock("../components/CommandPalette", () => ({
-  CommandPalette: () => <div data-testid="command-palette" />,
+  default: () => <div data-testid="command-palette" />,
 }));
 
 vi.mock("../components/IntegratedTerminal", () => ({
-  IntegratedTerminal: () => <div data-testid="integrated-terminal" />,
+  default: () => <div data-testid="integrated-terminal" />,
 }));
 
 vi.mock("../components/PWAInstallPrompt", () => ({
-  PWAInstallPrompt: () => <div data-testid="pwa-prompt" />,
+  default: () => <div data-testid="pwa-prompt" />,
 }));
 
 vi.mock("../components/OfflineIndicator", () => ({
-  OfflineIndicator: () => <div data-testid="offline-indicator" />,
+  default: () => <div data-testid="offline-indicator" />,
 }));
 
 vi.mock("../components/ErrorBoundary", () => ({

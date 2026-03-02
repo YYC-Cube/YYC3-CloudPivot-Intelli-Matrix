@@ -13,7 +13,7 @@ import React from "react";
 import DataMonitoring from "../components/DataMonitoring";
 
 vi.mock("../components/Dashboard", () => ({
-  Dashboard: () => React.createElement("div", { "data-testid": "dashboard" }, "Dashboard Mock"),
+  default: () => React.createElement("div", { "data-testid": "dashboard" }, "Dashboard Mock"),
 }));
 
 describe("DataMonitoring", () => {
