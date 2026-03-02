@@ -145,7 +145,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ needs.validate-tag.outputs.version }}
           tag_name: ${{ needs.validate-tag.outputs.version }}
@@ -235,7 +235,7 @@ jobs:
             VCS_REF=${{ github.sha }}
 
       - name: Update release with Docker info
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.validate-tag.outputs.version }}
           body: |
