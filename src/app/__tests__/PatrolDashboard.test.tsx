@@ -34,7 +34,8 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
+  default: (
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // Mock sub-components

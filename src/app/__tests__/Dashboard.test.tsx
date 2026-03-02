@@ -70,7 +70,7 @@ vi.mock("../hooks/useI18n", () => ({
 
 // Mock sub-components
 vi.mock("../components/NodeDetailModal", () => ({
-  NodeDetailModal: ({ node, onClose }: any) => (
+  default: ({ node, onClose }: any) => (
     <div data-testid="node-detail-modal">
       <span>{node.id}</span>
       <button onClick={onClose}>close-modal</button>
@@ -79,11 +79,11 @@ vi.mock("../components/NodeDetailModal", () => ({
 }));
 
 vi.mock("../components/AlertBanner", () => ({
-  AlertBanner: () => <div data-testid="alert-banner" />,
+  default: () => <div data-testid="alert-banner" />,
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // ── Context setup ──

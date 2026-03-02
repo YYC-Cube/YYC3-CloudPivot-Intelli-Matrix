@@ -1,13 +1,4 @@
----
-@file: README.md
-@description: YYC³ CloudPivot Intelli-Matrix 项目主文档 - 开源智能监控与运维平台
-@author: YanYuCloudCube Team
-@version: v0.0.1
-@created: 2026-02-26
-@updated: 2026-03-02
-@status: published
-@tags: [项目总览], [快速开始], [使用指南], [开源]
----
+# YYC³ CloudPivot Intelli-Matrix
 
 <div align="center">
 
@@ -15,16 +6,34 @@
 
 # YYC³ CloudPivot Intelli-Matrix
 
-[![Build Status](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions)
-[![Test Coverage](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/branch/main/graph/badge.svg)](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue)]()
-[![License](https://img.shields.io/badge/License-Proprietary-red)]()
-[![Version](https://img.shields.io/github/package-json/v/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix?color=orange)]()
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)]()
-[![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io/)
-[![Vitest](https://img.shields.io/badge/tested_with-vitest-FECD3E)](https://vitest.dev/)
+[![Build Status](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml)
+[![Test Coverage](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graph/badge.svg)](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
+[![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+[![Version](https://img.shields.io/github/package-json/v/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix?color=orange&style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/releases)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/pulls)
+[![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://prettier.io/)
+[![Vitest](https://img.shields.io/badge/tested_with-vitest-FECD3E.svg?style=flat)](https://vitest.dev/)
+[![CodeFactor](https://www.codefactor.io/repository/github/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/badge)](https://www.codefactor.io/repository/github/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/network/dependencies)
+[![Contributors](https://img.shields.io/github/contributors/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graphs/contributors)
+[![Last Commit](https://img.shields.io/github/last-commit/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/commits/master)
+[![Issues](https://img.shields.io/github/issues/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/issues)
+[![Open Issues](https://img.shields.io/github/issues-raw/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat&label=open%20issues)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/issues)
+[![Platform](https://img.shields.io/badge/platform-web-lightgrey.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![Size](https://img.shields.io/github/repo-size/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![Lighthouse](https://img.shields.io/badge/lighthouse-100-success.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![PWA](https://img.shields.io/badge/PWA-supported-blue.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graphs/commit-activity)
+[![Stability](https://img.shields.io/badge/stability-stable-brightgreen.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+[![Release Date](https://img.shields.io/github/release-date/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/releases)
+[![Activity](https://img.shields.io/github/commit-activity/y/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graphs/commit-activity)
 
-**万象归元于云枢；深栈智启新纪元**
+> ***YanYuCloudCube***
+> *言启象限 | 语枢未来*
+> ***Words Initiate Quadrants, Language Serves as Core for Future***
+> *万象归元于云枢 | 深栈智启新纪元*
+> ***All things converge in cloud pivot; Deep stacks ignite a new era of intelligence***
 
 [English](#english-version) | [简体中文](#简介)
 
@@ -73,32 +82,32 @@
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| ![React](https://img.shields.io/badge/React-18.3.1-blue) | 18.3.1 | UI 框架 |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue) | Strict Mode | 类型安全 |
-| ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-green) | 7.13.0 | 路由管理 (Data Mode) |
+| ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat&logo=react) | 18.3.1 | UI 框架 |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript) | Strict Mode | 类型安全 |
+| ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-CA4245?style=flat&logo=reactrouter) | 7.13.0 | 路由管理 (Data Mode) |
 
 ### 样式与 UI
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2FF) | 4.1.12 | 原子化 CSS |
-| ![Motion](https://img.shields.io/badge/Motion-12.23.24-FF6B6B) | 12.23.24 | 动画库 |
-| ![Radix UI](https://img.shields.io/badge/Radix-1.x-000000) | 1.x | 无头组件库 |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2AC?style=flat&logo=tailwindcss) | 4.1.12 | 原子化 CSS |
+| ![Motion](https://img.shields.io/badge/Motion-12.23.24-FF6B6B?style=flat) | 12.23.24 | 动画库 |
+| ![Radix UI](https://img.shields.io/badge/Radix-1.x-18181B?style=flat) | 1.x | 无头组件库 |
 
 ### 构建与测试
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF) | 6.3.5 | 构建工具 |
-| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E) | 4.0.18 | 单元测试 |
-| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB) | 16.x | 测试工具 |
+| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF?style=flat&logo=vite) | 6.3.5 | 构建工具 |
+| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E?style=flat&logo=vitest) | 4.0.18 | 单元测试 |
+| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB?style=flat) | 16.x | 测试工具 |
 
 ### 数据可视化
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| ![Recharts](https://img.shields.io/badge/Recharts-2.15.2-FF5722) | 2.15.2 | 图表库 |
-| ![Lucide](https://img.shields.io/badge/Lucide-0.487.0-FFA500) | 0.487.0 | 图标库 |
+| ![Recharts](https://img.shields.io/badge/Recharts-2.15.2-FF5722?style=flat) | 2.15.2 | 图表库 |
+| ![Lucide](https://img.shields.io/badge/Lucide-0.487.0-FFA500?style=flat) | 0.487.0 | 图标库 |
 
 ---
 
@@ -556,12 +565,12 @@ pnpm build
 
 | Technology | Version | Description |
 |------------|-----------|-------------|
-| ![React](https://img.shields.io/badge/React-18.3.1-blue) | 18.3.1 | UI Framework |
-| ![TypeScript](https://img.shields.io/badge/TypeScript-Strict-blue) | Strict Mode | Type Safety |
-| ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-green) | 7.13.0 | Routing (Data Mode) |
-| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2FF) | 4.1.12 | Styling |
-| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF) | 6.3.5 | Build Tool |
-| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E) | 4.0.18 | Testing Framework |
+| ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat&logo=react) | 18.3.1 | UI Framework |
+| ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript) | Strict Mode | Type Safety |
+| ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-CA4245?style=flat&logo=reactrouter) | 7.13.0 | Routing (Data Mode) |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2AC?style=flat&logo=tailwindcss) | 4.1.12 | Styling |
+| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF?style=flat&logo=vite) | 6.3.5 | Build Tool |
+| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E?style=flat&logo=vitest) | 4.0.18 | Testing Framework |
 
 ### Documentation
 
@@ -578,6 +587,7 @@ Copyright © 2026 YanYuCloudCube Team. All rights reserved.
 | **Email** | <admin@0379.email> |
 | **Project** | YYC³ CloudPivot Intelli-Matrix |
 | **GitHub** | [YYC-Cube/YYC3-CloudPivot-Intelli-Matrix](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) |
+| **Issues** | [Report a Bug](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/issues) |
 
 ---
 

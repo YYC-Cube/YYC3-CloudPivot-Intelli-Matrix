@@ -42,6 +42,7 @@ vi.mock("../components/ActionRecommender", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
+  default: (
   GlassCard: ({ children }: { children: React.ReactNode }) => React.createElement("div", { className: "glass-card" }, children),
 }));
 

@@ -19,6 +19,7 @@ vi.mock("lucide-react", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
+  default: (
   GlassCard: ({ children }: { children: React.ReactNode }) => React.createElement("div", { className: "glass-card" }, children),
 }));
 

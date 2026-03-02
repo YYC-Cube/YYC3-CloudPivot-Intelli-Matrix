@@ -27,6 +27,7 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
+  default: (
   GlassCard: ({ children, className }: { children?: React.ReactNode; className?: string }) => <div className={className}>{children}</div>,
 }));
 

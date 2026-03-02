@@ -22,7 +22,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
 vi.mock("../components/GlassCard", () => ({
-  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
+  default: (
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
