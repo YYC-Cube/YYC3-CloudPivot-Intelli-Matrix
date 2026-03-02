@@ -587,7 +587,7 @@ Copyright © 2026 YanYuCloudCube Team. All rights reserved.
 |---------|-------------|
 | **Email** | <admin@0379.email> |
 | **Project** | YYC³ CloudPivot Intelli-Matrix |
-| **GitHub** | [YYC-Cube/YYC3-CloudPivot-Intelli-Matrix](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) |
+| **GitHub** | [YYC-Cube/YYC3-CloudPivot-Intelli-Matrix](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.git) |
 | **Issues** | [Report a Bug](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/issues) |
 
 ---
