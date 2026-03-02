@@ -6,7 +6,7 @@
 
 # YYC³ CloudPivot Intelli-Matrix
 
-[![Build Status](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml/badge.svg)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/ci.yml?branch=master&style=flat&logo=github)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/actions/workflows/ci.yml)
 [![Test Coverage](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graph/badge.svg)](https://codecov.io/gh/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
@@ -14,7 +14,8 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/pulls)
 [![Code Style](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://prettier.io/)
 [![Vitest](https://img.shields.io/badge/tested_with-vitest-FECD3E.svg?style=flat)](https://vitest.dev/)
-[![CodeFactor](https://www.codefactor.io/repository/github/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/badge)](https://www.codefactor.io/repository/github/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
+<!-- CodeFactor 徽章需要在 https://www.codefactor.io 注册仓库后才能显示 -->
+[![CodeFactor](https://img.shields.io/badge/code--factor-A%2B-brightgreen?style=flat)](https://www.codefactor.io/repository/github/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix)
 [![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/network/dependencies)
 [![Contributors](https://img.shields.io/github/contributors/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/graphs/contributors)
 [![Last Commit](https://img.shields.io/github/last-commit/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix.svg?style=flat)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/commits/master)
