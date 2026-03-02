@@ -58,8 +58,8 @@ vi.mock("../components/LanguageSwitcher", () => ({
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
-  YYC3Logo: () => <div data-testid="yyc3-logo" />,
-}));
+  default: () => <div data-testid="yyc3-logo" />,
+}))
 
 let mockGhostMode = false;
 vi.mock("../lib/supabaseClient", () => ({

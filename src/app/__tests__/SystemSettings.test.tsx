@@ -36,8 +36,8 @@ vi.mock("../components/NetworkConfig", () => ({
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
-  YYC3Logo: () => <div data-testid="yyc3-logo" />,
-}));
+  default: () => <div data-testid="yyc3-logo" />,
+}))
 
 vi.mock("sonner", () => ({
   toast: {

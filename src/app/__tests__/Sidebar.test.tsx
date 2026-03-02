@@ -36,8 +36,8 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
-  YYC3Logo: () => <div data-testid="yyc3-logo" />,
-}));
+  default: () => <div data-testid="yyc3-logo" />,
+}))
 
 import Sidebar from "../components/Sidebar";
 import { navItems, SIDEBAR_COLLAPSED_W, SIDEBAR_EXPANDED_W } from "../components/Sidebar";
