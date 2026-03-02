@@ -1,0 +1,79 @@
+/**
+ * CLITerminal.test.tsx
+ * =================
+ * CLITerminal 组件测试
+ *
+ * 覆盖范围:
+ * - 组件基本渲染
+ * - 输入框渲染
+ */
+
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import React from "react";
+import CLITerminal from "../components/CLITerminal";
+
+vi.mock("lucide-react", () => ({
+  Terminal: () => React.createElement("span", { "data-testid": "icon-terminal" }),
+  ChevronRight: () => React.createElement("span", { "data-testid": "icon-chevron" }),
+}));
+
+vi.mock("../components/GlassCard", () => ({
+  GlassCard: ({ children }: { children: React.ReactNode }) => React.createElement("div", { className: "glass-card" }, children),
+}));
+
+vi.mock("../hooks/useTerminal", () => ({
+  useTerminal: () => ({
+    history: [],
+    inputValue: "",
+    completions: [],
+    execute: vi.fn(),
+    handleInputChange: vi.fn(),
+    handleHistoryNav: vi.fn(),
+    applyCompletion: vi.fn(),
+  }),
+}));
+
+vi.mock("react-router", () => ({
+  useNavigate: () => vi.fn(),
+}));
+
+vi.mock("../components/Layout", () => ({
+  ViewContext: React.createContext({ isMobile: false, theme: "dark" as const }),
+}));
+
+vi.mock("../hooks/useI18n", () => ({
+  useI18n: () => ({
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        "nav.terminal": "CLI 终端",
+        "nav.ide": "IDE",
+      };
+      return translations[key] || key;
+    },
+  }),
+}));
+
+describe("CLITerminal", () => {
+  beforeEach(() => {
+    cleanup();
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("组件渲染", () => {
+    it("应该渲染终端图标", () => {
+      render(React.createElement(CLITerminal));
+      expect(screen.getByTestId("icon-terminal")).toBeInTheDocument();
+    });
+
+    it("应该渲染终端窗口", () => {
+      render(React.createElement(CLITerminal));
+      expect(screen.getByTestId("icon-terminal")).toBeInTheDocument();
+      const container = screen.getByTestId("icon-terminal").closest(".space-y-4");
+      expect(container).toBeInTheDocument();
+    });
+  });
+});

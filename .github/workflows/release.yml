@@ -1,0 +1,275 @@
+name: Release Automation
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g., v0.1.0)'
+        required: true
+        type: string
+
+env:
+  NODE_VERSION: '20.x'
+  PNPM_VERSION: '8.x'
+
+jobs:
+  validate-tag:
+    name: Validate Version Tag
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from tag or input
+        id: get-version
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            VERSION="${{ github.ref_name }}"
+          else
+            VERSION="${{ inputs.version }}"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          # Validate semver format
+          if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "::error::Invalid version format: $VERSION. Expected: vMAJOR.MINOR.PATCH"
+            exit 1
+          fi
+
+  build-release:
+    name: Build Release Assets
+    runs-on: ubuntu-latest
+    needs: [validate-tag]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm test:ci
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Generate build info
+        run: |
+          cat > dist/build-info.json <<EOF
+          {
+            "version": "${{ needs.validate-tag.outputs.version }}",
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "buildTime": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "builder": "${{ github.actor }}"
+          }
+          EOF
+
+      - name: Create release archive
+        run: |
+          cd dist
+          tar -czf ../release-${{ needs.validate-tag.outputs.version }}.tar.gz .
+          cd ..
+          zip -r release-${{ needs.validate-tag.outputs.version }}.zip dist/
+
+      - name: Upload release assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-assets
+          path: |
+            release-${{ needs.validate-tag.outputs.version }}.tar.gz
+            release-${{ needs.validate-tag.outputs.version }}.zip
+          retention-days: 30
+
+  create-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [validate-tag, build-release]
+    permissions:
+      contents: write
+      discussions: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download release assets
+        uses: actions/download-artifact@v4
+        with:
+          name: release-assets
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -n "$PREV_TAG" ]; then
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" $PREV_TAG..HEAD)
+          else
+            CHANGELOG=$(git log --pretty=format:"- %s (%h)" HEAD)
+          fi
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ needs.validate-tag.outputs.version }}
+          tag_name: ${{ needs.validate-tag.outputs.version }}
+          body: |
+            ## 🚀 YYC³ CloudPivot Intelli-Matrix ${{ needs.validate-tag.outputs.version }}
+
+            ### Changes
+            ${{ steps.changelog.outputs.changelog }}
+
+            ### Installation
+            ```bash
+            # Download and extract
+            tar -xzf release-${{ needs.validate-tag.outputs.version }}.tar.gz
+            
+            # Or use zip
+            unzip release-${{ needs.validate-tag.outputs.version }}.zip
+            ```
+
+            ### Docker
+            ```bash
+            docker pull ghcr.io/yyc-cube/yyc3-cloudpivot-intelli-matrix:${{ needs.validate-tag.outputs.version }}
+            docker run -p 3118:8080 ghcr.io/yyc-cube/yyc3-cloudpivot-intelli-matrix:${{ needs.validate-tag.outputs.version }}
+            ```
+
+            ### Build Info
+            - **Version**: ${{ needs.validate-tag.outputs.version }}
+            - **Commit**: ${{ github.sha }}
+            - **Build Date**: $(date -u +%Y-%m-%d)
+            - **Builder**: ${{ github.actor }}
+
+            ---
+
+            **Full Changelog**: https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/compare/${{ github.event.before }}...${{ github.sha }}
+          draft: false
+          prerelease: ${{ contains(needs.validate-tag.outputs.version, '-') }}
+          files: |
+            release-${{ needs.validate-tag.outputs.version }}.tar.gz
+            release-${{ needs.validate-tag.outputs.version }}.zip
+          generate_release_notes: true
+          discussion_category_name: Announcements
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-docker:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: [validate-tag, build-release]
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=${{ needs.validate-tag.outputs.version }}
+            type=raw,value=latest
+            type=semver,pattern={{version}},value=${{ needs.validate-tag.outputs.version }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ needs.validate-tag.outputs.version }}
+            BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            VCS_REF=${{ github.sha }}
+
+      - name: Update release with Docker info
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.validate-tag.outputs.version }}
+          body: |
+            ### Docker Images
+            ```bash
+            docker pull ghcr.io/${{ github.repository }}:${{ needs.validate-tag.outputs.version }}
+            docker run -p 3118:8080 ghcr.io/${{ github.repository }}:${{ needs.validate-tag.outputs.version }}
+            ```
+            
+            ```bash
+            # Latest
+            docker pull ghcr.io/${{ github.repository }}:latest
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify-release:
+    name: Notify Release
+    runs-on: ubuntu-latest
+    needs: [validate-tag, create-release, publish-docker]
+    if: always()
+    steps:
+      - name: Send notification
+        run: |
+          echo "Release ${{ needs.validate-tag.outputs.version }} completed!"
+          echo "Status: ${{ needs.create-release.result }} / ${{ needs.publish-docker.result }}"
+          
+      - name: Slack notification (optional)
+        if: always() && vars.SLACK_WEBHOOK != ''
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Release ${{ needs.validate-tag.outputs.version }} ${{ job.status }}
+            View release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.validate-tag.outputs.version }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true

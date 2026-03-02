@@ -1,0 +1,74 @@
+---
+name: ✨ 功能请求
+description: 为项目提出一个新想法
+title: "[Feature] 简短描述"
+labels: ["enhancement", "triage"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您花时间提出新功能！
+        
+  - type: textarea
+    id: problem
+    attributes:
+      label: 相关问题
+      description: 您的功能请求是否与某个问题相关？
+      placeholder: 我经常遇到这样的问题...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: solution
+    attributes:
+      label: 期望的解决方案
+      description: 描述您想要的功能
+      placeholder: 我希望...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 其他方案
+      description: 您考虑过的其他替代方案
+      placeholder: 我也考虑过...
+    validations:
+      required: false
+      
+  - type: textarea
+    id: context
+    attributes:
+      label: 补充信息
+      description: 任何相关的截图、设计稿或讨论
+      placeholder: 添加更多上下文...
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: 优先级
+      description: 您认为这个功能的重要性
+      options:
+        - 🌟 Low - 有了更好
+        - 🌟🌟 Medium - 重要但非必需
+        - 🌟🌟🌟 High - 非常需要
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: willing-to-help
+    attributes:
+      label: 参与意愿
+      description: 您是否愿意参与实现？
+      options:
+        - label: 我愿意帮助实现这个功能
+        
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 行为准则
+      description: 您是否同意遵守行为准则？
+      options:
+        - label: 我已阅读并同意遵守 [行为准则](CODE_OF_CONDUCT.md)
+          required: true

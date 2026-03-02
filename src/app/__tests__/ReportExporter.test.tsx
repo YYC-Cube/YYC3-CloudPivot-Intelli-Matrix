@@ -1,0 +1,165 @@
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import ReportExporter from "../components/ReportExporter";
+import { useI18n } from "../hooks/useI18n";
+import { useReportExporter, type ReportType } from "../hooks/useReportExporter";
+
+vi.mock("../hooks/useI18n");
+vi.mock("../hooks/useReportExporter", () => ({
+  useReportExporter: vi.fn(),
+}));
+
+const mockT = vi.fn((key: string) => key);
+const mockSetReportType = vi.fn();
+const mockSetTimeRange = vi.fn();
+const mockGenerateReport = vi.fn();
+const mockExportReport = vi.fn();
+
+const mockReport = {
+  id: "test-report",
+  type: "performance" as ReportType,
+  title: "Test Report",
+  generatedAt: Date.now(),
+  timeRange: { start: Date.now() - 86400000, end: Date.now(), label: "24h" },
+  summary: [],
+  performanceHistory: [],
+  securityHistory: [],
+  recommendations: [],
+  nodeBreakdown: [],
+};
+
+describe("ReportExporter", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockT.mockImplementation((key: string) => key);
+    
+    vi.mocked(useI18n).mockReturnValue({
+      t: mockT,
+      locale: "zh-CN",
+      setLocale: vi.fn(),
+      locales: [
+        { code: "zh-CN", label: "简体中文", nativeLabel: "简体中文" },
+        { code: "en-US", label: "English", nativeLabel: "English" },
+      ],
+    });
+
+    vi.mocked(useReportExporter).mockReturnValue({
+      reportType: "performance",
+      setReportType: mockSetReportType,
+      timeRange: "24h",
+      setTimeRange: mockSetTimeRange,
+      isGenerating: false,
+      report: null,
+      recentReports: [],
+      generateReport: mockGenerateReport,
+      exportReport: mockExportReport,
+    });
+  });
+
+  it("should render panel correctly", () => {
+    render(<ReportExporter />);
+    
+    const titleElements = screen.getAllByText(/reports.title/i);
+    expect(titleElements.length).toBeGreaterThan(0);
+  });
+
+  it("should display title", () => {
+    render(<ReportExporter />);
+    
+    const titleElements = screen.getAllByText(/reports.title/i);
+    expect(titleElements.length).toBeGreaterThan(0);
+  });
+
+  it("should display report type options", () => {
+    render(<ReportExporter />);
+    
+    expect(screen.getAllByText(/reports.typePerformance/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/reports.typeSecurity/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/reports.typeAudit/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/reports.typeComprehensive/i).length).toBeGreaterThan(0);
+  });
+
+  it("should display time range options", () => {
+    render(<ReportExporter />);
+    
+    const hour1Buttons = screen.getAllByText("1h");
+    const hour6Buttons = screen.getAllByText("6h");
+    const hour24Buttons = screen.getAllByText("24h");
+    const day7Buttons = screen.getAllByText("7d");
+    const day30Buttons = screen.getAllByText("30d");
+    
+    expect(hour1Buttons.length).toBeGreaterThan(0);
+    expect(hour6Buttons.length).toBeGreaterThan(0);
+    expect(hour24Buttons.length).toBeGreaterThan(0);
+    expect(day7Buttons.length).toBeGreaterThan(0);
+    expect(day30Buttons.length).toBeGreaterThan(0);
+  });
+
+  it("should generate report when button clicked", () => {
+    render(<ReportExporter />);
+    const generateButtons = screen.getAllByText(/reports.generate/i);
+    if (generateButtons.length > 0) {
+      fireEvent.click(generateButtons[0]);
+      expect(mockGenerateReport).toHaveBeenCalled();
+    }
+  });
+
+  it("should show generating state", () => {
+    vi.mocked(useReportExporter).mockReturnValue({
+      reportType: "performance",
+      setReportType: mockSetReportType,
+      timeRange: "24h",
+      setTimeRange: mockSetTimeRange,
+      isGenerating: true,
+      report: null,
+      recentReports: [],
+      generateReport: mockGenerateReport,
+      exportReport: mockExportReport,
+    });
+
+    render(<ReportExporter />);
+    
+    const generatingElements = screen.getAllByText(/reports.generating/i);
+    expect(generatingElements.length).toBeGreaterThan(0);
+  });
+
+  it("should display export options when report is generated", () => {
+    vi.mocked(useReportExporter).mockReturnValue({
+      reportType: "performance",
+      setReportType: mockSetReportType,
+      timeRange: "24h",
+      setTimeRange: mockSetTimeRange,
+      isGenerating: false,
+      report: mockReport,
+      recentReports: [],
+      generateReport: mockGenerateReport,
+      exportReport: mockExportReport,
+    });
+
+    render(<ReportExporter />);
+    
+    const jsonButtons = screen.getAllByText("JSON");
+    expect(jsonButtons.length).toBeGreaterThan(0);
+  });
+
+  it("should export report when export button clicked", () => {
+    vi.mocked(useReportExporter).mockReturnValue({
+      reportType: "performance",
+      setReportType: mockSetReportType,
+      timeRange: "24h",
+      setTimeRange: mockSetTimeRange,
+      isGenerating: false,
+      report: mockReport,
+      recentReports: [],
+      generateReport: mockGenerateReport,
+      exportReport: mockExportReport,
+    });
+
+    render(<ReportExporter />);
+    const jsonButtons = screen.getAllByText("JSON");
+    if (jsonButtons.length > 0) {
+      fireEvent.click(jsonButtons[0]);
+      expect(mockExportReport).toHaveBeenCalledWith("json");
+    }
+  });
+});

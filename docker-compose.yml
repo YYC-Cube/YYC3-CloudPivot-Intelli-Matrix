@@ -1,0 +1,110 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VERSION: 0.0.1
+        BUILD_DATE: ${BUILD_DATE:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}
+        VCS_REF: ${VCS_REF:-local}
+    container_name: yyc3-cpim-app
+    ports:
+      - "3118:8080"
+    environment:
+      NODE_ENV: production
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:3000/api}
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+      VITE_SUPABASE_KEY: ${VITE_SUPABASE_KEY}
+    networks:
+      - yyc3-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    labels:
+      - "com.yyc3.description=YYC³ CloudPivot Intelli-Matrix"
+      - "com.yyc3.version=0.0.1"
+      - "com.yyc3.managed-by=docker-compose"
+
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: yyc3-nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-proxy.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - app
+    networks:
+      - yyc3-network
+    restart: unless-stopped
+    labels:
+      - "com.yyc3.description=Nginx Reverse Proxy"
+      - "com.yyc3.managed-by=docker-compose"
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: yyc3-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - yyc3-network
+    restart: unless-stopped
+    labels:
+      - "com.yyc3.description=Prometheus Monitoring"
+      - "com.yyc3.managed-by=docker-compose"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: yyc3-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana-dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana-datasources:/etc/grafana/provisioning/datasources:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    depends_on:
+      - prometheus
+    networks:
+      - yyc3-network
+    restart: unless-stopped
+    labels:
+      - "com.yyc3.description=Grafana Dashboard"
+      - "com.yyc3.managed-by=docker-compose"
+
+networks:
+  yyc3-network:
+    driver: bridge
+    name: yyc3-network
+    labels:
+      - "com.yyc3.description=YYC³ Network"
+
+volumes:
+  prometheus-data:
+    name: yyc3-prometheus-data
+    labels:
+      - "com.yyc3.description=Prometheus Data"
+  grafana-data:
+    name: yyc3-grafana-data
+    labels:
+      - "com.yyc3.description=Grafana Data"

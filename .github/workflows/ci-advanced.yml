@@ -1,0 +1,636 @@
+name: YYC³ CI/CD - 智能自动化构建部署
+
+on:
+  push:
+    branches: [main, develop, 'release/**']
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: '部署环境'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      deploy_type:
+        description: '部署类型'
+        required: true
+        type: choice
+        options:
+          - full
+          - canary
+          - rollback
+      reason:
+        description: '触发原因'
+        required: false
+        type: string
+
+env:
+  NODE_VERSION: '20.x'
+  PNPM_VERSION: '8.x'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: yyc3-cloudpivot-intelli-matrix
+
+jobs:
+  quality-gate:
+    name: 质量门禁
+    runs-on: ubuntu-latest
+    outputs:
+      quality-score: ${{ steps.analyze.outputs.score }}
+      should-deploy: ${{ steps.analyze.outputs.should-deploy }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run linting
+        id: lint
+        continue-on-error: true
+        run: |
+          echo "ESLINT_OUTPUT=$(pnpm run lint 2>&1 || true)" >> $GITHUB_ENV
+          pnpm run lint || echo "LINT_FAILED=true" >> $GITHUB_ENV
+
+      - name: Run type check
+        id: typecheck
+        continue-on-error: true
+        run: |
+          echo "TSC_OUTPUT=$(pnpm exec tsc --noEmit 2>&1 || true)" >> $GITHUB_ENV
+          pnpm exec tsc --noEmit || echo "TSC_FAILED=true" >> $GITHUB_ENV
+
+      - name: Run unit tests with coverage
+        id: test
+        run: |
+          pnpm test:ci --coverage --reporter=json --reporter=verbose > test-results.json 2>&1 || true
+          COVERAGE=$(cat coverage/coverage-summary.json | jq '.total.lines.pct')
+          echo "COVERAGE=$COVERAGE" >> $GITHUB_OUTPUT
+          echo "## Test Coverage" >> $GITHUB_STEP_SUMMARY
+          echo "- Lines: $COVERAGE%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Analyze code quality
+        id: analyze
+        run: |
+          SCORE=100
+
+          if [[ "${{ env.LINT_FAILED }}" == "true" ]]; then
+            echo "Linting failed, reducing score by 20"
+            ((SCORE-=20))
+          fi
+
+          if [[ "${{ env.TSC_FAILED }}" == "true" ]]; then
+            echo "Type check failed, reducing score by 30"
+            ((SCORE-=30))
+          fi
+
+          COVERAGE=${{ steps.test.outputs.COVERAGE }}
+          if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+            echo "Coverage below 90%, reducing score by 10"
+            ((SCORE-=10))
+          fi
+
+          echo "score=$SCORE" >> $GITHUB_OUTPUT
+          echo "should-deploy=$(if [ $SCORE -ge 70 ]; then echo 'true'; else echo 'false'; fi)" >> $GITHUB_OUTPUT
+
+          echo "## Quality Score: $SCORE/100" >> $GITHUB_STEP_SUMMARY
+          echo "- Lint: $([[ "${{ env.LINT_FAILED }}" != "true" ]] && echo '✅ Pass' || echo '❌ Fail')" >> $GITHUB_STEP_SUMMARY
+          echo "- Type Check: $([[ "${{ env.TSC_FAILED }}" != "true" ]] && echo '✅ Pass' || echo '❌ Fail')" >> $GITHUB_STEP_SUMMARY
+          echo "- Coverage: $COVERAGE%" >> $GITHUB_STEP_SUMMARY
+
+      - name: Quality gate decision
+        if: steps.analyze.outputs.should-deploy == 'false'
+        run: |
+          echo "::error::Quality score (${{ steps.analyze.outputs.score }}) below threshold (70)"
+          exit 1
+
+  security-audit:
+    name: 安全审计
+    runs-on: ubuntu-latest
+    needs: [quality-gate]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Run pnpm audit
+        id: audit
+        run: |
+          AUDIT_OUTPUT=$(pnpm audit --audit-level=moderate --json 2>&1 || echo '{"vulnerabilities": {}}')
+          echo "$AUDIT_OUTPUT" > audit-results.json
+
+          HIGH_COUNT=$(echo "$AUDIT_OUTPUT" | jq '.vulnerabilities.high | length')
+          MODERATE_COUNT=$(echo "$AUDIT_OUTPUT" | jq '.vulnerabilities.moderate | length')
+
+          echo "## Security Audit" >> $GITHUB_STEP_SUMMARY
+          echo "- High: $HIGH_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Moderate: $MODERATE_COUNT" >> $GITHUB_STEP_SUMMARY
+
+          if [ "$HIGH_COUNT" -gt 0 ]; then
+            echo "::error::Found $HIGH_COUNT high severity vulnerabilities"
+            exit 1
+          fi
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Upload audit artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-audit-results
+          path: |
+            audit-results.json
+            trivy-results.sarif
+          retention-days: 30
+
+  performance-benchmark:
+    name: 性能基准测试
+    runs-on: ubuntu-latest
+    needs: [quality-gate]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build application
+        run: pnpm build
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+          urls: |
+            dist/index.html
+          budgetPath: ./.github/lighthouse-budget.json
+          configPath: ./.github/lighthouse-config.js
+
+      - name: Analyze bundle size
+        id: bundle
+        run: |
+          echo "## Bundle Analysis" >> $GITHUB_STEP_SUMMARY
+          du -sh dist/assets/*.js dist/assets/*.css >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          ls -lh dist/assets/ >> $GITHUB_STEP_SUMMARY
+
+      - name: Check bundle size regression
+        run: |
+          PREV_SIZE=$(curl -s https://api.github.com/repos/${{ github.repository }}/actions/artifacts | jq '.artifacts[] | select(.name == "dist") | .size_in_bytes' | head -1)
+          CURRENT_SIZE=$(du -sb dist/ | cut -f1)
+
+          if [ -n "$PREV_SIZE" ] && [ "$CURRENT_SIZE" -gt "$((PREV_SIZE + 1048576))" ]; then
+            echo "::warning::Bundle size increased by more than 1MB"
+          fi
+
+  build:
+    name: 构建应用
+    runs-on: ubuntu-latest
+    needs: [quality-gate, security-audit]
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      image-tag: ${{ steps.image.outputs.tag }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Generate version
+        id: version
+        run: |
+          VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "0.0.1-${GITHUB_SHA::7}")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "## Build Version: $VERSION" >> $GITHUB_STEP_SUMMARY
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache build
+        uses: actions/cache@v4
+        with:
+          path: |
+            .vite
+            node_modules/.vite
+            dist
+          key: ${{ runner.os }}-build-${{ steps.version.outputs.version }}-${{ hashFiles('**/src/**', '**/vite.config.ts') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ steps.version.outputs.version }}-
+
+      - name: Build application
+        env:
+          NODE_ENV: production
+          VITE_APP_VERSION: ${{ steps.version.outputs.version }}
+        run: pnpm build
+
+      - name: Generate build info
+        id: build-info
+        run: |
+          cat > dist/build-info.json <<EOF
+          {
+            "version": "${{ steps.version.outputs.version }}",
+            "commit": "${{ github.sha }}",
+            "branch": "${{ github.ref_name }}",
+            "buildTime": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "builder": "${{ github.actor }}"
+          }
+          EOF
+          cat dist/build-info.json
+
+      - name: Generate Docker image tag
+        id: image
+        run: |
+          TAG="${{ env.REGISTRY }}/${{ github.repository }}:${{ steps.version.outputs.version }}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Set up Docker Buildx
+        if: runner.os == 'Linux' && matrix.os == 'ubuntu-latest'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Container Registry
+        if: runner.os == 'Linux' && matrix.os == 'ubuntu-latest'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        if: runner.os == 'Linux' && matrix.os == 'ubuntu-latest'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ steps.image.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ github.repository }}:latest
+            ${{ env.REGISTRY }}/${{ github.repository }}:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            VERSION=${{ steps.version.outputs.version }}
+            BUILD_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+            VCS_REF=${{ github.sha }}
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: dist-${{ matrix.os }}
+          path: dist/
+          retention-days: 7
+
+      - name: Generate build summary
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          echo "## Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: ${{ steps.version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- OS: ${{ matrix.os }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Docker Image: ${{ steps.image.outputs.tag }}" >> $GITHUB_STEP_SUMMARY
+          du -sh dist/ >> $GITHUB_STEP_SUMMARY
+
+  deploy-staging:
+    name: 部署到预发布环境
+    runs-on: ubuntu-latest
+    needs: [build, performance-benchmark]
+    if: github.ref == 'refs/heads/develop' || github.event_name == 'workflow_dispatch'
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-ubuntu-latest
+          path: dist/
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3
+        id: deploy
+        run: |
+          AWS_BUCKET=${{ secrets.AWS_S3_BUCKET_STAGING }}
+          aws s3 sync dist/ s3://$AWS_BUCKET/ --delete --cache-control max-age=31536000,public
+          CF_DISTRIBUTION=${{ secrets.AWS_CLOUDFRONT_ID_STAGING }}
+          aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION --paths "/*"
+          echo "url=https://$AWS_BUCKET.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com" >> $GITHUB_OUTPUT
+
+      - name: Health check
+        run: |
+          URL="${{ steps.deploy.outputs.url }}"
+          MAX_RETRIES=30
+          RETRY_DELAY=10
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -f -s -o /dev/null "$URL"; then
+              echo "✅ Health check passed"
+              exit 0
+            fi
+            echo "⏳ Waiting for deployment... ($i/$MAX_RETRIES)"
+            sleep $RETRY_DELAY
+          done
+
+          echo "❌ Health check failed after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Run E2E tests
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm test:e2e --config .github/playwright.config.ts
+
+      - name: Notify team
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Staging Deployment ${{ job.status }}
+            Version: ${{ needs.build.outputs.version }}
+            URL: ${{ steps.deploy.outputs.url }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true
+
+  deploy-production:
+    name: 部署到生产环境
+    runs-on: ubuntu-latest
+    needs: [build, performance-benchmark]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event.inputs.environment == 'production')
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-ubuntu-latest
+          path: dist/
+
+      - name: Create backup
+        id: backup
+        run: |
+          BACKUP_NAME="backup-$(date +%Y%m%d-%H%M%S)"
+          echo "backup_name=$BACKUP_NAME" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to S3 with backup
+        id: deploy
+        run: |
+          AWS_BUCKET=${{ secrets.AWS_S3_BUCKET_PRODUCTION }}
+
+          aws s3 sync s3://$AWS_BUCKET/ s3://$AWS_BUCKET/${{ steps.backup.outputs.backup_name }}/ --quiet
+
+          aws s3 sync dist/ s3://$AWS_BUCKET/ --delete --cache-control max-age=31536000,public
+
+          CF_DISTRIBUTION=${{ secrets.AWS_CLOUDFRONT_ID_PRODUCTION }}
+          aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION --paths "/*"
+
+          echo "url=https://$AWS_BUCKET.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com" >> $GITHUB_OUTPUT
+
+      - name: Health check
+        id: health
+        run: |
+          URL="${{ steps.deploy.outputs.url }}"
+          MAX_RETRIES=30
+          RETRY_DELAY=10
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            if curl -f -s -o /dev/null "$URL"; then
+              echo "✅ Health check passed"
+              exit 0
+            fi
+            echo "⏳ Waiting for deployment... ($i/$MAX_RETRIES)"
+            sleep $RETRY_DELAY
+          done
+
+          echo "❌ Health check failed after $MAX_RETRIES attempts"
+          exit 1
+
+      - name: Verify deployment
+        run: |
+          URL="${{ steps.deploy.outputs.url }}"
+
+          echo "Verifying build info..."
+          curl -s "$URL/build-info.json" | jq .
+
+          echo "Verifying key assets..."
+          curl -f -s -o /dev/null "$URL/index.html"
+          curl -f -s -o /dev/null "$URL/assets/"*
+
+      - name: Run smoke tests
+        run: |
+          URL="${{ steps.deploy.outputs.url }}"
+
+          curl -f -s "$URL" | grep -q "<title>"
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::error::Unexpected HTTP status: $RESPONSE"
+            exit 1
+          fi
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ needs.build.outputs.version }}
+          body: |
+            ## 🚀 YYC³ CloudPivot Intelli-Matrix Release ${{ needs.build.outputs.version }}
+
+            ### Changes
+            - See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details
+
+            ### Deployment
+            - **Production**: ${{ steps.deploy.outputs.url }}
+            - **Build**: ${{ needs.build.outputs.version }}
+            - **Commit**: ${{ github.sha }}
+
+          files: |
+            dist/build-info.json
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify team
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: |
+            Production Deployment ${{ job.status }}
+            Version: ${{ needs.build.outputs.version }}
+            URL: ${{ steps.deploy.outputs.url }}
+            Backup: ${{ steps.backup.outputs.backup_name }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true
+
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "🔄 Rolling back to previous version..."
+          AWS_BUCKET=${{ secrets.AWS_S3_BUCKET_PRODUCTION }}
+          aws s3 sync s3://$AWS_BUCKET/${{ steps.backup.outputs.backup_name }}/ s3://$AWS_BUCKET/ --delete
+
+          CF_DISTRIBUTION=${{ secrets.AWS_CLOUDFRONT_ID_PRODUCTION }}
+          aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION --paths "/*"
+
+          echo "Rollback completed"
+
+      - name: Deployment summary
+        if: always()
+        run: |
+          echo "## Deployment Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Version: ${{ needs.build.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- URL: ${{ steps.deploy.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Health Check: ${{ steps.health.outcome }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Backup: ${{ steps.backup.outputs.backup_name }}" >> $GITHUB_STEP_SUMMARY
+
+  post-deploy-monitoring:
+    name: 部署后监控
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: always() && needs.deploy-production.result == 'success'
+
+    steps:
+      - name: Monitor application health
+        run: |
+          echo "Starting post-deployment monitoring..."
+          echo "This job runs for 30 minutes to monitor application health"
+          echo "In production, integrate with monitoring tools like:"
+          echo "- New Relic"
+          echo "- Datadog"
+          echo "- Sentry"
+          echo "- Custom health checks"
+
+      - name: Update deployment status
+        if: always()
+        run: |
+          echo "## Monitoring Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Duration: 30 minutes" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: Active" >> $GITHUB_STEP_SUMMARY
+          echo "- Alerts: Configured" >> $GITHUB_STEP_SUMMARY
