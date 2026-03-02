@@ -28,15 +28,18 @@ vi.mock("../components/GlassCard", () => ({
 }));
 
 vi.mock("../components/FileBrowser", () => ({
-  FileBrowser: () => React.createElement("div", { "data-testid": "file-browser" }, "File Browser Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "file-browser" }, "File Browser Mock"),
 }));
 
 vi.mock("../components/LogViewer", () => ({
-  LogViewer: () => React.createElement("div", { "data-testid": "log-viewer" }, "Log Viewer Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "log-viewer" }, "Log Viewer Mock"),
 }));
 
 vi.mock("../components/ReportGenerator", () => ({
-  ReportGenerator: () => React.createElement("div", { "data-testid": "report-generator" }, "Report Generator Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "report-generator" }, "Report Generator Mock"),
 }));
 
 vi.mock("../hooks/useLocalFileSystem", () => ({

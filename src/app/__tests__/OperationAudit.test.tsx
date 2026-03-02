@@ -33,7 +33,8 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  default: ( ({ children, className }: any) => <div className={className}>{children}</div>,
+  __esModule: true,
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // Mock recharts

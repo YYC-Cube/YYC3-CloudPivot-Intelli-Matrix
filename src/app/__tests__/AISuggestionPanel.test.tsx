@@ -30,15 +30,18 @@ vi.mock("lucide-react", () => ({
 }));
 
 vi.mock("../components/SDKChatPanel", () => ({
-  SDKChatPanel: () => React.createElement("div", { "data-testid": "sdk-chat-panel" }, "SDK Chat Panel Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "sdk-chat-panel" }, "SDK Chat Panel Mock"),
 }));
 
 vi.mock("../components/PatternAnalyzer", () => ({
-  PatternAnalyzer: () => React.createElement("div", { "data-testid": "pattern-analyzer" }, "Pattern Analyzer Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "pattern-analyzer" }, "Pattern Analyzer Mock"),
 }));
 
 vi.mock("../components/ActionRecommender", () => ({
-  ActionRecommender: () => React.createElement("div", { "data-testid": "action-recommender" }, "Action Recommender Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "action-recommender" }, "Action Recommender Mock"),
 }));
 
 vi.mock("../components/GlassCard", () => ({

@@ -50,11 +50,13 @@ vi.mock("motion/react", () => ({
 }));
 
 vi.mock("../components/ConnectionStatus", () => ({
-  ConnectionStatus: ({ state }: { state: string }) => <div data-testid="connection-status">{state}</div>,
+  __esModule: true,
+  default: ({ state }: { state: string }) => <div data-testid="connection-status">{state}</div>,
 }));
 
 vi.mock("../components/LanguageSwitcher", () => ({
-  LanguageSwitcher: () => <div data-testid="lang-switcher" />,
+  __esModule: true,
+  default: () => <div data-testid="lang-switcher" />,
 }));
 
 vi.mock("../components/YYC3Logo", () => ({

@@ -23,19 +23,23 @@ vi.mock("../components/GlassCard", () => ({
 }));
 
 vi.mock("../components/OperationCategory", () => ({
-  OperationCategory: () => React.createElement("div", { "data-testid": "operation-category" }, "Operation Category Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "operation-category" }, "Operation Category Mock"),
 }));
 
 vi.mock("../components/QuickActionGrid", () => ({
-  QuickActionGrid: () => React.createElement("div", { "data-testid": "quick-action-grid" }, "Quick Action Grid Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "quick-action-grid" }, "Quick Action Grid Mock"),
 }));
 
 vi.mock("../components/OperationTemplate", () => ({
-  OperationTemplate: () => React.createElement("div", { "data-testid": "operation-template" }, "Operation Template Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "operation-template" }, "Operation Template Mock"),
 }));
 
 vi.mock("../components/OperationLogStream", () => ({
-  OperationLogStream: () => React.createElement("div", { "data-testid": "operation-log-stream" }, "Operation Log Stream Mock"),
+  __esModule: true,
+  default: () => React.createElement("div", { "data-testid": "operation-log-stream" }, "Operation Log Stream Mock"),
 }));
 
 vi.mock("../hooks/useOperationCenter", () => ({

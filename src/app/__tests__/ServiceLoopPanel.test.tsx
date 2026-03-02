@@ -34,11 +34,13 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  default: ( ({ children, className }: any) => <div className={className}>{children}</div>,
+  __esModule: true,
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 vi.mock("../components/LoopStageCard", () => ({
-  LoopStageCard: ({ meta, result, isActive }: any) => (
+  __esModule: true,
+  default: ({ meta, result, isActive }: any) => (
     <div data-testid={`stage-${meta.key}`} data-active={isActive}>
       {meta.key}: {result.status}
     </div>
@@ -46,7 +48,8 @@ vi.mock("../components/LoopStageCard", () => ({
 }));
 
 vi.mock("../components/DataFlowDiagram", () => ({
-  DataFlowDiagram: ({ nodes, edges }: any) => (
+  __esModule: true,
+  default: ({ nodes, edges }: any) => (
     <div data-testid="data-flow-diagram">
       nodes:{nodes.length} edges:{edges.length}
     </div>

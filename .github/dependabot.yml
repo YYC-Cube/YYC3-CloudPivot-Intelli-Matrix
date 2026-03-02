@@ -1,32 +1,76 @@
-  version: 2
-  updates:
-    - package-ecosystem: "github-actions"
-      directory: "/"
-      schedule:
-        interval: "weekly"
-        day: "monday"
-      open-pull-requests-limit: 5
-      labels:
-        - "dependencies"
-        - "github-actions"
+version: 2
+updates:
+  # Enable version updates for dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci"
 
-    - package-ecosystem: "npm"
-      directory: "/"
-      schedule:
-        interval: "weekly"
-        day: "monday"
-      open-pull-requests-limit: 10
-      labels:
-        - "dependencies"
-      versioning-strategy: "increase"
-      groups:
-        production-dependencies:
-          patterns:
-            - "@mui/**"
-            - "@radix-ui/**"
-            - "react"
-            - "react-dom"
-            - "vite"
-            - "vitest"
-      commit-message:
-        prefix: "chore(deps)"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "javascript"
+    versioning-strategy: "increase"
+    groups:
+      production-dependencies:
+        patterns:
+          - "@mui/**"
+          - "@radix-ui/**"
+          - "react"
+          - "react-dom"
+          - "react-router"
+          - "vitest"
+          - "vite"
+        exclude-patterns:
+          - "*@*"
+      dev-dependencies:
+        patterns:
+          - "@types/**"
+          - "typescript"
+          - "eslint"
+          - "prettier"
+        exclude-patterns:
+          - "*@*"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+      prefix-development: false
+    ignore:
+      # Ignore major version updates for critical dependencies
+      - dependency-name: "react"
+        update-types: ["major"]
+      - dependency-name: "react-dom"
+        update-types: ["major"]
+      - dependency-name: "vite"
+        update-types: ["major"]
+      - dependency-name: "vitest"
+        update-types: ["major"]
+
+  # Update sub-dependencies weekly to keep them fresh
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+    target-branch: "develop"
+    labels:
+      - "dependencies"
+      - "sub-deps"
+    versioning-strategy: "widen"
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"

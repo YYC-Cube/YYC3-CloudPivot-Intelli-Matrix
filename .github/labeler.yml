@@ -1,48 +1,67 @@
-  # PR Labeler Configuration
-  docs:
-    - changed-files:
-        - any: ['docs/**', '*.md']
+# PR Labeler Configuration
+# Automatically labels pull requests based on changed files
 
-  dependencies:
-    - changed-files:
-        - any: ['package.json', 'pnpm-lock.yaml']
+# Documentation changes
+docs:
+  - changed-files:
+      - any: ['docs/**', '*.md']
 
-  ci:
-    - changed-files:
-        - any: ['.github/**', '*.yml', '*.yaml']
+# Dependencies
+dependencies:
+  - changed-files:
+      - any: ['package.json', 'pnpm-lock.yaml']
 
-  build:
-    - changed-files:
-        - any: ['vite.config.ts', 'tsconfig*.json', 'Dockerfile*']
+# CI/CD
+ci:
+  - changed-files:
+      - any: ['.github/**', '*.yml', '*.yaml']
 
-  testing:
-    - changed-files:
-        - any: ['src/app/__tests__/**', '**/*.test.ts', '**/*.test.tsx']
+# Build configuration
+build:
+  - changed-files:
+      - any: ['vite.config.ts', 'tsconfig*.json', 'Dockerfile*', 'docker-compose*.yml']
 
-  types:
-    - changed-files:
-        - any: ['src/app/types/**', '**/*.d.ts']
+# Testing
+testing:
+  - changed-files:
+      - any: ['src/app/__tests__/**', '**/*.test.ts', '**/*.test.tsx']
 
-  components:
-    - changed-files:
-        - any: ['src/app/components/**']
+# Type definitions
+types:
+  - changed-files:
+      - any: ['src/app/types/**', '**/*.d.ts']
 
-  hooks:
-    - changed-files:
-        - any: ['src/app/hooks/**']
+# Components
+components:
+  - changed-files:
+      - any: ['src/app/components/**']
 
-  ai:
-    - changed-files:
-        - any: ['src/app/components/AI*.tsx', 'src/app/components/SDK*.tsx']
+# Hooks
+hooks:
+  - changed-files:
+      - any: ['src/app/hooks/**']
 
-  style:
-    - changed-files:
-        - any: ['src/**/*.css', 'tailwind.config.*']
+# AI/ML features
+ai:
+  - changed-files:
+      - any: ['src/app/components/AI*.tsx', 'src/app/components/SDK*.tsx', 'src/app/hooks/useAI*.ts*']
 
-  config:
-    - changed-files:
-        - any: ['src/app/lib/**', 'src/app/i18n/**']
+# Styling
+style:
+  - changed-files:
+      - any: ['src/**/*.css', 'tailwind.config.*']
 
-  security:
-    - changed-files:
-        - any: ['src/app/lib/authContext.tsx', 'src/app/lib/supabaseClient.ts']
+# Configuration
+config:
+  - changed-files:
+      - any: ['src/app/lib/**', 'src/app/i18n/**']
+
+# Security
+security:
+  - changed-files:
+      - any: ['src/app/lib/authContext.tsx', 'src/app/lib/supabaseClient.ts']
+
+# Performance
+performance:
+  - changed-files:
+      - any: ['vite.config.ts', 'src/app/lib/performance.*']

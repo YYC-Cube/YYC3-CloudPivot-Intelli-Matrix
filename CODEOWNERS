@@ -1,0 +1,50 @@
+# Code Owners Configuration
+# This file controls who has auto-approval authority in pull requests.
+
+# Global approvers for all changes
+* @yyc3-cube/core-team
+
+# CI/CD and infrastructure
+.github/** @yyc3-cube/devops-team
+*.yml @yyc3-cube/devops-team
+*.yaml @yyc3-cube/devops-team
+Dockerfile* @yyc3-cube/devops-team
+docker-compose*.yml @yyc3-cube/devops-team
+
+# Core application
+src/app/** @yyc3-cube/core-team
+src/app/components/** @yyc3-cube/frontend-team
+src/app/hooks/** @yyc3-cube/frontend-team
+src/app/lib/** @yyc3-cube/core-team
+
+# AI/ML components
+src/app/components/AI*.tsx @yyc3-cube/ai-team
+src/app/components/SDK*.tsx @yyc3-cube/ai-team
+src/app/components/Pattern*.tsx @yyc3-cube/ai-team
+src/app/components/*Recommender*.tsx @yyc3-cube/ai-team
+src/app/hooks/useAI*.ts* @yyc3-cube/ai-team
+src/app/hooks/useServiceLoop*.ts* @yyc3-cube/ai-team
+src/app/hooks/usePatrol*.ts* @yyc3-cube/ai-team
+
+# Configuration and settings
+src/app/components/SystemSettings*.tsx @yyc3-cube/core-team
+src/app/components/Theme*.tsx @yyc3-cube/design-team
+src/app/components/NetworkConfig*.tsx @yyc3-cube/devops-team
+
+# Dashboard and monitoring
+src/app/components/Dashboard*.tsx @yyc3-cube/monitoring-team
+src/app/components/DataMonitoring*.tsx @yyc3-cube/monitoring-team
+src/app/components/Operation*.tsx @yyc3-cube/monitoring-team
+
+# Documentation
+docs/** @yyc3-cube/docs-team
+*.md @yyc3-cube/docs-team
+
+# Tests
+src/app/__tests__/** @yyc3-cube/core-team
+
+# Build and tooling
+vite.config.ts @yyc3-cube/devops-team
+tsconfig*.json @yyc3-cube/devops-team
+package.json @yyc3-cube/devops-team
+pnpm-lock.yaml @yyc3-cube/devops-team

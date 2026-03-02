@@ -126,7 +126,8 @@ vi.mock("../components/OfflineIndicator", () => ({
 }));
 
 vi.mock("../components/ErrorBoundary", () => ({
-  ErrorBoundary: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
+  __esModule: true,
+  default: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
 }));
 
 vi.mock("sonner", () => ({

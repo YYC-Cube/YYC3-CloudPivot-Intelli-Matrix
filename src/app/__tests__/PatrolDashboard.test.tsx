@@ -34,12 +34,14 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  default: ( ({ children, className }: any) => <div className={className}>{children}</div>,
+  __esModule: true,
+  default: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // Mock sub-components
 vi.mock("../components/PatrolScheduler", () => ({
-  PatrolScheduler: ({ schedule, onToggle, onIntervalChange }: any) => (
+  __esModule: true,
+  default: ({ schedule, onToggle, onIntervalChange }: any) => (
     <div data-testid="patrol-scheduler">
       <span>{schedule.interval}min</span>
       <button onClick={() => onToggle(true)}>enable-auto</button>
@@ -49,7 +51,8 @@ vi.mock("../components/PatrolScheduler", () => ({
 }));
 
 vi.mock("../components/PatrolReport", () => ({
-  PatrolReport: ({ result, embedded }: any) => (
+  __esModule: true,
+  default: ({ result, embedded }: any) => (
     <div data-testid={embedded ? "patrol-report-embedded" : "patrol-report-modal"}>
       Score: {result.healthScore}
     </div>
@@ -57,7 +60,8 @@ vi.mock("../components/PatrolReport", () => ({
 }));
 
 vi.mock("../components/PatrolHistory", () => ({
-  PatrolHistory: ({ history, onViewReport }: any) => (
+  __esModule: true,
+  default: ({ history, onViewReport }: any) => (
     <div data-testid="patrol-history">
       {history.map((h: any) => (
         <button key={h.id} onClick={() => onViewReport(h)}>
