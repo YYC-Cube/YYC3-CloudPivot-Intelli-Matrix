@@ -1,0 +1,48 @@
+  # PR Labeler Configuration
+  docs:
+    - changed-files:
+        - any: ['docs/**', '*.md']
+
+  dependencies:
+    - changed-files:
+        - any: ['package.json', 'pnpm-lock.yaml']
+
+  ci:
+    - changed-files:
+        - any: ['.github/**', '*.yml', '*.yaml']
+
+  build:
+    - changed-files:
+        - any: ['vite.config.ts', 'tsconfig*.json', 'Dockerfile*']
+
+  testing:
+    - changed-files:
+        - any: ['src/app/__tests__/**', '**/*.test.ts', '**/*.test.tsx']
+
+  types:
+    - changed-files:
+        - any: ['src/app/types/**', '**/*.d.ts']
+
+  components:
+    - changed-files:
+        - any: ['src/app/components/**']
+
+  hooks:
+    - changed-files:
+        - any: ['src/app/hooks/**']
+
+  ai:
+    - changed-files:
+        - any: ['src/app/components/AI*.tsx', 'src/app/components/SDK*.tsx']
+
+  style:
+    - changed-files:
+        - any: ['src/**/*.css', 'tailwind.config.*']
+
+  config:
+    - changed-files:
+        - any: ['src/app/lib/**', 'src/app/i18n/**']
+
+  security:
+    - changed-files:
+        - any: ['src/app/lib/authContext.tsx', 'src/app/lib/supabaseClient.ts']
