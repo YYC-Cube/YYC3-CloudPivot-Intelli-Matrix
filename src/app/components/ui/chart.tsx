@@ -2,21 +2,8 @@
 
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
-import type { TooltipProps } from "recharts";
 
 import { cn } from "./utils";
-
-// Recharts type definitions (local definitions to avoid import issues)
-type ValueType = number | string | Array<number | string>;
-type NameType = number | string;
-
-interface Payload<TValue extends ValueType, TName extends NameType> {
-  name?: TName;
-  value?: TValue;
-  dataKey?: string | number;
-  payload?: Record<string, unknown> & { fill?: string };
-  color?: string;
-}
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -116,20 +103,32 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip;
 
-interface ChartTooltipContentProps
-  extends Omit<TooltipProps<ValueType, NameType>, "content">,
-    React.ComponentProps<"div"> {
+// 完全独立的接口定义，避免继承recharts类型
+interface ChartTooltipContentProps {
+  active?: boolean;
+  payload?: any[];
+  label?: any;
+  className?: string;
+  indicator?: "line" | "dot" | "dashed";
   hideLabel?: boolean;
   hideIndicator?: boolean;
-  indicator?: "line" | "dot" | "dashed";
+  labelFormatter?: (value: any, payload: any[]) => React.ReactNode;
+  labelClassName?: string;
+  formatter?: (
+    value: any,
+    name: any,
+    item: any,
+    index: number,
+    payload: any[]
+  ) => React.ReactNode;
+  color?: string;
   nameKey?: string;
   labelKey?: string;
-  payload?: Payload<ValueType, NameType>[];
 }
 
 function ChartTooltipContent({
   active,
-  payload,
+  payload = [],
   className,
   indicator = "dot",
   hideLabel = false,
@@ -198,20 +197,20 @@ function ChartTooltipContent({
       !nestLabel ? tooltipLabel : null,
       React.createElement("div", {
         className: "grid gap-1.5",
-        children: payload.map((item: Payload<ValueType, NameType>, index: number) => {
+        children: payload.map((item: any, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
-          const indicatorColor = color || (item.payload?.fill as string | undefined) || (item.color as string | undefined);
+          const indicatorColor = color || item.payload?.fill || item.color;
 
           return React.createElement("div", {
-            key: String(item.dataKey),
+            key: item.dataKey,
             className: cn(
               "[&>svg]:text-muted-foreground flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5",
               indicator === "dot" && "items-center",
             ),
             children: [
               formatter && item?.value !== undefined && item.name ? (
-                formatter(item.value, item.name, item, index, payload as Payload<ValueType, NameType>[])
+                formatter(item.value, item.name, item, index, payload)
               ) : [
                 itemConfig?.icon ? (
                   React.createElement(itemConfig.icon, { key: "icon" })
@@ -269,7 +268,7 @@ type LegendVerticalAlign = "top" | "bottom" | "middle";
 
 interface ChartLegendContentProps extends React.ComponentProps<"div"> {
   hideIcon?: boolean;
-  payload?: Payload<ValueType, NameType>[];
+  payload?: any[];
   verticalAlign?: LegendVerticalAlign;
   nameKey?: string;
 }
@@ -293,7 +292,7 @@ function ChartLegendContent({
       verticalAlign === "top" ? "pb-3" : "pt-3",
       className,
     ),
-    children: payload.map((item: Payload<ValueType, NameType>) => {
+    children: payload.map((item: any) => {
       const key = `${nameKey || item.dataKey || "value"}`;
       const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
@@ -307,7 +306,7 @@ function ChartLegendContent({
             key: "color",
             className: "h-2 w-2 shrink-0 rounded-[2px]",
             style: {
-              backgroundColor: item.color as string,
+              backgroundColor: item.color,
             },
           }),
           itemConfig?.label,
