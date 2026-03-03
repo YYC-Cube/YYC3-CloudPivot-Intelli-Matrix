@@ -481,7 +481,7 @@ VITE_AI_API_KEY=your_api_key
 | 指标 | 值 | 状态 |
 |------|-----|------|
 | 测试通过率 | 100% (1267/1267) | ✅ 优秀 |
-| 测试覆盖率 | 80%+ | ✅ 达标 |
+| 测试覆盖率 | 15%+ | ⚠️ 持续优化中 |
 | TypeScript 错误 | 0 | ✅ 优秀 |
 
 ### 运行测试
@@ -588,7 +588,7 @@ Copyright © 2026 YanYuCloudCube Team. All rights reserved.
 |------|------|------|
 | 📁 **代码行数** | ~50,000+ | TypeScript + React |
 | 🧪 **测试用例** | 1,267 | Vitest 单元测试 |
-| 📊 **测试覆盖率** | 80%+ | 关键路径覆盖 |
+| 📊 **测试覆盖率** | 15%+ | 当前覆盖率（持续优化中） |
 | 📦 **构建产物** | 275KB | 优化后主包大小 |
 | 🚀 **构建时间** | 6.42s | Vite 极速编译 |
 | 🎨 **组件数量** | 55+ | 可复用 UI 组件 |
@@ -774,7 +774,7 @@ Detailed documentation available in [docs/](./docs/) directory.
 |--------|--------|-------------|
 | 📁 **Lines of Code** | ~50,000+ | TypeScript + React |
 | 🧪 **Test Cases** | 1,267 | Vitest unit tests |
-| 📊 **Test Coverage** | 80%+ | Critical path coverage |
+| 📊| 🧪 **Test Coverage** | 15%+ | Current coverage (optimizing) |
 | 📦 **Build Output** | 275KB | Optimized main bundle size |
 | 🚀 **Build Time** | 6.42s | Vite ultra-fast compilation |
 | 🎨 **Components** | 55+ | Reusable UI components |
