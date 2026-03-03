@@ -23,7 +23,7 @@ jobs:
       version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Get version from tag or input
         id: get-version
@@ -47,7 +47,7 @@ jobs:
     needs: [validate-tag]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -57,7 +57,7 @@ jobs:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
@@ -105,7 +105,7 @@ jobs:
           zip -r release-${{ needs.validate-tag.outputs.version }}.zip dist/
 
       - name: Upload release assets
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-assets
           path: |
@@ -122,7 +122,7 @@ jobs:
       discussions: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -145,7 +145,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ needs.validate-tag.outputs.version }}
           tag_name: ${{ needs.validate-tag.outputs.version }}
@@ -198,7 +198,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -235,7 +235,7 @@ jobs:
             VCS_REF=${{ github.sha }}
 
       - name: Update release with Docker info
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.validate-tag.outputs.version }}
           body: |
