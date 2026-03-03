@@ -104,7 +104,7 @@
     "only-allow": "^1.2.1",
     "prettier": "^3.2.5",
     "rollup-plugin-visualizer": "^7.0.0",
-    "tailwindcss": "4.1.12",
+    "tailwindcss": "4.2.1",
     "vite": "6.3.5"
   },
   "peerDependencies": {
