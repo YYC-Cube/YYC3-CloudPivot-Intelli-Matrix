@@ -1,6 +1,6 @@
 /**
  * Login 组件
- * ========
+ * ==========
  * YYC³ 登录页面
  * 未来科技感设计，赛博朋克风格
  * 支持 Email + Password 认证
@@ -14,14 +14,14 @@
 import React, { useState, useCallback } from "react";
 import { Lock, Mail, Eye, EyeOff, AlertCircle, Zap, Ghost } from "lucide-react";
 import { supabase } from "../lib/supabaseClient";
-import YYC3Logo from "./YYC3Logo";
+import { YYC3Logo } from "./YYC3Logo";
 
 interface LoginProps {
   onLoginSuccess: () => void;
   onGhostLogin?: () => void;
 }
 
-export default function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
+export function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPwd, setShowPwd] = useState(false);

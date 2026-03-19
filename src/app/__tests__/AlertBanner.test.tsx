@@ -1,6 +1,6 @@
 /**
  * AlertBanner.test.tsx
- * ============
+ * =====================
  * AlertBanner 组件 - 告警横幅跳转测试
  *
  * 覆盖范围:
@@ -10,24 +10,21 @@
  * - 严重级别色带
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-const mockNavigate = vi.fn() as any;
+const mockNavigate = vi.fn();
 
 vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
 }));
 
-import AlertBanner from "../components/AlertBanner";
+import { AlertBanner } from "../components/AlertBanner";
 
 describe("AlertBanner", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------

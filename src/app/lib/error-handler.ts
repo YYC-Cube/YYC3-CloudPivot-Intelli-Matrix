@@ -1,11 +1,11 @@
 /**
  * error-handler.ts
- * ===================
+ * =================
  * YYC³ 全局错误处理工具
  *
  * 功能：
  * - 统一错误分类（网络/解析/认证/运行时/未知）
- * - 错误日志记录（localStorage 持久化 + console）
+ * - 错误日志记录（localStorage 快速读 + IndexedDB 持久化双写）
  * - 全局未捕获异常监听
  * - 错误上报队列（本地离线可追溯）
  *
@@ -13,18 +13,22 @@
  * "可观、可看、可查、可操作、可跳转、可追溯、可预测"
  */
 
-// ====================================================================
+// ============================================================
 // 类型定义 — 从全局类型中心导入
-// =====================================================================
+// ============================================================
 
 import type { ErrorCategory, ErrorSeverity, AppError, ErrorStats } from "../types";
 
-// Re-export for backward compatibility
-export type { ErrorCategory, ErrorSeverity, AppError, ErrorStats };
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
-// ====================================================================
+// RF-002: IndexedDB 写入 — 异步双写, localStorage 同步读仍保留
+import { idbPut, idbGetAll, idbClear } from "./yyc3-storage";
+// RF-003: 统一 Figma 错误判定函数
+import { isFigmaPlatformError } from "./figma-error-filter";
+
+// ============================================================
 // 错误日志存储
-// ====================================================================
+// ============================================================
 
 const ERROR_LOG_KEY = "yyc3_error_log";
 const MAX_ERROR_ENTRIES = 200;
@@ -46,6 +50,7 @@ export function getErrorLog(): AppError[] {
 
 /** 保存错误到本地日志 */
 function saveErrorToLog(error: AppError): void {
+  // 1) 同步写入 localStorage（快速路径）
   try {
     const log = getErrorLog();
     log.unshift(error);
@@ -60,11 +65,30 @@ function saveErrorToLog(error: AppError): void {
       // 完全无法写入，静默失败
     }
   }
+  // 2) RF-002: 异步写入 IndexedDB（持久化路径，fire-and-forget）
+  idbPut("errorLog", error).catch(() => {/* 静默降级 */});
 }
 
 /** 清除错误日志 */
 export function clearErrorLog(): void {
   localStorage.removeItem(ERROR_LOG_KEY);
+  // RF-002: 同步清除 IndexedDB errorLog store
+  idbClear("errorLog").catch(() => {/* 静默降级 */});
+}
+
+/**
+ * RF-002: 从 IndexedDB 异步读取完整错误日志
+ * 用于导出 / 审计等需要完整数据的场景
+ */
+export async function getFullErrorLog(): Promise<AppError[]> {
+  try {
+    const entries = await idbGetAll<AppError>("errorLog");
+    // 按时间倒序
+    return entries.sort((a, b) => b.timestamp - a.timestamp);
+  } catch {
+    // IndexedDB 不可用，降级到 localStorage
+    return getErrorLog();
+  }
 }
 
 /** 获取错误统计 */
@@ -94,9 +118,9 @@ export function getErrorStats(): ErrorStats {
   };
 }
 
-// ====================================================================
+// ============================================================
 // 错误分类与创建
-// ====================================================================
+// ============================================================
 
 /** 自动分类错误 */
 function categorizeError(error: unknown): { category: ErrorCategory; severity: ErrorSeverity } {
@@ -125,7 +149,7 @@ function extractMessage(error: unknown): string {
   if (error instanceof Error) {return error.message;}
   if (typeof error === "string") {return error;}
   if (error && typeof error === "object" && "message" in error) {
-    return String((error as { message: string }).message);
+    return String((error as Record<string, unknown>).message);
   }
   return "未知错误";
 }
@@ -136,9 +160,9 @@ function extractStack(error: unknown): string | undefined {
   return undefined;
 }
 
-// ====================================================================
+// ============================================================
 // 核心 API
-// ====================================================================
+// ============================================================
 
 /**
  * 记录错误（核心函数）
@@ -203,7 +227,7 @@ export function captureNetworkError(
     category: "NETWORK",
     severity: "warning",
     source: endpoint,
-    userAction: "检查网络连接或稍后重试",
+    userAction: "检查网络连或稍后重试",
   });
 }
 
@@ -282,9 +306,9 @@ export function trySafeSync<T>(
   }
 }
 
-// ====================================================================
+// ============================================================
 // 全局监听器
-// ====================================================================
+// ============================================================
 
 let globalListenerInstalled = false;
 
@@ -292,6 +316,9 @@ let globalListenerInstalled = false;
  * 安装全局错误监听器
  * - window.onerror: 同步运行时错误
  * - window.onunhandledrejection: 未捕获的 Promise 错误
+ *
+ * RF-003: 使用 isFigmaPlatformError() 统一判定，
+ *         App.tsx capture-phase 已做第一层拦截，此处为防御性二次检查
  */
 export function installGlobalErrorListeners(): void {
   if (globalListenerInstalled) {return;}
@@ -299,6 +326,12 @@ export function installGlobalErrorListeners(): void {
 
   // 全局运行时错误
   window.addEventListener("error", (event) => {
+    // RF-003: 统一使用 figma-error-filter 判定
+    const errName = event.error?.name || event.error?.constructor?.name || "";
+    const errStack = event.error?.stack || "";
+    if (isFigmaPlatformError(errName, String(event.message || ""), event.filename || "", errStack)) {
+      return;
+    }
     captureError(event.error || event.message, {
       category: "RUNTIME",
       severity: "critical",
@@ -309,6 +342,15 @@ export function installGlobalErrorListeners(): void {
 
   // 未捕获的 Promise rejection
   window.addEventListener("unhandledrejection", (event) => {
+    // RF-003: 统一使用 figma-error-filter 判定
+    const reason = event.reason;
+    const name = reason?.name || reason?.constructor?.name || "";
+    const msg = String(reason?.message || reason || "");
+    const stack = reason?.stack || "";
+    if (isFigmaPlatformError(name, msg, undefined, stack)) {
+      event.preventDefault();
+      return;
+    }
     captureError(event.reason, {
       category: "RUNTIME",
       severity: "error",

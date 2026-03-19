@@ -30,7 +30,7 @@ const MOCK_CACHE_ENTRIES: CacheEntry[] = [
 // ============================================================
 
 export function usePWAManager() {
-  const [swStatus, _setSWStatus] = useState<SWStatus>("active");
+  const [swStatus] = useState<SWStatus>("active");
   const [swVersion, setSWVersion] = useState("1.4.2");
   const [cacheEntries, setCacheEntries] = useState<CacheEntry[]>(MOCK_CACHE_ENTRIES);
   const [updateAvailable, setUpdateAvailable] = useState(true);
@@ -38,7 +38,7 @@ export function usePWAManager() {
   const [isClearing, setIsClearing] = useState(false);
 
   // 在线状态
-  const [isOnline, _setIsOnline] = useState(
+  const [isOnline] = useState(
     typeof navigator !== "undefined" ? navigator.onLine : true
   );
 

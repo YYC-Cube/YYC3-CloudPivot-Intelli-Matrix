@@ -1,6 +1,6 @@
 /**
  * CommandPalette.tsx
- * ===============
+ * ===================
  * 全局命令面板 · Cmd/Ctrl+K 触发
  *
  * i18n 已迁移
@@ -11,7 +11,8 @@ import {
   Search, ArrowRight, Keyboard, X,
   Activity, Bell, Shield, Wrench, FolderOpen, Terminal,
   Code2, FileSearch, Users, Settings, Bot, BarChart3,
-  Cpu,
+  Cpu, Smartphone, HardDrive, Database, GitBranch, BrainCircuit,
+  Package, Gauge, ServerCog,
 } from "lucide-react";
 import { useNavigate } from "react-router";
 import { SHORTCUT_LIST } from "../hooks/useKeyboardShortcuts";
@@ -20,7 +21,8 @@ import { useI18n } from "../hooks/useI18n";
 const iconMap: Record<string, React.ElementType> = {
   Activity, Bell, Shield, Wrench, FolderOpen, Terminal,
   Code2, FileSearch, Users, Settings, Bot, BarChart3,
-  Cpu,
+  Cpu, Smartphone, HardDrive, Database, GitBranch, BrainCircuit,
+  Package, Gauge, ServerCog,
 };
 
 interface PaletteItem {
@@ -49,6 +51,17 @@ const PALETTE_ITEMS: PaletteItem[] = [
   { id: "nav-audit",      labelKey: "nav.audit",        descKey: "palette.navigate",          category: "nav",  icon: "FileSearch", path: "/audit" },
   { id: "nav-users",      labelKey: "nav.userMgmt",     descKey: "palette.navigate",          category: "nav",  icon: "Users",      path: "/users" },
   { id: "nav-settings",   labelKey: "nav.settings",     descKey: "settings.title",            category: "nav",  icon: "Settings",   path: "/settings" },
+  { id: "nav-security",   labelKey: "nav.securityMonitor", descKey: "security.subtitle",      category: "nav",  icon: "Shield",     path: "/security" },
+  { id: "nav-alerts",     labelKey: "nav.alertRules",    descKey: "alerts.subtitle",           category: "nav",  icon: "Bell",       path: "/alerts" },
+  { id: "nav-reports",    labelKey: "nav.reportExport",  descKey: "reports.subtitle",          category: "nav",  icon: "BarChart3",  path: "/reports" },
+  { id: "nav-aidiag",     labelKey: "nav.aiDiagnostics", descKey: "aiDiag.subtitle",           category: "nav",  icon: "BrainCircuit", path: "/ai-diagnosis" },
+  { id: "nav-hostfiles",  labelKey: "nav.hostFiles",     descKey: "palette.navigate",          category: "nav",  icon: "HardDrive",  path: "/host-files" },
+  { id: "nav-database",   labelKey: "nav.database",      descKey: "palette.navigate",          category: "nav",  icon: "Database",   path: "/database" },
+  { id: "nav-refactoring", labelKey: "nav.refactoring",  descKey: "palette.navigate",          category: "nav",  icon: "GitBranch",  path: "/refactoring" },
+  { id: "nav-pwa",        labelKey: "nav.pwa",           descKey: "pwa.subtitle",              category: "nav",  icon: "Smartphone", path: "/pwa" },
+  { id: "nav-dataeditor", labelKey: "nav.dataEditor",    descKey: "palette.navigate",          category: "nav",  icon: "Package",    path: "/data-editor" },
+  { id: "nav-performance", labelKey: "nav.performance",  descKey: "palette.navigate",          category: "nav",  icon: "Gauge",      path: "/performance" },
+  { id: "nav-envconfig",   labelKey: "nav.envConfig",    descKey: "palette.navigate",          category: "nav",  icon: "ServerCog",  path: "/env-config" },
 ];
 
 interface CommandPaletteProps {
@@ -56,7 +69,7 @@ interface CommandPaletteProps {
   onClose: () => void;
 }
 
-export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
+export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -66,9 +79,11 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   useEffect(() => {
     if (isOpen) {
-      setQuery("");
-      setSelectedIndex(0);
-      setShowShortcuts(false);
+      setTimeout(() => {
+        setQuery("");
+        setSelectedIndex(0);
+        setShowShortcuts(false);
+      }, 0);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
@@ -79,172 +94,150 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
     return PALETTE_ITEMS.filter(
       (item) =>
         t(item.labelKey).toLowerCase().includes(q) ||
-        t(item.descKey).toLowerCase().includes(q)
+        t(item.descKey).toLowerCase().includes(q) ||
+        (item.path ?? "").toLowerCase().includes(q)
     );
   }, [query, t]);
 
-  const executeItem = useCallback((item: PaletteItem) => {
-    if (item.path) {
-      navigate(item.path);
-    }
-    onClose();
-  }, [navigate, onClose]);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
+  const handleSelect = useCallback(
+    (item: PaletteItem) => {
+      if (item.path) {
+        navigate(item.path);
+      }
       onClose();
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1));
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setSelectedIndex((prev) => Math.max(prev - 1, 0));
-    } else if (e.key === "Enter" && filteredItems[selectedIndex]) {
-      executeItem(filteredItems[selectedIndex]);
-    }
-  };
+    },
+    [navigate, onClose]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((prev) => Math.min(prev + 1, filteredItems.length - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((prev) => Math.max(prev - 1, 0));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        if (filteredItems[selectedIndex]) {
+          handleSelect(filteredItems[selectedIndex]);
+        }
+      }
+    },
+    [filteredItems, selectedIndex, handleSelect, onClose]
+  );
 
   if (!isOpen) {return null;}
 
   return (
-    <div
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
-      onClick={onClose}
-      data-testid="command-palette-overlay"
-    >
-      <div className="absolute inset-0 bg-[rgba(0,0,0,0.6)] backdrop-blur-sm" />
-
+    <>
+      {/* 遮罩 */}
       <div
-        className="relative w-full max-w-[560px] mx-4 rounded-xl bg-[rgba(8,25,55,0.95)] border border-[rgba(0,180,255,0.2)] shadow-[0_0_60px_rgba(0,180,255,0.1)] overflow-hidden"
-        onClick={(e) => e.stopPropagation()}
+        data-testid="command-palette-overlay"
+        className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
+
+      {/* 面板 */}
+      <div
         data-testid="command-palette"
+        className="fixed left-1/2 top-[15%] z-[9999] w-[90vw] max-w-xl -translate-x-1/2 rounded-xl border border-[#00d4ff]/30 bg-[#0a1628]/95 shadow-2xl shadow-[#00d4ff]/10 backdrop-blur-md"
       >
-        {/* Search input */}
-        <div className="flex items-center gap-3 px-4 py-3 border-b border-[rgba(0,180,255,0.1)]">
-          <Search className="w-4 h-4 text-[rgba(0,212,255,0.4)] shrink-0" />
+        {/* 搜索栏 */}
+        <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+          <Search className="h-5 w-5 text-[#00d4ff]" />
           <input
             ref={inputRef}
+            data-testid="palette-input"
+            className="flex-1 bg-transparent text-white placeholder-white/40 outline-none"
+            placeholder={t("palette.placeholder")}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
               setSelectedIndex(0);
             }}
             onKeyDown={handleKeyDown}
-            placeholder={t("palette.placeholder")}
-            className="flex-1 bg-transparent text-[#e0f0ff] placeholder-[rgba(0,212,255,0.25)] outline-none"
-            style={{ fontSize: "0.88rem" }}
-            data-testid="palette-input"
           />
           <button
-            onClick={() => setShowShortcuts(!showShortcuts)}
-            className={`p-1.5 rounded-lg transition-all ${
-              showShortcuts ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" : "text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
-            }`}
-            title={t("palette.shortcutHelp")}
             data-testid="shortcuts-toggle"
+            className="rounded p-1 text-white/50 hover:bg-white/10 hover:text-[#00d4ff]"
+            onClick={() => setShowShortcuts((prev) => !prev)}
+            title={t("palette.shortcutHelp")}
           >
-            <Keyboard className="w-4 h-4" />
+            <Keyboard className="h-4 w-4" />
           </button>
           <button
+            className="rounded p-1 text-white/50 hover:bg-white/10 hover:text-white"
             onClick={onClose}
-            className="p-1 rounded-lg text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] transition-all"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
-        {/* Shortcuts help */}
-        {showShortcuts ? (
-          <div className="p-4 max-h-[50vh] overflow-y-auto" data-testid="shortcuts-panel">
-            <p className="text-[rgba(0,212,255,0.4)] mb-3" style={{ fontSize: "0.72rem" }}>
-              {t("palette.shortcutHelp")}
-            </p>
-            <div className="space-y-1.5">
+        {/* 快捷键面板 */}
+        {showShortcuts && (
+          <div data-testid="shortcuts-panel" className="border-b border-white/10 px-4 py-3">
+            <h3 className="mb-2 text-sm text-[#00d4ff]">{t("palette.shortcutHelp")}</h3>
+            <div className="grid grid-cols-2 gap-1">
               {SHORTCUT_LIST.map((s) => (
-                <div
-                  key={s.id}
-                  className="flex items-center justify-between p-2 rounded-lg bg-[rgba(0,40,80,0.08)]"
-                >
-                  <span className="text-[#c0dcf0]" style={{ fontSize: "0.75rem" }}>
-                    {s.description}
-                  </span>
-                  <kbd
-                    className="px-2 py-0.5 rounded bg-[rgba(0,40,80,0.3)] text-[rgba(0,212,255,0.6)] border border-[rgba(0,180,255,0.1)]"
-                    style={{ fontSize: "0.65rem", fontFamily: "'JetBrains Mono', monospace" }}
-                  >
+                <div key={s.id} className="flex items-center justify-between rounded px-2 py-1 text-xs text-white/60">
+                  <span>{s.description}</span>
+                  <kbd className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] text-[#00d4ff]">
                     {s.keys}
                   </kbd>
                 </div>
               ))}
             </div>
           </div>
-        ) : (
-          <div
-            className="max-h-[50vh] overflow-y-auto py-1"
-            style={{ scrollbarWidth: "thin", scrollbarColor: "rgba(0,180,255,0.15) transparent" }}
-            data-testid="palette-results"
-          >
-            {filteredItems.length > 0 ? (
-              filteredItems.map((item, i) => {
-                const Icon = iconMap[item.icon] ?? Activity;
-                const isSelected = i === selectedIndex;
-
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => executeItem(item)}
-                    onMouseEnter={() => setSelectedIndex(i)}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 text-left transition-all ${
-                      isSelected
-                        ? "bg-[rgba(0,212,255,0.08)]"
-                        : "hover:bg-[rgba(0,212,255,0.04)]"
-                    }`}
-                    data-testid={`palette-item-${item.id}`}
-                  >
-                    <Icon
-                      className="w-4 h-4 shrink-0"
-                      style={{ color: isSelected ? "#00d4ff" : "rgba(0,212,255,0.35)" }}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className={`truncate ${isSelected ? "text-[#e0f0ff]" : "text-[#c0dcf0]"}`} style={{ fontSize: "0.78rem" }}>
-                        {t(item.labelKey)}
-                      </p>
-                      <p className="text-[rgba(0,212,255,0.25)] truncate" style={{ fontSize: "0.62rem" }}>
-                        {t(item.descKey)}
-                      </p>
-                    </div>
-                    {item.shortcut && (
-                      <kbd
-                        className="px-1.5 py-0.5 rounded bg-[rgba(0,40,80,0.2)] text-[rgba(0,212,255,0.35)] shrink-0 hidden sm:block"
-                        style={{ fontSize: "0.58rem", fontFamily: "'JetBrains Mono', monospace" }}
-                      >
-                        {item.shortcut}
-                      </kbd>
-                    )}
-                    {isSelected && (
-                      <ArrowRight className="w-3 h-3 text-[#00d4ff] shrink-0" />
-                    )}
-                  </button>
-                );
-              })
-            ) : (
-              <div className="text-center py-8">
-                <p className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.78rem" }}>
-                  {t("palette.noResults")}
-                </p>
-              </div>
-            )}
-          </div>
         )}
 
-        {/* Footer hint */}
-        <div className="flex items-center gap-4 px-4 py-2 border-t border-[rgba(0,180,255,0.06)] text-[rgba(0,212,255,0.2)]" style={{ fontSize: "0.58rem" }}>
-          <span>↑↓ {t("palette.navigate")}</span>
-          <span>Enter {t("palette.enter")}</span>
-          <span>Esc {t("palette.escape")}</span>
-          <span className="ml-auto">⌘K {t("palette.open")}</span>
+        {/* 结果列表 */}
+        <div data-testid="palette-results" className="max-h-[50vh] overflow-y-auto p-2">
+          {filteredItems.length === 0 ? (
+            <div className="py-8 text-center text-sm text-white/40">
+              {t("palette.noResults")}
+            </div>
+          ) : (
+            filteredItems.map((item, idx) => {
+              const Icon = iconMap[item.icon] || Activity;
+              const isSelected = idx === selectedIndex;
+              return (
+                <button
+                  key={item.id}
+                  data-testid={`palette-item-${item.id}`}
+                  className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                    isSelected
+                      ? "bg-[#00d4ff]/15 text-[#00d4ff]"
+                      : "text-white/70 hover:bg-white/5 hover:text-white"
+                  }`}
+                  onClick={() => handleSelect(item)}
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                >
+                  <Icon className="h-4 w-4 shrink-0" />
+                  <div className="flex-1 truncate">
+                    <span className="text-sm">{t(item.labelKey)}</span>
+                    <span className="ml-2 text-xs text-white/30">{t(item.descKey)}</span>
+                  </div>
+                  {item.shortcut && (
+                    <kbd className="shrink-0 rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] text-white/40">
+                      {item.shortcut}
+                    </kbd>
+                  )}
+                  <ArrowRight className="h-3 w-3 shrink-0 text-white/20" />
+                </button>
+              );
+            })
+          )}
+        </div>
+
+        {/* 底部提示 */}
+        <div className="flex items-center justify-between border-t border-white/10 px-4 py-2 text-[10px] text-white/30">
+          <span>↑↓ {t("palette.navigate")} · Enter {t("palette.enter")} · Esc {t("palette.escape")}</span>
+          <span>{filteredItems.length} {t("palette.navigate")}</span>
         </div>
       </div>
-    </div>
+    </>
   );
 }

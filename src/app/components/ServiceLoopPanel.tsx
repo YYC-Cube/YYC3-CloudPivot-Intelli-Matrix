@@ -1,6 +1,6 @@
 /**
  * ServiceLoopPanel.tsx
- * ================
+ * =====================
  * 一站式服务闭环主面板 · 路由: /loop
  *
  * 8.1 监测 → 分析 → 决策 → 执行 → 验证 → 优化
@@ -9,17 +9,17 @@
  * 已迁移 i18n: 所有文本使用 t() 函数
  */
 
-import { useContext } from "react";
+import React, { useContext } from "react";
 import {
   RefreshCw, Loader2, Play, Square, Trash2, History,
   ToggleLeft, ToggleRight, Workflow,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import LoopStageCard from "./LoopStageCard";
-import DataFlowDiagram from "./DataFlowDiagram";
+import { GlassCard } from "./GlassCard";
+import { LoopStageCard } from "./LoopStageCard";
+import { DataFlowDiagram } from "./DataFlowDiagram";
 import { useServiceLoop } from "../hooks/useServiceLoop";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
 function formatDuration(ms: number): string {
   if (ms < 1000) {return `${ms}ms`;}
@@ -30,7 +30,7 @@ function formatTime(ts: number): string {
   return new Date(ts).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 }
 
-export default function ServiceLoopPanel() {
+export function ServiceLoopPanel() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -56,7 +56,7 @@ export default function ServiceLoopPanel() {
 
   return (
     <div className="space-y-4">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -111,7 +111,7 @@ export default function ServiceLoopPanel() {
         </div>
       </div>
 
-      {/* ====== Stats ====== */}
+      {/* ======== Stats ======== */}
       <div className={`grid gap-3 ${isMobile ? "grid-cols-2" : "grid-cols-4"}`}>
         <GlassCard className="p-3 flex flex-col items-center">
           <span className="text-[#e0f0ff]" style={{ fontSize: "1.1rem", fontFamily: "'Orbitron', monospace" }}>
@@ -139,7 +139,7 @@ export default function ServiceLoopPanel() {
         </GlassCard>
       </div>
 
-      {/* ====== Main Content ====== */}
+      {/* ======== Main Content ======== */}
       <div className={`grid gap-4 ${isMobile ? "grid-cols-1" : "grid-cols-2"}`}>
         <GlassCard className="p-4">
           <div className="flex items-center justify-between mb-3">
@@ -196,7 +196,7 @@ export default function ServiceLoopPanel() {
         </GlassCard>
       </div>
 
-      {/* ====== Run History ====== */}
+      {/* ======== Run History ======== */}
       <GlassCard className="p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">

@@ -1,6 +1,6 @@
 /**
  * db-queries.test.ts
- * ===========
+ * ===================
  * YYC³ 数据库查询层 - 单元测试
  *
  * 覆盖范围:
@@ -18,6 +18,12 @@ import {
   getNodesStatus,
   getActiveAgents,
 } from "../lib/db-queries";
+import type {
+  Model,
+  InferenceLog,
+  NodeStatusRecord,
+  Agent,
+} from "../types";
 
 describe("db-queries", () => {
   // ----------------------------------------------------------

@@ -1,3 +1,14 @@
+/**
+ * @file: GlassCard.tsx
+ * @description: GlassCard.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
 import React from "react";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -6,7 +17,7 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   glowColor?: string;
 }
 
-export default function GlassCard({ children, className = "", glowColor, onClick, style, ...rest }: GlassCardProps) {
+export function GlassCard({ children, className = "", glowColor, onClick, style, ...rest }: GlassCardProps) {
   return (
     <div
       onClick={onClick}

@@ -1,21 +1,41 @@
-import { useState } from "react";
+/**
+ * @file: SystemSettings.tsx
+ * @description: SystemSettings.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Settings, Server, Database, Shield, Bell, Cpu,
-  ChevronRight, Save, RotateCcw,
-  Monitor, Network, Key, Layers, Wifi,
-  Globe, Terminal, Code,
-  Download, Upload, Trash2, Plus, Edit2, Eye, EyeOff,
-  RefreshCw, Clock, AlertTriangle, Sliders
+  ChevronRight, Save, RotateCcw, Check,
+  Monitor, Network, Zap, Key, Layers, Wifi,
+  Globe, GitBranch, Terminal, Code, FileJson,
+  Download, Upload, Trash2, Plus, Edit2, Copy, Eye, EyeOff,
+  RefreshCw, HardDrive, Clock, AlertTriangle, Sliders,
+  Plug, Repeat, Timer, X,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import NetworkConfig from "./NetworkConfig";
-import YYC3Logo from "./YYC3Logo";
+import { GlassCard } from "./GlassCard";
+import { NetworkConfig } from "./NetworkConfig";
+import { YYC3Logo } from "./YYC3Logo";
 import { useI18n } from "../hooks/useI18n";
 import { toast } from "sonner";
+import {
+  getAPIConfig, setAPIConfig, resetAPIConfig as resetAPIConfigDefaults,
+  onAPIConfigChange, ENDPOINT_META,
+  type APIEndpoints,
+} from "../lib/api-config";
+import { useModelProvider } from "../hooks/useModelProvider";
+import { useSettingsStore } from "../hooks/useSettingsStore";
+import { deployedModelStore, type DeployedModel } from "../stores/dashboard-stores";
 
-// =============================================
+// ============================================================
 // Settings sections config
-// =============================================
+// ============================================================
 
 const settingsSections = [
   { id: "general", labelKey: "settings.general", icon: Settings },
@@ -32,9 +52,9 @@ const settingsSections = [
   { id: "advanced", labelKey: "settings.advanced", icon: Code },
 ];
 
-// =============================================
+// ============================================================
 // Toggle component
-// =============================================
+// ============================================================
 
 interface ToggleProps {
   enabled: boolean;
@@ -60,9 +80,9 @@ function Toggle({ enabled, onChange }: ToggleProps) {
   );
 }
 
-// =============================================
+// ============================================================
 // Editable field component
-// =============================================
+// ============================================================
 
 interface EditableFieldProps {
   label: string;
@@ -121,97 +141,462 @@ function EditableField({ label, description, value, onChange, type = "text", pla
   );
 }
 
-// =============================================
-// Main Component
-// =============================================
+// ============================================================
+// API Endpoint Config Sub-component
+// ============================================================
 
-export default function SystemSettings() {
+function APIEndpointConfig() {
+  const [apiConfig, setApiConfigState] = useState<APIEndpoints>(getAPIConfig());
+
+  // 监听跨标签页变更
+  useEffect(() => {
+    return onAPIConfigChange((config) => {
+      setApiConfigState(config);
+    });
+  }, []);
+
+  const updateField = useCallback((key: keyof APIEndpoints, value: string | boolean | number) => {
+    const patch: Partial<APIEndpoints> = {};
+    (patch as Record<string, unknown>)[key] = value;
+    const updated = setAPIConfig(patch);
+    setApiConfigState(updated);
+    toast.success(`已更新: ${key}`, {
+      style: {
+        background: "rgba(8, 25, 55, 0.95)",
+        border: "1px solid rgba(0, 255, 136, 0.3)",
+        color: "#e0f0ff",
+      },
+    });
+  }, []);
+
+  const handleReset = useCallback(() => {
+    const defaults = resetAPIConfigDefaults();
+    setApiConfigState(defaults);
+    toast.info("API 配置已重置为默认值");
+  }, []);
+
+  // Group ENDPOINT_META by group
+  const groups = ENDPOINT_META.reduce<Record<string, typeof ENDPOINT_META>>((acc, meta) => {
+    const g = meta.group;
+    if (!acc[g]) {acc[g] = [];}
+    acc[g].push(meta);
+    return acc;
+  }, {});
+
+  return (
+    <div className="p-4 rounded-xl bg-[rgba(0,20,40,0.4)] border border-[rgba(0,180,255,0.1)]">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Plug className="w-4 h-4 text-[#00d4ff]" />
+          <h4 className="text-[#e0f0ff]" style={{ fontSize: "0.9rem" }}>后端 API 端点配置</h4>
+        </div>
+        <button
+          onClick={handleReset}
+          className="flex items-center gap-1 px-2 py-1 rounded-lg text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all"
+          style={{ fontSize: "0.68rem" }}
+        >
+          <RotateCcw className="w-3 h-3" />
+          重置默认
+        </button>
+      </div>
+
+      <p className="text-[rgba(0,212,255,0.35)] mb-4" style={{ fontSize: "0.68rem" }}>
+        控制后端 API 连接参数。关闭「启用后端 API」时使用前端 Mock 数据，无需真实后端服务。
+      </p>
+
+      {Object.entries(groups).map(([groupName, metas]) => (
+        <div key={groupName} className="mb-4 last:mb-0">
+          <p className="text-[rgba(0,212,255,0.5)] mb-2 px-1" style={{ fontSize: "0.7rem" }}>
+            {groupName}
+          </p>
+          <div className="space-y-2">
+            {metas.map((meta) => {
+              const val = apiConfig[meta.key];
+
+              if (meta.type === "boolean") {
+                return (
+                  <div key={meta.key} className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.15)] transition-all">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>{meta.labelCn}</p>
+                      <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.64rem" }}>{meta.description}</p>
+                    </div>
+                    <Toggle enabled={!!val} onChange={(v) => updateField(meta.key, v)} />
+                  </div>
+                );
+              }
+
+              if (meta.type === "number") {
+                const numVal = Number(val) || 0;
+                const isRetries = meta.key === "maxRetries";
+
+                return (
+                  <div key={meta.key} className="p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.15)] transition-all">
+                    <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center gap-2">
+                        {isRetries ? <Repeat className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /> : <Timer className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />}
+                        <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>{meta.labelCn}</p>
+                      </div>
+                      <span className="text-[#00d4ff] font-mono" style={{ fontSize: "0.78rem" }}>{numVal}</span>
+                    </div>
+                    <p className="text-[rgba(0,212,255,0.35)] mb-2" style={{ fontSize: "0.64rem" }}>{meta.description}</p>
+
+                    {isRetries ? (
+                      /* maxRetries: 可视化滑块 0~5 */
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="range"
+                          min={0}
+                          max={5}
+                          step={1}
+                          value={numVal}
+                          onChange={(e) => updateField(meta.key, parseInt(e.target.value))}
+                          className="flex-1 h-1.5 rounded-full appearance-none cursor-pointer"
+                          style={{
+                            background: `linear-gradient(to right, rgba(0,212,255,0.6) ${(numVal / 5) * 100}%, rgba(0,40,80,0.4) ${(numVal / 5) * 100}%)`,
+                            accentColor: "#00d4ff",
+                          }}
+                        />
+                        <div className="flex gap-1">
+                          {[0, 1, 2, 3, 4, 5].map(n => (
+                            <button
+                              key={n}
+                              onClick={() => updateField(meta.key, n)}
+                              className={`w-6 h-6 rounded-md flex items-center justify-center transition-all ${
+                                numVal === n
+                                  ? "bg-[rgba(0,212,255,0.2)] border border-[rgba(0,212,255,0.5)] text-[#00d4ff]"
+                                  : "bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
+                              }`}
+                              style={{ fontSize: "0.65rem" }}
+                            >
+                              {n}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      /* timeout: 数字输入框 */
+                      <input
+                        type="number"
+                        value={numVal}
+                        onChange={(e) => updateField(meta.key, parseInt(e.target.value) || 0)}
+                        min={1000}
+                        max={120000}
+                        step={1000}
+                        className="w-full px-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#00d4ff] font-mono focus:outline-none focus:border-[rgba(0,212,255,0.4)] focus:shadow-[0_0_10px_rgba(0,180,255,0.1)]"
+                        style={{ fontSize: "0.78rem" }}
+                      />
+                    )}
+
+                    {/* maxRetries 额外提示 */}
+                    {isRetries && (
+                      <div className="mt-2 flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[rgba(0,212,255,0.04)] border border-[rgba(0,212,255,0.06)]">
+                        <Repeat className="w-3 h-3 text-[rgba(0,212,255,0.3)] shrink-0" />
+                        <span className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.62rem" }}>
+                          {numVal === 0
+                            ? "不重试，请求失败立即返回"
+                            : `失败后最多重试 ${numVal} 次 (指数退避: ${[500, 1000, 2000, 4000, 8000].slice(0, numVal).join("ms → ")}ms)`}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              // URL type
+              return (
+                <div key={meta.key} className="p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.15)] transition-all">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Globe className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />
+                    <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>{meta.labelCn}</p>
+                  </div>
+                  <p className="text-[rgba(0,212,255,0.35)] mb-2" style={{ fontSize: "0.64rem" }}>{meta.description}</p>
+                  <input
+                    type="text"
+                    value={String(val)}
+                    onChange={(e) => updateField(meta.key, e.target.value)}
+                    placeholder={meta.placeholder}
+                    className="w-full px-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#00d4ff] font-mono focus:outline-none focus:border-[rgba(0,212,255,0.4)] focus:shadow-[0_0_10px_rgba(0,180,255,0.1)]"
+                    style={{ fontSize: "0.78rem" }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* 当前配置状态概要 */}
+      <div className="mt-4 p-3 rounded-lg bg-[rgba(0,20,40,0.6)] border border-[rgba(0,180,255,0.06)]">
+        <p className="text-[rgba(0,212,255,0.3)] mb-2" style={{ fontSize: "0.62rem" }}>当前配置概要</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          <div className="text-center">
+            <p className={`font-mono ${apiConfig.enableBackend ? "text-[#00ff88]" : "text-[rgba(255,100,100,0.6)]"}`} style={{ fontSize: "0.75rem" }}>
+              {apiConfig.enableBackend ? "已启用" : "Mock 模式"}
+            </p>
+            <p className="text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>后端 API</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[#00d4ff] font-mono" style={{ fontSize: "0.75rem" }}>{apiConfig.timeout / 1000}s</p>
+            <p className="text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>超时</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[#00d4ff] font-mono" style={{ fontSize: "0.75rem" }}>{apiConfig.maxRetries}x</p>
+            <p className="text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>最大重试</p>
+          </div>
+          <div className="text-center">
+            <p className="text-[#00d4ff] font-mono truncate" style={{ fontSize: "0.75rem" }}>{apiConfig.dbBase}</p>
+            <p className="text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>数据库 API</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Model Management Section (CRUD)
+// ============================================================
+
+const MODEL_STATUS_OPTIONS: DeployedModel["status"][] = ["deployed", "deploying", "standby", "error"];
+const MODEL_STATUS_LABELS: Record<DeployedModel["status"], string> = {
+  deployed: "已部署", deploying: "部署中", standby: "待命", error: "异常",
+};
+
+function ModelManagementSection({ settings, toggleSetting }: { settings: any; toggleSetting: (key: string) => void }) {
+  const [models, setModels] = useState<DeployedModel[]>(deployedModelStore.getAll());
+  const [editModel, setEditModel] = useState<DeployedModel | null>(null);
+  const [isAdding, setIsAdding] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [editConfirm, setEditConfirm] = useState<string | null>(null);
+
+  // form state
+  const [fName, setFName] = useState("");
+  const [fVersion, setFVersion] = useState("");
+  const [fSize, setFSize] = useState("");
+  const [fStatus, setFStatus] = useState<DeployedModel["status"]>("standby");
+  const [fGpu, setFGpu] = useState("");
+
+  const refresh = () => setModels(deployedModelStore.getAll());
+
+  const openAdd = () => {
+    setEditModel(null);
+    setFName(""); setFVersion("v1.0"); setFSize(""); setFStatus("standby"); setFGpu("-");
+    setIsAdding(true);
+  };
+
+  const openEdit = (m: DeployedModel) => {
+    setIsAdding(false);
+    setEditModel(m);
+    setFName(m.name); setFVersion(m.version); setFSize(m.size); setFStatus(m.status); setFGpu(m.gpu);
+  };
+
+  const closeForm = () => { setEditModel(null); setIsAdding(false); };
+
+  const handleSave = () => {
+    if (!fName.trim()) { toast.error("模型名称不能为空"); return; }
+    if (isAdding) {
+      deployedModelStore.add({ name: fName.trim(), version: fVersion.trim(), size: fSize.trim(), status: fStatus, gpu: fGpu.trim() || "-" });
+      toast.success(`模型 ${fName} 已添加`, { style: { background: "rgba(8,25,55,0.95)", border: "1px solid rgba(0,255,136,0.3)", color: "#e0f0ff" } });
+    } else if (editModel) {
+      deployedModelStore.update(editModel.id, { name: fName.trim(), version: fVersion.trim(), size: fSize.trim(), status: fStatus, gpu: fGpu.trim() || "-" });
+      toast.success(`模型 ${fName} 已更新`, { style: { background: "rgba(8,25,55,0.95)", border: "1px solid rgba(0,255,136,0.3)", color: "#e0f0ff" } });
+    }
+    closeForm();
+    refresh();
+  };
+
+  const handleDelete = (id: string) => {
+    const m = deployedModelStore.getById(id);
+    deployedModelStore.remove(id);
+    toast.success(`模型 ${m?.name || ""} 已删除`, { style: { background: "rgba(8,25,55,0.95)", border: "1px solid rgba(0,255,136,0.3)", color: "#e0f0ff" } });
+    setDeleteConfirm(null);
+    refresh();
+  };
+
+  const handleReset = () => {
+    deployedModelStore.reset();
+    refresh();
+    toast.info("模型列表已重置为默认值");
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.95rem" }}>模型管理</h3>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1 px-2 py-1 rounded-lg text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all"
+            style={{ fontSize: "0.68rem" }}
+          >
+            <RotateCcw className="w-3 h-3" />
+            重置
+          </button>
+          <button
+            onClick={openAdd}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.25)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.2)] transition-all"
+            style={{ fontSize: "0.72rem" }}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            添加模型
+          </button>
+        </div>
+      </div>
+
+      {/* Add/Edit Form */}
+      {(isAdding || editModel) && (
+        <div className="p-4 rounded-xl bg-[rgba(0,20,40,0.5)] border border-[rgba(0,212,255,0.2)] space-y-3">
+          <h4 className="text-[#e0f0ff]" style={{ fontSize: "0.85rem" }}>{isAdding ? "添加新模型" : `编辑: ${editModel?.name}`}</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+              <label className="text-[rgba(0,212,255,0.5)] block mb-1" style={{ fontSize: "0.7rem" }}>模型名称 *</label>
+              <input value={fName} onChange={e => setFName(e.target.value)} placeholder="例: LLaMA-70B"
+                className="w-full px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] focus:outline-none focus:border-[rgba(0,212,255,0.4)]"
+                style={{ fontSize: "0.8rem" }} />
+            </div>
+            <div>
+              <label className="text-[rgba(0,212,255,0.5)] block mb-1" style={{ fontSize: "0.7rem" }}>版本</label>
+              <input value={fVersion} onChange={e => setFVersion(e.target.value)} placeholder="v1.0"
+                className="w-full px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] focus:outline-none focus:border-[rgba(0,212,255,0.4)]"
+                style={{ fontSize: "0.8rem" }} />
+            </div>
+            <div>
+              <label className="text-[rgba(0,212,255,0.5)] block mb-1" style={{ fontSize: "0.7rem" }}>模型大小</label>
+              <input value={fSize} onChange={e => setFSize(e.target.value)} placeholder="140GB"
+                className="w-full px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] focus:outline-none focus:border-[rgba(0,212,255,0.4)]"
+                style={{ fontSize: "0.8rem" }} />
+            </div>
+            <div>
+              <label className="text-[rgba(0,212,255,0.5)] block mb-1" style={{ fontSize: "0.7rem" }}>GPU 节点</label>
+              <input value={fGpu} onChange={e => setFGpu(e.target.value)} placeholder="GPU-A100-01"
+                className="w-full px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] focus:outline-none focus:border-[rgba(0,212,255,0.4)]"
+                style={{ fontSize: "0.8rem" }} />
+            </div>
+            <div>
+              <label className="text-[rgba(0,212,255,0.5)] block mb-1" style={{ fontSize: "0.7rem" }}>状态</label>
+              <select value={fStatus} onChange={e => setFStatus(e.target.value as DeployedModel["status"])}
+                className="w-full px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#00d4ff] focus:outline-none"
+                style={{ fontSize: "0.8rem" }}>
+                {MODEL_STATUS_OPTIONS.map(s => <option key={s} value={s} style={{ background: "#0a1830" }}>{MODEL_STATUS_LABELS[s]}</option>)}
+              </select>
+            </div>
+          </div>
+          <div className="flex gap-2 pt-1">
+            <button onClick={closeForm}
+              className="px-4 py-2 rounded-lg bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all"
+              style={{ fontSize: "0.78rem" }}>取消</button>
+            <button onClick={handleSave}
+              className="px-4 py-2 rounded-lg bg-[rgba(0,140,200,0.5)] border border-[rgba(0,180,255,0.3)] text-white hover:bg-[rgba(0,160,220,0.6)] transition-all flex items-center gap-1.5"
+              style={{ fontSize: "0.78rem" }}>
+              <Save className="w-3.5 h-3.5" />
+              {isAdding ? "创建" : "保存"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Model List */}
+      <div className="space-y-3">
+        {models.map((model) => (
+          <div key={model.id} className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.2)] transition-all">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-[rgba(0,212,255,0.08)]">
+                <Layers className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              <div>
+                <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>{model.name}</p>
+                <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.65rem" }}>{model.version} · {model.size} · {model.gpu}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`px-2 py-0.5 rounded ${
+                model.status === "deployed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
+                model.status === "deploying" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
+                model.status === "error" ? "bg-[rgba(255,51,102,0.1)] text-[#ff3366]" :
+                "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]"
+              }`} style={{ fontSize: "0.65rem" }}>
+                {MODEL_STATUS_LABELS[model.status]}
+              </span>
+              {editConfirm === model.id ? (
+                <div className="flex items-center gap-1">
+                  <span className="text-[rgba(0,212,255,0.5)] mr-0.5" style={{ fontSize: "0.6rem" }}>确认编辑?</span>
+                  <button onClick={() => { openEdit(model); setEditConfirm(null); }} className="p-1 rounded bg-[rgba(0,212,255,0.2)] hover:bg-[rgba(0,212,255,0.3)] transition-all" title="确认编辑">
+                    <Check className="w-3.5 h-3.5 text-[#00d4ff]" />
+                  </button>
+                  <button onClick={() => setEditConfirm(null)} className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all" title="取消">
+                    <X className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)]" />
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => { setEditConfirm(model.id); setDeleteConfirm(null); }} className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all" title="编辑">
+                  <Edit2 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]" />
+                </button>
+              )}
+              {deleteConfirm === model.id ? (
+                <div className="flex items-center gap-1">
+                  <button onClick={() => handleDelete(model.id)} className="p-1 rounded bg-[rgba(255,51,102,0.2)] hover:bg-[rgba(255,51,102,0.3)] transition-all" title="确认删除">
+                    <Check className="w-3.5 h-3.5 text-[#ff3366]" />
+                  </button>
+                  <button onClick={() => setDeleteConfirm(null)} className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all" title="取消">
+                    <X className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)]" />
+                  </button>
+                </div>
+              ) : (
+                <button onClick={() => setDeleteConfirm(model.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)] transition-all" title="删除">
+                  <Trash2 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)]" />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+        {models.length === 0 && (
+          <div className="text-center py-8 text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.8rem" }}>
+            暂无模型，点击"添加模型"创建
+          </div>
+        )}
+      </div>
+
+      <div className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
+        <div>
+          <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>推理缓存 (KV-Cache)</p>
+          <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.68rem" }}>启用 KV-Cache 加速推理</p>
+        </div>
+        <Toggle enabled={(settings as any).cacheEnabled} onChange={() => toggleSetting("cacheEnabled" as any)} />
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Main Component
+// ============================================================
+
+export function SystemSettings() {
   const { t } = useI18n();
+  const { availableModels } = useModelProvider();
   const [activeSection, setActiveSection] = useState("general");
   const [hasChanges, setHasChanges] = useState(false);
   const [saving, setSaving] = useState(false);
   const [networkConfigOpen, setNetworkConfigOpen] = useState(false);
 
-  // Toggle settings
-  const [settings, setSettings] = useState({
-    autoScale: true,
-    healthCheck: true,
-    alertEmail: true,
-    alertSlack: false,
-    darkMode: true,
-    autoBackup: true,
-    mfa: true,
-    auditLog: true,
-    rateLimiting: true,
-    cacheEnabled: true,
-    wsAutoReconnect: true,
-    wsHeartbeat: true,
-    aiStreamMode: true,
-    aiContextMemory: true,
-    debugMode: false,
-    performanceLog: true,
-    autoUpdate: false,
-    dataCompression: true,
-    corsEnabled: true,
-  });
-
-  // Editable settings values
-  const [values, setValues] = useState({
-    systemName: "YYC³ CloudPivot Intelli-Matrix v3.2",
-    clusterId: "CN-EAST-PROD-01",
-    refreshInterval: "5",
-    language: "zh-CN",
-    timezone: "Asia/Shanghai",
-    maxNodes: "16",
-    loadBalanceStrategy: "轮询 (Round Robin)",
-    healthCheckInterval: "30",
-    scaleUpThreshold: "85",
-    scaleDownThreshold: "30",
-    wsEndpoint: "ws://localhost:3113/ws",
-    wsReconnectInterval: "5000",
-    wsMaxReconnect: "10",
-    wsHeartbeatInterval: "30000",
-    wsThrottleMs: "100",
-    aiApiKey: "",
-    aiBaseUrl: "https://api.openai.com/v1",
-    aiModel: "gpt-4o",
-    aiTemperature: "0.7",
-    aiTopP: "0.9",
-    aiMaxTokens: "2048",
-    aiTimeout: "30000",
-    dbHost: "localhost",
-    dbPort: "5433",
-    dbName: "cpim_matrix",
-    dbUser: "yyc_admin",
-    dbPassword: "••••••••",
-    dbPoolSize: "20",
-    sessionTimeout: "30",
-    ipWhitelist: "192.168.1.0/24\n10.0.0.0/16\n172.16.0.0/12",
-    alertGpuThreshold: "90",
-    alertTempThreshold: "80",
-    alertEmail: "admin@cloudpivot.ai",
-    webhookUrl: "",
-    backupSchedule: "0 2 * * *",
-    logLevel: "info",
-    logRetention: "30",
-    maxConcurrency: "100",
-    cacheSize: "512",
-    cacheTTL: "3600",
-  });
+  // 统一持久化设置 (localStorage + BroadcastChannel)
+  const settingsStore = useSettingsStore();
+  const { settings, values, toggleSetting: storeToggle, updateValue: storeUpdate, resetSettings, exportSettings } = settingsStore;
 
   const updateValue = (key: string, val: string) => {
-    setValues(prev => ({ ...prev, [key]: val }));
+    storeUpdate(key as any, val);
     setHasChanges(true);
   };
 
-  const toggleSetting = (key: keyof typeof settings) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+  const toggleSetting = (key: string) => {
+    storeToggle(key as any);
     setHasChanges(true);
   };
 
   const handleSave = async () => {
     setSaving(true);
-    await new Promise(r => setTimeout(r, 800));
+    // 数据已自动持久化到 localStorage, 此处仅为 UI 反馈
+    await new Promise(r => setTimeout(r, 500));
     setSaving(false);
     setHasChanges(false);
     toast.success(t("settings.saved"), {
@@ -225,6 +610,7 @@ export default function SystemSettings() {
   };
 
   const handleReset = () => {
+    resetSettings();
     setHasChanges(false);
     toast.info(t("settings.resetDone"), {
       style: {
@@ -236,7 +622,8 @@ export default function SystemSettings() {
   };
 
   const handleExport = () => {
-    const blob = new Blob([JSON.stringify({ settings, values }, null, 2)], { type: "application/json" });
+    const json = exportSettings();
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -246,9 +633,9 @@ export default function SystemSettings() {
     toast.success(t("settings.exported"));
   };
 
-  // =============================================
+  // ============================================================
   // Render sections
-  // =============================================
+  // ============================================================
 
   const renderSection = () => {
     switch (activeSection) {
@@ -464,60 +851,7 @@ export default function SystemSettings() {
         );
 
       case "model":
-        return (
-          <div className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.95rem" }}>模型管理</h3>
-              <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.25)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.2)] transition-all" style={{ fontSize: "0.72rem" }}>
-                <Plus className="w-3.5 h-3.5" />
-                添加模型
-              </button>
-            </div>
-            <div className="space-y-3">
-              {[
-                { name: "LLaMA-70B", ver: "v2.1", size: "140GB", status: "deployed", gpu: "GPU-A100-01" },
-                { name: "Qwen-72B", ver: "v1.5", size: "145GB", status: "deployed", gpu: "GPU-A100-02" },
-                { name: "DeepSeek-V3", ver: "v3.0", size: "180GB", status: "deploying", gpu: "GPU-A100-03" },
-                { name: "GLM-4", ver: "v4.0", size: "92GB", status: "deployed", gpu: "GPU-H100-01" },
-                { name: "Mixtral-8x7B", ver: "v0.1", size: "95GB", status: "standby", gpu: "-" },
-              ].map((model) => (
-                <div key={model.name} className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.2)] transition-all">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-[rgba(0,212,255,0.08)]">
-                      <Layers className="w-4 h-4 text-[#00d4ff]" />
-                    </div>
-                    <div>
-                      <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>{model.name}</p>
-                      <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.65rem" }}>{model.ver} · {model.size} · {model.gpu}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2 py-0.5 rounded ${
-                      model.status === "deployed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
-                      model.status === "deploying" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
-                      "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]"
-                    }`} style={{ fontSize: "0.65rem" }}>
-                      {model.status === "deployed" ? "已部署" : model.status === "deploying" ? "部署中" : "待命"}
-                    </span>
-                    <button className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)]">
-                      <Edit2 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)]" />
-                    </button>
-                    <button className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]">
-                      <Trash2 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.3)]" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
-              <div>
-                <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>推理缓存 (KV-Cache)</p>
-                <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.68rem" }}>启用 KV-Cache 加速推理</p>
-              </div>
-              <Toggle enabled={settings.cacheEnabled} onChange={() => toggleSetting("cacheEnabled")} />
-            </div>
-          </div>
-        );
+        return <ModelManagementSection settings={settings} toggleSetting={toggleSetting} />;
 
       case "storage":
         return (
@@ -606,6 +940,12 @@ export default function SystemSettings() {
               <Sliders className="w-4 h-4 text-[#aa55ff]" />
               AI / 大模型配置
             </h3>
+            <div className="p-2.5 rounded-xl bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.1)] mb-2">
+              <p className="text-[rgba(0,255,136,0.5)] flex items-center gap-1.5" style={{ fontSize: "0.65rem" }}>
+                <Zap className="w-3 h-3" />
+                以下配置与 AI 智能助理（悬浮窗）实时双向同步，修改即时生效
+              </p>
+            </div>
             <div className="space-y-3">
               <EditableField label="OpenAI API Key" value={values.aiApiKey} onChange={v => updateValue("aiApiKey", v)} type="password" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx" description="留空使用本地模拟模式" />
               <EditableField label="API Base URL" value={values.aiBaseUrl} onChange={v => updateValue("aiBaseUrl", v)} type="url" mono description="兼容 OpenAI 协议的 API 端点" />
@@ -616,15 +956,18 @@ export default function SystemSettings() {
                 <select
                   value={values.aiModel}
                   onChange={e => updateValue("aiModel", e.target.value)}
-                  className="px-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#00d4ff] focus:outline-none"
+                  className="px-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#00d4ff] focus:outline-none max-w-[220px]"
                   style={{ fontSize: "0.75rem" }}
                 >
-                  <option value="gpt-4o">GPT-4o</option>
-                  <option value="gpt-4o-mini">GPT-4o Mini</option>
-                  <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
-                  <option value="local-llama-70b">本地 LLaMA-70B</option>
-                  <option value="local-qwen-72b">本地 Qwen-72B</option>
-                  <option value="local-deepseek-v3">本地 DeepSeek-V3</option>
+                  {availableModels.length > 0 ? (
+                    availableModels.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.isLocal ? "🟢 " : ""}{m.name}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">暂无可用模型</option>
+                  )}
                 </select>
               </div>
               <EditableField label="温度 (Temperature)" value={values.aiTemperature} onChange={v => updateValue("aiTemperature", v)} type="number" description="0=精确，2=创意" />
@@ -812,7 +1155,7 @@ export default function SystemSettings() {
                   <span className="text-[#ff6600] w-12 text-right" style={{ fontSize: "0.8rem" }}>{values.alertTempThreshold}°C</span>
                 </div>
               </div>
-              <EditableField label="通知邮箱" value={values.alertEmail} onChange={v => updateValue("alertEmail", v)} type="email" />
+              <EditableField label="通知邮箱" value={values.alertEmailAddr} onChange={v => updateValue("alertEmailAddr", v)} type="email" />
               <EditableField label="Webhook URL" value={values.webhookUrl} onChange={v => updateValue("webhookUrl", v)} type="url" placeholder="https://hooks.slack.com/..." description="Slack / 飞书 / 钉钉 Webhook 地址" />
             </div>
           </div>
@@ -854,6 +1197,10 @@ export default function SystemSettings() {
               <Code className="w-4 h-4 text-[#ff6600]" />
               高级设置
             </h3>
+
+            {/* API 端点配置 */}
+            <APIEndpointConfig />
+
             <div className="space-y-3">
               <div className="flex items-center justify-between p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
                 <div>

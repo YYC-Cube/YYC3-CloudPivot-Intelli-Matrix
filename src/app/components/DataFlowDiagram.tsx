@@ -1,18 +1,20 @@
 /**
  * DataFlowDiagram.tsx
- * ================
+ * =====================
  * 数据流向可视化组件
  *
  * 展示: 本地设备 ↔ 本地存储 ↔ Dashboard ↔ 终端集成
  * 连线带动画、带宽标注
  */
 
+import React from "react";
 import {
   Server, Database, Monitor, Terminal,
-  ArrowRight,
+  ArrowRight, ArrowLeftRight,
 } from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import type { DataFlowEdge } from "../types";
-import type { DataFlowNode } from "../hooks/useServiceLoop";
+import type { DataFlowNode } from "../types";
 
 const nodeIcon: Record<string, React.ElementType> = {
   device: Server,
@@ -27,10 +29,10 @@ interface DataFlowDiagramProps {
   isMobile?: boolean;
 }
 
-export default function DataFlowDiagram({ nodes, edges, isMobile }: DataFlowDiagramProps) {
+export function DataFlowDiagram({ nodes, edges, isMobile }: DataFlowDiagramProps) {
   return (
     <div data-testid="data-flow-diagram">
-      {/* ====== Nodes Grid ====== */}
+      {/* ======== Nodes Grid ======== */}
       <div className={`grid gap-3 mb-4 ${isMobile ? "grid-cols-2" : "grid-cols-4"}`}>
         {nodes.map((node) => {
           const Icon = nodeIcon[node.type] ?? Server;
@@ -65,7 +67,7 @@ export default function DataFlowDiagram({ nodes, edges, isMobile }: DataFlowDiag
         })}
       </div>
 
-      {/* ====== Edges List ====== */}
+      {/* ======== Edges List ======== */}
       <div className="space-y-1.5" data-testid="flow-edges">
         {edges.map((edge, i) => {
           const fromNode = nodes.find((n) => n.type === edge.from);

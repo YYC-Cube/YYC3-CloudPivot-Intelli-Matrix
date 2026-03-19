@@ -1,0 +1,145 @@
+{
+  "name": "@yyc3/cloudpivot-intelli-matrix-electron",
+  "version": "0.0.1",
+  "description": "YYC³ CloudPivot Intelli-Matrix Desktop Application",
+  "author": "YanYuCloudCube Team <admin@0379.email>",
+  "private": true,
+  "license": "MIT",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "build:electron": "tsc && electron-builder",
+    "build:mac": "tsc && electron-builder --mac",
+    "build:win": "tsc && electron-builder --win",
+    "build:linux": "tsc && electron-builder --linux",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:3218 && electron .\"",
+    "electron:build": "tsc && electron-builder -c.extraMetadata.main=dist-electron/main.js",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist dist-electron node_modules/.vite .vite"
+  },
+  "dependencies": {
+    "@yyc3/cloudpivot-intelli-matrix": "file:..",
+    "electron": "^28.0.0",
+    "electron-updater": "^6.1.0",
+    "open": "^10.0.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-router": "7.13.1",
+    "react-router-dom": "7.13.0"
+  },
+  "devDependencies": {
+    "@electron/notarize": "^2.3.0",
+    "@electron/rebuild": "^3.0.0",
+    "@types/electron": "^1.6.10",
+    "@types/node": "^20.11.0",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "19.0.1",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "concurrently": "^8.2.0",
+    "electron-builder": "^24.9.0",
+    "electron-is-dev": "^2.0.0",
+    "electron-log": "^5.0.0",
+    "electron-store": "^8.1.0",
+    "typescript": "^5.3.3",
+    "vite": "7.3.1",
+    "vite-plugin-electron": "^0.28.0",
+    "vite-plugin-electron-renderer": "^0.14.0",
+    "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "com.yyc3.cloudpivot.intelli-matrix",
+    "productName": "YYC³ CloudPivot",
+    "directories": {
+      "output": "dist-electron",
+      "buildResources": "resources"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "public",
+        "to": "resources",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["arm64", "x64"]
+        }
+      ],
+      "icon": "public/icons/icon-512.png",
+      "artifactName": "${productName}-${version}-mac-${arch}.${ext}",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "resources/entitlements.mac.plist",
+      "entitlementsInherit": "resources/entitlements.mac.plist",
+      "extendInfo": {
+        "NSMainNibFile": "MainMenu",
+        "NSHighResolutionCapable": "true",
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": "true"
+        }
+      }
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "public/icons/icon-512.png",
+      "artifactName": "${productName}-${version}-win-${arch}.${ext}",
+      "signingHashAlgorithms": ["sha256"],
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        },
+        {
+          "target": "deb",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "public/icons/icon-512.png",
+      "artifactName": "${productName}-${version}-linux-${arch}.${ext}",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "YYC³ CloudPivot",
+      "license": "LICENSE",
+      "installerIcon": "public/icons/icon-512.png",
+      "uninstallerIcon": "public/icons/icon-512.png",
+      "installerHeader": "public/icons/installer-header.png",
+      "installerHeaderIcon": "public/icons/installer-header-icon.ico",
+      "deleteAppDataOnUninstall": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "YanYuCloudCube",
+      "repo": "CloudPivot-Intelli-Matrix",
+      "private": false
+    }
+  },
+  "electronBuilder": {
+    "config": "electron-builder.json"
+  }
+}

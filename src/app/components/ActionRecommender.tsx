@@ -1,11 +1,12 @@
 /**
  * ActionRecommender.tsx
- * =================
+ * ======================
  * 操作推荐引擎 · 展示 AI 推荐操作列表
  */
 
+import React from "react";
 import {
-  CheckCircle, Zap, Bot, ArrowRight,
+  CheckCircle, XCircle, Zap, Bot, ArrowRight,
   Shield, Loader2,
 } from "lucide-react";
 import type { AIRecommendation } from "../types";
@@ -23,7 +24,7 @@ interface ActionRecommenderProps {
   isApplying?: string | null;
 }
 
-export default function ActionRecommender({
+export function ActionRecommender({
   recommendations, onApply, onDismiss, isApplying,
 }: ActionRecommenderProps) {
   const pending = recommendations.filter((r) => !r.applied);

@@ -24,6 +24,7 @@ import type {
   SDKCapability,
   SDKProviderCapabilities,
 } from "../types";
+import { getOllamaChatUrl, getOllamaUrl } from "../lib/ollama-url";
 
 // ============================================================
 // 常量
@@ -57,7 +58,7 @@ function loadSessions(): ChatSession[] {
 }
 
 function saveSessions(sessions: ChatSession[]) {
-  try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch { /* ignore storage errors */ }
+  try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions)); } catch {}
 }
 
 function loadStats(): SDKUsageStats {
@@ -68,7 +69,7 @@ function loadStats(): SDKUsageStats {
 }
 
 function saveStats(stats: SDKUsageStats) {
-  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch { /* ignore storage errors */ }
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch {}
 }
 
 function defaultStats(): SDKUsageStats {
@@ -103,16 +104,43 @@ function buildHeaders(model: ConfiguredModel): Record<string, string> {
   return headers;
 }
 
-/** 构建 chat endpoint URL */
+/** 构建 chat endpoint URL (支持 CORS 代理) */
 function buildChatUrl(model: ConfiguredModel): string {
-  const base = model.baseUrl.replace(/\/$/, "");
-
+  // Ollama: 优先使用同源代理 (零 CORS)
   if (model.providerId === "ollama") {
-    return `${base}/api/chat`;
+    return getOllamaChatUrl();
   }
 
+  const base = model.baseUrl.replace(/\/$/, "");
   // Z.ai / OpenAI / Kimi / DeepSeek / 火山引擎 都用 OpenAI-compatible 端点
-  return `${base}/chat/completions`;
+  const endpoint = `${base}/chat/completions`;
+
+  // 如果配置了 CORS 代理, 将目标 URL 通过代理转发
+  if (model.proxyUrl) {
+    const proxy = model.proxyUrl.replace(/\/$/, "");
+    return `${proxy}/${endpoint}`;
+  }
+
+  return endpoint;
+}
+
+/** 构建 test endpoint URL (支持 CORS 代理) */
+function buildTestUrl(model: ConfiguredModel, path: string): string {
+  // Ollama: 优先使用同源代理
+  if (model.providerId === "ollama") {
+    const subPath = path.replace(/^\/api\//, "");
+    return getOllamaUrl(subPath);
+  }
+
+  const base = model.baseUrl.replace(/\/$/, "");
+  const endpoint = `${base}${path}`;
+
+  if (model.proxyUrl) {
+    const proxy = model.proxyUrl.replace(/\/$/, "");
+    return `${proxy}/${endpoint}`;
+  }
+
+  return endpoint;
 }
 
 /** 构建请求 body */
@@ -219,25 +247,6 @@ export function useBigModelSDK() {
     return getCapabilities(providerId).includes(cap);
   }, [getCapabilities]);
 
-  // ========== 统计更新 ==========
-
-  const updateStats = useCallback((response: SDKChatResponse) => {
-    setUsageStats((prev) => {
-      const totalReqs = prev.totalRequests + 1;
-      const newAvg = ((prev.avgLatencyMs * prev.totalRequests) + response.latencyMs) / totalReqs;
-      const next: SDKUsageStats = {
-        totalRequests: totalReqs,
-        totalTokensIn: prev.totalTokensIn + response.usage.promptTokens,
-        totalTokensOut: prev.totalTokensOut + response.usage.completionTokens,
-        avgLatencyMs: Math.round(newAvg),
-        lastRequestAt: Date.now(),
-        errorCount: prev.errorCount,
-      };
-      saveStats(next);
-      return next;
-    });
-  }, []);
-
   // ========== 核心: 发送消息 (同步) ==========
 
   const sendMessage = useCallback(async (
@@ -249,7 +258,7 @@ export function useBigModelSDK() {
     setConnectionStatus("connecting");
 
     const isMock = !configuredModel.apiKey && configuredModel.providerId !== "ollama";
-    const targetSessionId = sessionId ?? activeSessionId ?? "";
+    const targetSessionId = sessionId || activeSessionId;
 
     // 创建 user message
     const userMsg: ChatMessage = {
@@ -378,10 +387,11 @@ export function useBigModelSDK() {
       updateStats(response);
       setConnectionStatus("connected");
       return response;
-    } catch (err: unknown) {
+    } catch (err: any) {
       const latency = Date.now() - start;
       setConnectionStatus("error");
-      setError(err instanceof Error ? err.message : String(err));
+      const friendly = friendlyError(err, configuredModel);
+      setError(friendly);
 
       setUsageStats((prev) => {
         const next = { ...prev, errorCount: prev.errorCount + 1 };
@@ -393,7 +403,7 @@ export function useBigModelSDK() {
       const errorMsg: ChatMessage = {
         id: genId(),
         role: "assistant",
-        content: `[ERROR] ${err instanceof Error ? err.message : String(err)}`,
+        content: friendly,
         timestamp: Date.now(),
         model: configuredModel.model,
         provider: configuredModel.providerId,
@@ -403,13 +413,13 @@ export function useBigModelSDK() {
       return {
         id: genId(),
         model: configuredModel.model,
-        content: `[ERROR] ${err instanceof Error ? err.message : String(err)}`,
+        content: friendly,
         finishReason: "error",
         usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
         latencyMs: latency,
       };
     }
-  }, [activeSessionId, sessions, updateStats]);
+  }, [activeSessionId, sessions]);
 
   // ========== 核心: 流式发送 ==========
 
@@ -425,7 +435,7 @@ export function useBigModelSDK() {
     setConnectionStatus("connecting");
 
     const isMock = !configuredModel.apiKey && configuredModel.providerId !== "ollama";
-    const targetSessionId = sessionId ?? activeSessionId ?? "";
+    const targetSessionId = sessionId || activeSessionId;
 
     const userMsg: ChatMessage = {
       id: genId(),
@@ -523,7 +533,7 @@ export function useBigModelSDK() {
       let buffer = "";
       let fullContent = "";
 
-      for (;;) {
+      while (true) {
         const { done, value } = await reader.read();
         if (done) {break;}
 
@@ -575,9 +585,10 @@ export function useBigModelSDK() {
       setStreaming(false);
       setStreamingContent("");
       return response;
-    } catch (err: unknown) {
+    } catch (err: any) {
       setConnectionStatus("error");
-      setError(err instanceof Error ? err.message : String(err));
+      const friendly = friendlyError(err, configuredModel);
+      setError(friendly);
       setStreaming(false);
       setStreamingContent("");
 
@@ -590,7 +601,7 @@ export function useBigModelSDK() {
       const errorMsg: ChatMessage = {
         id: genId(),
         role: "assistant",
-        content: `[ERROR] ${err instanceof Error ? err.message : String(err)}`,
+        content: friendly,
         timestamp: Date.now(),
         model: configuredModel.model,
         provider: configuredModel.providerId,
@@ -600,13 +611,13 @@ export function useBigModelSDK() {
       return {
         id: genId(),
         model: configuredModel.model,
-        content: `[ERROR] ${err instanceof Error ? err.message : String(err)}`,
+        content: friendly,
         finishReason: "error",
         usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
         latencyMs: Date.now() - start,
       };
     }
-  }, [activeSessionId, sessions, updateStats]);
+  }, [activeSessionId, sessions]);
 
   // ========== 中断请求 ==========
 
@@ -614,6 +625,25 @@ export function useBigModelSDK() {
     abortRef.current?.abort();
     setStreaming(false);
     setStreamingContent("");
+  }, []);
+
+  // ========== 统计更新 ==========
+
+  const updateStats = useCallback((response: SDKChatResponse) => {
+    setUsageStats((prev) => {
+      const totalReqs = prev.totalRequests + 1;
+      const newAvg = ((prev.avgLatencyMs * prev.totalRequests) + response.latencyMs) / totalReqs;
+      const next: SDKUsageStats = {
+        totalRequests: totalReqs,
+        totalTokensIn: prev.totalTokensIn + response.usage.promptTokens,
+        totalTokensOut: prev.totalTokensOut + response.usage.completionTokens,
+        avgLatencyMs: Math.round(newAvg),
+        lastRequestAt: Date.now(),
+        errorCount: prev.errorCount,
+      };
+      saveStats(next);
+      return next;
+    });
   }, []);
 
   // ========== 连接测试 (真实 API 调用) ==========
@@ -633,7 +663,8 @@ export function useBigModelSDK() {
 
     try {
       if (configuredModel.providerId === "ollama") {
-        const res = await fetch(`${configuredModel.baseUrl.replace(/\/$/, "")}/api/tags`, {
+        const testUrl = buildTestUrl(configuredModel, "/api/tags");
+        const res = await fetch(testUrl, {
           signal: AbortSignal.timeout(5000),
         });
         if (!res.ok) {throw new Error(`HTTP ${res.status}`);}
@@ -663,8 +694,8 @@ export function useBigModelSDK() {
       }
 
       return { success: true, latencyMs: Date.now() - start };
-    } catch (err: unknown) {
-      return { success: false, latencyMs: Date.now() - start, error: err instanceof Error ? err.message : String(err) };
+    } catch (err: any) {
+      return { success: false, latencyMs: Date.now() - start, error: friendlyError(err, configuredModel) };
     }
   }, []);
 
@@ -706,4 +737,55 @@ export function useBigModelSDK() {
     usageStats,
     resetStats,
   };
+}
+
+// ============================================================
+// 辅助函数
+// ============================================================
+
+/** 检测 CORS 和网络错误, 返回用户友好的中文提示 */
+function friendlyError(err: any, model: ConfiguredModel): string {
+  const msg = err?.message || String(err);
+
+  // 典型 CORS / 网络拒绝错误
+  if (
+    msg === "Failed to fetch" ||
+    msg.includes("NetworkError") ||
+    msg.includes("CORS") ||
+    msg.includes("blocked") ||
+    msg.includes("cross-origin") ||
+    msg.includes("net::ERR_FAILED")
+  ) {
+    if (model.providerId === "ollama") {
+      return `[网络错误] 无法连接 Ollama (${model.baseUrl})。请确认:\n` +
+        `1. Ollama 已启动 (ollama serve)\n` +
+        `2. 已设置 OLLAMA_ORIGINS="*" 允许跨域\n` +
+        `3. 地址端口正确`;
+    }
+    return `[CORS 跨域错误] 浏览器安全策略禁止前端直接调用 ${model.baseUrl}。\n\n` +
+      `解决方案:\n` +
+      `1. 配置 CORS 代理: 在「模型管理」中设置代理 URL\n` +
+      `   例: 本地运行 npx cors-anywhere 后填入 http://localhost:8080\n` +
+      `2. 使用 Ollama 本地模型 (无需代理)\n` +
+      `3. 部署后端代理服务转发 API 请求`;
+  }
+
+  // HTTP 错误码
+  if (msg.includes("401") || msg.includes("Unauthorized")) {
+    return `[认证失败] API Key 无效或已过期。请在「模型管理」中检查 ${model.providerLabel} 的 API Key。`;
+  }
+  if (msg.includes("403") || msg.includes("Forbidden")) {
+    return `[权限不足] API Key 无权访问模型 ${model.model}。请检查 ${model.providerLabel} 账户权限。`;
+  }
+  if (msg.includes("429") || msg.includes("Too Many Requests")) {
+    return `[请求过频] ${model.providerLabel} 返回限流, 请稍后再试。`;
+  }
+  if (msg.includes("500") || msg.includes("502") || msg.includes("503")) {
+    return `[服务端错误] ${model.providerLabel} 服务暂时不可用 (${msg})。请稍后再试。`;
+  }
+  if (msg.includes("timeout") || msg.includes("Timeout") || msg.includes("AbortError")) {
+    return `[请求超时] 连接 ${model.providerLabel} 超时。请检查网络连接。`;
+  }
+
+  return `[请求失败] ${msg}`;
 }

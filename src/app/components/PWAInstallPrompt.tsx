@@ -1,17 +1,18 @@
 /**
  * PWAInstallPrompt.tsx
- * ===============
+ * ====================
  * PWA 安装提示横幅组件
  * - 底部浮动提示安装到桌面
  * - 可关闭并记住选择
  * - 赛博朋克风格
  */
 
+import React from "react";
 import { Download, X } from "lucide-react";
 import { useInstallPrompt } from "../hooks/useInstallPrompt";
-import YYC3Logo from "./YYC3Logo";
+import { YYC3Logo } from "./YYC3Logo";
 
-export default function PWAInstallPrompt() {
+export function PWAInstallPrompt() {
   const { isInstalled, canInstall, promptInstall, dismiss } = useInstallPrompt();
 
   if (isInstalled || !canInstall) {return null;}

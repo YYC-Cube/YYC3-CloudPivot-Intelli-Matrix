@@ -6,17 +6,19 @@
  * 赛博朋克风格 #060e1f + #00d4ff
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Bell, BellRing, Plus, Trash2, ToggleLeft, ToggleRight,
-  AlertTriangle, ShieldAlert, Info,
+  AlertTriangle, ShieldAlert, Info, ChevronRight,
   CheckCircle2, XCircle, Clock, TrendingUp,
-  Filter, Zap, Settings, ArrowUpRight,
+  Filter, Zap, Settings, ArrowUpRight, Pencil, Wifi,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import { useAlertRules, type AlertSeverity, type AlertRule, type AlertEvent } from "../hooks/useAlertRules";
-import CreateRuleModal from "./CreateRuleModal";
+import { useAlertRules } from "../hooks/useAlertRules";
+import type { AlertSeverity, AlertRule, AlertEvent } from "../types";
+import { useWebSocketData } from "../hooks/useWebSocketData";
+import { CreateRuleModal } from "./CreateRuleModal";
 
 // ============================================================
 // Helpers
@@ -24,12 +26,14 @@ import CreateRuleModal from "./CreateRuleModal";
 
 function severityColor(s: AlertSeverity): string {
   if (s === "critical") {return "#ff3366";}
+  if (s === "error") {return "#ff3366";}
   if (s === "warning") {return "#ffaa00";}
   return "#00d4ff";
 }
 
 function severityIcon(s: AlertSeverity) {
   if (s === "critical") {return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />;}
+  if (s === "error") {return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />;}
   if (s === "warning") {return <AlertTriangle className="w-4 h-4" style={{ color: "#ffaa00" }} />;}
   return <Info className="w-4 h-4" style={{ color: "#00d4ff" }} />;
 }
@@ -79,12 +83,14 @@ function RuleCard({
   onToggle,
   onDelete,
   onSelect,
+  onEdit,
   t,
 }: {
   rule: AlertRule;
   onToggle: () => void;
   onDelete: () => void;
   onSelect: () => void;
+  onEdit: () => void;
   t: (k: string) => string;
 }) {
   return (
@@ -99,6 +105,14 @@ function RuleCard({
           <span className="text-[#e0f0ff]" style={{ fontSize: "0.85rem" }}>{rule.name}</span>
         </div>
         <div className="flex items-center gap-2" onClick={(e) => e.stopPropagation()}>
+          <button
+            onClick={onEdit}
+            className="text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] transition-all"
+            title={t("alerts.editRule")}
+            data-testid={`edit-rule-${rule.id}`}
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
           <button
             onClick={onToggle}
             className="transition-all"
@@ -348,20 +362,68 @@ function RuleDetailDrawer({ rule, onClose, t }: { rule: AlertRule; onClose: () =
 // Main Component
 // ============================================================
 
-export default function AlertRulesPanel() {
+export function AlertRulesPanel() {
   const { t } = useI18n();
-  const state = useAlertRules();
-  const { rules, events, stats, selectedRule, setSelectedRule, filterSeverity, setFilterSeverity, toggleRule, deleteRule, acknowledgeEvent, resolveEvent, createRule, isCreating, setIsCreating } = state;
+  const wsData = useWebSocketData();
+  const state = useAlertRules({
+    liveNodes: wsData.nodes,
+    liveLatency: wsData.liveLatency,
+  });
+  const {
+    rules, events, stats, selectedRule, setSelectedRule,
+    filterSeverity, setFilterSeverity,
+    toggleRule, deleteRule, acknowledgeEvent, resolveEvent,
+    createRule, updateRule,
+    isCreating, setIsCreating,
+    editingRule, setEditingRule,
+  } = state;
   const [viewMode, setViewMode] = useState<"rules" | "events">("rules");
+
+  // Handle edit submit: delegates to updateRule or createRule
+  const handleModalSubmit = React.useCallback((ruleData: Parameters<typeof createRule>[0]) => {
+    if (editingRule) {
+      updateRule(editingRule.id, ruleData);
+    } else {
+      createRule(ruleData);
+    }
+    setEditingRule(null);
+    setIsCreating(false);
+  }, [editingRule, updateRule, createRule, setEditingRule, setIsCreating]);
+
+  const handleModalClose = React.useCallback(() => {
+    setIsCreating(false);
+    setEditingRule(null);
+  }, [setIsCreating, setEditingRule]);
+
+  const handleEditRule = React.useCallback((rule: AlertRule) => {
+    setEditingRule(rule);
+    setIsCreating(true);
+  }, [setEditingRule, setIsCreating]);
 
   return (
     <div className="space-y-4 max-w-[1400px] mx-auto">
-      {/* Create Rule Modal */}
+      {/* Create/Edit Rule Modal */}
       <CreateRuleModal
         open={isCreating}
-        onClose={() => setIsCreating(false)}
-        onSubmit={createRule}
+        onClose={handleModalClose}
+        onSubmit={handleModalSubmit}
+        editRule={editingRule}
       />
+
+      {/* WebSocket Status Indicator */}
+      <div className="flex items-center gap-2" style={{ fontSize: "0.6rem" }}>
+        <div
+          className="w-2 h-2 rounded-full"
+          style={{
+            background: wsData.connectionState === "connected" ? "#00ff88" : wsData.connectionState === "simulated" ? "#ffaa00" : "#ff3366",
+            boxShadow: `0 0 6px ${wsData.connectionState === "connected" ? "#00ff88" : wsData.connectionState === "simulated" ? "#ffaa00" : "#ff3366"}`,
+          }}
+        />
+        <span className="text-[rgba(0,212,255,0.4)]">
+          <Wifi className="w-3 h-3 inline mr-1" />
+          {wsData.connectionState === "connected" ? "WebSocket Connected" : wsData.connectionState === "simulated" ? "Simulated Data" : "Disconnected"}
+        </span>
+      </div>
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
@@ -375,7 +437,7 @@ export default function AlertRulesPanel() {
           </p>
         </div>
         <button
-          onClick={() => setIsCreating(true)}
+          onClick={() => { setEditingRule(null); setIsCreating(true); }}
           className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-[rgba(0,212,255,0.3)] bg-[rgba(0,212,255,0.1)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.15)] transition-all"
           style={{ fontSize: "0.75rem" }}
           data-testid="create-rule-btn"
@@ -409,7 +471,7 @@ export default function AlertRulesPanel() {
 
         {/* Severity Filter */}
         <div className="flex gap-1 ml-auto">
-          {(["all", "critical", "warning", "info"] as const).map((sev) => (
+          {(["all", "critical", "error", "warning", "info"] as const).map((sev) => (
             <button
               key={sev}
               onClick={() => setFilterSeverity(sev)}
@@ -439,6 +501,7 @@ export default function AlertRulesPanel() {
                 onToggle={() => toggleRule(rule.id)}
                 onDelete={() => deleteRule(rule.id)}
                 onSelect={() => setSelectedRule(rule)}
+                onEdit={() => handleEditRule(rule)}
                 t={t}
               />
             ))}

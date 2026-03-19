@@ -5,55 +5,26 @@
  * Supports JSON, CSV (Excel), and printable HTML (PDF via print dialog)
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { usePersistedList } from "./usePersistedState";
 
 // ============================================================
-// Types
+// Types — centralized in types/index.ts
 // ============================================================
 
-export type ReportType = "performance" | "security" | "audit" | "comprehensive";
-export type ExportFormat = "json" | "csv" | "print";
-export type TimeRange = "1h" | "6h" | "24h" | "7d" | "30d" | "custom";
+import type {
+  ExportReportType, ExportFormat, TimeRange,
+  PerformanceSnapshot, SecuritySnapshot,
+  ReportData, ReportHistoryEntry,
+} from "../types";
 
-export interface ReportMetric {
-  label: string;
-  value: string;
-  trend: "up" | "down" | "stable";
-  change: string;
-}
+// RF-011: Re-export 已移除
 
-export interface PerformanceSnapshot {
-  timestamp: number;
-  cpuUsage: number;
-  gpuUsage: number;
-  memoryUsage: number;
-  latencyP50: number;
-  latencyP99: number;
-  throughput: number;
-  errorRate: number;
-}
+// ============================================================
+// Module-level constants (computed once at module load)
+// ============================================================
 
-export interface SecuritySnapshot {
-  timestamp: number;
-  cspScore: number;
-  cookieScore: number;
-  sensitiveScore: number;
-  overallScore: number;
-  activeThreats: number;
-}
-
-export interface ReportData {
-  id: string;
-  type: ReportType;
-  title: string;
-  generatedAt: number;
-  timeRange: { start: number; end: number; label: string };
-  summary: ReportMetric[];
-  performanceHistory: PerformanceSnapshot[];
-  securityHistory: SecuritySnapshot[];
-  recommendations: string[];
-  nodeBreakdown: { nodeId: string; avgCpu: number; avgGpu: number; avgLatency: number; errorRate: number }[];
-}
+const INITIAL_TIMESTAMP = Date.now();
 
 // ============================================================
 // Mock Data Generator
@@ -91,7 +62,7 @@ function generateSecurityHistory(hours: number): SecuritySnapshot[] {
   }));
 }
 
-function generateReportData(type: ReportType, range: TimeRange): ReportData {
+function generateReportData(type: ExportReportType, range: TimeRange): ReportData {
   const hoursMap: Record<string, number> = { "1h": 1, "6h": 6, "24h": 24, "7d": 168, "30d": 720, custom: 24 };
   const hours = hoursMap[range] || 24;
   const now = Date.now();
@@ -254,28 +225,34 @@ function exportPrintable(data: ReportData) {
 // ============================================================
 
 export function useReportExporter() {
-  const [reportType, setReportType] = useState<ReportType>("performance");
+  const [reportType, setReportType] = useState<ExportReportType>("performance");
   const [timeRange, setTimeRange] = useState<TimeRange>("24h");
   const [isGenerating, setIsGenerating] = useState(false);
   const [report, setReport] = useState<ReportData | null>(null);
-  const [recentReports, setRecentReports] = useState<{ id: string; type: ReportType; time: number; range: string }[]>([
-    { id: "rpt-prev-1", type: "performance", time: Date.now() - 86400000, range: "24h" },
-    { id: "rpt-prev-2", type: "security", time: Date.now() - 86400000 * 2, range: "7d" },
-    { id: "rpt-prev-3", type: "comprehensive", time: Date.now() - 86400000 * 3, range: "24h" },
-  ]);
+
+  const initialReports = useMemo(() => [
+    { id: "rpt-prev-1", type: "performance" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000, range: "24h" },
+    { id: "rpt-prev-2", type: "security" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000 * 2, range: "7d" },
+    { id: "rpt-prev-3", type: "comprehensive" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000 * 3, range: "24h" },
+  ], []);
+
+  const {
+    items: recentReports,
+    prepend: prependReport,
+    loaded: reportsLoaded,
+  } = usePersistedList<ReportHistoryEntry>("reports", initialReports);
 
   const generateReport = useCallback(() => {
     setIsGenerating(true);
     setTimeout(() => {
       const data = generateReportData(reportType, timeRange);
       setReport(data);
-      setRecentReports((prev) => [
+      prependReport(
         { id: data.id, type: data.type, time: data.generatedAt, range: timeRange },
-        ...prev.slice(0, 9),
-      ]);
+      );
       setIsGenerating(false);
     }, 1500);
-  }, [reportType, timeRange]);
+  }, [reportType, timeRange, prependReport]);
 
   const exportReport = useCallback((format: ExportFormat) => {
     if (!report) {return;}
@@ -292,6 +269,7 @@ export function useReportExporter() {
     isGenerating,
     report,
     recentReports,
+    reportsLoaded,
     generateReport,
     exportReport,
   };

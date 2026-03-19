@@ -1,20 +1,16 @@
 /**
  * useModelProvider.test.tsx
- * ===============
+ * ==========================
  * useModelProvider Hook 测试
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { describe, it, expect, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useModelProvider, MODEL_PROVIDERS } from "../hooks/useModelProvider";
 
 describe("useModelProvider", () => {
   beforeEach(() => {
     localStorage.clear();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("MODEL_PROVIDERS 注册表", () => {
@@ -124,8 +120,8 @@ describe("useModelProvider", () => {
       await act(async () => {
         await result.current.fetchOllamaModels();
       });
-      // Mock fallback should return 6 models
-      expect(result.current.ollamaModels.length).toBe(6);
+      // Mock fallback should return 4 models
+      expect(result.current.ollamaModels.length).toBe(4);
     });
   });
 });

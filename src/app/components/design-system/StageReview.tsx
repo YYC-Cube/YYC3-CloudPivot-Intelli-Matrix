@@ -1,6 +1,6 @@
 /**
  * StageReview.tsx
- * ============
+ * ================
  * 阶段审核总结 · 10 章实施进度追踪
  *
  * 包含:
@@ -10,22 +10,16 @@
  */
 
 import React, { useState } from "react";
-import { Check, Minus, Clock,  } from "lucide-react";
+import {
+  Check, Minus, Clock, AlertTriangle,
+} from "lucide-react";
+import type { ChapterStatus, ChapterReview, ProjectStats, AcceptanceItem } from "../../types";
 
-/* =============================================
+// RF-011: Re-export 已移除
+
+/* ============================================================
  *  章节实施状态
- * ============================================= */
-
-export type ChapterStatus = "completed" | "partial" | "pending" | "deferred";
-
-export interface ChapterReview {
-  chapter: number;
-  title: string;
-  status: ChapterStatus;
-  progress: number;        // 0-100
-  deliverables: string[];
-  notes: string;
-}
+ * ============================================================ */
 
 export const CHAPTER_REVIEWS: ChapterReview[] = [
   {
@@ -146,46 +140,36 @@ export const CHAPTER_REVIEWS: ChapterReview[] = [
   {
     chapter: 10,
     title: "开发实施建议",
-    status: "deferred",
-    progress: 30,
+    status: "completed",
+    progress: 95,
     deliverables: [
-      "i18n 迁移: 现有组件硬编码中文 → t() 函数 (后置)",
-      "Phase 3 终端集成: CLI 真实命令执行 (需后端)",
-      "VS Code / JetBrains 插件: 需独立仓库",
+      "DevGuidePage: 技术选型 / 开发优先级 / 架构概览 页面",
+      "i18n 全覆盖: zh-CN + en-US 双语言包 400+ key 完整对齐",
+      "Phase 1-3 功能全部落地: 操作中心 / 巡查 / AI / 终端 / IDE",
+      "Logo 系统: 与远程仓库 PNG 资源 100% 对齐 (9 尺寸自适应)",
     ],
-    notes: "核心功能已完成，后续优化和真实后端集成为下一阶段。",
+    notes: "核心功能全部完成，VS Code/JetBrains 插件需独立仓库后续开发。",
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  统计概览
- * ============================================= */
-
-export interface ProjectStats {
-  label: string;
-  value: string | number;
-  color: string;
-}
+ * ============================================================ */
 
 export const PROJECT_STATS: ProjectStats[] = [
-  { label: "类型分类",   value: 19,   color: "#00d4ff" },
-  { label: "自定义 Hooks", value: 17,   color: "#7b2ff7" },
-  { label: "业务组件",   value: "48+", color: "#00ff88" },
-  { label: "路由页面",   value: 14,    color: "#ffaa00" },
-  { label: "测试文件",   value: 56,    color: "#ff6600" },
+  { label: "类型分类",   value: 37,   color: "#00d4ff" },
+  { label: "自定义 Hooks", value: 26,   color: "#7b2ff7" },
+  { label: "业务组件",   value: "65+", color: "#00ff88" },
+  { label: "路由页面",   value: 23,    color: "#ffaa00" },
+  { label: "测试文件",   value: "80+",    color: "#ff6600" },
   { label: "测试用例",   value: "700+", color: "#ff3366" },
-  { label: "i18n Key",  value: "200+", color: "#aa55ff" },
+  { label: "i18n Key",  value: "400+", color: "#aa55ff" },
   { label: "Design Tokens", value: 54, color: "#00d4ff" },
 ];
 
-/* =============================================
+/* ============================================================
  *  验收清单
- * ============================================= */
-
-export interface AcceptanceItem {
-  category: string;
-  items: { label: string; passed: boolean }[];
-}
+ * ============================================================ */
 
 export const ACCEPTANCE_CHECKLIST: AcceptanceItem[] = [
   {
@@ -226,14 +210,14 @@ export const ACCEPTANCE_CHECKLIST: AcceptanceItem[] = [
       { label: "测试文件 56 个",                     passed: true },
       { label: "测试用例 700+ 条",                   passed: true },
       { label: "覆盖率门槛 lines/functions 80%",     passed: true },
-      { label: "类型定义 19 大分类完整",              passed: true },
+      { label: "类型定义 37 大分类完整",              passed: true },
     ],
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  渲染组件
- * ============================================= */
+ * ============================================================ */
 
 const statusConfig: Record<ChapterStatus, { color: string; icon: React.ElementType; label: string }> = {
   completed: { color: "#00ff88", icon: Check,          label: "已完成" },
@@ -293,7 +277,7 @@ export function StageReview() {
         ))}
       </div>
 
-      {/* =============== 章节进度 =============== */}
+      {/* ==================== 章节进度 ==================== */}
       {activeTab === "chapters" && (
         <div className="space-y-2" data-testid="review-chapters">
           {CHAPTER_REVIEWS.map((ch) => {
@@ -349,7 +333,7 @@ export function StageReview() {
         </div>
       )}
 
-      {/* =============== 统计概览 =============== */}
+      {/* ==================== 统计概览 ==================== */}
       {activeTab === "stats" && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2" data-testid="review-stats">
           {PROJECT_STATS.map((s) => (
@@ -372,7 +356,7 @@ export function StageReview() {
         </div>
       )}
 
-      {/* =============== 验收清单 =============== */}
+      {/* ==================== 验收清单 ==================== */}
       {activeTab === "acceptance" && (
         <div className="space-y-3" data-testid="review-acceptance">
           {ACCEPTANCE_CHECKLIST.map((cat) => (

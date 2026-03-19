@@ -1,14 +1,18 @@
 /**
  * FollowUpDrawer.tsx
- * ===============
+ * ====================
  * 侧边抽屉式详细面板
  * 显示告警完整详情、操作链路、关联告警、AI 建议
  */
 
 import React, { useState, useEffect, useRef } from "react";
-import { X, AlertTriangle, AlertCircle, Info, XCircle, Clock, User, ChevronRight, Zap, Bot, CheckCircle, Loader2, Link2, Server, Copy, Check,  } from "lucide-react";
-import OperationChain from "./OperationChain";
-import QuickActionGroup from "./QuickActionGroup";
+import {
+  X, AlertTriangle, AlertCircle, Info, XCircle, Clock, User, Tag,
+  ChevronRight, Zap, Bot, CheckCircle, Loader2, Send, RotateCcw,
+  Link2, Server, Cpu, Activity, Copy, Check,
+} from "lucide-react";
+import { OperationChain } from "./OperationChain";
+import { QuickActionGroup } from "./QuickActionGroup";
 import type { FollowUpItem, FollowUpSeverity, FollowUpStatus } from "../types";
 
 interface FollowUpDrawerProps {
@@ -56,7 +60,7 @@ const RELATED_METRICS = [
   { label: "网络 I/O", value: "1.2 Gbps", trend: "↓", status: "normal" as const },
 ];
 
-export default function FollowUpDrawer({
+export function FollowUpDrawer({
   item,
   isOpen,
   onClose,
@@ -72,7 +76,7 @@ export default function FollowUpDrawer({
 
   // Reset tab on new item
   useEffect(() => {
-    if (item?.id) {
+    if (item) {
       setActiveTab("detail");
       setAiSuggestions([]);
     }
@@ -139,7 +143,7 @@ export default function FollowUpDrawer({
           ${isOpen ? "translate-x-0" : "translate-x-full"}
         `}
       >
-        {/* ====== Header ====== */}
+        {/* ======== Header ======== */}
         <div className="shrink-0 p-4 border-b border-[rgba(0,180,255,0.1)]">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-start gap-3 min-w-0 flex-1">
@@ -204,7 +208,7 @@ export default function FollowUpDrawer({
           </div>
         </div>
 
-        {/* ====== Tab Bar ====== */}
+        {/* ======== Tab Bar ======== */}
         <div className="shrink-0 flex items-center gap-0.5 px-4 py-2 border-b border-[rgba(0,180,255,0.08)] bg-[rgba(0,40,80,0.1)]">
           {tabs.map((tab) => (
             <button
@@ -225,7 +229,7 @@ export default function FollowUpDrawer({
           ))}
         </div>
 
-        {/* ====== Content ====== */}
+        {/* ======== Content ======== */}
         <div className="flex-1 overflow-auto p-4 space-y-4">
 
           {/* === Detail Tab === */}
@@ -455,7 +459,7 @@ export default function FollowUpDrawer({
           )}
         </div>
 
-        {/* ====== Footer ====== */}
+        {/* ======== Footer ======== */}
         <div className="shrink-0 p-3 border-t border-[rgba(0,180,255,0.08)] flex items-center justify-between">
           <span className="text-[rgba(0,212,255,0.2)]" style={{ fontSize: "0.62rem" }}>
             CP-IM Follow-up System v1.0

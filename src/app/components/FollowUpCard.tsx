@@ -1,6 +1,6 @@
 /**
  * FollowUpCard.tsx
- * =============
+ * =================
  * 告警/异常跟进卡片
  * 显示告警信息、严重级别、操作链路摘要，支持展开操作
  */
@@ -10,9 +10,9 @@ import {
   AlertTriangle, AlertCircle, Info, XCircle, ChevronDown, ChevronUp,
   Clock, User, Tag, ExternalLink,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import OperationChain from "./OperationChain";
-import QuickActionGroup from "./QuickActionGroup";
+import { GlassCard } from "./GlassCard";
+import { OperationChain } from "./OperationChain";
+import { QuickActionGroup } from "./QuickActionGroup";
 import type { FollowUpItem, FollowUpSeverity, FollowUpStatus } from "../types";
 
 interface FollowUpCardProps {
@@ -67,7 +67,7 @@ const statusLabels: Record<FollowUpStatus, { label: string; color: string }> = {
   ignored:       { label: "已忽略", color: "rgba(0,212,255,0.3)" },
 };
 
-export default function FollowUpCard({
+export function FollowUpCard({
   item,
   onOpenDrawer,
   onQuickFix,
@@ -229,9 +229,9 @@ export default function FollowUpCard({
   );
 }
 
-// =============================================
+// ============================================================
 // Helpers
-// =============================================
+// ============================================================
 
 function getTimeAgo(timestamp: number): string {
   const diff = Date.now() - timestamp;

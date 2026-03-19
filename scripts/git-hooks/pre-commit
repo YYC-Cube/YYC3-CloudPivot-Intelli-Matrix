@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# YYC³ Pre-commit Hook
+# ====================
+# 检查代码标头规范
+# 如果检查失败，阻止提交
+
+echo "🔍 Checking YYC³ code header standards..."
+
+# 获取所有暂存的文件
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(ts|tsx|js|jsx|css|scss)$')
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "✅ No code files staged for commit"
+  exit 0
+fi
+
+echo "📝 Checking files:"
+echo "$STAGED_FILES"
+echo ""
+
+# 运行标头检查
+pnpm check-headers --quiet
+
+if [ $? -ne 0 ]; then
+  echo ""
+  echo "❌ Code header check failed!"
+  echo ""
+  echo "Please fix the header issues before committing:"
+  echo "  - Run 'pnpm check-headers' to see detailed errors"
+  echo "  - Run 'pnpm add-header' to add headers automatically"
+  echo ""
+  echo "Or use 'git commit --no-verify' to bypass this check (not recommended)"
+  exit 1
+fi
+
+echo "✅ All code headers are compliant!"
+exit 0

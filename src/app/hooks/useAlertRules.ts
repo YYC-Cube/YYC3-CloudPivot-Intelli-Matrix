@@ -2,72 +2,26 @@
  * useAlertRules.ts
  * =================
  * Hook for Smart Alert Rules Configuration
- * Supports custom thresholds, aggregation, deduplication, escalation
+ * RF-007: 重构为复用 usePersistedList，获得 BroadcastChannel 跨标签页同步能力
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { usePersistedList } from "./usePersistedState";
 
 // ============================================================
-// Types
+// Types — centralized in types/index.ts
 // ============================================================
 
-export type AlertSeverity = "info" | "warning" | "critical";
-export type AlertMetric = "cpu" | "gpu" | "memory" | "latency" | "disk" | "network" | "error_rate" | "throughput";
-export type AlertCondition = "gt" | "lt" | "gte" | "lte" | "eq" | "neq";
-export type EscalationLevel = 1 | 2 | 3;
+import type {
+  AlertSeverity, AlertMetric, AlertCondition, EscalationLevel,
+  AlertThreshold, EscalationPolicy, AlertRule, AlertEvent, AlertRulesOptions,
+} from "../types";
 
-export interface AlertThreshold {
-  metric: AlertMetric;
-  condition: AlertCondition;
-  value: number;
-  unit: string;
-  duration: number;
-}
+// RF-011: Re-export 已移除
 
-export interface EscalationPolicy {
-  level: EscalationLevel;
-  delayMinutes: number;
-  notifyChannels: string[];
-  autoAction?: string;
-}
-
-export interface AlertRule {
-  id: string;
-  name: string;
-  enabled: boolean;
-  severity: AlertSeverity;
-  thresholds: AlertThreshold[];
-  aggregation: {
-    enabled: boolean;
-    windowMinutes: number;
-    maxGroupSize: number;
-  };
-  deduplication: {
-    enabled: boolean;
-    cooldownMinutes: number;
-  };
-  escalation: EscalationPolicy[];
-  targets: string[];
-  createdAt: number;
-  lastTriggered: number | null;
-  triggerCount: number;
-}
-
-export interface AlertEvent {
-  id: string;
-  ruleId: string;
-  ruleName: string;
-  severity: AlertSeverity;
-  message: string;
-  metric: AlertMetric;
-  currentValue: number;
-  threshold: number;
-  nodeId: string;
-  timestamp: number;
-  acknowledged: boolean;
-  resolved: boolean;
-  escalationLevel: EscalationLevel;
-}
+// ============================================================
+// Mock Data
+// ============================================================
 
 const MOCK_RULES: AlertRule[] = [
   {
@@ -264,35 +218,132 @@ const MOCK_EVENTS: AlertEvent[] = [
   },
 ];
 
-export function useAlertRules() {
-  const [rules, setRules] = useState<AlertRule[]>(MOCK_RULES);
-  const [events, setEvents] = useState<AlertEvent[]>(MOCK_EVENTS);
+// ============================================================
+// Hook
+// ============================================================
+
+export function useAlertRules(opts: AlertRulesOptions = {}) {
+  // RF-007: 使用 usePersistedList 代替手动 IndexedDB CRUD
+  const {
+    items: rules,
+    upsert: upsertRule,
+    remove: removeRule,
+    setAll: setAllRules,
+    loaded: rulesLoaded,
+  } = usePersistedList<AlertRule>("alertRules", MOCK_RULES);
+
+  const {
+    items: events,
+    setItems: setEvents,
+    upsert: upsertEvent,
+    loaded: eventsLoaded,
+  } = usePersistedList<AlertEvent>("alertEvents", MOCK_EVENTS);
+
   const [selectedRule, setSelectedRule] = useState<AlertRule | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [editingRule, setEditingRule] = useState<AlertRule | null>(null);
   const [filterSeverity, setFilterSeverity] = useState<AlertSeverity | "all">("all");
+  const lastPushRef = useRef<number>(0);
+  const rulesRef = useRef(rules);
+  rulesRef.current = rules;
+
+  // ── WebSocket live alert evaluation ──
+  useEffect(() => {
+    if (!opts.liveNodes || opts.liveNodes.length === 0) {return;}
+    const now = Date.now();
+    if (now - lastPushRef.current < 10000) {return;}
+    lastPushRef.current = now;
+
+    const enabledRules = rulesRef.current.filter((r) => r.enabled);
+
+    setEvents((prevEvents) => {
+      const newEvts: AlertEvent[] = [];
+
+      for (const rule of enabledRules) {
+        for (const th of rule.thresholds) {
+          for (const node of opts.liveNodes!) {
+            if (!rule.targets.includes(node.id)) {continue;}
+
+            let value: number | null = null;
+            if (th.metric === "gpu") {value = node.gpu;}
+            else if (th.metric === "memory") {value = node.mem;}
+            else if (th.metric === "latency" && opts.liveLatency !== null) {value = opts.liveLatency;}
+
+            if (value === null) {continue;}
+
+            const triggered =
+              (th.condition === "gt" && value > th.value) ||
+              (th.condition === "gte" && value >= th.value) ||
+              (th.condition === "lt" && value < th.value) ||
+              (th.condition === "lte" && value <= th.value) ||
+              (th.condition === "eq" && value === th.value) ||
+              (th.condition === "neq" && value !== th.value);
+
+            if (!triggered) {continue;}
+
+            // Deduplication check
+            const cooldownMs = rule.deduplication.enabled
+              ? rule.deduplication.cooldownMinutes * 60000
+              : 0;
+            const hasDuplicate = prevEvents.some(
+              (e) =>
+                e.ruleId === rule.id &&
+                e.nodeId === node.id &&
+                e.metric === th.metric &&
+                !e.resolved &&
+                now - e.timestamp < cooldownMs
+            );
+            if (hasDuplicate) {continue;}
+
+            newEvts.push({
+              id: `evt-ws-${now}-${node.id}-${th.metric}`,
+              ruleId: rule.id,
+              ruleName: rule.name,
+              severity: rule.severity,
+              message: `[WS] ${node.id} ${th.metric} = ${value.toFixed(1)} (阈值 ${th.condition} ${th.value}${th.unit})`,
+              metric: th.metric,
+              currentValue: value,
+              threshold: th.value,
+              nodeId: node.id,
+              timestamp: now,
+              acknowledged: false,
+              resolved: false,
+              escalationLevel: 1,
+            });
+          }
+        }
+      }
+
+      if (newEvts.length === 0) {return prevEvents;}
+      return [...newEvts, ...prevEvents].slice(0, 50);
+    });
+  }, [opts.liveNodes, opts.liveLatency, setEvents]);
 
   const toggleRule = useCallback((ruleId: string) => {
-    setRules((prev) =>
-      prev.map((r) => (r.id === ruleId ? { ...r, enabled: !r.enabled } : r))
-    );
-  }, []);
+    const rule = rules.find((r) => r.id === ruleId);
+    if (rule) {
+      upsertRule({ ...rule, enabled: !rule.enabled });
+    }
+  }, [rules, upsertRule]);
 
   const deleteRule = useCallback((ruleId: string) => {
-    setRules((prev) => prev.filter((r) => r.id !== ruleId));
+    removeRule(ruleId);
     if (selectedRule?.id === ruleId) {setSelectedRule(null);}
-  }, [selectedRule]);
+  }, [selectedRule, removeRule]);
 
   const acknowledgeEvent = useCallback((eventId: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === eventId ? { ...e, acknowledged: true } : e))
-    );
-  }, []);
+    const event = events.find((e) => e.id === eventId);
+    if (event) {
+      upsertEvent({ ...event, acknowledged: true });
+    }
+  }, [events, upsertEvent]);
 
   const resolveEvent = useCallback((eventId: string) => {
-    setEvents((prev) =>
-      prev.map((e) => (e.id === eventId ? { ...e, resolved: true, acknowledged: true } : e))
-    );
-  }, []);
+    const event = events.find((e) => e.id === eventId);
+    if (event) {
+      upsertEvent({ ...event, resolved: true, acknowledged: true });
+    }
+  }, [events, upsertEvent]);
 
   const createRule = useCallback((rule: Omit<AlertRule, "id" | "createdAt" | "lastTriggered" | "triggerCount">) => {
     const newRule: AlertRule = {
@@ -302,9 +353,18 @@ export function useAlertRules() {
       lastTriggered: null,
       triggerCount: 0,
     };
-    setRules((prev) => [newRule, ...prev]);
+    upsertRule(newRule);
     setIsCreating(false);
-  }, []);
+  }, [upsertRule]);
+
+  /** Update an existing rule (edit mode) */
+  const updateRule = useCallback((ruleId: string, updates: Partial<Omit<AlertRule, "id" | "createdAt" | "lastTriggered" | "triggerCount">>) => {
+    const rule = rules.find((r) => r.id === ruleId);
+    if (rule) {
+      upsertRule({ ...rule, ...updates });
+    }
+    setEditingRule(null);
+  }, [rules, upsertRule]);
 
   const filteredRules = filterSeverity === "all"
     ? rules
@@ -324,6 +384,8 @@ export function useAlertRules() {
     setSelectedRule,
     isCreating,
     setIsCreating,
+    editingRule,
+    setEditingRule,
     filterSeverity,
     setFilterSeverity,
     toggleRule,
@@ -331,6 +393,7 @@ export function useAlertRules() {
     acknowledgeEvent,
     resolveEvent,
     createRule,
+    updateRule,
     stats,
   };
 }

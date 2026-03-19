@@ -6,6 +6,7 @@
  *
  * 支持:
  * - cpim 系列管理命令
+ * - env 命令 — 真实读写 env-config.ts (localStorage 持久化)
  * - 常见 *nix 工具命令 (ls, cat, ping …)
  * - goto / open 路由跳转
  * - ai <prompt> Text-to-CLI (模拟)
@@ -13,6 +14,10 @@
 
 import { useState, useCallback, useRef } from "react";
 import type { TerminalHistoryEntry } from "../types";
+import {
+  env, getEnvConfig, setEnvConfig, resetEnvConfig, exportEnvConfig,
+  type EnvConfig,
+} from "../lib/env-config";
 
 // ============================================================
 // Command Registry
@@ -21,9 +26,7 @@ import type { TerminalHistoryEntry } from "../types";
 interface CommandResult {
   output: string;
   status: "success" | "error" | "info";
-  /** 如果命令需要触发路由跳转，返回目标路径 */
   navigate?: string;
-  /** 如果命令需要执行 AI 查询 */
   aiQuery?: string;
 }
 
@@ -36,9 +39,10 @@ const COMMANDS: Record<string, string[]> = {
   patrol: ["run", "--full", "--quick", "history", "status"],
   report: ["--type", "performance", "health", "security", "--format", "json", "markdown", "--output"],
   config: ["set", "get", "list", "patrol.interval", "notification.email"],
+  env:    ["list", "get", "set", "reset", "export"],
   help:   [],
-  goto:   ["/", "/follow-up", "/patrol", "/operations", "/files", "/ai", "/loop", "/pwa", "/design-system", "/dev-guide", "/models", "/theme", "/terminal", "/ide", "/audit", "/users", "/settings"],
-  open:   ["/", "/follow-up", "/patrol", "/operations", "/files", "/ai", "/loop", "/pwa", "/design-system", "/dev-guide", "/models", "/theme", "/terminal", "/ide", "/audit", "/users", "/settings"],
+  goto:   ["/", "/follow-up", "/patrol", "/operations", "/files", "/ai", "/loop", "/pwa", "/design-system", "/dev-guide", "/models", "/theme", "/terminal", "/ide", "/audit", "/users", "/settings", "/security", "/alerts", "/reports", "/ai-diagnosis", "/data-editor", "/performance", "/env-config", "/host-files", "/database", "/refactoring"],
+  open:   ["/", "/follow-up", "/patrol", "/operations", "/files", "/ai", "/loop", "/pwa", "/design-system", "/dev-guide", "/models", "/theme", "/terminal", "/ide", "/audit", "/users", "/settings", "/security", "/alerts", "/reports", "/ai-diagnosis", "/data-editor", "/performance", "/env-config", "/host-files", "/database", "/refactoring"],
   ai:     [],
 };
 
@@ -61,13 +65,22 @@ const ROUTE_LABELS: Record<string, string> = {
   "/audit": "操作审计",
   "/users": "用户管理",
   "/settings": "系统设置",
+  "/security": "安全设置",
+  "/alerts": "告警管理",
+  "/reports": "报告管理",
+  "/ai-diagnosis": "AI 诊断",
+  "/data-editor": "数据管理",
+  "/performance": "性能监控",
+  "/env-config": "环境变量",
+  "/host-files": "主机文件",
+  "/database": "数据库",
+  "/refactoring": "重构报告",
 };
 
 // ============================================================
 // AI Text-to-CLI Mock
 // ============================================================
 
-/** 模拟 AI 将自然语言翻译为 CLI 命令 */
 function aiTextToCli(prompt: string): { suggestion: string; explanation: string } {
   const p = prompt.toLowerCase();
 
@@ -93,8 +106,8 @@ function aiTextToCli(prompt: string): { suggestion: string; explanation: string 
   if (p.includes("报告") || p.includes("性能") || p.includes("报表")) {
     return { suggestion: "cpim report --type performance --format json", explanation: "生成性能分析报告" };
   }
-  if (p.includes("配置") || p.includes("设置") || p.includes("config")) {
-    return { suggestion: "cpim config list", explanation: "查看所有系统配置项" };
+  if (p.includes("环境") || p.includes("env") || p.includes("变量") || p.includes("配置")) {
+    return { suggestion: "env list", explanation: "查看所有环境变量配置" };
   }
   if (p.includes("存储") || p.includes("磁盘") || p.includes("硬盘")) {
     return { suggestion: "df", explanation: "查看文件系统磁盘使用情况" };
@@ -122,8 +135,90 @@ function aiTextToCli(prompt: string): { suggestion: string; explanation: string 
     return { suggestion: "help", explanation: "显示所有可用命令列表" };
   }
 
-  // fallback
   return { suggestion: "cpim status", explanation: "无法精确匹配意图，显示系统总览" };
+}
+
+// ============================================================
+// env 命令处理器 (真实读写 env-config.ts)
+// ============================================================
+
+function processEnvCommand(parts: string[]): CommandResult {
+  const action = parts[1]?.toLowerCase();
+
+  if (!action || action === "list") {
+    const cfg = getEnvConfig();
+    const lines = Object.entries(cfg).map(([k, v]) => {
+      const val = typeof v === "string" ? `"${v}"` : String(v);
+      return `  ${k.padEnd(28)} = ${val}`;
+    });
+    return {
+      status: "success",
+      output: `环境变量配置 (${Object.keys(cfg).length} 项):\n${lines.join("\n")}\n\n  优先级: import.meta.env > localStorage > 默认值\n  提示: env set <KEY> <VALUE> 修改配置`,
+    };
+  }
+
+  if (action === "get") {
+    const key = parts[2];
+    if (!key) {return { status: "error", output: "用法: env get <KEY>\n  示例: env get SYSTEM_NAME" };}
+    const cfg = getEnvConfig();
+    const k = key as keyof EnvConfig;
+    if (k in cfg) {
+      const val = cfg[k];
+      return { status: "success", output: `${k} = ${typeof val === "string" ? `"${val}"` : val}` };
+    }
+    const fuzzy = Object.keys(cfg).filter((ck) => ck.toLowerCase().includes(key.toLowerCase()));
+    if (fuzzy.length > 0) {
+      return { status: "error", output: `未找到: ${key}\n相似变量: ${fuzzy.join(", ")}` };
+    }
+    return { status: "error", output: `未找到环境变量: ${key}\n输入 env list 查看所有变量` };
+  }
+
+  if (action === "set") {
+    const key = parts[2];
+    const rawVal = parts.slice(3).join(" ");
+    if (!key || !rawVal) {
+      return { status: "error", output: "用法: env set <KEY> <VALUE>\n  示例: env set SYSTEM_NAME \"My System\"\n  示例: env set DEFAULT_AI_TEMPERATURE 0.8\n  示例: env set ENABLE_DEBUG true" };
+    }
+    const cfg = getEnvConfig();
+    const k = key as keyof EnvConfig;
+    if (!(k in cfg)) {
+      return { status: "error", output: `未知变量: ${key}\n输入 env list 查看所有可用变量` };
+    }
+
+    const currentVal = cfg[k];
+    let newVal: string | number | boolean;
+
+    if (typeof currentVal === "boolean") {
+      newVal = rawVal === "true" || rawVal === "1";
+    } else if (typeof currentVal === "number") {
+      newVal = rawVal.includes(".") ? parseFloat(rawVal) : parseInt(rawVal, 10);
+      if (isNaN(newVal as number)) {return { status: "error", output: `无效数值: ${rawVal}` };}
+    } else {
+      newVal = rawVal.replace(/^["']|["']$/g, ""); // strip quotes
+    }
+
+    const _updated = setEnvConfig({ [k]: newVal } as Partial<EnvConfig>);
+    return {
+      status: "success",
+      output: `✅ ${k} = ${typeof newVal === "string" ? `"${newVal}"` : newVal}  (已保存到 localStorage)\n  旧值: ${typeof currentVal === "string" ? `"${currentVal}"` : currentVal}`,
+    };
+  }
+
+  if (action === "reset") {
+    const confirmed = parts[2] === "--confirm" || parts[2] === "-y";
+    if (!confirmed) {
+      return { status: "info", output: "⚠️  此操作将清除所有 localStorage 中的环境变量覆盖,\n   恢复为默认值 + import.meta.env 值。\n\n   确认执行: env reset --confirm" };
+    }
+    const result = resetEnvConfig();
+    return { status: "success", output: `✅ 环境变量已重置 (${Object.keys(result).length} 项恢复默认)` };
+  }
+
+  if (action === "export") {
+    const json = exportEnvConfig();
+    return { status: "success", output: `环境变量导出 JSON:\n${json}` };
+  }
+
+  return { status: "error", output: `未知 env 操作: ${action}\n用法: env [list|get|set|reset|export]` };
 }
 
 // ============================================================
@@ -134,68 +229,46 @@ function processCommand(input: string): CommandResult {
   const parts = input.trim().split(/\s+/);
   const base = parts[0]?.toLowerCase();
 
-  if (!base) {
-    return { output: "", status: "info" };
-  }
+  if (!base) {return { output: "", status: "info" };}
+  if (base === "clear") {return { output: "__CLEAR__", status: "info" };}
 
-  if (base === "clear") {
-    return { output: "__CLEAR__", status: "info" };
-  }
+  // ── env 命令 (真实 env-config 读写) ──
+  if (base === "env") {return processEnvCommand(parts);}
 
-  // ── goto / open 路由跳转 ──────────────────────
+  // ── goto / open 路由跳转 ──
   if (base === "goto" || base === "open") {
     const target = parts[1];
     if (!target) {
       const routeList = Object.entries(ROUTE_LABELS)
         .map(([path, label]) => `  ${path.padEnd(18)} ${label}`)
         .join("\n");
-      return {
-        status: "info",
-        output: `用法: ${base} <path>\n\n可用路由:\n${routeList}`,
-      };
+      return { status: "info", output: `用法: ${base} <path>\n\n可用路由:\n${routeList}` };
     }
-    // 模糊匹配：支持不带 / 前缀
     let matchedPath = target.startsWith("/") ? target : `/${target}`;
-    // 支持中文名匹配
-    const byLabel = Object.entries(ROUTE_LABELS).find(
-      ([, label]) => label.includes(target)
-    );
+    const byLabel = Object.entries(ROUTE_LABELS).find(([, label]) => label.includes(target));
     if (byLabel) {matchedPath = byLabel[0];}
-
     const label = ROUTE_LABELS[matchedPath];
     if (label) {
-      return {
-        status: "success",
-        output: `导航至: ${label} (${matchedPath})`,
-        navigate: matchedPath,
-      };
+      return { status: "success", output: `导航至: ${label} (${matchedPath})`, navigate: matchedPath };
     }
-    return {
-      status: "error",
-      output: `未知路由: ${target}\n输入 ${base} 查看所有可用路由`,
-    };
+    return { status: "error", output: `未知路由: ${target}\n输入 ${base} 查看所有可用路由` };
   }
 
-  // ── ai <prompt> Text-to-CLI ──────────────────
+  // ── ai <prompt> Text-to-CLI ──
   if (base === "ai") {
     const prompt = parts.slice(1).join(" ");
     if (!prompt) {
-      return {
-        status: "info",
-        output: `用法: ai <自然语言描述>\n\n示例:\n  ai 查看所有节点状态\n  ai 重启异常节点\n  ai 打开巡查面板\n  ai 生成性能报告\n  ai 部署 DeepSeek 模型`,
-      };
+      return { status: "info", output: `用法: ai <自然语言描述>\n\n示例:\n  ai 查看所有节点状态\n  ai 重启异常节点\n  ai 查看环境变量\n  ai 生成性能报告` };
     }
-    return {
-      status: "info",
-      output: "",
-      aiQuery: prompt,
-    };
+    return { status: "info", output: "", aiQuery: prompt };
   }
 
   if (base === "help" || input === "cpim help" || input === "cpim --help") {
+    const sysName = env("SYSTEM_NAME");
+    const sysVer = env("SYSTEM_VERSION");
     return {
       status: "info",
-      output: `YYC³ CloudPivot Intelli-Matrix CLI v3.2.0
+      output: `${sysName} CLI v${sysVer}
 
 CPIM 命令:
   cpim status                     查看系统总览
@@ -208,6 +281,13 @@ CPIM 命令:
   cpim patrol history             查看巡查历史
   cpim report [--type perf]       生成报告
   cpim config [get|set|list]      配置管理
+
+环境变量 (真实读写):
+  env list                        查看所有环境变量
+  env get <KEY>                   读取指定变量
+  env set <KEY> <VALUE>           修改变量 (持久化)
+  env reset --confirm             重置为默认值
+  env export                      导出 JSON
 
 路由跳转:
   goto <path>   导航到指定页面     open <path>   同义
@@ -232,12 +312,15 @@ AI 助手:
 
   if (base === "cpim") {
     const sub = parts[1]?.toLowerCase();
+    const sysName = env("SYSTEM_NAME");
+    const sysVer = env("SYSTEM_VERSION");
+    const wsEndpoint = env("WS_ENDPOINT");
 
     if (!sub || sub === "status") {
       return {
         status: "success",
         output: `┌─────────────────────────────────────────┐
-│  YYC³ CloudPivot Intelli-Matrix  v3.2.0         │
+│  ${sysName}  v${sysVer}         │
 │  ─────────────────────────────────────  │
 │  活跃节点:    7/8        ✅             │
 │  GPU 利用率:  82.4%      ●●●●●●●●○○    │
@@ -248,7 +331,7 @@ AI 助手:
 │  告警:        5 条 (1 严重)             │
 │  ─────────────────────────────────────  │
 │  上次巡查: 30 分钟前 · 健康度 96%      │
-│  WebSocket: ws://localhost:3113 ✅      │
+│  WebSocket: ${wsEndpoint} ✅      │
 │  PostgreSQL: localhost:5433 ✅          │
 └─────────────────────────────────────────┘`,
       };
@@ -364,10 +447,10 @@ AI 助手:
           output: `巡查历史:
   │ 时间               │ 健康度 │ 通过 │ 警告 │ 严重 │ 触发   │
   │────────────────────│────────│──────│──────│──────│────────│
-  │ 2026-02-25 10:00   │  96%   │  18  │   2  │   0  │ 自动   │
-  │ 2026-02-25 09:30   │  95%   │  17  │   3  │   0  │ 自动   │
-  │ 2026-02-25 09:00   │  97%   │  19  │   1  │   0  │ 自动   │
-  │ 2026-02-25 08:00   │  92%   │  16  │   3  │   1  │ 手动   │
+  │ 2026-03-07 10:00   │  96%   │  18  │   2  │   0  │ 自动   │
+  │ 2026-03-07 09:30   │  95%   │  17  │   3  │   0  │ 自动   │
+  │ 2026-03-07 09:00   │  97%   │  19  │   1  │   0  │ 自动   │
+  │ 2026-03-07 08:00   │  92%   │  16  │   3  │   1  │ 手动   │
 
   共 4 条记录`,
         };
@@ -388,7 +471,7 @@ AI 助手:
         output: `生成报告...
   类型: ${parts.includes("health") ? "健康" : "性能"}报告
   格式: ${parts.includes("markdown") ? "Markdown" : "JSON"}
-  ✅ 报告已生成: ~/.cpim-cloudpivot/reports/daily/2026-02-25.json
+  ✅ 报告已生成: ~/.cpim-cloudpivot/reports/daily/2026-03-07.json
   📊 节点性能: 82.4% 平均 GPU 利用率
   📈 推理延迟: 48ms 平均 (↓5.2%)
   📁 文件大小: 156KB`,
@@ -401,13 +484,14 @@ AI 助手:
         return {
           status: "success",
           output: `系统配置:
-  patrol.interval         = 15
+  patrol.interval         = ${env("ENABLE_MOCK_MODE") ? "15" : "15"}
   patrol.auto_enabled     = true
   notification.email      = admin@cpim.local
-  ws.endpoint             = ws://localhost:3113/ws
-  db.host                 = localhost:5433
-  storage.cache_dir       = ~/.cpim-cloudpivot/cache
-  log.retention_days      = 30`,
+  ws.endpoint             = ${env("WS_ENDPOINT")}
+  ollama.base_url         = ${env("OLLAMA_BASE_URL")}
+  storage.prefix          = ${env("STORAGE_PREFIX")}
+  log.retention_days      = 30
+  提示: 更多配置请使用 env list 查看环境变量`,
         };
       }
       if (action === "get") {
@@ -415,7 +499,7 @@ AI 助手:
         const values: Record<string, string> = {
           "patrol.interval": "15",
           "notification.email": "admin@cpim.local",
-          "ws.endpoint": "ws://localhost:3113/ws",
+          "ws.endpoint": env("WS_ENDPOINT"),
         };
         return {
           status: values[key] ? "success" : "error",
@@ -436,19 +520,17 @@ AI 助手:
     return { status: "error", output: `未知子命令: ${sub}\n输入 cpim help 查看帮助` };
   }
 
-  // Non-cpim commands
+  // ── Unix-like 命令 ──
   if (base === "ls") {
     const dir = parts[1];
-    if (!dir) {
-      return { status: "success", output: "logs/  reports/  backups/  configs/  cache/" };
-    }
+    if (!dir) {return { status: "success", output: "logs/  reports/  backups/  configs/  cache/" };}
     const dirs: Record<string, string> = {
       "logs": "node/  system/",
       "logs/": "node/  system/",
       "reports": "daily/  weekly/  monthly/",
       "reports/": "daily/  weekly/  monthly/",
-      "configs": "patrol.json  alerts.json  templates.json",
-      "configs/": "patrol.json  alerts.json  templates.json",
+      "configs": "patrol.json  alerts.json  templates.json  env.json",
+      "configs/": "patrol.json  alerts.json  templates.json  env.json",
       "backups": "nodes/  models/  config/",
       "backups/": "nodes/  models/  config/",
       "cache": "queries/",
@@ -461,15 +543,9 @@ AI 助手:
       output: dirs[dir] ?? `ls: cannot access '${dir}': No such file or directory`,
     };
   }
-  if (base === "pwd") {
-    return { status: "success", output: "~/.cpim-cloudpivot" };
-  }
-  if (base === "whoami") {
-    return { status: "success", output: "admin@cpim-cloudpivot" };
-  }
-  if (base === "date") {
-    return { status: "success", output: new Date().toLocaleString("zh-CN") };
-  }
+  if (base === "pwd") {return { status: "success", output: "~/.cpim-cloudpivot" };}
+  if (base === "whoami") {return { status: "success", output: "admin@cpim-cloudpivot" };}
+  if (base === "date") {return { status: "success", output: new Date().toLocaleString("zh-CN") };}
   if (base === "uptime") {
     return {
       status: "success",
@@ -477,15 +553,17 @@ AI 助手:
     };
   }
   if (base === "neofetch" || base === "fastfetch") {
+    const sysName = env("SYSTEM_NAME");
+    const sysVer = env("SYSTEM_VERSION");
     return {
       status: "info",
       output: `        ╭──────────────────────────────╮
-   ╱╲   │  YYC³ CP-IM v3.2.0          │
-  ╱  ╲  │  ──────────────────────────  │
+   ╱╲   │  ${sysName.slice(0, 24).padEnd(24)}  │
+  ╱  ╲  │  v${sysVer.padEnd(26)}│
  ╱ ╱╲ ╲ │  OS:     macOS 15.3 (M4 Max) │
 ╱ ╱──╲ ╲│  Host:   Mac Studio (2025)   │
 ╲ ╲──╱ ╱│  Kernel: Darwin 24.3.0       │
- ╲ ╲╱ ╱ │  Shell:  cpim-cli 3.2.0      │
+ ╲ ╲╱ ╱ │  Shell:  cpim-cli ${sysVer}      │
   ╲  ╱  │  CPU:    M4 Max (16-core)    │
    ╲╱   │  GPU:    M4 Max (40-core)    │
          │  Memory: 128GB Unified       │
@@ -533,9 +611,7 @@ round-trip min/avg/max = 0.123/0.456/0.789 ms`,
 tmpfs           64G   12G   52G    19%   /dev/shm`,
     };
   }
-  if (base === "echo") {
-    return { status: "success", output: parts.slice(1).join(" ") };
-  }
+  if (base === "echo") {return { status: "success", output: parts.slice(1).join(" ") };}
   if (base === "cat") {
     const file = parts[1];
     if (file === "configs/patrol.json") {
@@ -576,22 +652,16 @@ tmpfs           64G   12G   52G    19%   /dev/shm`,
 }`,
       };
     }
+    if (file === "configs/env.json") {
+      return { status: "success", output: exportEnvConfig() };
+    }
     return { status: "error", output: file ? `cat: ${file}: No such file or directory` : "cat: missing operand" };
   }
-  if (base === "cd") {
-    return { status: "success", output: "" };
-  }
-  if (base === "history") {
-    return { status: "info", output: "Command history is maintained in session.\nUse ↑/↓ arrow keys to navigate." };
-  }
-  if (base === "exit" || base === "quit") {
-    return { status: "info", output: "Use Ctrl+` or click ✕ to close the integrated terminal." };
-  }
+  if (base === "cd") {return { status: "success", output: "" };}
+  if (base === "history") {return { status: "info", output: "Command history is maintained in session.\nUse ↑/↓ arrow keys to navigate." };}
+  if (base === "exit" || base === "quit") {return { status: "info", output: "Use Ctrl+` or click ✕ to close the integrated terminal." };}
 
-  return {
-    status: "error",
-    output: `命令未找到: ${base}\n输入 help 查看可用命令`,
-  };
+  return { status: "error", output: `命令未找到: ${base}\n输入 help 查看可用命令` };
 }
 
 // ============================================================
@@ -602,10 +672,25 @@ function getCompletions(input: string): string[] {
   const parts = input.trim().split(/\s+/);
   if (parts.length === 1) {
     const prefix = parts[0].toLowerCase();
-    return ["cpim", "help", "clear", "ls", "pwd", "whoami", "date", "uptime", "neofetch", "htop", "top", "ping", "df", "echo", "cat", "cd", "history", "goto", "open", "ai", "exit"]
+    return ["cpim", "env", "help", "clear", "ls", "pwd", "whoami", "date", "uptime", "neofetch", "htop", "top", "ping", "df", "echo", "cat", "cd", "history", "goto", "open", "ai", "exit"]
       .filter((c) => c.startsWith(prefix) && c !== prefix);
   }
   const base = parts[0].toLowerCase();
+
+  // env 命令补全
+  if (base === "env") {
+    if (parts.length === 2) {
+      const prefix = parts[1].toLowerCase();
+      return ["list", "get", "set", "reset", "export"].filter((c) => c.startsWith(prefix) && c !== prefix);
+    }
+    if (parts.length === 3 && (parts[1] === "get" || parts[1] === "set")) {
+      const prefix = parts[2].toUpperCase();
+      const cfg = getEnvConfig();
+      return Object.keys(cfg).filter((k) => k.startsWith(prefix) && k !== prefix);
+    }
+    return [];
+  }
+
   if (base === "cpim") {
     if (parts.length === 2) {
       const prefix = parts[1].toLowerCase();
@@ -623,7 +708,7 @@ function getCompletions(input: string): string[] {
   }
   if (base === "ls" || base === "cat") {
     const prefix = parts[parts.length - 1].toLowerCase();
-    const dirs = ["logs", "reports", "backups", "configs", "cache", "logs/node", "logs/system", "configs/patrol.json", "configs/alerts.json", "configs/templates.json"];
+    const dirs = ["logs", "reports", "backups", "configs", "cache", "logs/node", "logs/system", "configs/patrol.json", "configs/alerts.json", "configs/templates.json", "configs/env.json"];
     return dirs.filter((d) => d.startsWith(prefix) && d !== prefix);
   }
   return [];
@@ -634,22 +719,22 @@ function getCompletions(input: string): string[] {
 // ============================================================
 
 interface UseTerminalOptions {
-  /** 路由跳转回调 */
   onNavigate?: (path: string) => void;
-  /** 终端标识 (多 Tab 唯一 ID) */
   tabId?: string;
 }
 
 export function useTerminal(options: UseTerminalOptions = {}) {
   const { onNavigate, tabId = "main" } = options;
+  const sysName = env("SYSTEM_NAME");
+  const sysVer = env("SYSTEM_VERSION");
 
-  const [history, setHistory] = useState<TerminalHistoryEntry[]>([
+  const [history, setHistory] = useState<TerminalHistoryEntry[]>(() => [
     {
       id: `init-${tabId}`,
       input: "",
-      output: "YYC³ CloudPivot Intelli-Matrix CLI v3.2.0\n本地闭环终端 · 输入 help 查看可用命令\n提示: ai <自然语言> 可将描述转为 CLI 命令 · goto <path> 跳转页面\n",
+      output: `${sysName} CLI v${sysVer}\n本地闭环终端 · 输入 help 查看可用命令\n提示: ai <自然语言> 可将描述转为 CLI 命令 · env list 查看环境变量\n`,
       timestamp: Date.now(),
-      status: "info",
+      status: "info" as const,
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -685,12 +770,9 @@ export function useTerminal(options: UseTerminalOptions = {}) {
       };
       setHistory((prev) => [...prev, aiEntry]);
 
-      // 自动执行建议命令（延迟模拟）
       setTimeout(() => {
         const followUp = processCommand(suggestion);
-        if (followUp.navigate && onNavigate) {
-          onNavigate(followUp.navigate);
-        }
+        if (followUp.navigate && onNavigate) {onNavigate(followUp.navigate);}
         if (followUp.output !== "__CLEAR__") {
           const followEntry: TerminalHistoryEntry = {
             id: `cmd-ai-${Date.now()}`,
@@ -708,10 +790,7 @@ export function useTerminal(options: UseTerminalOptions = {}) {
       return;
     }
 
-    // ── 路由跳转 ──
-    if (result.navigate && onNavigate) {
-      onNavigate(result.navigate);
-    }
+    if (result.navigate && onNavigate) {onNavigate(result.navigate);}
 
     const entry: TerminalHistoryEntry = {
       id: `cmd-${Date.now()}`,
@@ -736,21 +815,19 @@ export function useTerminal(options: UseTerminalOptions = {}) {
   }, []);
 
   const handleHistoryNav = useCallback((direction: "up" | "down") => {
-    const hist = inputHistory.current;
-    if (hist.length === 0) {return;}
-
+    if (inputHistory.current.length === 0) {return;}
     if (direction === "up") {
-      const next = Math.min(historyIndex + 1, hist.length - 1);
-      setHistoryIndex(next);
-      setInputValue(hist[next]);
+      const newIndex = Math.min(historyIndex + 1, inputHistory.current.length - 1);
+      setHistoryIndex(newIndex);
+      setInputValue(inputHistory.current[newIndex]);
     } else {
-      if (historyIndex <= 0) {
+      const newIndex = historyIndex - 1;
+      if (newIndex < 0) {
         setHistoryIndex(-1);
         setInputValue("");
       } else {
-        const next = historyIndex - 1;
-        setHistoryIndex(next);
-        setInputValue(hist[next]);
+        setHistoryIndex(newIndex);
+        setInputValue(inputHistory.current[newIndex]);
       }
     }
   }, [historyIndex]);
@@ -758,16 +835,10 @@ export function useTerminal(options: UseTerminalOptions = {}) {
   const applyCompletion = useCallback((completion: string) => {
     const parts = inputValue.trim().split(/\s+/);
     parts[parts.length - 1] = completion;
-    const newValue = parts.join(" ") + " ";
-    setInputValue(newValue);
-    setCompletions([]);
+    const newInput = parts.join(" ") + " ";
+    setInputValue(newInput);
+    setCompletions(getCompletions(newInput));
   }, [inputValue]);
-
-  const clearHistory = useCallback(() => {
-    setHistory([]);
-    setInputValue("");
-    setCompletions([]);
-  }, []);
 
   return {
     history,
@@ -777,6 +848,5 @@ export function useTerminal(options: UseTerminalOptions = {}) {
     handleInputChange,
     handleHistoryNav,
     applyCompletion,
-    clearHistory,
   };
 }

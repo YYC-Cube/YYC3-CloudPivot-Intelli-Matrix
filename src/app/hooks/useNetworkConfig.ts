@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import type { NetworkConfig, TestStatus, NetworkConfigState } from "../types";
+import type { NetworkConfig, NetworkInterface, TestStatus, NetworkConfigState } from "../types";
 import {
   loadNetworkConfig,
   saveNetworkConfig,
@@ -18,9 +18,6 @@ import {
   generateWsUrl,
   testWebSocketConnection,
 } from "../lib/network-utils";
-
-// Re-export for backward compatibility
-export type { TestStatus, NetworkConfigState };
 
 export function useNetworkConfig() {
   const [state, setState] = useState<NetworkConfigState>({
@@ -54,7 +51,7 @@ export function useNetworkConfig() {
 
   // 启动时自动检测
   useEffect(() => {
-    detectNetwork();
+    setTimeout(() => detectNetwork(), 0);
   }, [detectNetwork]);
 
   /** 更新配置字段 */

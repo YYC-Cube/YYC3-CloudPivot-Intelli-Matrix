@@ -1,6 +1,6 @@
 /**
  * ComponentShowcase.test.tsx
- * ===============
+ * ===========================
  * ComponentShowcase 组件测试
  *
  * 覆盖范围:
@@ -11,8 +11,9 @@
  * - 筛选功能
  */
 
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 import {
   ComponentShowcase,
   STATUS_DEFINITIONS,
@@ -21,15 +22,7 @@ import {
 } from "../components/design-system/ComponentShowcase";
 
 describe("ComponentShowcase", () => {
-
-afterEach(() => {
-  cleanup();
-});
   describe("数据完整性", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应有 5 种状态定义", () => {
       expect(STATUS_DEFINITIONS.length).toBe(5);
     });
@@ -43,8 +36,8 @@ afterEach(() => {
       expect(keys).toContain("info");
     });
 
-    it("应有 27 个组件注册", () => {
-      expect(COMPONENT_REGISTRY.length).toBe(27);
+    it("应有 28 个组件注册", () => {
+      expect(COMPONENT_REGISTRY.length).toBe(28);
     });
 
     it("组件应覆盖 4 个层级", () => {
@@ -71,10 +64,6 @@ afterEach(() => {
   });
 
   describe("渲染", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应渲染主容器", () => {
       render(<ComponentShowcase />);
       expect(screen.getByTestId("component-showcase")).toBeInTheDocument();
@@ -114,10 +103,6 @@ afterEach(() => {
   });
 
   describe("筛选", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("筛选 atom 应只显示原子组件", () => {
       render(<ComponentShowcase />);
       fireEvent.click(screen.getByTestId("showcase-tab-components"));

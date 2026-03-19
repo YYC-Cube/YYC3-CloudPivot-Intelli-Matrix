@@ -1,18 +1,21 @@
 /**
  * BottomNav.test.tsx
- * ===========
- * BottomNav 组件 - 渲染测试
+ * ===================
+ * BottomNav 组件 - 4+1 "更多" 模式测试
  *
  * 覆盖范围:
- * - 6 个导航项渲染
- * - 当前路由高亮
+ * - 4 核心 Tab 渲染 (监控/跟进/操作/巡查)
+ * - "更多" 按钮渲染
  * - 导航点击跳转
+ * - 当前路由高亮
+ * - "更多" 抽屉打开/关闭
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-const mockNavigate = vi.fn() as any;
+const mockNavigate = vi.fn();
 let mockPathname = "/";
 
 vi.mock("react-router", () => ({
@@ -20,21 +23,7 @@ vi.mock("react-router", () => ({
   useLocation: () => ({ pathname: mockPathname }),
 }));
 
-const mockT = (key: string) => {
-  const translations: Record<string, string> = {
-    "bottomNav.monitor": "监控",
-    "bottomNav.followUp": "跟进",
-    "bottomNav.operations": "操作",
-    "bottomNav.patrol": "巡查",
-  };
-  return translations[key] || key;
-};
-
-vi.mock("../hooks/useI18n", () => ({
-  useI18n: () => ({ t: mockT }),
-}));
-
-import BottomNav from "../components/BottomNav";
+import { BottomNav } from "../components/BottomNav";
 
 describe("BottomNav", () => {
   beforeEach(() => {
@@ -42,20 +31,18 @@ describe("BottomNav", () => {
     mockPathname = "/";
   });
 
-  afterEach(() => {
-    cleanup();
-  });
-
   describe("基础渲染", () => {
-    it("应渲染 4 个导航项", () => {
+    it("应渲染 4 个核心 Tab + 1 个更多按钮", () => {
       render(<BottomNav />);
+      // 4 primary + 1 more = 5 buttons
       expect(screen.getByText("监控")).toBeInTheDocument();
       expect(screen.getByText("跟进")).toBeInTheDocument();
-      expect(screen.getByText("巡查")).toBeInTheDocument();
       expect(screen.getByText("操作")).toBeInTheDocument();
+      expect(screen.getByText("巡查")).toBeInTheDocument();
+      expect(screen.getByText("更多")).toBeInTheDocument();
     });
 
-    it("应渲染 5 个按钮（4 个导航 + 1 个更多）", () => {
+    it("应渲染 5 个按钮 (4 Tab + 更多)", () => {
       render(<BottomNav />);
       expect(screen.getAllByRole("button").length).toBe(5);
     });
@@ -93,21 +80,32 @@ describe("BottomNav", () => {
       mockPathname = "/";
       render(<BottomNav />);
       const btn = screen.getByText("监控").closest("button")!;
-      expect(btn.innerHTML).toContain("text-[#00d4ff]");
+      expect(btn.className).toContain("text-[#00d4ff]");
     });
 
     it("跟进页时跟进按钮应有激活样式", () => {
       mockPathname = "/follow-up";
       render(<BottomNav />);
       const btn = screen.getByText("跟进").closest("button")!;
-      expect(btn.innerHTML).toContain("text-[#00d4ff]");
+      expect(btn.className).toContain("text-[#00d4ff]");
     });
 
-    it("非活跃按钮应有降低透明度样式", () => {
-      mockPathname = "/";
+    it("非核心页面时更多按钮应有激活样式", () => {
+      mockPathname = "/files";
       render(<BottomNav />);
-      const btn = screen.getByText("巡查").closest("button")!;
-      expect(btn.innerHTML).toContain("text-[rgba(0,212,255,0.25)]");
+      const moreBtn = screen.getByText("更多").closest("button")!;
+      expect(moreBtn.className).toContain("text-[#00d4ff]");
+    });
+  });
+
+  describe("更多抽屉", () => {
+    it("点击更多应打开抽屉", () => {
+      render(<BottomNav />);
+      fireEvent.click(screen.getByText("更多"));
+      // 抽屉中应有分类导航项
+      // The drawer contains items like file manager, settings, etc.
+      // After opening, close button (X) should appear
+      expect(screen.getByText("信息")).toBeInTheDocument();
     });
   });
 });

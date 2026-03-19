@@ -1,6 +1,6 @@
 /**
  * OperationTemplate.test.tsx
- * ===============
+ * ===========================
  * OperationTemplate 组件 - 操作模板管理测试
  *
  * 覆盖范围:
@@ -11,9 +11,10 @@
  * - 空状态
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import OperationTemplate from "../components/OperationTemplate";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { OperationTemplate } from "../components/OperationTemplate";
 import type { OperationTemplateItem } from "../types";
 
 const mockTemplates: OperationTemplateItem[] = [
@@ -37,18 +38,14 @@ const mockTemplates: OperationTemplateItem[] = [
 ];
 
 describe("OperationTemplate", () => {
-  let onRunTemplate: any;
-  let onDeleteTemplate: any;
-  let onAddTemplate: any;
+  let onRunTemplate: Mock;
+  let onDeleteTemplate: Mock;
+  let onAddTemplate: Mock;
 
   beforeEach(() => {
     onRunTemplate = vi.fn();
     onDeleteTemplate = vi.fn();
     onAddTemplate = vi.fn();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -60,29 +57,29 @@ describe("OperationTemplate", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      expect(screen.getAllByText("操作模板")[0]).toBeInTheDocument();
+      expect(screen.getByText("操作模板")).toBeInTheDocument();
     });
 
     it("应渲染模板数量", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      expect(screen.getAllByText("(2)")[0]).toBeInTheDocument();
+      expect(screen.getByText("(2)")).toBeInTheDocument();
     });
 
     it("应渲染所有模板名称", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      expect(screen.getAllByText("模型部署标准流程")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("节点故障排查")[0]).toBeInTheDocument();
+      expect(screen.getByText("模型部署标准流程")).toBeInTheDocument();
+      expect(screen.getByText("节点故障排查")).toBeInTheDocument();
     });
 
     it("应有新建模板按钮", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      expect(screen.getAllByTestId("add-template-btn")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("add-template-btn")).toBeInTheDocument();
     });
   });
 
@@ -95,7 +92,7 @@ describe("OperationTemplate", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      fireEvent.click(screen.getAllByTestId("run-template-tpl1")[0]);
+      fireEvent.click(screen.getByTestId("run-template-tpl1"));
       expect(onRunTemplate).toHaveBeenCalledWith("tpl1");
     });
 
@@ -103,7 +100,7 @@ describe("OperationTemplate", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      fireEvent.click(screen.getAllByTestId("delete-template-tpl2")[0]);
+      fireEvent.click(screen.getByTestId("delete-template-tpl2"));
       expect(onDeleteTemplate).toHaveBeenCalledWith("tpl2");
     });
   });
@@ -117,19 +114,19 @@ describe("OperationTemplate", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      fireEvent.click(screen.getAllByTestId("add-template-btn")[0]);
-      expect(screen.getAllByTestId("template-name-input")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("add-template-btn"));
+      expect(screen.getByTestId("template-name-input")).toBeInTheDocument();
     });
 
     it("填写名称后点击创建应触发 onAddTemplate", () => {
       render(
         <OperationTemplate templates={mockTemplates} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      fireEvent.click(screen.getAllByTestId("add-template-btn")[0]);
+      fireEvent.click(screen.getByTestId("add-template-btn"));
 
-      const nameInput = screen.getAllByTestId("template-name-input")[0];
+      const nameInput = screen.getByTestId("template-name-input");
       fireEvent.change(nameInput, { target: { value: "新模板" } });
-      fireEvent.click(screen.getAllByTestId("create-template-btn")[0]);
+      fireEvent.click(screen.getByTestId("create-template-btn"));
 
       expect(onAddTemplate).toHaveBeenCalledWith("新模板", "", "system", []);
     });
@@ -144,7 +141,7 @@ describe("OperationTemplate", () => {
       render(
         <OperationTemplate templates={[]} onRunTemplate={onRunTemplate} onDeleteTemplate={onDeleteTemplate} onAddTemplate={onAddTemplate} />
       );
-      expect(screen.getAllByText("暂无操作模板")[0]).toBeInTheDocument();
+      expect(screen.getByText("暂无操作模板")).toBeInTheDocument();
     });
   });
 });

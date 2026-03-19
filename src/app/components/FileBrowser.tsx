@@ -1,12 +1,15 @@
 /**
  * FileBrowser.tsx
- * ============
+ * ================
  * 文件浏览器组件 · 浏览 ~/.yyc3-cloudpivot/ 目录结构
  */
 
 import React from "react";
-import { Folder, FileText, FileJson, FileCode, ChevronRight, ArrowUp, Home,  } from "lucide-react";
-import GlassCard from "./GlassCard";
+import {
+  Folder, FileText, FileJson, FileCode, ChevronRight,
+  ArrowUp, Home, RefreshCw,
+} from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import type { FileItem } from "../types";
 
 const extIcon: Record<string, React.ElementType> = {
@@ -36,7 +39,7 @@ interface FileBrowserProps {
   canGoUp: boolean;
 }
 
-export default function FileBrowser({
+export function FileBrowser({
   items, breadcrumbs, onSelect, onNavigate, onGoUp, formatSize, canGoUp,
 }: FileBrowserProps) {
   return (

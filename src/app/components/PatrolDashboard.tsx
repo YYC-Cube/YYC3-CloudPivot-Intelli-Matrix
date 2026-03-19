@@ -1,6 +1,6 @@
 /**
  * PatrolDashboard.tsx
- * ================
+ * =====================
  * 巡查模式主面板
  * 路由: /patrol
  *
@@ -12,15 +12,15 @@ import {
   Play, Pause, Clock, CheckCircle, AlertTriangle, XCircle,
   Settings, Calendar, Timer, Loader2, Shield,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import PatrolScheduler from "./PatrolScheduler";
-import PatrolReport from "./PatrolReport";
-import PatrolHistory from "./PatrolHistory";
+import { GlassCard } from "./GlassCard";
+import { PatrolScheduler } from "./PatrolScheduler";
+import { PatrolReport } from "./PatrolReport";
+import { PatrolHistory } from "./PatrolHistory";
 import { usePatrol } from "../hooks/usePatrol";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
-export default function PatrolDashboard() {
+export function PatrolDashboard() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -43,7 +43,7 @@ export default function PatrolDashboard() {
 
   return (
     <div className="space-y-4">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -87,7 +87,7 @@ export default function PatrolDashboard() {
         </div>
       </div>
 
-      {/* ====== Scheduler Panel (toggle) ====== */}
+      {/* ======== Scheduler Panel (toggle) ======== */}
       {showScheduler && (
         <PatrolScheduler
           schedule={schedule}
@@ -96,7 +96,7 @@ export default function PatrolDashboard() {
         />
       )}
 
-      {/* ====== Progress Bar (when running) ====== */}
+      {/* ======== Progress Bar (when running) ======== */}
       {patrolStatus === "running" && (
         <GlassCard className="p-4">
           <div className="flex items-center gap-3 mb-2">
@@ -118,7 +118,7 @@ export default function PatrolDashboard() {
         </GlassCard>
       )}
 
-      {/* ====== Stats Overview ====== */}
+      {/* ======== Stats Overview ======== */}
       <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-4"} gap-2`}>
         <StatCard
           label={t("patrol.nodeHealth")}
@@ -146,7 +146,7 @@ export default function PatrolDashboard() {
         />
       </div>
 
-      {/* ====== Schedule Status Strip ====== */}
+      {/* ======== Schedule Status Strip ======== */}
       <GlassCard className="p-3">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div className="flex items-center gap-4 flex-wrap">
@@ -185,19 +185,19 @@ export default function PatrolDashboard() {
         </div>
       </GlassCard>
 
-      {/* ====== Current Result Detail ====== */}
+      {/* ======== Current Result Detail ======== */}
       {currentResult && currentResult.checks.length > 0 && (
         <PatrolReport result={currentResult} embedded />
       )}
 
-      {/* ====== History ====== */}
+      {/* ======== History ======== */}
       <PatrolHistory
         history={history}
         onViewReport={viewReport}
         isMobile={isMobile}
       />
 
-      {/* ====== Report Modal ====== */}
+      {/* ======== Report Modal ======== */}
       {selectedReport && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={closeReport} />

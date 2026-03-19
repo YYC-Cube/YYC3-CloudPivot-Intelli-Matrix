@@ -1,6 +1,6 @@
 /**
  * LogViewer.tsx
- * ===========
+ * ==============
  * 日志查看器组件 · 筛选 / 搜索 / 实时日志流
  */
 
@@ -8,7 +8,7 @@ import React from "react";
 import {
   Search, Filter, Bug, Info, AlertTriangle, XCircle, Skull,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import type { LogEntry, LogLevel } from "../types";
 
 const levelConfig: Record<LogLevel, { icon: React.ElementType; color: string; label: string }> = {
@@ -33,7 +33,7 @@ interface LogViewerProps {
   isMobile?: boolean;
 }
 
-export default function LogViewer({
+export function LogViewer({
   logs, levelFilter, sourceFilter, searchQuery, sources,
   onLevelChange, onSourceChange, onSearchChange, isMobile = false,
 }: LogViewerProps) {
@@ -121,7 +121,7 @@ export default function LogViewer({
         {logs.length > 0 ? (
           logs.map((entry) => {
             const cfg = levelConfig[entry.level];
-             cfg.icon;
+            const LevelIcon = cfg.icon;
 
             return (
               <div

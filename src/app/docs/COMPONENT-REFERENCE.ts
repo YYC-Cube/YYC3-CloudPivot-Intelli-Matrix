@@ -31,7 +31,7 @@
  * ┌─────────────────────────────────────────────────────────────┐
  * │  App.tsx (入口)                                              │
  * │  ├── ErrorBoundary (页面级错误边界)                           │
- * │  ├── AuthContext.Provider                                    │
+ * │  ├── AuthContext.Provider (from lib/authContext.ts)           │
  * │  │   └── RouterProvider → routes.ts                          │
  * │  │       ── Layout.tsx                                      │
  * │  │           ├── TopBar (顶栏)                               │

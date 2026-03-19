@@ -9,18 +9,22 @@
 
 import { useState, useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import { createLocalStore } from "../lib/create-local-store";
 import type {
   DetectedPattern,
   AIRecommendation,
+  AIAnalysisResult,
+  AnomalyPatternType,
   PatternSeverity,
 } from "../types";
+
 // ============================================================
 // Mock 模式检测数据
 // ============================================================
 
 const now = Date.now();
 
-const MOCK_PATTERNS: DetectedPattern[] = [
+const DEFAULT_PATTERNS: DetectedPattern[] = [
   {
     id: "pat-1",
     type: "latency_spike",
@@ -83,7 +87,7 @@ const MOCK_PATTERNS: DetectedPattern[] = [
   },
 ];
 
-const MOCK_RECOMMENDATIONS: AIRecommendation[] = [
+const DEFAULT_RECOMMENDATIONS: AIRecommendation[] = [
   {
     id: "rec-1",
     patternId: "pat-1",
@@ -158,13 +162,17 @@ const MOCK_RECOMMENDATIONS: AIRecommendation[] = [
   },
 ];
 
+// localStorage stores
+const patternStore = createLocalStore<DetectedPattern>("yyc3_ai_patterns", DEFAULT_PATTERNS, "pat");
+const recommendStore = createLocalStore<AIRecommendation>("yyc3_ai_recommendations", DEFAULT_RECOMMENDATIONS, "rec");
+
 // ============================================================
 // Hook
 // ============================================================
 
 export function useAISuggestion() {
-  const [patterns, setPatterns] = useState<DetectedPattern[]>(MOCK_PATTERNS);
-  const [recommendations, setRecommendations] = useState<AIRecommendation[]>(MOCK_RECOMMENDATIONS);
+  const [patterns, setPatterns] = useState<DetectedPattern[]>(() => patternStore.getAll());
+  const [recommendations, setRecommendations] = useState<AIRecommendation[]>(() => recommendStore.getAll());
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [lastAnalyzedAt, setLastAnalyzedAt] = useState<number>(now - 5 * 60000);
   const [enabledAutoSuggestion, setEnabledAutoSuggestion] = useState(true);
@@ -243,7 +251,7 @@ export function useAISuggestion() {
   const dismissPattern = useCallback((patternId: string) => {
     setPatterns((prev) => prev.filter((p) => p.id !== patternId));
     setRecommendations((prev) => prev.filter((r) => r.patternId !== patternId));
-    toast.info("异常模式已忽略");
+    toast.info("异常模式��忽略");
   }, []);
 
   return {

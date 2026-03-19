@@ -1,0 +1,5630 @@
+[
+  {
+    "timestamp": "2026-03-06T19:07:27.936Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/001-CP-IM-项目总览索引-项目总览手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.938Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/002-CP-IM-项目总览索引-文档架构导航.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.939Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/003-CP-IM-项目总览索引-快速开始指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.940Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/004-CP-IM-项目总览索引-核心概念词典.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.940Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/005-CP-IM-项目总览索引-版本更新日志.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.942Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.943Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "00-YYC3-CP-IM-项目总览-目录索引/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.944Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "001-CP-IM-文档体系-最终审核报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.946Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/001-CP-IM-启动规划阶段-项目章程与愿景.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.947Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/002-CP-IM-启动规划阶段-项目范围说明书.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.948Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/003-CP-IM-启动规划阶段-项目里程碑计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.949Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/004-CP-IM-启动规划阶段-项目资源规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.949Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/005-CP-IM-启动规划阶段-干系人管理计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.950Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.951Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.952Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/001-CP-IM-启动规划阶段-业务需求分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.953Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/002-CP-IM-启动规划阶段-用户需求调研报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.954Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/003-CP-IM-启动规划阶段-产品需求文档(PRD).md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.954Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/004-CP-IM-启动规划阶段-需求优先级矩阵.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.955Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.956Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.957Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/001-CP-IM-启动规划阶段-技术可行性分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.958Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/002-CP-IM-启动规划阶段-经济可行性分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.958Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/003-CP-IM-启动规划阶段-市场可行性分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.959Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/004-CP-IM-启动规划阶段-操作可行性分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.959Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.960Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.960Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/001-CP-IM-启动规划阶段-项目初期风险评估.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.961Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/002-CP-IM-启动规划阶段-风险应对预案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.961Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/003-CP-IM-启动规划阶段-项目预算与成本控制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.962Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/004-CP-IM-启动规划阶段-项目成功标准定义.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.962Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.963Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.963Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.963Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "01-YYC3-CP-IM-项目规划-启动阶段/文档体系验证报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.964Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/001-CP-IM-项目设计阶段-系统架构总览图.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.965Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/002-CP-IM-项目设计阶段-九层功能架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.965Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/003-CP-IM-项目设计阶段-技术选型论证报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.965Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/004-CP-IM-项目设计阶段-微服务架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.965Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/005-CP-IM-项目设计阶段-网络拓扑图.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.966Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/006-CP-IM-项目设计阶段-高可用设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.966Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.966Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.967Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/001-CP-IM-项目设计阶段-基础设置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.968Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/002-CP-IM-项目设计阶段-账户管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.968Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/003-CP-IM-项目设计阶段-AI配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.969Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/004-CP-IM-项目设计阶段-开发配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.969Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/005-CP-IM-项目设计阶段-数据管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.970Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/006-CP-IM-项目设计阶段-性能配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.971Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/007-CP-IM-项目设计阶段-安全配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.971Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/008-CP-IM-项目设计阶段-集成配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.972Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/009-CP-IM-项目设计阶段-日志配置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.972Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/010-CP-IM-项目设计阶段-高级设置-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.973Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.973Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.974Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.974Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/001-CP-IM-项目设计阶段-数据流程设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.975Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/002-CP-IM-项目设计阶段-数据库ER图.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.975Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/003-CP-IM-项目设计阶段-表结构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.976Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/004-CP-IM-项目设计阶段-索引设计规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.976Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/005-CP-IM-项目设计阶段-数据字典.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.976Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/006-CP-IM-项目设计阶段-数据治理设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.976Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/007-CP-IM-项目设计阶段-数据流转图.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.977Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.977Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.978Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/001-CP-IM-项目设计阶段-接口规范总则.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.978Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/002-CP-IM-项目设计阶段-RESTful_API设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.978Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/003-CP-IM-项目设计阶段-WebSocket协议设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.978Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/004-CP-IM-项目设计阶段-GraphQL接口设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.979Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/005-CP-IM-项目设计阶段-内部微服务API设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.979Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/006-CP-IM-项目设计阶段-外部系统集成接口.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.979Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.979Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.980Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/001-CP-IM-项目设计阶段-安全架构总览.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.980Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/002-CP-IM-项目设计阶段-分层式安全布局方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.981Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/003-CP-IM-项目设计阶段-网络安全设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.981Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/004-CP-IM-项目设计阶段-应用安全设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.982Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/005-CP-IM-项目设计阶段-数据安全设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.982Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/006-CP-IM-项目设计阶段-权限管理设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.983Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/007-CP-IM-项目设计阶段-审计日志设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.983Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.984Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.984Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/001-CP-IM-项目设计阶段-性能目标定义.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.985Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/002-CP-IM-项目设计阶段-性能架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.985Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/003-CP-IM-项目设计阶段-缓存策略设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.985Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/004-CP-IM-项目设计阶段-数据库性能设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.986Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/005-CP-IM-项目设计阶段-负载均衡设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.986Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.987Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.987Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/001-CP-IM-项目设计阶段-UI_UX设计规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.988Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/002-CP-IM-项目设计阶段-前端组件设计规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.989Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/003-CP-IM-项目设计阶段-后端服务设计规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.989Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/004-CP-IM-项目设计阶段-AI模型设计规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.990Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/005-CP-IM-项目设计阶段-文档模板库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.991Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/006-CP-IM-项目设计阶段-设计评审checklist.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.992Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.992Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.993Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "02-YYC3-CP-IM-项目规划-设计阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.994Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/001-CP-IM-开发实施阶段-开发环境搭建手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.995Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/002-CP-IM-开发实施阶段-多环境配置规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.995Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/003-CP-IM-开发实施阶段-Docker容器配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.997Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/004-CP-IM-开发实施阶段-开发工具链说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.997Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/005-CP-IM-开发实施阶段-本地调试指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.997Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/006-CP-IM-开发实施阶段-常见问题解决方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.998Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/BUILD_FIX_REPORT.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.998Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/BUILD_OPTIMIZATION.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.998Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.998Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:27.999Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/001-CP-IM-开发实施阶段-React开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.000Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/002-CP-IM-开发实施阶段-TypeScript编码规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.000Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/003-CP-IM-开发实施阶段-TailwindCSS使用规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.000Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/004-CP-IM-开发实施阶段-组件开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.001Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/005-CP-IM-开发实施阶段-状态管理规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.001Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/006-CP-IM-开发实施阶段-前端性能优化指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.001Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.002Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.002Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/001-CP-IM-开发实施阶段-Node.js开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.002Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/002-CP-IM-开发实施阶段-TypeScript后端规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.002Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/003-CP-IM-开发实施阶段-RESTful_API开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.003Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/004-CP-IM-开发实施阶段-微服务开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.003Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/005-CP-IM-开发实施阶段-错误处理规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.003Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/006-CP-IM-开发实施阶段-日志记录规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.003Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.004Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.004Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/001-CP-IM-开发实施阶段-AI模型集成规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.004Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/002-CP-IM-开发实施阶段-提示工程规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.005Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/003-CP-IM-开发实施阶段-Agent开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.006Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/004-CP-IM-开发实施阶段-向量数据库使用规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.006Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/005-CP-IM-开发实施阶段-AI服务编排规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.006Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.007Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.007Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.008Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/001-CP-IM-开发实施阶段-Git工作流规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.009Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/002-CP-IM-开发实施阶段-代码提交规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.009Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/003-CP-IM-开发实施阶段-分支管理策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.010Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/004-CP-IM-开发实施阶段-代码注释规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.010Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.010Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.011Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/001-CP-IM-开发实施阶段-类型定义文件.d.ts.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.011Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/002-CP-IM-开发实施阶段-枚举与常量定义.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.012Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/003-CP-IM-开发实施阶段-配置参数说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.012Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/004-CP-IM-开发实施阶段-依赖管理说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.012Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/005-CP-IM-开发实施阶段-技术债务管理文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.013Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/006-CP-IM-开发实施阶段-第三方库使用说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.013Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.013Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.014Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/001-CP-IM-开发实施阶段-接口清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.014Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/002-CP-IM-开发实施阶段-Swagger_UI配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.015Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/003-CP-IM-开发实施阶段-GraphQL_Schema文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.015Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/004-CP-IM-开发实施阶段-WebSocket协议文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.016Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/005-CP-IM-开发实施阶段-接口测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.016Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/006-CP-IM-开发实施阶段-接口变更记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.017Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.017Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.018Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/001-CP-IM-开发实施阶段-自动化构建脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.018Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/002-CP-IM-开发实施阶段-数据库迁移脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.018Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/003-CP-IM-开发实施阶段-测试数据生成脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.019Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/004-CP-IM-开发实施阶段-代码生成脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.019Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/005-CP-IM-开发实施阶段-开发辅助工具.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.019Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/006-CP-IM-开发实施阶段-脚本使用说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.020Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/0305-03-脚本整理执行报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.020Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.021Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.021Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/001-CP-IM-开发实施阶段-前后端联调手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.021Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/002-CP-IM-开发实施阶段-微服务联调手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.022Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/003-CP-IM-开发实施阶段-AI服务集成手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.022Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/004-CP-IM-开发实施阶段-第三方服务集成.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.022Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/005-CP-IM-开发实施阶段-数据同步机制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.022Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/006-CP-IM-开发实施阶段-桌面应用封装操作指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.023Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/006-CP-IM-开发实施阶段-集成测试数据.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.023Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/007-CP-IM-开发实施阶段-桌面应用后续实施计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.024Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/008-CP-IM-开发实施阶段-桌面应用封装执行总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.024Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/009-CP-IM-开发实施阶段-应用启动问题诊断与修复总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.024Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/010-CP-IM-开发实施阶段-应用架构审核与核心问题修复报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.025Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/011-CP-IM-开发实施阶段-应用启动问题核心修复方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.025Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/012-CP-IM-开发实施阶段-React-Router-404错误修复报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.025Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/013-CP-IM-开发实施阶段-应用启动问题完整修复总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.026Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/014-CP-IM-开发实施阶段-桌面应用最终封装报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.026Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.026Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.027Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/001-CP-IM-开发实施阶段-代码评审记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.027Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/002-CP-IM-开发实施阶段-技术难题解决方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.027Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/003-CP-IM-开发实施阶段-开发周报模板.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.028Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/004-CP-IM-开发实施阶段-里程碑完成报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.028Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/005-CP-IM-开发实施阶段-技术分享记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.029Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.029Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.030Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "03-YYC3-CP-IM-项目开发-实施阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.031Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/001-CP-IM-测试与审核阶段-测试总计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.032Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/002-CP-IM-测试与审核阶段-测试策略文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.032Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/003-CP-IM-测试与审核阶段-测试环境管理规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.033Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/004-CP-IM-测试与审核阶段-测试数据管理规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.033Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/005-CP-IM-测试与审核阶段-测试准入准出标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.033Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.033Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.034Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/001-CP-IM-测试与审核阶段-前端单元测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.034Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/002-CP-IM-测试与审核阶段-后端单元测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.035Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/003-CP-IM-测试与审核阶段-AI引擎单元测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.035Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/004-CP-IM-测试与审核阶段-工具函数测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.035Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.037Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.037Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/001-CP-IM-测试与审核阶段-API集成测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.038Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/002-CP-IM-测试与审核阶段-微服务集成测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.041Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/003-CP-IM-测试与审核阶段-数据库集成测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.042Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/004-CP-IM-测试与审核阶段-第三方服务集成测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.043Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.043Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.044Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/001-CP-IM-测试与审核阶段-主仪表板功能测试.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.044Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/002-CP-IM-测试与审核阶段-CP-IM功能测试.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.044Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/003-CP-IM-测试与审核阶段-学习中心功能测试.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.045Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/004-CP-IM-测试与审核阶段-项目管理功能测试.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.045Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/005-CP-IM-测试与审核阶段-系统设置功能测试.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.045Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.045Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.046Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/001-CP-IM-测试与审核阶段-负载测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.046Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/002-CP-IM-测试与审核阶段-压力测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.046Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/003-CP-IM-测试与审核阶段-并发测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.047Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/004-CP-IM-测试与审核阶段-稳定性测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.047Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.047Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.048Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/001-CP-IM-测试与审核阶段-渗透测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.048Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/002-CP-IM-测试与审核阶段-漏洞扫描用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.048Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/003-CP-IM-测试与审核阶段-权限测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.049Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/004-CP-IM-测试与审核阶段-数据安全测试用例.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.049Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.049Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.049Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.050Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/001-CP-IM-测试与审核阶段-测试执行计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.050Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/002-CP-IM-测试与审核阶段-测试环境部署指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.050Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/003-CP-IM-测试与审核阶段-自动化测试脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.050Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/004-CP-IM-测试与审核阶段-手动测试检查表.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.051Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/005-CP-IM-测试与审核阶段-测试数据准备指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.051Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/0403-01-测试覆盖率报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.051Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.052Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.052Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/001-CP-IM-测试与审核阶段-单元测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.052Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/002-CP-IM-测试与审核阶段-集成测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.053Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/003-CP-IM-测试与审核阶段-功能测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.053Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/004-CP-IM-测试与审核阶段-性能测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.053Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/005-CP-IM-测试与审核阶段-安全测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.054Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/006-CP-IM-测试与审核阶段-回归测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.054Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/007-CP-IM-测试与审核阶段-UAT验收测试报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.054Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.054Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.055Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/001-CP-IM-测试与审核阶段-缺陷管理流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.055Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/002-CP-IM-测试与审核阶段-缺陷分类标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.055Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/003-CP-IM-测试与审核阶段-缺陷跟踪记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.056Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/004-CP-IM-测试与审核阶段-缺陷分析报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.056Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/005-CP-IM-测试与审核阶段-缺陷修复验证.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.056Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.057Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.057Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/001-CP-IM-测试与审核阶段-代码质量审核标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.057Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/002-CP-IM-测试与审核阶段-设计审核checklist.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.058Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/003-CP-IM-测试与审核阶段-测试审核报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.058Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/004-CP-IM-测试与审核阶段-交付物审核记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.059Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/005-CP-IM-测试与审核阶段-合规性审核文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.059Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/006-CP-IM-测试与审核阶段-质量门禁标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.059Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/0406-01-多维度审核分析报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.060Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/0406-02-审核检测总报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.060Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.060Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.061Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "04-YYC3-CP-IM-项目测试-审核阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.061Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/001-CP-IM-交付与部署阶段-部署环境规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.062Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/002-CP-IM-交付与部署阶段-服务器配置清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.062Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/003-CP-IM-交付与部署阶段-网络配置规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.062Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/004-CP-IM-交付与部署阶段-域名与SSL证书.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.062Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/005-CP-IM-交付与部署阶段-监控系统部署.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.063Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.063Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.063Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/001-CP-IM-交付与部署阶段-Docker部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.064Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/002-CP-IM-交付与部署阶段-Kubernetes部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.064Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/003-CP-IM-交付与部署阶段-数据库部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.065Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/004-CP-IM-交付与部署阶段-中间件部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.065Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/005-CP-IM-交付与部署阶段-前端应用部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.065Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/006-CP-IM-交付与部署阶段-AI服务部署手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.066Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/007-CP-IM-交付与部署阶段-本地部署指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.066Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.066Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.067Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/001-CP-IM-交付与部署阶段-CI_CD流水线配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.067Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/002-CP-IM-交付与部署阶段-自动化发布流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.067Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/003-CP-IM-交付与部署阶段-灰度发布方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.068Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/004-CP-IM-交付与部署阶段-蓝绿部署方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.068Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/005-CP-IM-交付与部署阶段-回滚方案设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.068Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/006-CP-IM-交付与部署阶段-发布检查清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.069Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.069Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.070Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/001-CP-IM-交付与部署阶段-数据迁移方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.070Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/002-CP-IM-交付与部署阶段-数据库迁移脚本.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.070Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/003-CP-IM-交付与部署阶段-数据清洗规则.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.070Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/004-CP-IM-交付与部署阶段-数据一致性校验.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.071Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/005-CP-IM-交付与部署阶段-迁移回滚方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.071Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.071Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.072Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/001-CP-IM-交付与部署阶段-上线割接方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.072Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/002-CP-IM-交付与部署阶段-割接时间窗口计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.072Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/003-CP-IM-交付与部署阶段-割接应急预案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.073Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/004-CP-IM-交付与部署阶段-割接演练报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.073Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/005-CP-IM-交付与部署阶段-割接后验证方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.073Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.073Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.074Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/001-CP-IM-交付与部署阶段-产品使用手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.074Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/002-CP-IM-交付与部署阶段-管理员操作手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.074Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/003-CP-IM-交付与部署阶段-快速开始指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.075Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/004-CP-IM-交付与部署阶段-常见问题FAQ.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.075Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/005-CP-IM-交付与部署阶段-新功能说明文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.075Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/006-CP-IM-交付与部署阶段-视频教程指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.075Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.075Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.076Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/001-CP-IM-交付与部署阶段-交付物清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.076Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/002-CP-IM-交付与部署阶段-交付验收标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.076Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/003-CP-IM-交付与部署阶段-SLA服务等级协议.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.077Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/004-CP-IM-交付与部署阶段-技术支持协议.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.077Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/005-CP-IM-交付与部署阶段-项目验收报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.077Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/006-CP-IM-交付与部署阶段-知识转移文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.078Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.078Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.078Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "05-YYC3-CP-IM-项目部署-文档闭环/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.079Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/001-CP-IM-运营与维护阶段-监控指标体系.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.079Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/002-CP-IM-运营与维护阶段-告警规则配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.079Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/003-CP-IM-运营与维护阶段-监控面板配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.079Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/004-CP-IM-运营与维护阶段-日志收集配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.080Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/005-CP-IM-运营与维护阶段-性能监控配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.080Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/006-CP-IM-运营与维护阶段-业务监控配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.080Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.080Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.081Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/001-CP-IM-运营与维护阶段-日常运维操作手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.082Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/002-CP-IM-运营与维护阶段-故障处理手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.082Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/003-CP-IM-运营与维护阶段-应急响应预案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.082Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/004-CP-IM-运营与维护阶段-备份与恢复手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.082Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/005-CP-IM-运营与维护阶段-容量管理手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.083Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/006-CP-IM-运营与维护阶段-安全运维手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.083Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.083Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.084Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/001-CP-IM-运营与维护阶段-问题管理流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.084Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/002-CP-IM-运营与维护阶段-常见问题解决方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.084Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/003-CP-IM-运营与维护阶段-故障根因分析模板.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.084Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/004-CP-IM-运营与维护阶段-问题升级机制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.085Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/005-CP-IM-运营与维护阶段-用户反馈处理流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.085Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.085Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.085Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/001-CP-IM-运营与维护阶段-性能监控报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.086Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/002-CP-IM-运营与维护阶段-性能瓶颈分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.086Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/003-CP-IM-运营与维护阶段-优化方案设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.086Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/004-CP-IM-运营与维护阶段-优化效果评估.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.086Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/005-CP-IM-运营与维护阶段-容量规划报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.087Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.087Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/OPTIMIZATION_COMPLETE.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.088Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/PERFORMANCE_REPORT.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.088Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.089Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/001-CP-IM-运营与维护阶段-版本发布计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.089Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/002-CP-IM-运营与维护阶段-版本发布checklist.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.089Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/003-CP-IM-运营与维护阶段-版本回滚方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.090Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/004-CP-IM-运营与维护阶段-版本兼容性说明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.091Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/005-CP-IM-运营与维护阶段-版本发布复盘报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.091Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.092Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.093Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/001-CP-IM-运营与维护阶段-运营数据指标.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.093Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/002-CP-IM-运营与维护阶段-用户行为分析报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.094Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/003-CP-IM-运营与维护阶段-业务数据分析报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.094Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/004-CP-IM-运营与维护阶段-系统使用率报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.094Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/005-CP-IM-运营与维护阶段-ROI分析报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.095Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/006-CP-IM-运营与维护阶段-运营改进建议.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.095Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.095Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.096Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/001-CP-IM-运营与维护阶段-迭代规划文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.096Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/002-CP-IM-运营与维护阶段-技术债务管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.096Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/003-CP-IM-运营与维护阶段-架构演进规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.096Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/004-CP-IM-运营与维护阶段-最佳实践总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.097Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/005-CP-IM-运营与维护阶段-经验教训复盘.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.097Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/006-CP-IM-运营与维护阶段-团队能力提升计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.097Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.097Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.098Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "06-YYC3-CP-IM-项目运营-维护阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.098Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/001-CP-IM-合规与安全保障-数据合规政策.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.098Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/002-CP-IM-合规与安全保障-隐私保护协议.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.099Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/003-CP-IM-合规与安全保障-等保测评文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.099Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/004-CP-IM-合规与安全保障-合规自查报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.099Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/005-CP-IM-合规与安全保障-法律法规遵循声明.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.100Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/006-CP-IM-合规与安全保障-合规审计记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.100Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.100Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.101Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/001-CP-IM-合规与安全保障-安全管理制度.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.101Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/002-CP-IM-合规与安全保障-安全开发规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.101Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/003-CP-IM-合规与安全保障-安全运维规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.101Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/004-CP-IM-合规与安全保障-应急响应计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.102Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/005-CP-IM-合规与安全保障-安全事件报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.102Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/006-CP-IM-合规与安全保障-安全培训记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.102Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.103Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.103Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/001-CP-IM-合规与安全保障-权限管理策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.104Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/002-CP-IM-合规与安全保障-RBAC权限模型设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.104Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/003-CP-IM-合规与安全保障-权限申请审批流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.105Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/004-CP-IM-合规与安全保障-权限审计记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.105Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/005-CP-IM-合规与安全保障-权限矩阵表.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.105Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.106Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.106Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/001-CP-IM-合规与安全保障-数据分类分级标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.107Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/002-CP-IM-合规与安全保障-数据加密方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.107Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/003-CP-IM-合规与安全保障-数据脱敏规则.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.108Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/004-CP-IM-合规与安全保障-数据备份策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.108Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/005-CP-IM-合规与安全保障-数据销毁流程.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.108Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/006-CP-IM-合规与安全保障-数据安全审计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.108Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.109Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.109Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/001-CP-IM-合规与安全保障-审计策略文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.109Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/002-CP-IM-合规与安全保障-审计日志规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.110Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/003-CP-IM-合规与安全保障-审计报告模板.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.110Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/004-CP-IM-合规与安全保障-合规审计checklist.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.110Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/005-CP-IM-合规与安全保障-审计整改记录.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.110Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.110Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.111Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "07-YYC3-CP-IM-项目合规-安全保障/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.111Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0501-CP-IM-整合实施-文档重组计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.111Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0502-CP-IM-整合实施-整合文件清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.112Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0503-CP-IM-整合实施-整合实施计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.112Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0504-CP-IM-整合实施-整合策略-v2.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.112Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0505-CP-IM-整合实施-项目对比分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.113Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/smart-check-analysis-summary.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.113Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/smart-check-report-20260227-163435.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.114Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/smart-check-report-20260227-163616.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.114Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/smart-check-report-20260227-163652.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.114Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/smart-check-report-20260227-164818.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.114Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0507-CP-IM-整合实施-阶段二整合总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.115Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0508-CP-IM-整合实施-完整整合总结.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.115Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0509-CP-IM-整合实施-更新文件包分析.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.115Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0510-CP-IM-整合实施-最终整合验证报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.116Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/0511-CP-IM-整合实施-文档重组执行报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.116Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "08-YYC3-CP-IM-项目整合-实施阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.117Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/001-CP-IM-资产与知识管理-软件资产清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.117Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/002-CP-IM-资产与知识管理-开源组件清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.117Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/003-CP-IM-资产与知识管理-第三方服务清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.117Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/004-CP-IM-资产与知识管理-硬件资产清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.118Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/005-CP-IM-资产与知识管理-资产价值评估.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.118Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/006-CP-IM-资产与知识管理-资产折旧计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.118Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.118Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.119Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/001-CP-IM-资产与知识管理-软件著作权材料.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.119Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/002-CP-IM-资产与知识管理-专利申请材料规范.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.119Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/003-CP-IM-资产与知识管理-商标注册流程材料.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.119Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/004-CP-IM-资产与知识管理-开源协议合规检查.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.120Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/005-CP-IM-资产与知识管理-知识产权保护策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.120Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.120Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.120Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/001-CP-IM-资产与知识管理-技术知识库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.121Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/002-CP-IM-资产与知识管理-业务知识库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.121Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/003-CP-IM-资产与知识管理-运维知识库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.122Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/004-CP-IM-资产与知识管理-解决方案库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.122Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/005-CP-IM-资产与知识管理-最佳实践库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.122Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/006-CP-IM-资产与知识管理-经验教训库.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.123Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.123Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.123Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/001-CP-IM-资产与知识管理-项目交接清单.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.124Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/002-CP-IM-资产与知识管理-团队交接手册.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.124Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/003-CP-IM-资产与知识管理-技术交接文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.124Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/004-CP-IM-资产与知识管理-业务交接文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.125Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/005-CP-IM-资产与知识管理-运维交接文档.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.125Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.125Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.126Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "09-YYC3-CP-IM-项目资产-知识管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.126Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/001-CP-IM-项目设计阶段-物理硬件管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.127Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/002-CP-IM-项目设计阶段-网络架构管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.127Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/003-CP-IM-项目设计阶段-容器化部署-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.127Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/004-CP-IM-项目设计阶段-CI_CD流水线-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.127Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/005-CP-IM-项目设计阶段-版本控制-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.128Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/006-CP-IM-项目设计阶段-监控运维-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.128Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/007-CP-IM-项目设计阶段-安全基础设施-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.128Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.128Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.129Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/001-CP-IM-项目设计阶段-关系型数据库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.129Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/002-CP-IM-项目设计阶段-缓存数据库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.130Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/003-CP-IM-项目设计阶段-图数据库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.130Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/004-CP-IM-项目设计阶段-搜索引擎-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.130Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/005-CP-IM-项目设计阶段-对象存储-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.131Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/006-CP-IM-项目设计阶段-向量数据库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.131Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/007-CP-IM-项目设计阶段-时序数据库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.132Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/008-CP-IM-项目设计阶段-数据同步服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.132Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.132Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.133Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/001-CP-IM-项目设计阶段-API网关-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.133Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/002-CP-IM-项目设计阶段-身份认证服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.133Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/003-CP-IM-项目设计阶段-权限管理服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.134Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/004-CP-IM-项目设计阶段-消息队列服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.134Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/005-CP-IM-项目设计阶段-日志服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.134Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/006-CP-IM-项目设计阶段-监控服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.135Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/007-CP-IM-项目设计阶段-缓存服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.135Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/008-CP-IM-项目设计阶段-配置服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.135Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/009-CP-IM-项目设计阶段-调度服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.136Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.136Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.136Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/001-CP-IM-项目设计阶段-智愈领航员-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.137Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/002-CP-IM-项目设计阶段-洞见思想家-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.137Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/003-CP-IM-项目设计阶段-预见先知-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.137Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/004-CP-IM-项目设计阶段-知遇伯乐-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.137Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/005-CP-IM-项目设计阶段-元启天枢-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.137Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/006-CP-IM-项目设计阶段-卫安哨兵-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.138Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/007-CP-IM-项目设计阶段-格物宗师-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.138Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/008-CP-IM-项目设计阶段-AI基础设施-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.138Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.139Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.139Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/001-CP-IM-项目设计阶段-项目管理服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.140Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/002-CP-IM-项目设计阶段-知识管理服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.140Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/003-CP-IM-项目设计阶段-代码生成服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.141Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/004-CP-IM-项目设计阶段-数据分析服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.141Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/005-CP-IM-项目设计阶段-测试服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.141Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/006-CP-IM-项目设计阶段-工作流服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.141Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/007-CP-IM-项目设计阶段-通知服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.142Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/008-CP-IM-项目设计阶段-文件服务-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.142Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.142Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.143Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/001-CP-IM-项目设计阶段-前端框架-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.143Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/002-CP-IM-项目设计阶段-UI组件库-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.144Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/003-CP-IM-项目设计阶段-状态管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.144Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/004-CP-IM-项目设计阶段-路由管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.145Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/005-CP-IM-项目设计阶段-表单管理-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.145Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/006-CP-IM-项目设计阶段-数据可视化-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.145Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/007-CP-IM-项目设计阶段-代码编辑器-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.145Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/008-CP-IM-项目设计阶段-性能优化-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.146Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.146Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.146Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/001-CP-IM-项目设计阶段-Web浏览器交互-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.147Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/002-CP-IM-项目设计阶段-IDE插件集成-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.147Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/003-CP-IM-项目设计阶段-命令行工具-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.147Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/004-CP-IM-项目设计阶段-移动端应用-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.147Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/005-CP-IM-项目设计阶段-桌面应用-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.148Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/006-CP-IM-项目设计阶段-语音交互-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.149Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/007-CP-IM-项目设计阶段-手势交互-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.150Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/008-CP-IM-项目设计阶段-多模态交互-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.150Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.151Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.151Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/001-CP-IM-项目设计阶段-插件系统-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.152Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/002-CP-IM-项目设计阶段-API开放平台-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.152Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/003-CP-IM-项目设计阶段-Webhook集成-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.152Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/004-CP-IM-项目设计阶段-第三方集成-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.152Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/005-CP-IM-项目设计阶段-自定义开发-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.153Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/006-CP-IM-项目设计阶段-AI模型扩展-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.153Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/007-CP-IM-项目设计阶段-功能演进-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.153Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/008-CP-IM-项目设计阶段-数据分析-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.154Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/009-CP-IM-项目设计阶段-智能优化-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.154Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/010-CP-IM-项目设计阶段-生态建设-架构设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.154Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.155Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.155Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "10-YYC3-CP-IM-项目模版-标准规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.156Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/001-CP-IM-演进与优化阶段-AI模型迭代规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.157Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/002-CP-IM-演进与优化阶段-智能体能力提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.157Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/003-CP-IM-演进与优化阶段-知识库持续优化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.157Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/004-CP-IM-演进与优化阶段-自适应学习机制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.157Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/005-CP-IM-演进与优化阶段-智能协同优化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.158Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/006-CP-IM-演进与优化阶段-人机协作进化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.158Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.159Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.159Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/001-CP-IM-演进与优化阶段-新功能规划设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.159Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/002-CP-IM-演进与优化阶段-功能实验与验证.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.159Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/003-CP-IM-演进与优化阶段-灰度发布策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.160Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/004-CP-IM-演进与优化阶段-功能开关管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.160Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/005-CP-IM-演进与优化阶段-用户反馈收集.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.160Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/006-CP-IM-演进与优化阶段-功能迭代路线图.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.161Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.161Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.162Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/001-CP-IM-演进与优化阶段-架构演进规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.163Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/002-CP-IM-演进与优化阶段-技术栈升级计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.163Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/003-CP-IM-演进与优化阶段-微服务拆分策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.163Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/004-CP-IM-演进与优化阶段-性能优化方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.164Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/005-CP-IM-演进与优化阶段-安全加固方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.164Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/006-CP-IM-演进与优化阶段-架构重构计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.164Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.165Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.165Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/001-CP-IM-演进与优化阶段-开发者生态建设.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.165Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/002-CP-IM-演进与优化阶段-插件市场运营.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.166Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/003-CP-IM-演进与优化阶段-API开放平台建设.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.166Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/004-CP-IM-演进与优化阶段-社区运营策略.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.166Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/005-CP-IM-演进与优化阶段-合作伙伴计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.166Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/006-CP-IM-演进与优化阶段-生态健康度评估.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.167Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.167Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.167Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/001-CP-IM-演进与优化阶段-性能持续优化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.168Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/002-CP-IM-演进与优化阶段-用户体验优化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.168Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/003-CP-IM-演进与优化阶段-成本优化方案.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.168Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/004-CP-IM-演进与优化阶段-资源利用率优化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.169Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/005-CP-IM-演进与优化阶段-自动化水平提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.169Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/006-CP-IM-演进与优化阶段-智能化程度提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.169Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.169Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.170Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/001-CP-IM-演进与优化阶段-前沿技术调研.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.171Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/002-CP-IM-演进与优化阶段-创新实验项目.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.171Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/003-CP-IM-演进与优化阶段-AI能力边界探索.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.172Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/004-CP-IM-演进与优化阶段-新场景应用探索.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.172Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/005-CP-IM-演进与优化阶段-技术预研计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.172Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/006-CP-IM-演进与优化阶段-创新成果转化.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.172Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.173Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.173Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/001-CP-IM-演进与优化阶段-代码质量持续提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.173Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/002-CP-IM-演进与优化阶段-测试覆盖率提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.173Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/003-CP-IM-演进与优化阶段-缺陷率降低计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.174Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/004-CP-IM-演进与优化阶段-文档质量标准提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.174Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/005-CP-IM-演进与优化阶段-用户体验质量提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.174Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/006-CP-IM-演进与优化阶段-服务质量规范提升.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.175Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.175Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.175Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/001-CP-IM-演进与优化阶段-能力提升计划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.176Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/002-CP-IM-演进与优化阶段-技术分享机制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.176Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/003-CP-IM-演进与优化阶段-培训体系建设.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.176Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/004-CP-IM-演进与优化阶段-知识传承机制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.176Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/005-CP-IM-演进与优化阶段-团队文化建设.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.177Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/006-CP-IM-演进与优化阶段-人才梯队建设.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.177Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/CP-IM-RES-DOC-001.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.177Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.177Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/YYC³-CP-IM-规划设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.178Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/YYC³-CP-IM-项目介绍.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.178Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/YYC³-CP-IM-项目规划.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.179Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "11-YYC3-CP-IM-智能演进-优化阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.179Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-01-监控中心-数据监控/01-01-监控中心-数据监控.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.180Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-01-监控中心-数据监控/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.180Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-02-监控中心-一键跟进/01-02-监控中心-一键跟进.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.181Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-02-监控中心-巡查模式/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.181Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-03-监控中心-一键跟进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.182Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-03-监控中心-巡查模式/01-03-监控中心-巡查模式.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.182Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.183Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-01-运维管理-操作中心-全部/02-01-01-01-运维管理-操作中心-全部.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.183Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-02-运维管理-操作中心-节点操作/02-01-02-01-运维管理-操作中心-节点操作.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.183Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-03-运维管理-操作中心-模型操作/02-01-03-01-运维管理-操作中心-模型操作.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.183Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-03-运维管理-操作中心-模型操作/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.184Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-04-运维管理-操作中心-任务操作/02-01-04-01-运维管理-操作中心-任务操作.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.184Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-05-运维管理-操作中心-系统操作/02-01-05-01-运维管理-操作中心-系统操作.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.184Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-06-运维管理-操作中心-自定义/02-01-06-01-运维管理-操作中心-自定义.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.185Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-运维管理-操作中心.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.185Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.185Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-02-运维管理-文件管理/02-02-运维管理-文件管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.186Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-02-运维管理-文件管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.186Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-03-运维管理-服务闭环/02-03-运维管理-服务闭环.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.186Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-03-运维管理-服务闭环/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.187Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.187Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-01-AI智能-AI决策/03-01-AI智能-AI决策.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.188Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-01-AI智能-AI诊断/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.188Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-02-AI智能-AI决策/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.189Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-02-AI智能-AI诊断/03-02-AI智能-AI诊断.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.189Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-03-AI智能-模型管理/03-03-AI智能-模型管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.189Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-03-AI智能-模型管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.190Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.190Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-01-开发工具-设计系统/04-01-开发工具-设计系统.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.190Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-01-开发工具-设计系统/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.191Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-02-开发工具-开发指南/04-02-开发工具-开发指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.192Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-02-开发工具-开发指南/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.192Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-03-开发工具-主题定制/04-03-开发工具-主题定制.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.192Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-03-开发工具-主题定制/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.193Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-04-开发工具-终端/04-04-开发工具-终端.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.193Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-04-开发工具-终端/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.193Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-05-开发工具-IDE/04-05-开发工具-IDE.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.194Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-05-开发工具-IDE/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.194Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.195Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-01-系统管理-操作审计/05-01-系统管理-操作审计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.195Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-01-系统管理-操作审计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.195Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-02-系统管理-安全监控/05-02-系统管理-安全监控.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.195Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-02-系统管理-安全监控/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.196Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-03-系统管理-系统诊断/05-03-系统管理-系统诊断.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.196Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-03-系统管理-系统诊断/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.197Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-04-系统管理-智能告警/05-04-系统管理-智能告警.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.197Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-04-系统管理-智能告警/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.197Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-05-系统管理-性能报表/05-05-系统管理-性能报表.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.198Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-05-系统管理-性能报表/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.198Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-06-系统管理-用户管理/05-06-系统管理-用户管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.198Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-06-系统管理-用户管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.199Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-01-系统管理-系统设置-通用设置/05-07-01-系统管理-系统设置-通用设置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.199Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-02-系统管理-系统设置-网络连接/05-07-02-系统管理-系统设置-网络连接.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.200Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-03-系统管理-系统设置-集群配置/05-07-03-系统管理-系统设置-集群配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.200Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-04-系统管理-系统设置-模型管理/05-07-04-系统管理-系统设置-模型管理.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.200Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-05-系统管理-系统设置-存储配置/05-07-05-系统管理-系统设置-存储配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.200Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-06-系统管理-系统设置-WebSocket/05-07-06-系统管理-系统设置-WebSocket.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.201Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-07-系统管理-系统设置-AI/05-07-07-系统管理-系统设置-AI-LLM.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.201Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-08-系统管理-系统设置-PWA-离线/05-07-08-系统管理-系统设置-PWA-离线.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.202Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-09-系统管理-系统设置-安全设置/05-07-09-系统管理-系统设置-安全设置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.202Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-10-系统管理-系统设置-通知配置/05-07-10-系统管理-系统设置-通知配置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.202Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-11-系统管理-系统设置-环境变量/05-07-11-系统管理-系统设置-环境变量.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.203Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-12-系统管理-系统设置-高级设置/05-07-12-系统管理-系统设置-高级设置.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.203Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.203Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.203Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.204Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "12-YYC3-CP-IM-用户指南-操作手册/YYC³-CP-IM-文档统一化最终完成报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.204Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "13-YYC3-CP-IM-智能演进-优化阶段/1301-CP-IM-智能演进/005-CP-IM-智能演进阶段-文档自动同步机制设计.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.205Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "FINAL_OPTIMIZATION_REPORT.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.205Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "PROBLEM_ROOT_CAUSE.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.205Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.206Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC3-CP-IM-代码标头规范化总结报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.206Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC3-CP-IM-代码标头规范化最终总结报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.207Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC3-CP-IM-代码标头规范标准.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.207Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC3-CP-IM-项目多维检测审查报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.208Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC³-CP-IM-CICD-智能自动化部署指南.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.208Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "YYC³-CP-IM-文档整理完成报告.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.209Z",
+    "level": "INFO",
+    "event": "scan",
+    "path": "docs-organization-plan.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.221Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/00-YYC3-CP-IM-项目总览-目录索引/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.222Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.223Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/01-YYC3-CP-IM-项目规划-启动阶段/0101-CP-IM-项目规划/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.223Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/01-YYC3-CP-IM-项目规划-启动阶段/0102-CP-IM-需求规划/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.224Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/01-YYC3-CP-IM-项目规划-启动阶段/0103-CP-IM-可行性分析/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.224Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/01-YYC3-CP-IM-项目规划-启动阶段/0104-CP-IM-风险管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.225Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/01-YYC3-CP-IM-项目规划-启动阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.225Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0201-CP-IM-架构设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.226Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0202-CP-IM-详细设计/0202-09-系统设置层/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.227Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0203-CP-IM-数据设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.227Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0204-CP-IM-接口设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.227Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0205-CP-IM-安全设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.228Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0206-CP-IM-性能设计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.228Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/02-YYC3-CP-IM-项目规划-设计阶段/0207-CP-IM-设计规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.229Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.229Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-01-CP-IM-前端开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.229Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-02-CP-IM-后端开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.230Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/0302-03-CP-IM-开发规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.230Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0302-CP-IM-开发规范/通用规范/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.230Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0303-CP-IM-技术文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.231Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0304-CP-IM-API文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.231Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0305-CP-IM-开发脚本/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.231Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0306-CP-IM-集成指南/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.232Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/03-YYC3-CP-IM-项目开发-实施阶段/0307-CP-IM-开发进度/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.232Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0401-CP-IM-测试策略/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.233Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-01-CP-IM-单元测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.233Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-02-CP-IM-集成测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.233Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-03-CP-IM-功能测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.233Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-04-CP-IM-性能测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.234Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0402-CP-IM-测试用例/0402-05-CP-IM-安全测试/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.234Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0403-CP-IM-测试执行/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.234Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0404-CP-IM-测试报告/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.235Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0405-CP-IM-缺陷管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.235Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/04-YYC3-CP-IM-项目测试-审核阶段/0406-CP-IM-质量审核/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.236Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0501-CP-IM-部署准备/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.236Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0502-CP-IM-部署手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.237Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0503-CP-IM-发布流程/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.237Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0504-CP-IM-数据迁移/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.238Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0505-CP-IM-上线割接/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.239Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0506-CP-IM-用户文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.239Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/05-YYC3-CP-IM-项目部署-文档闭环/0507-CP-IM-交付物管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.239Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0601-CP-IM-监控告警/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.240Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0602-CP-IM-运维手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.240Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0603-CP-IM-问题管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.241Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0604-CP-IM-性能优化/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.241Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0605-CP-IM-版本管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.241Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0606-CP-IM-运营分析/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.242Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/06-YYC3-CP-IM-项目运营-维护阶段/0607-CP-IM-持续改进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.242Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/07-YYC3-CP-IM-项目合规-安全保障/0701-CP-IM-合规管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.243Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/07-YYC3-CP-IM-项目合规-安全保障/0702-CP-IM-安全管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.243Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/07-YYC3-CP-IM-项目合规-安全保障/0703-CP-IM-权限管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.243Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/07-YYC3-CP-IM-项目合规-安全保障/0704-CP-IM-数据安全/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.244Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/07-YYC3-CP-IM-项目合规-安全保障/0705-CP-IM-审计管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.244Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/08-YYC3-CP-IM-项目整合-实施阶段/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.245Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/08-YYC3-CP-IM-项目整合-实施阶段/0506-CP-IM-整合实施-智能检测报告/smart-check-results/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.245Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/09-YYC3-CP-IM-项目资产-知识管理/0801-CP-IM-技术资产/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.245Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/09-YYC3-CP-IM-项目资产-知识管理/0802-CP-IM-知识产权/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.246Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/09-YYC3-CP-IM-项目资产-知识管理/0803-CP-IM-知识库/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.246Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/09-YYC3-CP-IM-项目资产-知识管理/0804-CP-IM-交接文档/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.247Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/01-基础设施层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.247Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/02-数据存储层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.247Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/03-核心服务层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.248Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/04-AI智能层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.248Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/05-业务逻辑层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.248Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/06-应用表现层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.249Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/07-用户交互层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.249Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/10-YYC3-CP-IM-项目模版-标准规范/08-扩展演进层架构设计模版/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.250Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0901-CP-IM-智能演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.250Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0902-CP-IM-功能演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.250Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0903-CP-IM-架构演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.251Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0904-CP-IM-生态建设/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.251Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0905-CP-IM-持续优化/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.251Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0906-CP-IM-创新探索/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.252Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0907-CP-IM-质量提升/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.252Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/11-YYC3-CP-IM-智能演进-优化阶段/0908-CP-IM-团队成长/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.253Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-01-监控中心-数据监控/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.253Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-02-监控中心-一键跟进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.253Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/01-YYC3-CP-IM-操作手册-监控中心/01-03-监控中心-巡查模式/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.254Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-01-运维管理-操作中心-全部/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.254Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-02-运维管理-操作中心-节点操作/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.254Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-03-运维管理-操作中心-模型操作/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.255Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-04-运维管理-操作中心-任务操作/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.255Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-05-运维管理-操作中心-系统操作/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.255Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/02-01-06-运维管理-操作中心-自定义/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.256Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-01-运维管理-操作中心/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.256Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-02-运维管理-文件管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.257Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/02-YYC3-CP-IM-操作手册-运维管理/02-03-运维管理-服务闭环/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.257Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-01-AI智能-AI决策/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.258Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-02-AI智能-AI诊断/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.258Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/03-YYC3-CP-IM-操作手册-AI智能/03-03-AI智能-模型管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.258Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-01-开发工具-设计系统/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.259Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-02-开发工具-开发指南/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.259Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-03-开发工具-主题定制/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.259Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-04-开发工具-终端/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.260Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/04-YYC3-CP-IM-操作手册-开发工具/04-05-开发工具-IDE/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.260Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-01-系统管理-操作审计/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.260Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-02-系统管理-安全监控/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.261Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-03-系统管理-系统诊断/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.262Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-04-系统管理-智能告警/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.263Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-05-系统管理-性能报表/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.263Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-06-系统管理-用户管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.264Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-01-系统管理-系统设置-通用设置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.264Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-02-系统管理-系统设置-网络连接/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.264Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-03-系统管理-系统设置-集群配置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.264Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-04-系统管理-系统设置-模型管理/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.265Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-05-系统管理-系统设置-存储配置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.265Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-06-系统管理-系统设置-WebSocket/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.265Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-07-系统管理-系统设置-AI/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.266Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-08-系统管理-系统设置-PWA-离线/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.266Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-09-系统管理-系统设置-安全设置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.266Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-10-系统管理-系统设置-通知配置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.266Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-11-系统管理-系统设置-环境变量/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.267Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/05-YYC3-CP-IM-操作手册-系统管理/05-07-系统管理-系统设置/05-07-12-系统管理-系统设置-高级设置/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.267Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/12-YYC3-CP-IM-用户指南-操作手册/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.268Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/13-YYC3-CP-IM-智能演进-优化阶段/1301-CP-IM-智能演进/README.md",
+    "actions": []
+  },
+  {
+    "timestamp": "2026-03-06T19:07:28.272Z",
+    "level": "INFO",
+    "event": "update",
+    "path": "/Users/yanyu/Documents/YYC3-CloudPivot-Intelli-Matrix/docs/00-YYC3-CP-IM-项目总览-目录索引/002-CP-IM-项目总览索引-文档架构导航.md",
+    "actions": []
+  }
+]

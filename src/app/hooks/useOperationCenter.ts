@@ -7,6 +7,7 @@
 
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
+import { usePersistedList } from "./usePersistedState";
 import type {
   OperationCategoryType,
   OperationCategoryMeta,
@@ -122,8 +123,17 @@ function generateMockLogs(): OperationLogEntry[] {
 export function useOperationCenter() {
   const [activeCategory, setActiveCategory] = useState<OperationCategoryType | "all">("all");
   const [actions, setActions] = useState<OperationItem[]>(QUICK_ACTIONS);
-  const [templates, setTemplates] = useState<OperationTemplateItem[]>(INITIAL_TEMPLATES);
-  const [logs, setLogs] = useState<OperationLogEntry[]>(generateMockLogs);
+  const {
+    items: templates,
+    upsert: upsertTemplate,
+    remove: removeTemplate,
+    loaded: templatesLoaded,
+  } = usePersistedList<OperationTemplateItem>("operationTemplates", INITIAL_TEMPLATES);
+  const {
+    items: logs,
+    prepend: prependLog,
+    loaded: logsLoaded,
+  } = usePersistedList<OperationLogEntry>("operationLogs", generateMockLogs());
   const [logFilter, setLogFilter] = useState<LogFilterType>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isExecuting, setIsExecuting] = useState<string | null>(null);
@@ -178,7 +188,7 @@ export function useOperationCenter() {
       status: finalStatus,
       duration: 1500 + Math.floor(Math.random() * 2000),
     };
-    setLogs((prev) => [newLog, ...prev]);
+    await prependLog(newLog);
     setIsExecuting(null);
 
     if (success) {
@@ -193,16 +203,14 @@ export function useOperationCenter() {
         prev.map((a) => (a.id === actionId ? { ...a, status: "pending" as const } : a))
       );
     }, 3000);
-  }, [actions]);
+  }, [actions, prependLog]);
 
   // Run template
   const runTemplate = useCallback(async (templateId: string) => {
     const tpl = templates.find((t) => t.id === templateId);
     if (!tpl) {return;}
 
-    setTemplates((prev) =>
-      prev.map((t) => (t.id === templateId ? { ...t, lastUsed: Date.now() } : t))
-    );
+    await upsertTemplate({ ...tpl, lastUsed: Date.now() });
 
     toast.info(`正在执行模板：${tpl.name}`, { description: `共 ${tpl.steps.length} 步` });
 
@@ -218,11 +226,11 @@ export function useOperationCenter() {
         status: "success",
         duration: 500 + Math.floor(Math.random() * 1500),
       };
-      setLogs((prev) => [log, ...prev]);
+      await prependLog(log);
     }
 
     toast.success(`模板「${tpl.name}」执行完成`);
-  }, [templates]);
+  }, [templates, upsertTemplate, prependLog]);
 
   // Add new template
   const addTemplate = useCallback((name: string, description: string, category: OperationCategoryType, steps: string[]) => {
@@ -234,15 +242,15 @@ export function useOperationCenter() {
       steps,
       createdAt: Date.now(),
     };
-    setTemplates((prev) => [...prev, newTpl]);
+    upsertTemplate(newTpl);
     toast.success(`模板「${name}」已创建`);
-  }, []);
+  }, [upsertTemplate]);
 
   // Delete template
   const deleteTemplate = useCallback((templateId: string) => {
-    setTemplates((prev) => prev.filter((t) => t.id !== templateId));
+    removeTemplate(templateId);
     toast.info("模板已删除");
-  }, []);
+  }, [removeTemplate]);
 
   return {
     // Category
@@ -256,12 +264,14 @@ export function useOperationCenter() {
     executeAction,
     // Templates
     templates,
+    templatesLoaded,
     runTemplate,
     addTemplate,
     deleteTemplate,
     // Logs
     logs: filteredLogs,
     allLogs: logs,
+    logsLoaded,
     logFilter,
     setLogFilter,
     searchQuery,

@@ -1,17 +1,17 @@
 /**
  * OfflineIndicator.tsx
- * ===============
+ * ====================
  * 网络状态指示器组件
  * - 固定在顶部显示当前在线/离线状态
  * - 离线时显示上次同步时间
  * - 恢复在线时自动淡出
  */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Wifi, WifiOff, RefreshCw, CloudOff } from "lucide-react";
 import { useOfflineMode } from "../hooks/useOfflineMode";
 
-export default function OfflineIndicator() {
+export function OfflineIndicator() {
   const { isOnline, lastSyncTime, pendingSync } = useOfflineMode();
   const [show, setShow] = useState(false);
   const [justReconnected, setJustReconnected] = useState(false);
@@ -19,17 +19,17 @@ export default function OfflineIndicator() {
   useEffect(() => {
     if (!isOnline) {
       setShow(true);
-      setJustReconnected(false);
+      setTimeout(() => setJustReconnected(false), 0);
     } else if (show) {
       // 刚恢复在线，短暂显示"已恢复连接"
-      setJustReconnected(true);
+      setTimeout(() => setJustReconnected(true), 0);
       const timer = setTimeout(() => {
         setShow(false);
         setJustReconnected(false);
       }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isOnline, show]);
+  }, [isOnline]);
 
   if (!show) {return null;}
 

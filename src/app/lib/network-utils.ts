@@ -9,14 +9,22 @@
 
 import type { NetworkInterface, NetworkConfig, ConnectionTestResult } from "../types";
 
-// Re-export for backward compatibility
-export type { NetworkInterface, NetworkConfig };
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
+
+/** 根据服务器地址和端口自动生成 WebSocket URL */
+export function generateWsUrl(address: string, port: string): string {
+  return `ws://${address}:${port}/ws`;
+}
+
+// RF-001: DEFAULT_NETWORK_CONFIG.wsUrl 由 serverAddress+port 推导，保持内部一致
+const _DEFAULT_SERVER = "192.168.3.45";
+const _DEFAULT_PORT = "3113";
 
 export const DEFAULT_NETWORK_CONFIG: NetworkConfig = {
-  serverAddress: "192.168.3.45",
-  port: "3113",
-  nasAddress: "192.168.3.45:9898",
-  wsUrl: "ws://192.168.3.45:3113/ws",
+  serverAddress: _DEFAULT_SERVER,
+  port: _DEFAULT_PORT,
+  nasAddress: `${_DEFAULT_SERVER}:9898`,
+  wsUrl: generateWsUrl(_DEFAULT_SERVER, _DEFAULT_PORT),
   mode: "auto",
 };
 
@@ -71,7 +79,7 @@ export async function getLocalIP(): Promise<string> {
 /** 检测网络接口信息 */
 export async function getNetworkInterfaces(): Promise<NetworkInterface[]> {
   const ip = await getLocalIP();
-  const connection = (navigator as Navigator & { connection?: { effectiveType?: string; type?: string } }).connection;
+  const connection = (navigator as unknown as { connection?: { effectiveType?: string; type?: string } }).connection;
   const effectiveType = connection?.effectiveType || "unknown";
   const isWifi = effectiveType === "4g" || connection?.type === "wifi";
 
@@ -95,11 +103,6 @@ export async function getNetworkInterfaces(): Promise<NetworkInterface[]> {
   }
 
   return interfaces;
-}
-
-/** 根据服务器地址和端口自动生成 WebSocket URL */
-export function generateWsUrl(address: string, port: string): string {
-  return `ws://${address}:${port}/ws`;
 }
 
 /** 测试 WebSocket 连接 */
@@ -159,7 +162,7 @@ export function testWebSocketConnection(
         resolve({
           success: false,
           latency: Date.now() - start,
-          error: err instanceof Error ? err.message : String(err),
+          error: (err instanceof Error ? err.message : String(err)) || "网络不可达",
         });
       }
     }
@@ -185,11 +188,10 @@ export async function testHTTPConnection(
     return { success: true, latency: Date.now() - start };
   } catch (err: unknown) {
     clearTimeout(timer);
-    const errorName = err instanceof Error ? err.name : String(err);
     return {
       success: false,
       latency: Date.now() - start,
-      error: errorName === "AbortError" ? "连接超时" : "网络不可达",
+      error: (err instanceof Error && err.name === "AbortError") ? "连接超时" : "网络不可达",
     };
   }
 }

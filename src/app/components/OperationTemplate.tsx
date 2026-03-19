@@ -1,15 +1,15 @@
 /**
  * OperationTemplate.tsx
- * =================
+ * ======================
  * 操作模板管理组件
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
-  Plus, Play, Trash2, ChevronDown, ChevronUp,
+  Plus, Play, Trash2, Clock, ChevronDown, ChevronUp,
   FileText, ListOrdered,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { CATEGORY_META } from "../hooks/useOperationCenter";
 import type { OperationTemplateItem, OperationCategoryType } from "../types";
 
@@ -31,7 +31,7 @@ function formatTimeAgo(ts: number): string {
   return `${days}天前`;
 }
 
-export default function OperationTemplate({
+export function OperationTemplate({
   templates, onRunTemplate, onDeleteTemplate, onAddTemplate,
 }: OperationTemplateProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);

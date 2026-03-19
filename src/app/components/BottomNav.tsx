@@ -1,6 +1,6 @@
 /**
  * BottomNav 组件
- * ===========
+ * ==============
  * 移动端底部导航栏 · 专业级重构
  *
  * 优化点：
@@ -13,15 +13,21 @@
  * i18n 完整覆盖
  */
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router";
 import {
-  Activity, AlertTriangle, Radar,
-  Wrench, FolderOpen, Settings,
-  Brain, Sparkles, Cpu, BrainCircuit, BellRing, FileBarChart,
+  Activity, BarChart3, AlertTriangle, Radar,
+  Wrench, RefreshCcw, FolderOpen, Settings,
+  Brain, Sparkles, Cpu,
   Code2, Palette, BookOpen, Paintbrush, Terminal, Monitor,
-  ShieldCheck, Shield, ClipboardList, Users, Cog,
-  MoreHorizontal, X,
+  ShieldCheck, ClipboardList, Users, Cog,
+  MoreHorizontal, X, ChevronRight,
+  BellRing, FileBarChart, BrainCircuit,
+  HardDrive, Database, GitBranch,
+  Smartphone,
+  Package,
+  Gauge,
+  ServerCog,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useI18n } from "../hooks/useI18n";
@@ -45,16 +51,28 @@ const MORE_CATEGORIES: MoreCategory[] = [
   {
     labelKey: "nav.catOps", icon: Wrench,
     items: [
-      { key: "nav.fileManager", path: "/files",  icon: FolderOpen },
-      { key: "nav.serviceLoop", path: "/loop",   icon: Settings },
+      { key: "nav.fileManager",  path: "/files",       icon: FolderOpen },
+      { key: "nav.hostFiles",    path: "/host-files",   icon: HardDrive },
+      { key: "nav.database",     path: "/database",     icon: Database },
+      { key: "nav.dataEditor",   path: "/data-editor",  icon: Package },
+      { key: "nav.performance",  path: "/performance",  icon: Gauge },
+      { key: "nav.envConfig",    path: "/env-config",   icon: ServerCog },
+      { key: "nav.serviceLoop",  path: "/loop",         icon: Settings },
+      { key: "nav.reportExport", path: "/reports",      icon: FileBarChart },
+    ],
+  },
+  {
+    labelKey: "nav.catMonitor", icon: Activity,
+    items: [
+      { key: "nav.alertRules", path: "/alerts", icon: BellRing },
     ],
   },
   {
     labelKey: "nav.catAI", icon: Brain,
     items: [
-      { key: "nav.aiDecision",    path: "/ai",            icon: Sparkles },
-      { key: "nav.aiDiagnostics", path: "/ai-diagnosis", icon: BrainCircuit },
-      { key: "modelProvider.title", path: "/models",      icon: Cpu },
+      { key: "nav.aiDecision",     path: "/ai",           icon: Sparkles },
+      { key: "modelProvider.title", path: "/models",       icon: Cpu },
+      { key: "nav.aiDiagnostics",  path: "/ai-diagnosis", icon: BrainCircuit },
     ],
   },
   {
@@ -65,25 +83,24 @@ const MORE_CATEGORIES: MoreCategory[] = [
       { key: "nav.theme",        path: "/theme",          icon: Paintbrush },
       { key: "nav.terminal",     path: "/terminal",       icon: Terminal },
       { key: "nav.ide",          path: "/ide",             icon: Monitor },
+      { key: "nav.refactoring",  path: "/refactoring",    icon: GitBranch },
     ],
   },
   {
     labelKey: "nav.catAdmin", icon: ShieldCheck,
     items: [
-      { key: "nav.audit",       path: "/audit",       icon: ClipboardList },
-      { key: "nav.security",    path: "/security",    icon: Shield },
-      { key: "nav.diagnostics", path: "/diagnostics", icon: Wrench },
-      { key: "nav.alerts",     path: "/alerts",      icon: BellRing },
-      { key: "nav.reports",     path: "/reports",     icon: FileBarChart },
-      { key: "nav.userMgmt",    path: "/users",       icon: Users },
-      { key: "nav.settings",    path: "/settings",    icon: Cog },
+      { key: "nav.audit",           path: "/audit",    icon: ClipboardList },
+      { key: "nav.userMgmt",        path: "/users",    icon: Users },
+      { key: "nav.settings",        path: "/settings", icon: Cog },
+      { key: "nav.securityMonitor", path: "/security", icon: ShieldCheck },
+      { key: "nav.pwa",             path: "/pwa",      icon: Smartphone },
     ],
   },
 ];
 
 const ALL_MORE_PATHS = MORE_CATEGORIES.flatMap((c) => c.items.map((i) => i.path));
 
-export default function BottomNav() {
+export function BottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useI18n();
@@ -94,14 +111,22 @@ export default function BottomNav() {
 
   // 路由变化时关闭抽屉
   useEffect(() => {
-    setMoreOpen(false);
+    setTimeout(() => {
+      setMoreOpen(false);
+    }, 0);
   }, [location.pathname]);
 
   // 阻止 body 滚动
   useEffect(() => {
     if (moreOpen) {
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = ""; };
+      setTimeout(() => {
+        document.body.style.overflow = "hidden";
+      }, 0);
+      return () => { 
+        setTimeout(() => {
+          document.body.style.overflow = "";
+        }, 0);
+      };
     }
   }, [moreOpen]);
 
@@ -140,7 +165,7 @@ export default function BottomNav() {
               {/* 标题 */}
               <div className="flex items-center justify-between px-5 pb-3">
                 <span className="text-[#e0f0ff]" style={{ fontSize: "0.9rem" }}>
-                  {t("common.info")}
+                  {t("common.more")}
                 </span>
                 <button
                   onClick={() => setMoreOpen(false)}

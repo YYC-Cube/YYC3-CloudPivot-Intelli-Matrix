@@ -9,26 +9,22 @@
 
 import { useState, useCallback, useMemo, useRef } from "react";
 import { toast } from "sonner";
+import { usePersistedList } from "./usePersistedState";
 import type {
   LoopStage,
   StageStatus,
   StageResult,
   LoopRun,
   DataFlowEdge,
-  DataFlowNodeType,
+  StageMeta,
+  DataFlowNode,
 } from "../types";
+
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
 // ============================================================
 // 闭环阶段元信息
 // ============================================================
-
-export interface StageMeta {
-  key: LoopStage;
-  label: string;
-  icon: string;
-  color: string;
-  description: string;
-}
 
 export const STAGE_META: StageMeta[] = [
   {
@@ -129,7 +125,7 @@ const MOCK_STAGE_RESULTS: Record<LoopStage, () => Partial<StageResult>> = {
     metrics: { latency_reduction: 68, temp_reduction: 12, throughput_increase: 22 },
   }),
   optimize: () => ({
-    summary: "更新 3 ���优化规则，学习周期 T+1 生效",
+    summary: "更新 3 优化规则，学习周期 T+1 生效",
     details: [
       "规则更新: GPU-A100 系列延迟阈值从 2,000ms → 1,500ms",
       "规则更新: 温度预警提前到 75°C",
@@ -189,13 +185,6 @@ export const DATA_FLOW_EDGES: DataFlowEdge[] = [
   },
 ];
 
-export interface DataFlowNode {
-  type: DataFlowNodeType;
-  label: string;
-  sublabel: string;
-  color: string;
-}
-
 export const DATA_FLOW_NODES: DataFlowNode[] = [
   { type: "device",    label: "本地设备",     sublabel: "192.168.3.x",      color: "#00d4ff" },
   { type: "storage",   label: "本地存储",     sublabel: "PostgreSQL + NAS", color: "#7b2ff7" },
@@ -225,7 +214,12 @@ let runIdCounter = 0;
 
 export function useServiceLoop() {
   const [currentRun, setCurrentRun] = useState<LoopRun | null>(null);
-  const [history, setHistory] = useState<LoopRun[]>([]);
+  const {
+    items: history,
+    prepend: prependHistory,
+    clear: clearHistoryStore,
+    loaded: historyLoaded,
+  } = usePersistedList<LoopRun>("loopHistory");
   const [isRunning, setIsRunning] = useState(false);
   const [autoMode, setAutoMode] = useState(false);
   const abortRef = useRef(false);
@@ -340,27 +334,26 @@ export function useServiceLoop() {
           overallStatus: "completed",
         };
         setCurrentRun(run);
-        setHistory((prev) => [run, ...prev].slice(0, 20));
+        await prependHistory(run);
         toast.success("✅ 闭环流程完成", {
           description: `总耗时 ${((run.completedAt! - run.startedAt) / 1000).toFixed(1)}s`,
         });
       } catch (err: unknown) {
-        const errorMessage = err instanceof Error ? err.message : String(err);
-        if (errorMessage === "ABORTED") {
+        if (err instanceof Error && err.message === "ABORTED") {
           run = { ...run, overallStatus: "error", completedAt: Date.now() };
           setCurrentRun(run);
           toast.info("闭环流程已中止");
         } else {
           run = { ...run, overallStatus: "error", completedAt: Date.now() };
           setCurrentRun(run);
-          setHistory((prev) => [run, ...prev].slice(0, 20));
+          await prependHistory(run);
           toast.error("闭环流程出错");
         }
       } finally {
         setIsRunning(false);
       }
     },
-    [isRunning, runStage]
+    [isRunning, runStage, prependHistory]
   );
 
   // 中止
@@ -370,9 +363,9 @@ export function useServiceLoop() {
 
   // 清空历史
   const clearHistory = useCallback(() => {
-    setHistory([]);
+    clearHistoryStore();
     toast.info("历史记录已清空");
-  }, []);
+  }, [clearHistoryStore]);
 
   return {
     currentRun,
@@ -382,6 +375,7 @@ export function useServiceLoop() {
     setAutoMode,
     currentStageIndex,
     stats,
+    historyLoaded,
     startLoop,
     abortLoop,
     clearHistory,

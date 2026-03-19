@@ -1,6 +1,6 @@
 /**
  * PWAStatusPanel.tsx
- * ===============
+ * ===================
  * PWA & 离线管理面板 · 路由: /pwa (嵌入系统设置)
  *
  * 功能:
@@ -15,10 +15,10 @@ import {
   Wifi, WifiOff, HardDrive, RefreshCw, Trash2,
   Download, CheckCircle, XCircle, Loader2, Shield, Database,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { usePWAManager } from "../hooks/usePWAManager";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 import type { SWStatus } from "../types";
 
 const swStatusConfig: Record<SWStatus, { color: string; icon: React.ElementType }> = {
@@ -30,7 +30,7 @@ const swStatusConfig: Record<SWStatus, { color: string; icon: React.ElementType 
   unsupported: { color: "rgba(0,212,255,0.25)", icon: XCircle },
 };
 
-export default function PWAStatusPanel() {
+export function PWAStatusPanel() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -58,7 +58,7 @@ export default function PWAStatusPanel() {
 
   return (
     <div className="space-y-4" data-testid="pwa-status-panel">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -75,7 +75,7 @@ export default function PWAStatusPanel() {
         </div>
       </div>
 
-      {/* ====== Status Cards ====== */}
+      {/* ======== Status Cards ======== */}
       <div className={`grid gap-3 ${isMobile ? "grid-cols-2" : "grid-cols-4"}`}>
         {/* SW Status */}
         <GlassCard className="p-4 flex flex-col items-center justify-center">
@@ -139,7 +139,7 @@ export default function PWAStatusPanel() {
         </GlassCard>
       </div>
 
-      {/* ====== Action buttons ====== */}
+      {/* ======== Action buttons ======== */}
       <div className={`grid gap-2 ${isMobile ? "grid-cols-1" : "grid-cols-3"}`}>
         {/* Update SW */}
         {updateAvailable && (
@@ -201,7 +201,7 @@ export default function PWAStatusPanel() {
         </button>
       </div>
 
-      {/* ====== Cache details ====== */}
+      {/* ======== Cache details ======== */}
       <GlassCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <HardDrive className="w-4 h-4 text-[rgba(0,212,255,0.4)]" />

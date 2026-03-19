@@ -1,26 +1,40 @@
+/**
+ * @file: vite.config.ts
+ * @description: Vite 配置文件 · 包含构建、插件、别名等配置
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-02-26
+ * @updated: 2026-03-05
+ * @status: active
+ * @tags: [config],[build],[vite]
+ *
+ * @brief: Vite 构建配置
+ *
+ * @details:
+ * - 基础路径配置（./ 用于 Electron 兼容）
+ * - 插件配置（React + TailwindCSS）
+ * - 路径别名（@/* → ./src/*）
+ * - 开发服务器配置（端口 3218）
+ * - 构建优化（代码分割、压缩）
+ *
+ * @dependencies: Vite, React, TailwindCSS
+ * @exports: default config
+ * @notes: 修改配置后需要重启开发服务器
+ */
+
 import { defineConfig } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
+  base: './',
   plugins: [
-    // The React and Tailwind plugins are both required for Make, even if
-    // Tailwind is not being actively used – do not remove them
     react(),
     tailwindcss(),
-    // Build analysis tool (disabled by default, enable with: pnpm build --analyze)
-    process.env.ANALYZE === 'true' ? visualizer({
-      filename: 'dist/stats.html',
-      open: true,
-      gzipSize: true,
-      brotliSize: true,
-    }) : null,
   ].filter(Boolean),
   resolve: {
     alias: {
-      // Alias @ to the src directory
       '@': path.resolve(__dirname, './src'),
     },
   },
@@ -29,112 +43,52 @@ export default defineConfig({
     host: true,
   },
 
-  // File types to support raw imports. Never add .css, .csv, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
 
   build: {
-    // Target modern browsers for smaller bundle
     target: 'esnext',
-    // Enable minification
     minify: 'esbuild',
-    // Enable sourcemaps for production debugging
     sourcemap: false,
-    // Reduce chunk size warnings
-    chunkSizeWarningLimit: 500,
-    // Rollup options for code splitting
+    chunkSizeWarningLimit: 400,
     rollupOptions: {
-      // Manual chunk configuration
       output: {
-        // Optimize chunk naming
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]',
-        
-        // Manual chunks for better code splitting
-        manualChunks: {
-          // React and ReactDOM - core framework
-          'react-vendor': ['react', 'react-dom', 'react-router', 'react-router-dom'],
-          
-          // UI Libraries - split by usage
-          'mui-vendor': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-          'radix-vendor': [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-select',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-tooltip',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-accordion',
-          ],
-          
-          // Charting libraries
-          'charts-vendor': ['recharts'],
-          
-          // Animation libraries
-          'animation-vendor': ['motion', '@popperjs/core'],
-          
-          // Utilities
-          'utils-vendor': ['date-fns', 'clsx', 'tailwind-merge', 'class-variance-authority'],
-          
-          // Testing libraries (only in development)
-          'testing-vendor': ['@testing-library/react', '@testing-library/jest-dom'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'react-vendor';
+            }
+            if (id.includes('@mui')) {
+              return 'mui-vendor';
+            }
+            if (id.includes('@radix-ui')) {
+              return 'radix-vendor';
+            }
+            if (id.includes('recharts')) {
+              return 'recharts-vendor';
+            }
+            if (id.includes('lucide-react')) {
+              return 'lucide-vendor';
+            }
+            if (id.includes('motion')) {
+              return 'motion-vendor';
+            }
+            if (id.includes('date-fns')) {
+              return 'date-vendor';
+            }
+            if (id.includes('react-router')) {
+              return 'router-vendor';
+            }
+            if (id.includes('@supabase')) {
+              return 'supabase-vendor';
+            }
+            return 'vendor';
+          }
         },
       },
-      // External large dependencies
-      external: [],
-    },
-    // Enable esbuild for faster builds
-    esbuild: {
-      // Drop console logs in production
-      drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
-      // Minify whitespace and comments
-      minifyWhitespace: true,
-      minifyIdentifiers: true,
-      minifySyntax: true,
-      // Tree shaking
-      keepNames: false,
-      // Target
-      target: 'esnext',
     },
   },
 
-  // Optimize dependencies
   optimizeDeps: {
-    // Include these dependencies for faster HMR
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@emotion/react',
-      '@emotion/styled',
-      '@mui/material',
-      'recharts',
-      'motion',
-    ],
-    // Exclude these from optimization
-    exclude: [],
-    // Force re-optimization
-    force: false,
+    include: ['react', 'react-dom', 'recharts'],
   },
-
-  // CSS optimization
-  css: {
-    // Enable CSS modules for better scoping
-    modules: {
-      localsConvention: 'camelCase',
-      generateScopedName: '[name]__[local]___[hash:base64:5]',
-    },
-    // Preprocessor options
-    preprocessorOptions: {},
-    // PostCSS is configured in postcss.config.mjs
-  },
-
-  // Log level
-  logLevel: 'info',
-
-  // Clear screen on rebuild
-  clearScreen: true,
-
-  // Enable profiling in development
-  profile: false,
 })

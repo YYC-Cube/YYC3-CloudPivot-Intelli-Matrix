@@ -1,17 +1,17 @@
 /**
  * PatrolReport.tsx
- * ==============
+ * ==================
  * 巡查报告详情
  * 按类别分组展示检查结果
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
-  CheckCircle, AlertTriangle, XCircle, SkipForward,
+  CheckCircle, AlertTriangle, XCircle, SkipForward, Shield,
   Clock, Timer, ChevronDown, ChevronUp,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import type { PatrolResult, PatrolCheckItem, CheckStatus } from "../hooks/usePatrol";
+import { GlassCard } from "./GlassCard";
+import type { PatrolResult, PatrolCheckItem, CheckStatus } from "../types";
 
 interface PatrolReportProps {
   result: PatrolResult;
@@ -25,7 +25,7 @@ const statusConfig: Record<CheckStatus, { icon: React.ElementType; color: string
   skipped:  { icon: SkipForward,   color: "rgba(0,212,255,0.3)", label: "跳过" },
 };
 
-export default function PatrolReport({ result, embedded = false }: PatrolReportProps) {
+export function PatrolReport({ result, embedded = false }: PatrolReportProps) {
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
   // Group checks by category
@@ -183,9 +183,9 @@ export default function PatrolReport({ result, embedded = false }: PatrolReportP
   );
 }
 
-// =============================================
+// ============================================================
 // Badge
-// =============================================
+// ============================================================
 
 function Badge({ count, status }: { count: number; status: CheckStatus }) {
   const cfg = statusConfig[status];

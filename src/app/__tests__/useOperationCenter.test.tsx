@@ -1,6 +1,6 @@
 /**
  * useOperationCenter.test.tsx
- * ===============
+ * ============================
  * useOperationCenter Hook - 操作中心状态管理测试
  *
  * 覆盖范围:
@@ -11,8 +11,9 @@
  * - 日志筛选 + 搜索
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useOperationCenter } from "../hooks/useOperationCenter";
 
 vi.mock("sonner", () => ({
@@ -26,10 +27,6 @@ vi.mock("sonner", () => ({
 describe("useOperationCenter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------

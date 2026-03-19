@@ -14,13 +14,22 @@
  *   VITE_DB_HOST=localhost
  *   VITE_DB_PORT=5433
  *   VITE_DB_NAME=yyc3_matrix
+ *
+ * RF-012: 迁移指南
+ * ─────────────────
+ * 切换到真实 Supabase 时需注意：
+ *   1. 替换 MockSupabaseClient 为 createClient() from @supabase/supabase-js
+ *   2. 创建 adapter 层转换 session/user 结构:
+ *      - Supabase Session: { access_token, user: { id, email, user_metadata } }
+ *      - App Session:      { user: AppUser, token, expiresAt }
+ *      使用 toAppSession(supabaseSession) / toAppUser(supabaseUser) 函数
+ *   3. App.tsx 中移除 `as AppSession` 类型断言，改用 adapter 函数
+ *   4. 更新 auth.onAuthStateChange 回调签名以匹配 Supabase SDK
  */
-
 import type { AppUser, AppSession } from "../types";
 
-// Re-export with legacy names for backward compatibility
-export type MockUser = AppUser;
-export type MockSession = AppSession;
+// RF-011: Legacy type aliases (MockUser/MockSession) 已移除
+// 所有类型统一从 types/index.ts 导入 AppUser / AppSession
 
 // 预设用户（本地闭环系统：admin + developer 两种角色）
 const MOCK_USERS: Record<string, { password: string; user: AppUser }> = {
@@ -112,13 +121,13 @@ class MockSupabaseClient {
   };
 
   /** Mock 数据查询（模拟 Supabase .from().select() 链） */
-  from(table: string) {
+  from(_table: string) {
     return {
       select: (_columns?: string) => ({
-        eq: (col: string, val: unknown) => this._mockQuery(table, { [col]: val }),
-        order: (_col: string, _opts?: { ascending?: boolean }) => this._mockQuery(table),
-        limit: (_n: number) => this._mockQuery(table),
-        then: (resolve: (val: unknown) => void) => resolve(this._mockQuery(table)),
+        eq: (col: string, val: unknown) => this._mockQuery(_table, { [col]: val }),
+        order: (_col: string, _opts?: { ascending?: boolean }) => this._mockQuery(_table),
+        limit: (_n: number) => this._mockQuery(_table),
+        then: (resolve: (val: unknown) => void) => resolve(this._mockQuery(_table)),
       }),
     };
   }

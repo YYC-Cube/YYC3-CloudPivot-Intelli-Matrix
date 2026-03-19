@@ -1,6 +1,6 @@
 /**
  * TopBar.tsx
- * =========
+ * ===========
  * 极简顶栏 · 导航已移至左侧 Sidebar（桌面）/ BottomNav + MobileDrawer（移动）
  * 
  * 移动端优化：
@@ -20,12 +20,16 @@ import {
   Sparkles, Cpu,
   Palette, BookOpen, Paintbrush, Terminal, Monitor,
   ClipboardList, Users, Cog,
+  BellRing, FileBarChart, BrainCircuit,
+  HardDrive, Database, GitBranch,
+  Smartphone,
+  UserCircle2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate, useLocation } from "react-router";
-import ConnectionStatus from "./ConnectionStatus";
-import LanguageSwitcher from "./LanguageSwitcher";
-import YYC3Logo from "./YYC3Logo";
+import { ConnectionStatus } from "./ConnectionStatus";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { YYC3Logo } from "./YYC3Logo";
 import { useI18n } from "../hooks/useI18n";
 import { isGhostMode } from "../lib/supabaseClient";
 import type { ConnectionState } from "../types";
@@ -49,21 +53,32 @@ const MOBILE_NAV: MobileNavCategory[] = [
       { key: "nav.dataMonitor", path: "/",           icon: BarChart3 },
       { key: "nav.followUp",    path: "/follow-up",   icon: AlertTriangle },
       { key: "nav.patrol",      path: "/patrol",       icon: Radar },
+      { key: "nav.alertRules",  path: "/alerts",       icon: BellRing },
     ],
   },
   {
     id: "ops", labelKey: "nav.catOps", icon: Wrench,
     children: [
-      { key: "nav.operations",  path: "/operations",  icon: RefreshCcw },
-      { key: "nav.fileManager", path: "/files",        icon: FolderOpen },
-      { key: "nav.serviceLoop", path: "/loop",         icon: Settings },
+      { key: "nav.operations",   path: "/operations",  icon: RefreshCcw },
+      { key: "nav.fileManager",  path: "/files",        icon: FolderOpen },
+      { key: "nav.hostFiles",    path: "/host-files",   icon: HardDrive },
+      { key: "nav.database",     path: "/database",     icon: Database },
+      { key: "nav.serviceLoop",  path: "/loop",         icon: Settings },
+      { key: "nav.reportExport", path: "/reports",      icon: FileBarChart },
     ],
   },
   {
     id: "ai", labelKey: "nav.catAI", icon: Brain,
     children: [
-      { key: "nav.aiDecision",      path: "/ai",     icon: Sparkles },
-      { key: "modelProvider.title",  path: "/models", icon: Cpu },
+      { key: "nav.aiDecision",     path: "/ai",            icon: Sparkles },
+      { key: "modelProvider.title", path: "/models",        icon: Cpu },
+      { key: "nav.aiDiagnostics",  path: "/ai-diagnosis",  icon: BrainCircuit },
+    ],
+  },
+  {
+    id: "ai-family", labelKey: "nav.catAIFamily", icon: UserCircle2,
+    children: [
+      { key: "nav.aiFamily", path: "/ai-family", icon: UserCircle2 },
     ],
   },
   {
@@ -74,14 +89,17 @@ const MOBILE_NAV: MobileNavCategory[] = [
       { key: "nav.theme",        path: "/theme",          icon: Paintbrush },
       { key: "nav.terminal",     path: "/terminal",       icon: Terminal },
       { key: "nav.ide",          path: "/ide",             icon: Monitor },
+      { key: "nav.refactoring",  path: "/refactoring",    icon: GitBranch },
     ],
   },
   {
     id: "admin", labelKey: "nav.catAdmin", icon: ShieldCheck,
     children: [
-      { key: "nav.audit",   path: "/audit",    icon: ClipboardList },
-      { key: "nav.userMgmt", path: "/users",    icon: Users },
-      { key: "nav.settings", path: "/settings", icon: Cog },
+      { key: "nav.audit",           path: "/audit",    icon: ClipboardList },
+      { key: "nav.userMgmt",        path: "/users",    icon: Users },
+      { key: "nav.settings",        path: "/settings", icon: Cog },
+      { key: "nav.securityMonitor", path: "/security", icon: ShieldCheck },
+      { key: "nav.pwa",             path: "/pwa",      icon: Smartphone },
     ],
   },
 ];
@@ -114,7 +132,7 @@ interface TopBarProps {
   onToggleTerminal?: () => void;
 }
 
-export default function TopBar({
+export function TopBar({
   connectionState,
   reconnectCount,
   lastSyncTime,
@@ -331,7 +349,7 @@ export default function TopBar({
                       </div>
                     )}
                     <h4 className="text-[rgba(0,212,255,0.6)] mb-2" style={{ fontSize: "0.68rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>
-                      {t("common.info")}
+                      {t("common.notifications")}
                     </h4>
                     {[
                       { msg: "GPU-A100-03 推理延迟异常", time: t("common.minutesAgo", { n: 2 }), type: "warn" },
@@ -413,7 +431,7 @@ export default function TopBar({
                     style={{ fontSize: "0.72rem" }}
                   >
                     <LogOut className="w-3.5 h-3.5" />
-                    {t("common.close")}
+                    {t("common.logout")}
                   </button>
                 </div>
               </div>
@@ -583,7 +601,7 @@ export default function TopBar({
                   style={{ fontSize: "0.82rem" }}
                 >
                   <LogOut className="w-4 h-4" />
-                  {t("common.close")}
+                  {t("common.logout")}
                 </button>
                 <div className="h-[env(safe-area-inset-bottom,0px)]" />
               </div>

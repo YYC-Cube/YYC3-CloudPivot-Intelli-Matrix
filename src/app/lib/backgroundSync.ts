@@ -9,8 +9,7 @@
 
 import type { SyncItem, SyncQueueStats, SyncProcessResult } from "../types";
 
-// Re-export for backward compatibility
-export type { SyncItem };
+// RF-011: Re-export 已移除
 
 const SYNC_QUEUE_KEY = "yyc3_sync_queue";
 
@@ -28,8 +27,7 @@ export async function registerBackgroundSync(tag = "sync-data") {
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    const swRegistration = registration as ServiceWorkerRegistration & { sync: { register: (tag: string) => Promise<void> } };
-    await swRegistration.sync.register(tag);
+    await (registration as unknown as { sync: { register: (tag: string) => Promise<void> } }).sync.register(tag);
     return true;
   } catch {
     console.info("[BackgroundSync] 注册失败");

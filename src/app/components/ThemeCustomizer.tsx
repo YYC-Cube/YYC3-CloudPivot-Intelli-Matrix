@@ -1,6 +1,6 @@
 /**
  * ThemeCustomizer.tsx
- * ===============
+ * ====================
  * 主题自定义模块 · 完整颜色系统 / 排版 / 阴影 / 品牌 / 预设
  * 采用 OKLch + HEX 双模式颜色管理
  */
@@ -11,15 +11,15 @@ import {
   Type, BoxSelect, Sun, Moon, Eye, Image, Save,
   X, Circle,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import YYC3Logo from "./YYC3Logo";
+import { GlassCard } from "./GlassCard";
+import { YYC3Logo } from "./YYC3Logo";
 import { ColorSwatch } from "./theme/ColorSwatch";
 import { hexToOklch, formatOklch, oklchToHex } from "./theme/color-utils";
 import {
   THEME_PRESETS, DEFAULT_COLORS, DEFAULT_TYPOGRAPHY, DEFAULT_SHADOW, DEFAULT_BRANDING,
   type ThemeColors, type ThemeTypography, type ThemeShadow, type BrandingConfig, type ThemePreset,
 } from "./theme/theme-presets";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
 // ── Section Accordion ───────────────────────────────
 function Section({ title, icon: Icon, children, defaultOpen = false }: {
@@ -62,7 +62,7 @@ function ColorPairRow({ label1, value1, onChange1, label2, value2, onChange2 }: 
   );
 }
 
-export default function ThemeCustomizer() {
+export function ThemeCustomizer() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
 

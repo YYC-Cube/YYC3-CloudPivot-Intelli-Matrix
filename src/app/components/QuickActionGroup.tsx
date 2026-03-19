@@ -1,6 +1,6 @@
 /**
  * QuickActionGroup.tsx
- * ================
+ * =====================
  * 一键操作按钮组
  * 根据告警上下文显示快速操作按钮
  */
@@ -8,7 +8,7 @@
 import React, { useState } from "react";
 import {
   Eye, History, Link2, Wrench, CheckCircle,
-  Loader2,
+  RotateCcw, Pause, ArrowUpRight, Loader2,
 } from "lucide-react";
 
 interface ActionDef {
@@ -42,7 +42,7 @@ const variantStyles: Record<string, string> = {
     "bg-[rgba(0,255,136,0.08)] border-[rgba(0,255,136,0.2)] text-[#00ff88] hover:bg-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.35)]",
 };
 
-export default function QuickActionGroup({
+export function QuickActionGroup({
   actions,
   onViewDetail,
   onViewHistory,

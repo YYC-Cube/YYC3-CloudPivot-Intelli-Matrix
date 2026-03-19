@@ -1,6 +1,6 @@
 /**
  * AIAssistant.tsx
- * =========================
+ * =================================
  * YYC³ CloudPivot Intelli-Matrix · AI 集成控制中心
  *
  * 功能：
@@ -12,18 +12,21 @@
  * - 中文语义理解友好
  */
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  Bot, X, Send, Sparkles,
-  Zap, Server, Database, Shield, RotateCcw, Play, Copy, Check,
+  X, Send, Sparkles, Settings, ChevronUp,
+  Zap, Server, Database, Shield, RotateCcw, Play, Square, Copy, Check,
   Cpu, HardDrive, Activity, Network, Layers, Key, Sliders, MessageSquare,
   BookOpen, Command, Minimize2, Maximize2, Trash2
 } from "lucide-react";
+import { YYC3LogoSvg } from "./YYC3LogoSvg";
+import { useModelProvider } from "../hooks/useModelProvider";
+import { useSettingsStore } from "../hooks/useSettingsStore";
 import type { ChatMessage, CommandCategory } from "../types";
 
-// =============================================
+// ============================================================
 // Types (local to AIAssistant)
-// =============================================
+// ============================================================
 
 interface SystemCommand {
   id: string;
@@ -42,9 +45,19 @@ interface PromptPreset {
   category: string;
 }
 
-// =============================================
-// Constants & Mock Data
-// =============================================
+// ============================================================
+// Constants
+// ============================================================
+
+const INITIAL_TIMESTAMP = Date.now();
+
+let messageIdCounter = 0;
+const generateMessageId = (suffix: string = ""): string => {
+  messageIdCounter += 1;
+  return `msg-${messageIdCounter}${suffix}`;
+};
+
+const getCurrentTimestamp = (): number => Date.now();
 
 const SYSTEM_COMMANDS: SystemCommand[] = [
   { id: "cmd-01", icon: Activity, label: "集群状态总览", desc: "获取所有节点实时状态", category: "cluster", action: "查看当前集群所有节点的运行状态、GPU利用率和温度", color: "#00d4ff" },
@@ -65,15 +78,6 @@ const PROMPT_PRESETS: PromptPreset[] = [
   { id: "p3", name: "数据分析师", prompt: "你是数据分析专家。请解读系统监控数据，识别趋势和异常，生成可视化报告建议。关注 QPS、延迟、GPU 利用率等关键指标。", category: "数据" },
   { id: "p4", name: "安全审计员", prompt: "你是信息安全审计专家。请审查系统安全日志，识别异常访问模式、潜在入侵行为，并建议安全加固措施。", category: "安全" },
   { id: "p5", name: "智能运维助手", prompt: "你是 CP-IM 本地推理矩阵的 AI 运维助手。帮助用户快速执行运维操作、查询系统状态、部署模型、分析日志。一切以中文交互，保持简洁友好。", category: "通用" },
-];
-
-const MOCK_MODELS = [
-  { id: "gpt-4o", name: "GPT-4o" },
-  { id: "gpt-4o-mini", name: "GPT-4o Mini" },
-  { id: "gpt-3.5-turbo", name: "GPT-3.5 Turbo" },
-  { id: "local-llama-70b", name: "本地 LLaMA-70B" },
-  { id: "local-qwen-72b", name: "本地 Qwen-72B" },
-  { id: "local-deepseek-v3", name: "本地 DeepSeek-V3" },
 ];
 
 // Simulated AI responses
@@ -100,22 +104,40 @@ function generateMockResponse(userMsg: string): string {
     return `## 数据库健康报告\n\n**PostgreSQL** (localhost:5433)\n- 连接状态: 🟢 正常\n- 活跃连接: 24/100\n- 慢查询: 2 条（> 500ms）\n- 存储使用: 12.8TB / 48TB (27%)\n\n**向量数据库**: 5.2TB / 8TB (65%) ⚠️\n\n**建议**: 向量数据库使用率较高，建议计划扩容或清理过期索引。`;
   }
 
-  return `收到您的请求："${userMsg}"\n\n我正在分析系统当前状态...\n\n**系统概览**:\n- 集群运行正常，7/8 节点活跃\n- 当前 QPS: ~3,800，推理延迟: ~48ms\n- GPU 平均利用率: 82.4%\n\n请问需要我执行具体操作还是查看更多详情？您可以输入具体命令或使用左侧的快捷操作按钮。`;
+  return `收到您的请求："${userMsg}"\n\n我正在分析系统当前状态...\n\n**系统概览**:\n- 集群运行正常，7/8 节点活跃\n- 当前 QPS: ~3,800，推理延: ~48ms\n- GPU 平均利用率: 82.4%\n\n请问需要我执行具体操作还是查看更多详情？您可以输入具体命令或使用左侧的快捷操作按钮。`;
 }
 
-// =============================================
+// ============================================================
 // Component
-// =============================================
+// ============================================================
 
 interface AIAssistantProps {
   isMobile: boolean;
 }
 
-export default function AIAssistant({ isMobile }: AIAssistantProps) {
+export function AIAssistant({ isMobile }: AIAssistantProps) {
   // Panel state
   const [isOpen, setIsOpen] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
   const [activeTab, setActiveTab] = useState<"chat" | "commands" | "prompts" | "settings">("chat");
+
+  // 从 useModelProvider 获取动态模型列表
+  const { availableModels, ollamaLoading } = useModelProvider();
+
+  // ★ 从 useSettingsStore 获取全局 AI 配置 (设置页 = 唯一数据源)
+  const { values: settingsValues, updateValue: updateSettingsValue } = useSettingsStore();
+
+  // 派生自全局设置 — 修改即时同步到 Settings 页
+  const apiKey = settingsValues.aiApiKey;
+  const setApiKey = useCallback((v: string) => updateSettingsValue("aiApiKey", v), [updateSettingsValue]);
+  const selectedModel = settingsValues.aiModel;
+  const setSelectedModel = useCallback((v: string) => updateSettingsValue("aiModel", v), [updateSettingsValue]);
+  const temperature = parseFloat(settingsValues.aiTemperature) || 0.7;
+  const setTemperature = useCallback((v: number) => updateSettingsValue("aiTemperature", String(v)), [updateSettingsValue]);
+  const topP = parseFloat(settingsValues.aiTopP) || 0.9;
+  const setTopP = useCallback((v: number) => updateSettingsValue("aiTopP", String(v)), [updateSettingsValue]);
+  const maxTokens = parseInt(settingsValues.aiMaxTokens) || 2048;
+  const setMaxTokens = useCallback((v: number) => updateSettingsValue("aiMaxTokens", String(v)), [updateSettingsValue]);
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -123,7 +145,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
       id: "welcome",
       role: "assistant",
       content: "你好！我是 CP-IM AI 智能助理。\n\n我可以帮你：\n- 📊 查看集群状态和性能报告\n- 🚀 部署和管理推理模型\n- 🔧 执行系统运维操作\n- 🔍 分析日志和诊断问题\n\n请输入指令或点击右侧快捷命令开始操作。",
-      timestamp: Date.now(),
+      timestamp: INITIAL_TIMESTAMP,
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -131,24 +153,24 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
   const chatEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // AI Settings
-  const [apiKey, setApiKey] = useState("");
+  // AI Settings (只保留本地 UI 状态)
   const [showApiKey, setShowApiKey] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("local-qwen-72b");
-  const [temperature, setTemperature] = useState(0.7);
-  const [topP, setTopP] = useState(0.9);
-  const [maxTokens, setMaxTokens] = useState(2048);
   const [systemPrompt, setSystemPrompt] = useState(PROMPT_PRESETS[4].prompt);
 
   // Command filter
   const [cmdFilter, setCmdFilter] = useState<string>("all");
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
+  // 自动选中第一个可用模型
+  useEffect(() => {
+    if (!selectedModel && availableModels.length > 0) {
+      setSelectedModel(availableModels[0].id);
+    }
+  }, [availableModels, selectedModel]);
+
   // Scroll to bottom on new messages
   useEffect(() => {
-    if (chatEndRef.current && typeof chatEndRef.current.scrollIntoView === "function") {
-      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
   // Send message
@@ -156,10 +178,10 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
     if (!content.trim()) {return;}
 
     const userMsg: ChatMessage = {
-      id: `msg-${Date.now()}`,
+      id: generateMessageId(),
       role: "user",
       content: content.trim(),
-      timestamp: Date.now(),
+      timestamp: getCurrentTimestamp(),
     };
 
     setMessages(prev => [...prev, userMsg]);
@@ -171,10 +193,10 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
 
     const response = generateMockResponse(content);
     const assistantMsg: ChatMessage = {
-      id: `msg-${Date.now()}-resp`,
+      id: generateMessageId("-resp"),
       role: "assistant",
       content: response,
-      timestamp: Date.now(),
+      timestamp: getCurrentTimestamp(),
     };
 
     setMessages(prev => [...prev, assistantMsg]);
@@ -197,10 +219,10 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
     setSystemPrompt(preset.prompt);
     setActiveTab("chat");
     const sysMsg: ChatMessage = {
-      id: `sys-${Date.now()}`,
+      id: generateMessageId("-sys"),
       role: "system",
       content: `✅ 已切换系统角色为「${preset.name}」`,
-      timestamp: Date.now(),
+      timestamp: getCurrentTimestamp(),
     };
     setMessages(prev => [...prev, sysMsg]);
   };
@@ -216,7 +238,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
       id: "welcome-new",
       role: "assistant",
       content: "对话已清空。请输入新的指令开始操作。",
-      timestamp: Date.now(),
+      timestamp: getCurrentTimestamp(),
     }]);
   };
 
@@ -240,7 +262,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
       ? "fixed inset-0 z-[60]"
       : "fixed bottom-20 right-4 w-[480px] h-[640px] z-[60]";
 
-  // ======== FLOATING BUTTON ========
+  // ========== FLOATING BUTTON ==========
   if (!isOpen) {
     return (
       <button
@@ -254,7 +276,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
         <div className="relative rounded-2xl bg-gradient-to-br from-[#00d4ff] to-[#7b2ff7] flex items-center justify-center shadow-[0_0_30px_rgba(0,180,255,0.4)] hover:shadow-[0_0_40px_rgba(0,180,255,0.6)] transition-all hover:scale-105 active:scale-95"
           style={{ width: isMobile ? 48 : 56, height: isMobile ? 48 : 56 }}
         >
-          <Bot className={isMobile ? "w-6 h-6 text-white" : "w-7 h-7 text-white"} />
+          <YYC3LogoSvg size={isMobile ? 24 : 28} showText={false} className="rounded-md" />
           {/* Pulse ring */}
           <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#00d4ff] to-[#7b2ff7] animate-ping opacity-20" />
           {/* Badge */}
@@ -270,23 +292,23 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
     );
   }
 
-  // ======== MAIN PANEL ========
+  // ========== MAIN PANEL ==========
   return (
     <div className={panelClass}>
       <div className="w-full h-full rounded-2xl bg-[rgba(8,25,55,0.95)] backdrop-blur-2xl border border-[rgba(0,180,255,0.2)] shadow-[0_0_60px_rgba(0,180,255,0.12)] flex flex-col overflow-hidden">
 
-        {/* ======= Header ======= */}
+        {/* ========= Header ========= */}
         <div className="shrink-0 flex items-center justify-between px-4 py-3 border-b border-[rgba(0,180,255,0.12)] bg-[rgba(0,40,80,0.2)]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00d4ff] to-[#7b2ff7] flex items-center justify-center shadow-[0_0_15px_rgba(0,180,255,0.3)]">
-              <Bot className="w-5 h-5 text-white" />
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#00d4ff] to-[#7b2ff7] flex items-center justify-center shadow-[0_0_15px_rgba(0,180,255,0.3)] overflow-hidden">
+              <YYC3LogoSvg size={20} showText={false} className="rounded" />
             </div>
             <div>
               <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.9rem" }}>AI 智能助理</h3>
               <div className="flex items-center gap-1.5">
                 <div className="w-1.5 h-1.5 rounded-full bg-[#00ff88] animate-pulse" />
                 <span className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.62rem" }}>
-                  {MOCK_MODELS.find(m => m.id === selectedModel)?.name ?? selectedModel}
+                  {availableModels.find(m => m.id === selectedModel)?.name ?? (ollamaLoading ? "模型加载中..." : "未选择模型")}
                 </span>
               </div>
             </div>
@@ -319,7 +341,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
           </div>
         </div>
 
-        {/* ======= Tab Bar ======= */}
+        {/* ========= Tab Bar ========= */}
         <div className="shrink-0 flex items-center gap-0.5 px-3 py-2 border-b border-[rgba(0,180,255,0.08)] bg-[rgba(0,40,80,0.1)]">
           {([
             { key: "chat" as const, icon: MessageSquare, label: "对话" },
@@ -343,7 +365,7 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
           ))}
         </div>
 
-        {/* ======= Content ======= */}
+        {/* ========= Content ========= */}
         <div className="flex-1 overflow-hidden flex flex-col">
 
           {/* === Chat Tab === */}
@@ -566,25 +588,39 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
                   <Cpu className="w-4 h-4 text-[#00d4ff]" />
                   模型选择
                 </h4>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {MOCK_MODELS.map(model => (
-                    <button
-                      key={model.id}
-                      onClick={() => setSelectedModel(model.id)}
-                      className={`px-3 py-2 rounded-lg text-left transition-all ${
-                        selectedModel === model.id
-                          ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
-                          : "bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.08)] text-[rgba(0,212,255,0.5)] hover:border-[rgba(0,180,255,0.2)]"
-                      }`}
-                      style={{ fontSize: "0.72rem" }}
-                    >
-                      {model.id.startsWith("local-") && (
-                        <span className="text-[#00ff88] mr-1" style={{ fontSize: "0.58rem" }}>本地</span>
-                      )}
-                      {model.name}
-                    </button>
-                  ))}
-                </div>
+                {ollamaLoading && (
+                  <p className="text-[rgba(0,212,255,0.35)] mb-2" style={{ fontSize: "0.65rem" }}>
+                    正在检测 Ollama 本地模型...
+                  </p>
+                )}
+                {availableModels.length > 0 ? (
+                  <div className="space-y-1">
+                    {availableModels.map(model => (
+                      <button
+                        key={model.id}
+                        onClick={() => setSelectedModel(model.id)}
+                        className={`w-full px-3 py-2 rounded-lg text-left transition-all flex items-center gap-2 ${
+                          selectedModel === model.id
+                            ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
+                            : "bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.08)] text-[rgba(0,212,255,0.5)] hover:border-[rgba(0,180,255,0.2)]"
+                        }`}
+                        style={{ fontSize: "0.72rem" }}
+                      >
+                        {model.isLocal && (
+                          <span className="text-[#00ff88] shrink-0" style={{ fontSize: "0.58rem" }}>本地</span>
+                        )}
+                        <span className="truncate flex-1">{model.name}</span>
+                        <span className="text-[rgba(0,212,255,0.25)] shrink-0" style={{ fontSize: "0.55rem" }}>
+                          {model.provider}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-[rgba(0,212,255,0.25)] text-center py-3" style={{ fontSize: "0.72rem" }}>
+                    暂无可用模型，请前往「模型设置」页面添加
+                  </p>
+                )}
               </div>
 
               {/* Temperature */}
@@ -671,6 +707,14 @@ export default function AIAssistant({ isMobile }: AIAssistantProps) {
                 <RotateCcw className="w-3.5 h-3.5 inline mr-2" />
                 恢复默认参数
               </button>
+
+              {/* Global sync hint */}
+              <div className="p-2.5 rounded-xl bg-[rgba(0,255,136,0.04)] border border-[rgba(0,255,136,0.1)]">
+                <p className="text-[rgba(0,255,136,0.5)] flex items-center gap-1.5" style={{ fontSize: "0.62rem" }}>
+                  <Settings className="w-3 h-3" />
+                  以上参数与「系统设置 → AI / 大模型配置」实时双向同步
+                </p>
+              </div>
             </div>
           )}
         </div>

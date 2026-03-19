@@ -1,6 +1,6 @@
 /**
  * ActionRecommender.test.tsx
- * ===============
+ * ===========================
  * ActionRecommender 组件 - 操作推荐引擎测试
  *
  * 覆盖范围:
@@ -11,9 +11,10 @@
  * - 空状态
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import ActionRecommender from "../components/ActionRecommender";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { ActionRecommender } from "../components/ActionRecommender";
 import type { AIRecommendation } from "../types";
 
 const mockRecs: AIRecommendation[] = [
@@ -35,17 +36,12 @@ const mockRecs: AIRecommendation[] = [
 ];
 
 describe("ActionRecommender", () => {
-  let onApply: (recId: string) => void;
-  let onDismiss: (recId: string) => void;
+  let onApply: Mock;
+  let onDismiss: Mock;
 
   beforeEach(() => {
-    cleanup();
-    onApply = vi.fn() as (recId: string) => void;
-    onDismiss = vi.fn() as (recId: string) => void;
-  });
-
-  afterEach(() => {
-    cleanup();
+    onApply = vi.fn();
+    onDismiss = vi.fn();
   });
 
   describe("基础渲染", () => {

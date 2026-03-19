@@ -1,6 +1,6 @@
 /**
  * PWAStatusPanel.test.tsx
- * ==============
+ * ========================
  * PWAStatusPanel 组件 - PWA 离线管理面板测试
  *
  * 覆盖范围:
@@ -10,10 +10,11 @@
  * - 操作按钮 (更新 / 刷新 / 清空)
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import PWAStatusPanel from "../components/PWAStatusPanel";
-import { ViewContext } from "@/lib/layoutContext";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { PWAStatusPanel } from "../components/PWAStatusPanel";
+import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
 import { zhCN } from "../i18n";
 
@@ -71,73 +72,69 @@ describe("PWAStatusPanel", () => {
     vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    cleanup();
-  });
-
   describe("基础渲染", () => {
     it("应渲染标题", () => {
       renderPanel();
-      expect(screen.getAllByText("PWA & 离线管理")[0]).toBeInTheDocument();
+      expect(screen.getByText("PWA & 离线管理")).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       renderPanel();
-      expect(screen.getAllByTestId("pwa-status-panel")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("pwa-status-panel")).toBeInTheDocument();
     });
 
     it("应渲染 SW 版本", () => {
       renderPanel();
-      expect(screen.getAllByText(/v1\.4\.2/)[0]).toBeInTheDocument();
+      expect(screen.getByText(/v1\.4\.2/)).toBeInTheDocument();
     });
 
     it("应渲染在线状态", () => {
       renderPanel();
-      expect(screen.getAllByText("在线")[0]).toBeInTheDocument();
+      expect(screen.getByText("在线")).toBeInTheDocument();
     });
 
     it("应渲染离线就绪", () => {
       renderPanel();
-      expect(screen.getAllByText("离线就绪")[0]).toBeInTheDocument();
+      expect(screen.getByText("离线就绪")).toBeInTheDocument();
     });
   });
 
   describe("缓存列表", () => {
     it("应渲染缓存条目", () => {
       renderPanel();
-      expect(screen.getAllByTestId("cache-list")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("yyc3-static-v1")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("yyc3-api-cache")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("cache-list")).toBeInTheDocument();
+      expect(screen.getByText("yyc3-static-v1")).toBeInTheDocument();
+      expect(screen.getByText("yyc3-api-cache")).toBeInTheDocument();
     });
 
     it("应渲染 5 个缓存条目", () => {
       renderPanel();
-      expect(screen.getAllByTestId("cache-yyc3-static-v1")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("cache-yyc3-fonts")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("cache-yyc3-images")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("cache-yyc3-runtime")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("cache-yyc3-static-v1")).toBeInTheDocument();
+      expect(screen.getByTestId("cache-yyc3-fonts")).toBeInTheDocument();
+      expect(screen.getByTestId("cache-yyc3-images")).toBeInTheDocument();
+      expect(screen.getByTestId("cache-yyc3-runtime")).toBeInTheDocument();
     });
   });
 
   describe("操作按钮", () => {
     it("应渲染更新按钮", () => {
       renderPanel();
-      expect(screen.getAllByTestId("update-sw-btn")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("update-sw-btn")).toBeInTheDocument();
     });
 
     it("应渲染刷新缓存按钮", () => {
       renderPanel();
-      expect(screen.getAllByTestId("refresh-cache-btn")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("refresh-cache-btn")).toBeInTheDocument();
     });
 
     it("应渲染清空缓存按钮", () => {
       renderPanel();
-      expect(screen.getAllByTestId("clear-all-cache-btn")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("clear-all-cache-btn")).toBeInTheDocument();
     });
 
     it("点击单个缓存清理按钮应可交互", () => {
       renderPanel();
-      const clearBtn = screen.getAllByTestId("clear-yyc3-fonts")[0];
+      const clearBtn = screen.getByTestId("clear-yyc3-fonts");
       expect(clearBtn).toBeInTheDocument();
       fireEvent.click(clearBtn);
       // 不会报错即可

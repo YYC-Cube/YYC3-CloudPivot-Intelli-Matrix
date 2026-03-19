@@ -18,8 +18,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
   useI18n: () => ({
@@ -34,14 +34,12 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  __esModule: true,
-  default: ({ children, className }: any) => <div className={className}>{children}</div>,
+  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 // Mock sub-components
 vi.mock("../components/PatrolScheduler", () => ({
-  __esModule: true,
-  default: ({ schedule, onToggle, onIntervalChange }: any) => (
+  PatrolScheduler: ({ schedule, onToggle, onIntervalChange }: any) => (
     <div data-testid="patrol-scheduler">
       <span>{schedule.interval}min</span>
       <button onClick={() => onToggle(true)}>enable-auto</button>
@@ -51,8 +49,7 @@ vi.mock("../components/PatrolScheduler", () => ({
 }));
 
 vi.mock("../components/PatrolReport", () => ({
-  __esModule: true,
-  default: ({ result, embedded }: any) => (
+  PatrolReport: ({ result, embedded }: any) => (
     <div data-testid={embedded ? "patrol-report-embedded" : "patrol-report-modal"}>
       Score: {result.healthScore}
     </div>
@@ -60,8 +57,7 @@ vi.mock("../components/PatrolReport", () => ({
 }));
 
 vi.mock("../components/PatrolHistory", () => ({
-  __esModule: true,
-  default: ({ history, onViewReport }: any) => (
+  PatrolHistory: ({ history, onViewReport, _isMobile }: any) => (
     <div data-testid="patrol-history">
       {history.map((h: any) => (
         <button key={h.id} onClick={() => onViewReport(h)}>
@@ -86,12 +82,11 @@ vi.mock("../hooks/usePatrol", () => ({
 }));
 
 // Mock Layout context
-vi.mock("@/lib/layoutContext", () => ({
+vi.mock("../lib/view-context", () => ({
   ViewContext: React.createContext({ isMobile: false, isTablet: false, isDesktop: true, width: 1200, breakpoint: "lg", isTouch: false }),
-  WebSocketContext: React.createContext(null),
 }));
 
-import PatrolDashboard from "../components/PatrolDashboard";
+import { PatrolDashboard } from "../components/PatrolDashboard";
 
 function defaultPatrolState() {
   return {
@@ -134,53 +129,47 @@ describe("PatrolDashboard", () => {
     mockPatrolState = defaultPatrolState();
   });
 
-  afterEach(() => {
-    cleanup();
-  });
-
   describe("基础渲染", () => {
     it("应渲染巡查标题", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("patrol.title")[0]).toBeInTheDocument();
+      expect(screen.getByText("patrol.title")).toBeInTheDocument();
     });
 
     it("应渲染副标题", () => {
       render(<PatrolDashboard />);
-      const subtitleElements = screen.getAllByText("patrol.subtitle");
-      expect(subtitleElements.length).toBeGreaterThan(0);
+      expect(screen.getByText("patrol.subtitle")).toBeInTheDocument();
     });
 
     it("应渲染手动巡查按钮", () => {
       render(<PatrolDashboard />);
-      // 该文本可能在多个地方出现，使用 getAllByText 并验证至少有一个
-      expect(screen.getAllByText("patrol.manualPatrol").length).toBeGreaterThan(0);
+      expect(screen.getByText("patrol.manualPatrol")).toBeInTheDocument();
     });
 
     it("应渲染巡查计划按钮", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("patrol.patrolPlan").length).toBeGreaterThan(0);
+      expect(screen.getByText("patrol.patrolPlan")).toBeInTheDocument();
     });
   });
 
   describe("统计卡片", () => {
     it("应渲染健康度", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("96%").length).toBeGreaterThan(0);
+      expect(screen.getByText("96%")).toBeInTheDocument();
     });
 
     it("应渲染成功数", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("12/13").length).toBeGreaterThan(0);
+      expect(screen.getByText("12/13")).toBeInTheDocument();
     });
 
     it("应渲染警告数", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("1").length).toBeGreaterThan(0);
+      expect(screen.getByText("1")).toBeInTheDocument();
     });
 
     it("应渲染严重数", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("0").length).toBeGreaterThan(0);
+      expect(screen.getByText("0")).toBeInTheDocument();
     });
 
     it("无结果时显示 --", () => {
@@ -194,7 +183,7 @@ describe("PatrolDashboard", () => {
   describe("交互", () => {
     it("点击手动巡查应调用 runPatrol", () => {
       render(<PatrolDashboard />);
-      fireEvent.click(screen.getAllByText("patrol.manualPatrol")[0]);
+      fireEvent.click(screen.getByText("patrol.manualPatrol"));
       expect(mockRunPatrol).toHaveBeenCalledWith("manual");
     });
 
@@ -202,7 +191,7 @@ describe("PatrolDashboard", () => {
       mockPatrolState.patrolStatus = "running";
       mockPatrolState.progress = 45;
       render(<PatrolDashboard />);
-      const btn = screen.getAllByText("common.loading")[0].closest("button")!;
+      const btn = screen.getByText("common.loading").closest("button")!;
       expect(btn).toBeDisabled();
     });
 
@@ -210,20 +199,20 @@ describe("PatrolDashboard", () => {
       mockPatrolState.patrolStatus = "running";
       mockPatrolState.progress = 60;
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("common.loading 60%").length).toBeGreaterThan(0);
+      expect(screen.getByText("common.loading 60%")).toBeInTheDocument();
     });
 
     it("点击巡查计划应切换 scheduler 显示", () => {
       render(<PatrolDashboard />);
-      fireEvent.click(screen.getAllByText("patrol.patrolPlan")[0]);
+      fireEvent.click(screen.getByText("patrol.patrolPlan"));
       expect(screen.getByTestId("patrol-scheduler")).toBeInTheDocument();
     });
 
     it("再次点击巡查计划应隐藏 scheduler", () => {
       render(<PatrolDashboard />);
-      fireEvent.click(screen.getAllByText("patrol.patrolPlan")[0]);
+      fireEvent.click(screen.getByText("patrol.patrolPlan"));
       expect(screen.getByTestId("patrol-scheduler")).toBeInTheDocument();
-      fireEvent.click(screen.getAllByText("patrol.patrolPlan")[0]);
+      fireEvent.click(screen.getByText("patrol.patrolPlan"));
       expect(screen.queryByTestId("patrol-scheduler")).not.toBeInTheDocument();
     });
   });
@@ -231,39 +220,39 @@ describe("PatrolDashboard", () => {
   describe("调度状态条", () => {
     it("自动巡查关闭时显示关闭状态", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("common.none").length).toBeGreaterThan(0);
+      expect(screen.getByText("common.none")).toBeInTheDocument();
     });
 
     it("自动巡查启用时显示间隔", () => {
       mockPatrolState.schedule.enabled = true;
       mockPatrolState.schedule.nextRun = Date.now() + 900000;
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("15 min").length).toBeGreaterThan(0);
+      expect(screen.getByText("15 min")).toBeInTheDocument();
     });
 
     it("点击启用/停止按钮应调用 toggleAutoPatrol", () => {
       render(<PatrolDashboard />);
-      fireEvent.click(screen.getAllByText("common.confirm")[0]);
+      fireEvent.click(screen.getByText("common.confirm"));
       expect(mockToggleAutoPatrol).toHaveBeenCalledWith(true);
     });
 
     it("已启用时按钮显示取消", () => {
       mockPatrolState.schedule.enabled = true;
       render(<PatrolDashboard />);
-      expect(screen.getAllByText("common.cancel").length).toBeGreaterThan(0);
+      expect(screen.getByText("common.cancel")).toBeInTheDocument();
     });
   });
 
   describe("报告和历史", () => {
     it("有结果时应嵌入 PatrolReport", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByTestId("patrol-report-embedded").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("Score: 96").length).toBeGreaterThan(0);
+      expect(screen.getByTestId("patrol-report-embedded")).toBeInTheDocument();
+      expect(screen.getByText("Score: 96")).toBeInTheDocument();
     });
 
     it("应渲染 PatrolHistory", () => {
       render(<PatrolDashboard />);
-      expect(screen.getAllByTestId("patrol-history").length).toBeGreaterThan(0);
+      expect(screen.getByTestId("patrol-history")).toBeInTheDocument();
     });
 
     it("查看历史报告应显示 Modal", () => {
@@ -279,7 +268,7 @@ describe("PatrolDashboard", () => {
       };
       render(<PatrolDashboard />);
       expect(screen.getByTestId("patrol-report-modal")).toBeInTheDocument();
-      expect(screen.getAllByText("Score: 95").length).toBeGreaterThan(0);
+      expect(screen.getByText("Score: 95")).toBeInTheDocument();
     });
 
     it("Modal 中关闭按钮应调用 closeReport", () => {
@@ -294,8 +283,9 @@ describe("PatrolDashboard", () => {
         checks: [],
       };
       render(<PatrolDashboard />);
-      const modal = screen.getByTestId("patrol-report-modal");
-      const closeBtn = modal.querySelector("button");
+      // Find close button in modal
+      const modal = screen.getByTestId("patrol-report-modal").closest(".relative");
+      const closeBtn = modal?.parentElement?.querySelector("button");
       if (closeBtn) {
         fireEvent.click(closeBtn);
         expect(mockCloseReport).toHaveBeenCalled();

@@ -1,6 +1,6 @@
 /**
  * ColorPicker.tsx
- * ============
+ * ================
  * HEX 颜色选择器 · 赛博朋克风格
  * 包含: 色相/饱和度/明度面板 + 色相滑条 + HEX/R/G/B 输入
  */
@@ -16,7 +16,7 @@ interface ColorPickerProps {
   onClose?: () => void;
 }
 
-export function ColorPicker({ value, onChange }: ColorPickerProps) {
+export function ColorPicker({ value, onChange, onClose }: ColorPickerProps) {
   const [rgb, setRgb] = useState<[number, number, number]>(() => hexToRgb(value));
   const [hsv, setHsv] = useState<[number, number, number]>(() => rgbToHsv(...hexToRgb(value)));
   const [hexInput, setHexInput] = useState(value.replace("#", ""));
@@ -30,9 +30,11 @@ export function ColorPicker({ value, onChange }: ColorPickerProps) {
   useEffect(() => {
     const newRgb = hexToRgb(value);
     const newHsv = rgbToHsv(...newRgb);
-    setRgb(newRgb);
-    setHsv(newHsv);
-    setHexInput(value.replace("#", ""));
+    setTimeout(() => {
+      setRgb(newRgb);
+      setHsv(newHsv);
+      setHexInput(value.replace("#", ""));
+    }, 0);
   }, [value]);
 
   // ── Draw SV canvas ──
@@ -84,7 +86,7 @@ export function ColorPicker({ value, onChange }: ColorPickerProps) {
   useEffect(() => {
     drawSV(hsv[0]);
     drawHue();
-  }, [drawSV, drawHue, hsv]);
+  }, [drawSV, drawHue, hsv[0]]);
 
   // ── SV interactions ──
   const handleSVPick = useCallback((e: React.MouseEvent | MouseEvent) => {
@@ -100,7 +102,7 @@ export function ColorPicker({ value, onChange }: ColorPickerProps) {
     const hex = rgbToHex(...newRgb);
     setHexInput(hex.replace("#", ""));
     onChange(hex);
-  }, [hsv, onChange]);
+  }, [hsv[0], onChange]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => { if (svDragging.current) {handleSVPick(e);} };
@@ -125,7 +127,7 @@ export function ColorPicker({ value, onChange }: ColorPickerProps) {
     const hex = rgbToHex(...newRgb);
     setHexInput(hex.replace("#", ""));
     onChange(hex);
-  }, [hsv, drawSV, onChange]);
+  }, [hsv[1], hsv[2], drawSV, onChange]);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => { if (hueDragging.current) {handleHuePick(e);} };

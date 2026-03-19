@@ -1,6 +1,6 @@
 /**
  * Sidebar.tsx
- * =========
+ * ============
  * 可折叠图标侧边栏 · 赛博朋克风格
  * 悬停展开子菜单 flyout · 支持固定展开
  * 仅桌面端渲染（移动/平板用 TopBar 汉堡菜单）
@@ -12,13 +12,19 @@ import {
   ChevronLeft, ChevronRight,
   BarChart3, AlertTriangle, Radar,
   Settings as SettingsIcon, FolderOpen, RefreshCcw,
-  Sparkles, Cpu, BrainCircuit, BellRing, FileBarChart,
+  Sparkles, Cpu,
   Palette, BookOpen, Paintbrush, Terminal, Monitor,
-  Shield, ClipboardList, Users, Cog,
+  ClipboardList, Users, Cog,
+  BellRing, FileBarChart, BrainCircuit,
+  HardDrive, Database, GitBranch,
+  Smartphone, Package, Gauge, ServerCog,
+  Layers,
+  UserCircle2,
+  Zap,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router";
 import { useI18n } from "../hooks/useI18n";
-import YYC3Logo from "./YYC3Logo";
+import { YYC3Logo } from "./YYC3Logo";
 
 /* ── 导航数据结构 ──────────────────────────────── */
 interface NavChild {
@@ -43,6 +49,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       { key: "nav.dataMonitor", path: "/",           icon: BarChart3 },
       { key: "nav.followUp",    path: "/follow-up",   icon: AlertTriangle },
       { key: "nav.patrol",      path: "/patrol",       icon: Radar },
+      { key: "nav.alertRules",  path: "/alerts",       icon: BellRing },
     ],
   },
   {
@@ -52,7 +59,12 @@ const NAV_CATEGORIES: NavCategory[] = [
     children: [
       { key: "nav.operations",  path: "/operations",  icon: RefreshCcw },
       { key: "nav.fileManager", path: "/files",        icon: FolderOpen },
+      { key: "nav.hostFiles",   path: "/host-files",   icon: HardDrive },
+      { key: "nav.database",    path: "/database",     icon: Database },
+      { key: "nav.dbConnections", path: "/db-connections", icon: Database },
+      { key: "nav.connectionTest", path: "/connection-test", icon: Zap },
       { key: "nav.serviceLoop", path: "/loop",         icon: SettingsIcon },
+      { key: "nav.reportExport", path: "/reports",     icon: FileBarChart },
     ],
   },
   {
@@ -60,9 +72,17 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catAI",
     icon: Brain,
     children: [
-      { key: "nav.aiDecision",    path: "/ai",            icon: Sparkles },
-      { key: "nav.aiDiagnostics", path: "/ai-diagnosis", icon: BrainCircuit },
-      { key: "modelProvider.title", path: "/models",      icon: Cpu },
+      { key: "nav.aiDecision",      path: "/ai",            icon: Sparkles },
+      { key: "modelProvider.title",  path: "/models",        icon: Cpu },
+      { key: "nav.aiDiagnostics",    path: "/ai-diagnosis",  icon: BrainCircuit },
+    ],
+  },
+  {
+    id: "ai-family",
+    labelKey: "nav.catAIFamily",
+    icon: UserCircle2,
+    children: [
+      { key: "nav.aiFamily",  path: "/ai-family",  icon: UserCircle2 },
     ],
   },
   {
@@ -75,6 +95,8 @@ const NAV_CATEGORIES: NavCategory[] = [
       { key: "nav.theme",        path: "/theme",          icon: Paintbrush },
       { key: "nav.terminal",     path: "/terminal",       icon: Terminal },
       { key: "nav.ide",          path: "/ide",             icon: Monitor },
+      { key: "nav.refactoring",  path: "/refactoring",    icon: GitBranch },
+      { key: "nav.architecture", path: "/architecture",   icon: Layers },
     ],
   },
   {
@@ -82,13 +104,14 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catAdmin",
     icon: ShieldCheck,
     children: [
-      { key: "nav.audit",       path: "/audit",       icon: ClipboardList },
-      { key: "nav.security",    path: "/security",    icon: Shield },
-      { key: "nav.diagnostics", path: "/diagnostics", icon: Wrench },
-      { key: "nav.alerts",     path: "/alerts",      icon: BellRing },
-      { key: "nav.reports",     path: "/reports",     icon: FileBarChart },
-      { key: "nav.userMgmt",    path: "/users",       icon: Users },
-      { key: "nav.settings",    path: "/settings",    icon: Cog },
+      { key: "nav.audit",   path: "/audit",    icon: ClipboardList },
+      { key: "nav.userMgmt", path: "/users",    icon: Users },
+      { key: "nav.settings", path: "/settings", icon: Cog },
+      { key: "nav.securityMonitor", path: "/security", icon: ShieldCheck },
+      { key: "nav.pwa",     path: "/pwa",      icon: Smartphone },
+      { key: "nav.dataEditor", path: "/data-editor", icon: Package },
+      { key: "nav.performance", path: "/performance", icon: Gauge },
+      { key: "nav.envConfig", path: "/env-config", icon: ServerCog },
     ],
   },
 ];
@@ -115,7 +138,7 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-export default function Sidebar({ collapsed, onToggle }: SidebarProps) {
+export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useI18n();

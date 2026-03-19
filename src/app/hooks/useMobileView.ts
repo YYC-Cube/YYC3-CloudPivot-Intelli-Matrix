@@ -14,8 +14,7 @@
 import { useState, useEffect } from "react";
 import type { Breakpoint, ViewState } from "../types";
 
-// Re-export for backward compatibility
-export type { Breakpoint, ViewState };
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
 function getBreakpoint(width: number): Breakpoint {
   if (width < 768) {return "sm";}

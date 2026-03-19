@@ -1,6 +1,6 @@
 /**
  * FollowUpCard.test.tsx
- * ============
+ * ======================
  * FollowUpCard 组件 - 告警卡片测试
  *
  * 覆盖范围:
@@ -11,9 +11,10 @@
  * - 回调触发（抽屉、修复、解决）
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import FollowUpCard from "../components/FollowUpCard";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { FollowUpCard } from "../components/FollowUpCard";
 import type { FollowUpItem } from "../types";
 
 // Mock react-router (needed by sub-components)
@@ -41,10 +42,6 @@ const mockItem: FollowUpItem = {
 describe("FollowUpCard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -130,7 +127,7 @@ describe("FollowUpCard", () => {
 
   describe("回调", () => {
     it("应调用 onOpenDrawer", () => {
-      const onOpenDrawer = vi.fn() as any;
+      const onOpenDrawer = vi.fn();
       render(<FollowUpCard item={mockItem} onOpenDrawer={onOpenDrawer} />);
       // Click the external link button
       const buttons = screen.getAllByRole("button");

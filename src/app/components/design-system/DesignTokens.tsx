@@ -1,21 +1,18 @@
 /**
  * DesignTokens.tsx
- * ==============
+ * ==================
  * 9.1 Design Tokens 展示 — 色彩 / 字体 / 间距 / 阴影 / 动效
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { GlassCard } from "../GlassCard";
+import type { ColorToken, TypographyToken, SpacingToken, ShadowToken, AnimationToken } from "../../types";
 
-/* =============================================
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
+
+/* ============================================================
  *  色彩系统
- * ============================================= */
-
-export interface ColorToken {
-  name: string;
-  value: string;
-  cssVar: string;
-  usage: string;
-}
+ * ============================================================ */
 
 export const COLOR_TOKENS: ColorToken[] = [
   { name: "Background",        value: "#060e1f",                   cssVar: "--background",           usage: "全局页面背景" },
@@ -39,18 +36,9 @@ export const COLOR_TOKENS: ColorToken[] = [
   { name: "Chart 5",           value: "#ffdd00",                   cssVar: "--chart-5",               usage: "图表第五色" },
 ];
 
-/* =============================================
+/* ============================================================
  *  字体排版
- * ============================================= */
-
-export interface TypographyToken {
-  name: string;
-  family: string;
-  weight: string;
-  size: string;
-  usage: string;
-  sample: string;
-}
+ * ============================================================ */
 
 export const TYPOGRAPHY_TOKENS: TypographyToken[] = [
   { name: "Display / H1",   family: "Orbitron",     weight: "500-700", size: "1.5rem",   usage: "页面大标题 · Logo 文字",       sample: "YYC³ CLOUDPIVOT" },
@@ -63,16 +51,9 @@ export const TYPOGRAPHY_TOKENS: TypographyToken[] = [
   { name: "Mono / Metric",  family: "Orbitron",     weight: "600",     size: "1.1rem",   usage: "大数字指标 · KPI 数值",        sample: "148K tok/s" },
 ];
 
-/* =============================================
+/* ============================================================
  *  间距规范
- * ============================================= */
-
-export interface SpacingToken {
-  name: string;
-  value: string;
-  px: number;
-  usage: string;
-}
+ * ============================================================ */
 
 export const SPACING_TOKENS: SpacingToken[] = [
   { name: "4xs", value: "0.125rem", px: 2,  usage: "最小间距 · 图标内部" },
@@ -86,15 +67,9 @@ export const SPACING_TOKENS: SpacingToken[] = [
   { name: "2xl", value: "3rem",     px: 48, usage: "超大间距 · 模块分隔" },
 ];
 
-/* =============================================
+/* ============================================================
  *  阴影效果
- * ============================================= */
-
-export interface ShadowToken {
-  name: string;
-  value: string;
-  usage: string;
-}
+ * ============================================================ */
 
 export const SHADOW_TOKENS: ShadowToken[] = [
   { name: "Glow-SM",      value: "0 0 15px rgba(0,180,255,0.05)",    usage: "微弱发光 · 静态状态" },
@@ -108,16 +83,9 @@ export const SHADOW_TOKENS: ShadowToken[] = [
   { name: "Drop-LG",      value: "0 10px 50px rgba(0,0,0,0.5)",      usage: "模态框 · 抽屉" },
 ];
 
-/* =============================================
+/* ============================================================
  *  动效定义
- * ============================================= */
-
-export interface AnimationToken {
-  name: string;
-  duration: string;
-  easing: string;
-  usage: string;
-}
+ * ============================================================ */
 
 export const ANIMATION_TOKENS: AnimationToken[] = [
   { name: "Micro",       duration: "100ms",  easing: "ease-out",   usage: "按钮反馈 · 颜色变化" },
@@ -131,9 +99,9 @@ export const ANIMATION_TOKENS: AnimationToken[] = [
   { name: "Flow Pulse",  duration: "2s",     easing: "linear infinite", usage: "数据流连线动画" },
 ];
 
-/* =============================================
+/* ============================================================
  *  渲染组件
- * ============================================= */
+ * ============================================================ */
 
 export function DesignTokens() {
   const [activeSection, setActiveSection] = useState<string>("colors");

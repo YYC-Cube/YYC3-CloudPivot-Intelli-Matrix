@@ -1,6 +1,6 @@
 /**
  * ConnectionStatus.test.tsx
- * ===============
+ * ==========================
  * ConnectionStatus 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -11,9 +11,10 @@
  * - 重连次数显示
  */
 
-import { describe, it, expect, vi, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import ConnectionStatus from "../components/ConnectionStatus";
+import React from "react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { ConnectionStatus } from "../components/ConnectionStatus";
 import type { ConnectionState } from "../types";
 
 const defaultProps = {
@@ -23,19 +24,11 @@ const defaultProps = {
 };
 
 describe("ConnectionStatus", () => {
-
-afterEach(() => {
-  cleanup();
-});
   // ----------------------------------------------------------
   // 5 种连接状态
   // ----------------------------------------------------------
 
   describe("连接状态渲染", () => {
-
-afterEach(() => {
-  cleanup();
-});
     const stateLabels: Record<ConnectionState, string> = {
       connected: "实时连接",
       connecting: "连接中...",
@@ -62,21 +55,17 @@ afterEach(() => {
   // ----------------------------------------------------------
 
   describe("compact 模式", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("compact=true 时应渲染为 button", () => {
       render(
         <ConnectionStatus state="connected" compact {...defaultProps} />
       );
-      const btn = screen.getAllByRole("button")[0];
+      const btn = screen.getByRole("button");
       expect(btn).toBeInTheDocument();
       expect(btn.textContent).toContain("实时连接");
     });
 
     it("compact 模式点击应触发 onReconnect", () => {
-      const handleReconnect = vi.fn() as any;
+      const handleReconnect = vi.fn();
       render(
         <ConnectionStatus
           state="connected"
@@ -85,7 +74,7 @@ afterEach(() => {
           onReconnect={handleReconnect}
         />
       );
-      fireEvent.click(screen.getAllByRole("button")[0]);
+      fireEvent.click(screen.getByRole("button"));
       expect(handleReconnect).toHaveBeenCalledTimes(1);
     });
 
@@ -99,7 +88,7 @@ afterEach(() => {
           compact
         />
       );
-      expect(screen.getAllByText("(3/10)")[0]).toBeInTheDocument();
+      expect(screen.getByText("(3/10)")).toBeInTheDocument();
     });
   });
 
@@ -108,15 +97,11 @@ afterEach(() => {
   // ----------------------------------------------------------
 
   describe("完整模式", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应显示最后同步时间", () => {
       render(
         <ConnectionStatus state="connected" {...defaultProps} />
       );
-      expect(screen.getAllByText("14:30:00")[0]).toBeInTheDocument();
+      expect(screen.getByText("14:30:00")).toBeInTheDocument();
     });
 
     it("disconnected 时应显示重连按钮", () => {
@@ -143,7 +128,7 @@ afterEach(() => {
     });
 
     it("重连按钮点击应触发 onReconnect", () => {
-      const handleReconnect = vi.fn() as any;
+      const handleReconnect = vi.fn();
       render(
         <ConnectionStatus
           state="disconnected"

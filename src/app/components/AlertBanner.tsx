@@ -1,13 +1,14 @@
 /**
  * AlertBanner.tsx
- * ============
+ * ================
  * Dashboard 内嵌告警横幅 · 快速跳转到一键跟进系统
  * 显示活跃告警计数、最新严重告警摘要、一键跳转按钮
  */
 
+import React from "react";
 import { useNavigate } from "react-router";
 import {
-  AlertTriangle, XCircle, ChevronRight,
+  Bell, AlertTriangle, XCircle, ChevronRight, Shield,
 } from "lucide-react";
 
 // Mock alert summary (matches useFollowUp data)
@@ -25,7 +26,7 @@ interface AlertBannerProps {
   compact?: boolean;
 }
 
-export default function AlertBanner({ compact = false }: AlertBannerProps) {
+export function AlertBanner({ compact = false }: AlertBannerProps) {
   const navigate = useNavigate();
 
   const hasCritical = ALERT_SUMMARY.critical > 0;

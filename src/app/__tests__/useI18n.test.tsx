@@ -1,6 +1,6 @@
 /**
  * useI18n.test.tsx
- * =========
+ * ==================
  * useI18n Hook + i18n 语言包测试
  *
  * 覆盖范围:
@@ -13,8 +13,9 @@
  * - 语言列表
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useI18nProvider, SUPPORTED_LOCALES } from "../hooks/useI18n";
 
 // Mock localStorage
@@ -28,10 +29,6 @@ vi.stubGlobal("localStorage", {
 describe("useI18n", () => {
   beforeEach(() => {
     Object.keys(storage).forEach((k) => delete storage[k]);
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("默认语言", () => {

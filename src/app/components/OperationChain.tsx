@@ -1,10 +1,11 @@
 /**
  * OperationChain.tsx
- * ===============
+ * ===================
  * 时间线式操作链路展示
  * 展示告警/异常的完整操作链路，当前事件高亮
  */
 
+import React from "react";
 import {
   Cpu, Play, AlertTriangle, Zap, Wrench, CheckCircle, Server,
 } from "lucide-react";
@@ -25,7 +26,7 @@ const eventConfig: Record<ChainEventType, { icon: typeof Cpu; color: string; lab
   system_event:   { icon: Server,        color: "#00d4ff", label: "系统事件" },
 };
 
-export default function OperationChain({ events, compact = false }: OperationChainProps) {
+export function OperationChain({ events, compact = false }: OperationChainProps) {
   if (!events.length) {
     return (
       <div className="text-center py-4">
@@ -63,14 +64,13 @@ export default function OperationChain({ events, compact = false }: OperationCha
               className={`
                 relative shrink-0 w-[28px] h-[28px] rounded-full flex items-center justify-center
                 ${event.isCurrent
-                  ? "ring-2 ring-offset-1 ring-offset-[#060e1f]"
+                  ? `ring-2 ring-offset-1 ring-offset-[#060e1f] ring-[${config.color}]`
                   : ""
                 }
               `}
               style={{
                 backgroundColor: `${config.color}18`,
                 borderColor: event.isCurrent ? config.color : "transparent",
-                boxShadow: event.isCurrent ? `0 0 0 2px ${config.color}` : undefined,
               }}
             >
               <Icon

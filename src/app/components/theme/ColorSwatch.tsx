@@ -1,10 +1,10 @@
 /**
  * ColorSwatch.tsx
- * ============
+ * ================
  * 单个颜色变量卡片 · 显示 OKLch + HEX，点击弹出颜色选择器
  */
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { hexToOklch, formatOklch } from "./color-utils";
 import { ColorPicker } from "./ColorPicker";
 

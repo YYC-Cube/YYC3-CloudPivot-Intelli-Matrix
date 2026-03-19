@@ -1,6 +1,6 @@
 /**
  * DesignSystemPage.tsx
- * ================
+ * =====================
  * 第九章 · 设计交付物 · Design System 总览页面
  *
  * 路由: /design-system
@@ -12,16 +12,18 @@
  * 9.3 阶段审核总结
  */
 
-import { useState, useContext } from "react";
-import { Palette, Layers, BookOpen, ClipboardCheck, ChevronRight } from "lucide-react";
-import GlassCard from "../GlassCard";
+import React, { useState, useContext } from "react";
+import {
+  Palette, Layers, BookOpen, ClipboardCheck, ChevronRight,
+} from "lucide-react";
+import { GlassCard } from "../GlassCard";
 import { DesignTokens } from "./DesignTokens";
 import { ComponentShowcase } from "./ComponentShowcase";
 import { StageReview } from "./StageReview";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../../lib/view-context";
 import { useI18n } from "../../hooks/useI18n";
 
-export default function DesignSystemPage() {
+export function DesignSystemPage() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -35,7 +37,7 @@ export default function DesignSystemPage() {
 
   return (
     <div className="space-y-4" data-testid="design-system-page">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
           <BookOpen className="w-5 h-5 text-[#00d4ff]" />
@@ -50,7 +52,7 @@ export default function DesignSystemPage() {
         </div>
       </div>
 
-      {/* ====== Section Nav ====== */}
+      {/* ======== Section Nav ======== */}
       <div className={`grid gap-2 ${isMobile ? "grid-cols-1" : "grid-cols-3"}`}>
         {SECTIONS.map((s) => {
           const Icon = s.icon;
@@ -81,7 +83,7 @@ export default function DesignSystemPage() {
         })}
       </div>
 
-      {/* ====== Content ====== */}
+      {/* ======== Content ======== */}
       <GlassCard className="p-4">
         {activeSection === "tokens" && <DesignTokens />}
         {activeSection === "components" && <ComponentShowcase />}

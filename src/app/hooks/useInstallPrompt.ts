@@ -27,7 +27,7 @@ export function useInstallPrompt() {
     // 检查是否已安装（standalone 模式）
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
+      (window.navigator as any).standalone === true;
     setIsInstalled(isStandalone);
 
     // 监听安装状态变更

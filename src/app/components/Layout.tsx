@@ -1,25 +1,53 @@
-import { useState, useContext } from "react";
-import { Outlet } from "react-router";
+/**
+ * @file: Layout.tsx
+ * @description: Layout.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import React, { useState, useContext, Suspense } from "react";
+import { Outlet, useLocation } from "react-router";
 import { Toaster } from "sonner";
-import TopBar from "./TopBar";
-import Sidebar from "./Sidebar";
-import BottomNav from "./BottomNav";
-import AIAssistant from "./AIAssistant";
-import PWAInstallPrompt from "./PWAInstallPrompt";
-import OfflineIndicator from "./OfflineIndicator";
-import ErrorBoundary from "./ErrorBoundary";
-import CommandPalette from "./CommandPalette";
-import IntegratedTerminal from "./IntegratedTerminal";
+import { TopBar } from "./TopBar";
+import { Sidebar } from "./Sidebar";
+import { BottomNav } from "./BottomNav";
+import { AIAssistant } from "./AIAssistant";
+import { PWAInstallPrompt } from "./PWAInstallPrompt";
+import { OfflineIndicator } from "./OfflineIndicator";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { CommandPalette } from "./CommandPalette";
+import { IntegratedTerminal } from "./IntegratedTerminal";
 import { useWebSocketData } from "../hooks/useWebSocketData";
 import { useMobileView } from "../hooks/useMobileView";
 import { useKeyboardShortcuts } from "../hooks/useKeyboardShortcuts";
-import { AuthContext } from "../App";
-import { WebSocketContext, ViewContext } from "@/lib/layoutContext";
+import { AuthContext } from "../lib/authContext";
+import { WebSocketContext, ViewContext } from "../lib/view-context";
 
-export default function Layout() {
+/**
+ * 路由懒加载 Suspense fallback — 赛博朋克风格加载指示器
+ */
+function RouteFallback() {
+  return (
+    <div className="flex items-center justify-center h-full min-h-[200px]">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-8 h-8 border-2 border-[rgba(0,212,255,0.15)] border-t-[#00d4ff] rounded-full animate-spin" />
+        <span className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.72rem" }}>
+          Loading module...
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export function Layout() {
   const wsData = useWebSocketData();
   const view = useMobileView();
   const auth = useContext(AuthContext);
+  const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
@@ -95,9 +123,15 @@ export default function Layout() {
               )}
 
               {/* Page content */}
-              <div className={`flex-1 overflow-auto ${view.isMobile ? "px-3 pt-2 pb-[72px]" : view.isTablet ? "px-4 pt-3 pb-[72px]" : "p-4"}`}>
+              <div className={`flex-1 overflow-auto ${
+                ["/ai-family"].includes(location.pathname)
+                  ? ""
+                  : view.isMobile ? "px-3 pt-2 pb-[72px]" : view.isTablet ? "px-4 pt-3 pb-[72px]" : "p-4"
+              }`}>
                 <ErrorBoundary level="module" source="PageContent">
-                  <Outlet />
+                  <Suspense fallback={<RouteFallback />}>
+                    <Outlet />
+                  </Suspense>
                 </ErrorBoundary>
               </div>
             </div>

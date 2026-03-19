@@ -1,6 +1,6 @@
 /**
  * PWAInstallPrompt.test.tsx
- * ===============
+ * ==========================
  * PWAInstallPrompt 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -11,27 +11,24 @@
  * - 关闭按钮触发
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 // Mock useInstallPrompt
-const mockPromptInstall = vi.fn() as any;
-const mockDismiss = vi.fn() as any;
-const mockUseInstallPrompt = vi.fn() as any;
+const mockPromptInstall = vi.fn();
+const mockDismiss = vi.fn();
+const mockUseInstallPrompt = vi.fn();
 
 vi.mock("../hooks/useInstallPrompt", () => ({
   useInstallPrompt: () => mockUseInstallPrompt(),
 }));
 
-import PWAInstallPrompt from "../components/PWAInstallPrompt";
+import { PWAInstallPrompt } from "../components/PWAInstallPrompt";
 
 describe("PWAInstallPrompt", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -48,7 +45,7 @@ describe("PWAInstallPrompt", () => {
       });
 
       render(<PWAInstallPrompt />);
-      expect(screen.getByText("安装 CP-IM CloudPivot")).toBeInTheDocument();
+      expect(screen.getByText("安装 YYC3 Dashboard")).toBeInTheDocument();
     });
 
     it("已安装时不应显示", () => {
@@ -90,10 +87,6 @@ describe("PWAInstallPrompt", () => {
       });
     });
 
-    afterEach(() => {
-      cleanup();
-    });
-
     it("应显示安装描述文案", () => {
       render(<PWAInstallPrompt />);
       expect(
@@ -103,7 +96,7 @@ describe("PWAInstallPrompt", () => {
 
     it("应包含安装到桌面按钮", () => {
       render(<PWAInstallPrompt />);
-      expect(screen.getAllByText("安装到桌面")[0]).toBeInTheDocument();
+      expect(screen.getByText("安装到桌面")).toBeInTheDocument();
     });
   });
 
@@ -121,13 +114,9 @@ describe("PWAInstallPrompt", () => {
       });
     });
 
-    afterEach(() => {
-      cleanup();
-    });
-
     it("点击安装按钮应触发 promptInstall", () => {
       render(<PWAInstallPrompt />);
-      fireEvent.click(screen.getAllByText("安装到桌面")[0]);
+      fireEvent.click(screen.getByText("安装到桌面"));
       expect(mockPromptInstall).toHaveBeenCalledTimes(1);
     });
 

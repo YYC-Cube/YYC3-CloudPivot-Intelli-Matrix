@@ -18,7 +18,7 @@
 // @vitest-environment jsdom
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 // ── Mocks ──
 
@@ -29,8 +29,6 @@ vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: mockPathname }),
   Outlet: () => <div data-testid="outlet">Page Content</div>,
-  createBrowserRouter: vi.fn(),
-  RouterProvider: () => <div data-testid="router-provider" />,
 }));
 
 vi.mock("../hooks/useI18n", () => ({
@@ -42,14 +40,13 @@ vi.mock("../hooks/useI18n", () => ({
   }),
 }));
 
+const MockMotionDiv = React.forwardRef(({ children, ...props }: any, ref: any) => <div ref={ref} {...props}>{children}</div>);
+MockMotionDiv.displayName = "MockMotionDiv";
+
 vi.mock("motion/react", () => ({
   motion: {
-    div: (() => {
-      const Component = React.forwardRef(({ children, ...props }: any, ref: any) => <div ref={ref} {...props}>{children}</div>);
-      Component.displayName = "MotionDiv";
-      return Component;
-    })(),
-  } as any,
+    div: MockMotionDiv,
+  },
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
@@ -94,40 +91,39 @@ vi.mock("../hooks/useKeyboardShortcuts", () => ({
 
 // Mock sub-components with data-testid
 vi.mock("../components/TopBar", () => ({
-  default: (props: any) => <div data-testid="topbar" data-mobile={props.isMobile} />,
+  TopBar: (props: any) => <div data-testid="topbar" data-mobile={props.isMobile} />,
 }));
 
 vi.mock("../components/Sidebar", () => ({
-  default: (props: any) => <div data-testid="sidebar" data-collapsed={props.collapsed} />,
+  Sidebar: (props: any) => <div data-testid="sidebar" data-collapsed={props.collapsed} />,
 }));
 
 vi.mock("../components/BottomNav", () => ({
-  default: () => <div data-testid="bottom-nav" />,
+  BottomNav: () => <div data-testid="bottom-nav" />,
 }));
 
 vi.mock("../components/AIAssistant", () => ({
-  default: () => <div data-testid="ai-assistant" />,
+  AIAssistant: () => <div data-testid="ai-assistant" />,
 }));
 
 vi.mock("../components/CommandPalette", () => ({
-  default: () => <div data-testid="command-palette" />,
+  CommandPalette: () => <div data-testid="command-palette" />,
 }));
 
 vi.mock("../components/IntegratedTerminal", () => ({
-  default: () => <div data-testid="integrated-terminal" />,
+  IntegratedTerminal: () => <div data-testid="integrated-terminal" />,
 }));
 
 vi.mock("../components/PWAInstallPrompt", () => ({
-  default: () => <div data-testid="pwa-prompt" />,
+  PWAInstallPrompt: () => <div data-testid="pwa-prompt" />,
 }));
 
 vi.mock("../components/OfflineIndicator", () => ({
-  default: () => <div data-testid="offline-indicator" />,
+  OfflineIndicator: () => <div data-testid="offline-indicator" />,
 }));
 
 vi.mock("../components/ErrorBoundary", () => ({
-  __esModule: true,
-  default: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
+  ErrorBoundary: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
 }));
 
 vi.mock("sonner", () => ({
@@ -149,13 +145,12 @@ vi.mock("../lib/authContext", () => ({
   }),
 }));
 
-import Layout from "../components/Layout";
-import { WebSocketContext, ViewContext } from "@/lib/layoutContext";
+import { Layout } from "../components/Layout";
+import { WebSocketContext, ViewContext } from "../lib/view-context";
 
 describe("Layout", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    cleanup();
     mockView = {
       isMobile: false,
       isTablet: false,

@@ -1,6 +1,6 @@
 /**
  * ErrorBoundary.tsx
- * ==============
+ * ==================
  * CP-IM React 错误边界组件
  *
  * 功能：
@@ -11,18 +11,18 @@
  * - 分级错误展示（页面级 / 模块级 / 组件级）
  */
 
-import { Component, type ErrorInfo, type ReactNode } from "react";
+import React, { Component, type ErrorInfo, type ReactNode } from "react";
 import { captureError } from "../lib/error-handler";
-import { icons, iconsCDN } from "../lib/yyc3-icons";
+import { isFigmaPlatformError } from "../lib/figma-error-filter";
+import { YYC3LogoSvg } from "./YYC3LogoSvg";
 import type { AppError, ErrorBoundaryLevel } from "../types";
 import { AlertTriangle, RefreshCw, Home, ChevronDown, ChevronUp, Bug, Copy, Check } from "lucide-react";
 
-// Re-export for backward compatibility
-export type { ErrorBoundaryLevel };
+// RF-011: Re-export 已移除
 
-// =============================================
+// ============================================================
 // Types
-// =============================================
+// ============================================================
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -45,9 +45,9 @@ interface ErrorBoundaryState {
   copied: boolean;
 }
 
-// =============================================
+// ============================================================
 // Component
-// =============================================
+// ============================================================
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
@@ -62,11 +62,26 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> | null {
+    // RF-003 Layer 3: 如果是 Figma 平台错误，不触发错误边界 UI
+    const name = error?.name || error?.constructor?.name || "";
+    const msg = String(error?.message || "");
+    const stack = error?.stack || "";
+    if (isFigmaPlatformError(name, msg, undefined, stack)) {
+      return null; // 不更新状态，不显示错误 UI
+    }
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    // RF-003 Layer 3: 再次检查，避免记录 Figma 平台错误
+    const name = error?.name || error?.constructor?.name || "";
+    const msg = String(error?.message || "");
+    const stack = error?.stack || "";
+    if (isFigmaPlatformError(name, msg, undefined, stack)) {
+      return;
+    }
+
     // 记录到全局错误系统
     const appError = captureError(error, {
       category: "RUNTIME",
@@ -283,12 +298,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             {/* Footer */}
             <div className="px-6 py-3 border-t border-[rgba(0,180,255,0.05)] flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <img
-                  src={icons.logo72}
-                  alt="CP-IM"
-                  className="w-4 h-4 rounded"
-                  onError={(e) => { e.currentTarget.src = iconsCDN.logo72; }}
-                />
+                <YYC3LogoSvg size={16} showText={false} />
                 <span className="text-[rgba(0,212,255,0.2)]" style={{ fontSize: "0.65rem" }}>
                   CP-IM ErrorBoundary v1.0
                 </span>
@@ -303,4 +313,3 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     );
   }
 }
-export default ErrorBoundary;

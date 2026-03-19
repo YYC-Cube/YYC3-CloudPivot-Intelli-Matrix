@@ -6,19 +6,16 @@
  * 赛博朋克风格 #060e1f + #00d4ff
  */
 
+import React from "react";
 import {
   FileBarChart, Download, FileJson, FileSpreadsheet, Printer,
-  TrendingUp, TrendingDown, Minus, RefreshCw,
+  Clock, TrendingUp, TrendingDown, Minus, RefreshCw,
   ChevronRight, BarChart3, Shield, ClipboardList, Layers,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import {
-  useReportExporter,
-  type ReportType,
-  type TimeRange,
-  type ExportFormat,
-} from "../hooks/useReportExporter";
+import { useReportExporter } from "../hooks/useReportExporter";
+import type { ExportReportType as ReportType, TimeRange, ExportFormat } from "../types";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Area, AreaChart,
@@ -45,7 +42,7 @@ function reportTypeIcon(type: ReportType) {
 // Main Component
 // ============================================================
 
-export default function ReportExporter() {
+export function ReportExporter() {
   const { t } = useI18n();
   const {
     reportType, setReportType,
@@ -76,13 +73,13 @@ export default function ReportExporter() {
   ];
 
   // Chart data from report
-  const chartData = report?.performanceHistory.map((p) => ({
+  const chartData = report?.performanceHistory.map((p, i) => ({
     time: new Date(p.timestamp).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
     gpu: Number(p.gpuUsage.toFixed(1)),
     cpu: Number(p.cpuUsage.toFixed(1)),
     latency: Number(p.latencyP50.toFixed(0)),
     errors: Number(p.errorRate.toFixed(2)),
-  })).filter((_, idx) => idx % Math.max(1, Math.floor((report?.performanceHistory.length || 1) / 40)) === 0) || [];
+  })).filter((_, i) => i % Math.max(1, Math.floor((report?.performanceHistory.length || 1) / 40)) === 0) || [];
 
   return (
     <div className="space-y-4 max-w-[1400px] mx-auto">
@@ -371,8 +368,8 @@ export default function ReportExporter() {
         <GlassCard className="p-12 flex items-center justify-center">
           <div className="text-center">
             <RefreshCw className="w-8 h-8 text-[#00d4ff] mx-auto mb-3 animate-spin" />
-            <p className="text-[rgba(0,212,255,0.5)]" style={{ fontSize: "0.85rem" }}>
-              {t("reports.generating")}
+            <p className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.72rem" }}>
+              {t("reports.subtitle")}
             </p>
           </div>
         </GlassCard>

@@ -1,6 +1,6 @@
 /**
  * FileBrowser.test.tsx
- * ============
+ * =====================
  * FileBrowser 组件 - 文件浏览器测试
  *
  * 覆盖范围:
@@ -11,9 +11,10 @@
  * - 空目录状态
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import FileBrowser from "../components/FileBrowser";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { FileBrowser } from "../components/FileBrowser";
 import type { FileItem } from "../types";
 
 const mockItems: FileItem[] = [
@@ -27,19 +28,15 @@ const breadcrumbs = [
 ];
 
 describe("FileBrowser", () => {
-  let onSelect: any;
-  let onNavigate: any;
-  let onGoUp: any;
+  let onSelect: Mock;
+  let onNavigate: Mock;
+  let onGoUp: Mock;
   const formatSize = (bytes?: number) => bytes ? `${(bytes / 1024).toFixed(1)}KB` : "--";
 
   beforeEach(() => {
-    onSelect = vi.fn() as any;
-    onNavigate = vi.fn() as any;
-    onGoUp = vi.fn() as any;
-  });
-
-  afterEach(() => {
-    cleanup();
+    onSelect = vi.fn();
+    onNavigate = vi.fn();
+    onGoUp = vi.fn();
   });
 
   describe("基础渲染", () => {

@@ -3,17 +3,19 @@
  * ===============
  * 一键跟进系统 状态管理 Hook
  * 管理告警列表、抽屉面板开关、快速操作回调
+ * Phase-3: localStorage 持久化 + CRUD
  */
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
+import { createLocalStore } from "../lib/create-local-store";
 import type { FollowUpItem, FollowUpStatus } from "../types";
 
 // ============================================================
-// Mock 告警数据
+// 默认告警数据 (首次初始化)
 // ============================================================
 
-const MOCK_FOLLOW_UPS: FollowUpItem[] = [
+const DEFAULT_FOLLOW_UPS: FollowUpItem[] = [
   {
     id: "AL-0032",
     severity: "critical",
@@ -101,11 +103,17 @@ const MOCK_FOLLOW_UPS: FollowUpItem[] = [
 ];
 
 // ============================================================
+// localStorage Store
+// ============================================================
+
+const followUpStore = createLocalStore<FollowUpItem>("yyc3_follow_ups", DEFAULT_FOLLOW_UPS, "AL");
+
+// ============================================================
 // Hook
 // ============================================================
 
 export function useFollowUp() {
-  const [items, setItems] = useState<FollowUpItem[]>(MOCK_FOLLOW_UPS);
+  const [items, setItems] = useState<FollowUpItem[]>(() => followUpStore.getAll());
   const [drawerItem, setDrawerItem] = useState<FollowUpItem | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [filterSeverity, setFilterSeverity] = useState<"all" | FollowUpItem["severity"]>("all");

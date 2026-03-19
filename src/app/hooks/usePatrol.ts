@@ -7,219 +7,308 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { usePersistedList } from "./usePersistedState";
+import type {
+  PatrolStatus,
+  CheckStatus,
+  PatrolInterval,
+  PatrolCheckItem,
+  PatrolResult,
+  PatrolSchedule,
+} from "../types";
+
+// RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
 // ============================================================
-// Types
+//  Mock 巡查检查项生成
 // ============================================================
 
-export type PatrolStatus = "idle" | "running" | "completed" | "failed";
-export type CheckStatus = "pass" | "warning" | "critical" | "skipped";
-export type PatrolInterval = 5 | 10 | 15 | 30 | 60;
+function generateChecks(): PatrolCheckItem[] {
+  const checks: PatrolCheckItem[] = [];
 
-export interface PatrolCheckItem {
-  id: string;
-  category: string;
-  label: string;
-  status: CheckStatus;
-  value: string;
-  threshold?: string;
-  detail?: string;
-}
-
-export interface PatrolResult {
-  id: string;
-  timestamp: number;
-  duration: number;          // seconds
-  status: PatrolStatus;
-  healthScore: number;       // 0-100
-  totalChecks: number;
-  passCount: number;
-  warningCount: number;
-  criticalCount: number;
-  skippedCount: number;
-  checks: PatrolCheckItem[];
-  triggeredBy: "manual" | "auto" | "scheduled";
-}
-
-export interface PatrolSchedule {
-  enabled: boolean;
-  interval: PatrolInterval;  // minutes
-  lastRun: number | null;
-  nextRun: number | null;
-}
-
-// ============================================================
-// Mock Data Generator
-// ============================================================
-
-function generatePatrolChecks(): PatrolCheckItem[] {
-  return [
-    { id: "n1", category: "节点健康", label: "GPU-A100-01", status: "pass", value: "在线 · GPU 72%", detail: "正常运行 48h" },
-    { id: "n2", category: "节点健康", label: "GPU-A100-02", status: "pass", value: "在线 · GPU 68%", detail: "正常运行 48h" },
-    { id: "n3", category: "节点健康", label: "GPU-A100-03", status: "warning", value: "在线 · 延迟高", detail: "推理延迟 2,450ms" },
-    { id: "n4", category: "节点健康", label: "GPU-H100-01", status: "pass", value: "在线 · GPU 55%", detail: "正常运行 120h" },
-    { id: "n5", category: "节点健康", label: "GPU-H100-02", status: "critical", value: "显存不足", detail: "98.1% 使用率" },
-    { id: "n6", category: "节点健康", label: "GPU-A100-04", status: "pass", value: "在线 · GPU 45%", detail: "空闲" },
-    { id: "s1", category: "存储", label: "NAS-Storage-01", status: "warning", value: "85.8%", threshold: "85%", detail: "41.2 TB / 48 TB" },
-    { id: "s2", category: "存储", label: "NAS-Storage-02", status: "pass", value: "62.3%", threshold: "85%", detail: "29.9 TB / 48 TB" },
-    { id: "s3", category: "存储", label: "本地 SSD 缓存", status: "pass", value: "45.1%", threshold: "90%", detail: "450 GB / 1 TB" },
-    { id: "k1", category: "网络", label: "节点互联延迟", status: "warning", value: "平均 45ms", threshold: "30ms", detail: "5 节点 >100ms" },
-    { id: "k2", category: "网络", label: "外部网络", status: "pass", value: "12ms", threshold: "50ms", detail: "192.168.3.1" },
-    { id: "k3", category: "网络", label: "WebSocket 连接", status: "pass", value: "已连接", detail: "ws://localhost:3113" },
-    { id: "m1", category: "模型服务", label: "LLaMA-70B", status: "pass", value: "正常", detail: "平均延迟 820ms" },
-    { id: "m2", category: "模型服务", label: "DeepSeek-V3", status: "pass", value: "正常", detail: "平均延迟 1,200ms" },
-    { id: "m3", category: "模型服务", label: "Qwen-72B", status: "pass", value: "正常", detail: "平均延迟 950ms" },
-    { id: "d1", category: "数据库", label: "PostgreSQL 连接", status: "pass", value: "活跃", detail: "localhost:5433 · 12 连接" },
-    { id: "d2", category: "数据库", label: "数据库存储", status: "pass", value: "23.4 GB", detail: "表空间正常" },
-    { id: "p1", category: "进程", label: "推理引擎", status: "pass", value: "运行中", detail: "PID 3847" },
-    { id: "p2", category: "进程", label: "API 网关", status: "pass", value: "运行中", detail: "PID 2103" },
-    { id: "p3", category: "进程", label: "日志收集器", status: "pass", value: "运行中", detail: "PID 5621" },
+  const templates: Array<{
+    category: string;
+    label: string;
+    genValue: () => { value: string; status: CheckStatus; threshold?: string; detail?: string };
+  }> = [
+    {
+      category: "节点健康",
+      label: "节点在线率",
+      genValue: () => {
+        const v = 90 + Math.floor(Math.random() * 11);
+        return {
+          value: `${v}%`,
+          status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
+          threshold: "≥95%",
+          detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
+        };
+      },
+    },
+    {
+      category: "存储",
+      label: "存储容量",
+      genValue: () => {
+        const v = 60 + Math.floor(Math.random() * 35);
+        return {
+          value: `${v}%`,
+          status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+          threshold: "<80%",
+        };
+      },
+    },
+    {
+      category: "网络",
+      label: "平均网络延迟",
+      genValue: () => {
+        const v = 10 + Math.floor(Math.random() * 80);
+        return {
+          value: `${v}ms`,
+          status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
+          threshold: "<50ms",
+          detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
+        };
+      },
+    },
+    {
+      category: "GPU",
+      label: "GPU 平均利用率",
+      genValue: () => {
+        const v = 40 + Math.floor(Math.random() * 55);
+        return {
+          value: `${v}%`,
+          status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
+          threshold: "<85%",
+        };
+      },
+    },
+    {
+      category: "GPU",
+      label: "GPU 温度",
+      genValue: () => {
+        const v = 55 + Math.floor(Math.random() * 30);
+        return {
+          value: `${v}°C`,
+          status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
+          threshold: "<75°C",
+        };
+      },
+    },
+    {
+      category: "内存",
+      label: "内存利用率",
+      genValue: () => {
+        const v = 50 + Math.floor(Math.random() * 45);
+        return {
+          value: `${v}%`,
+          status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+          threshold: "<80%",
+        };
+      },
+    },
+    {
+      category: "安全",
+      label: "安全事件",
+      genValue: () => {
+        const v = Math.floor(Math.random() * 5);
+        return {
+          value: `${v} 事件`,
+          status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
+          threshold: "0 事件",
+        };
+      },
+    },
+    {
+      category: "安全",
+      label: "证书有效性",
+      genValue: () => {
+        const days = 10 + Math.floor(Math.random() * 350);
+        return {
+          value: `${days} 天`,
+          status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
+          threshold: ">30 天",
+        };
+      },
+    },
   ];
+
+  templates.forEach((t, i) => {
+    const gen = t.genValue();
+    checks.push({
+      id: `chk-${String(i + 1).padStart(3, "0")}`,
+      category: t.category,
+      label: t.label,
+      status: gen.status,
+      value: gen.value,
+      threshold: gen.threshold,
+      detail: gen.detail,
+    });
+  });
+
+  return checks;
 }
 
-function generateHistoryEntry(offset: number, triggeredBy: "manual" | "auto" | "scheduled"): PatrolResult {
-  const baseTime = Date.now() - offset;
-  const health = 90 + Math.floor(Math.random() * 10);
-  const warnings = Math.floor(Math.random() * 4);
-  const critical = Math.random() > 0.7 ? 1 : 0;
-  const total = 20;
-  const pass = total - warnings - critical;
+function buildResult(checks: PatrolCheckItem[], triggeredBy: "manual" | "auto" | "scheduled"): PatrolResult {
+  const passCount = checks.filter((c) => c.status === "pass").length;
+  const warningCount = checks.filter((c) => c.status === "warning").length;
+  const criticalCount = checks.filter((c) => c.status === "critical").length;
+  const skippedCount = checks.filter((c) => c.status === "skipped").length;
+  const healthScore = Math.round(
+    ((passCount * 100 + warningCount * 60 + criticalCount * 10) / (checks.length * 100)) * 100
+  );
 
   return {
-    id: `patrol-${baseTime}`,
-    timestamp: baseTime,
-    duration: 8 + Math.floor(Math.random() * 15),
+    id: `patrol-${Date.now()}`,
+    timestamp: Date.now(),
+    duration: 2 + Math.floor(Math.random() * 8),
     status: "completed",
-    healthScore: health,
-    totalChecks: total,
-    passCount: pass,
-    warningCount: warnings,
-    criticalCount: critical,
-    skippedCount: 0,
-    checks: [],
+    healthScore,
+    totalChecks: checks.length,
+    passCount,
+    warningCount,
+    criticalCount,
+    skippedCount,
+    checks,
     triggeredBy,
   };
 }
 
-const INITIAL_HISTORY: PatrolResult[] = [
-  generateHistoryEntry(30 * 60 * 1000, "auto"),
-  generateHistoryEntry(60 * 60 * 1000, "auto"),
-  generateHistoryEntry(90 * 60 * 1000, "auto"),
-  generateHistoryEntry(2 * 60 * 60 * 1000, "auto"),
-  generateHistoryEntry(3 * 60 * 60 * 1000, "scheduled"),
-  generateHistoryEntry(4 * 60 * 60 * 1000, "auto"),
-  generateHistoryEntry(6 * 60 * 60 * 1000, "manual"),
-  generateHistoryEntry(12 * 60 * 60 * 1000, "auto"),
-  generateHistoryEntry(24 * 60 * 60 * 1000, "scheduled"),
-  generateHistoryEntry(48 * 60 * 60 * 1000, "auto"),
-];
+// ============================================================
+//  初始历史数据
+// ============================================================
+
+function generateInitialHistory(): PatrolResult[] {
+  const results: PatrolResult[] = [];
+  for (let i = 0; i < 5; i++) {
+    const checks = generateChecks();
+    const r = buildResult(checks, i % 2 === 0 ? "auto" : "scheduled");
+    r.id = `patrol-init-${i}`;
+    r.timestamp = Date.now() - (i + 1) * 30 * 60 * 1000;
+    results.push(r);
+  }
+  return results;
+}
 
 // ============================================================
-// Hook
+//  Hook
 // ============================================================
 
 export function usePatrol() {
   const [patrolStatus, setPatrolStatus] = useState<PatrolStatus>("idle");
   const [currentResult, setCurrentResult] = useState<PatrolResult | null>(null);
-  const [history, setHistory] = useState<PatrolResult[]>(INITIAL_HISTORY);
+  const [progress, setProgress] = useState(0);
   const [selectedReport, setSelectedReport] = useState<PatrolResult | null>(null);
-  const [schedule, setSchedule] = useState<PatrolSchedule>({
+
+  const {
+    items: history,
+    setItems: _setHistory,
+    prepend: prependHistory,
+  } = usePersistedList<PatrolResult>(
+    "patrolHistory",
+    generateInitialHistory()
+  );
+
+  const [schedule, setSchedule] = useState<PatrolSchedule>(() => ({
     enabled: true,
     interval: 15,
-    lastRun: Date.now() - 30 * 60 * 1000,
+    lastRun: null,
     nextRun: Date.now() + 15 * 60 * 1000,
-  });
-  const [progress, setProgress] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  }));
 
-  // Run a patrol scan
-  const runPatrol = useCallback(async (triggeredBy: "manual" | "auto" | "scheduled" = "manual") => {
-    if (patrolStatus === "running") {return;}
+  const autoTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
-    setPatrolStatus("running");
-    setProgress(0);
+  // ── runPatrol ──────────────────────────────────────────────
 
-    // Simulate progressive scanning
-    const steps = 20;
-    for (let i = 1; i <= steps; i++) {
-      await new Promise((r) => setTimeout(r, 150 + Math.random() * 100));
-      setProgress(Math.round((i / steps) * 100));
-    }
+  const runPatrol = useCallback(
+    async (triggeredBy: "manual" | "auto" | "scheduled" = "manual") => {
+      setPatrolStatus("running");
+      setProgress(0);
 
-    const checks = generatePatrolChecks();
-    const passCount = checks.filter((c) => c.status === "pass").length;
-    const warningCount = checks.filter((c) => c.status === "warning").length;
-    const criticalCount = checks.filter((c) => c.status === "critical").length;
-    const skippedCount = checks.filter((c) => c.status === "skipped").length;
-    const healthScore = Math.round(
-      ((passCount * 1 + warningCount * 0.6 + criticalCount * 0) / checks.length) * 100
-    );
+      // 模拟渐进进度
+      const steps = 5;
+      for (let i = 1; i <= steps; i++) {
+        await new Promise((r) => setTimeout(r, 80));
+        setProgress(Math.round((i / steps) * 100));
+      }
 
-    const result: PatrolResult = {
-      id: `patrol-${Date.now()}`,
-      timestamp: Date.now(),
-      duration: 8 + Math.floor(Math.random() * 12),
-      status: "completed",
-      healthScore,
-      totalChecks: checks.length,
-      passCount,
-      warningCount,
-      criticalCount,
-      skippedCount,
-      checks,
-      triggeredBy,
-    };
+      const checks = generateChecks();
+      const result = buildResult(checks, triggeredBy);
 
-    setCurrentResult(result);
-    setHistory((prev) => [result, ...prev]);
-    setPatrolStatus("completed");
-    setProgress(100);
-    setSchedule((prev) => ({
-      ...prev,
-      lastRun: Date.now(),
-      nextRun: prev.enabled ? Date.now() + prev.interval * 60 * 1000 : null,
-    }));
+      setCurrentResult(result);
+      setPatrolStatus("completed");
+      setProgress(100);
+      prependHistory(result);
 
-    toast.success("巡查完成", {
-      description: `健康度 ${healthScore}% · ${warningCount} 警告 · ${criticalCount} 严重`,
-    });
-  }, [patrolStatus]);
+      setSchedule((s) => ({
+        ...s,
+        lastRun: Date.now(),
+        nextRun: s.enabled ? Date.now() + s.interval * 60 * 1000 : s.nextRun,
+      }));
 
-  // Toggle auto patrol
-  const toggleAutoPatrol = useCallback((enabled: boolean) => {
-    setSchedule((prev) => ({
-      ...prev,
-      enabled,
-      nextRun: enabled ? Date.now() + prev.interval * 60 * 1000 : null,
-    }));
-    toast.info(enabled ? "自动巡查已启用" : "自动巡查已暂停");
-  }, []);
+      if (triggeredBy === "manual") {
+        toast.success(`巡查完成 — 健康度 ${result.healthScore}%`);
+      }
+    },
+    [prependHistory]
+  );
 
-  // Update interval
-  const updateInterval = useCallback((interval: PatrolInterval) => {
-    setSchedule((prev) => ({
-      ...prev,
-      interval,
-      nextRun: prev.enabled ? Date.now() + interval * 60 * 1000 : null,
-    }));
-  }, []);
+  // ── toggleAutoPatrol ───────────────────────────────────────
 
-  // View a historical report
-  const viewReport = useCallback((result: PatrolResult) => {
-    setSelectedReport(result);
+  const toggleAutoPatrol = useCallback(
+    (enabled: boolean) => {
+      setSchedule((s) => ({
+        ...s,
+        enabled,
+        nextRun: enabled ? Date.now() + s.interval * 60 * 1000 : null,
+      }));
+
+      if (!enabled && autoTimerRef.current) {
+        clearInterval(autoTimerRef.current);
+        autoTimerRef.current = undefined;
+      }
+
+      toast.info(enabled ? "自动巡查已开启" : "自动巡查已关闭");
+    },
+    []
+  );
+
+  // ── updateInterval ─────────────────────────────────────────
+
+  const updateInterval = useCallback(
+    (interval: PatrolInterval) => {
+      setSchedule((s) => ({
+        ...s,
+        interval,
+        nextRun: s.enabled ? Date.now() + interval * 60 * 1000 : s.nextRun,
+      }));
+    },
+    []
+  );
+
+  // ── viewReport / closeReport ───────────────────────────────
+
+  const viewReport = useCallback((report: PatrolResult) => {
+    setSelectedReport(report);
   }, []);
 
   const closeReport = useCallback(() => {
     setSelectedReport(null);
   }, []);
 
-  // Cleanup
+  // ── 自动巡查定时器 ─────────────────────────────────────────
+
   useEffect(() => {
-    const interval = intervalRef.current;
+    if (schedule.enabled) {
+      autoTimerRef.current = setInterval(() => {
+        runPatrol("auto");
+      }, schedule.interval * 60 * 1000);
+    }
     return () => {
-      if (interval) {clearInterval(interval);}
+      if (autoTimerRef.current) {
+        clearInterval(autoTimerRef.current);
+        autoTimerRef.current = undefined;
+      }
     };
-  }, []);
+  }, [schedule.enabled, schedule.interval, runPatrol]);
 
   return {
     patrolStatus,

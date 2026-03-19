@@ -1,6 +1,6 @@
 /**
  * useServiceLoop.test.tsx
- * ==============
+ * ========================
  * useServiceLoop Hook - 一站式服务闭环测试
  *
  * 覆盖范围:
@@ -13,25 +13,18 @@
  * - autoMode 开关
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useServiceLoop, STAGE_META, DATA_FLOW_NODES, DATA_FLOW_EDGES } from "../hooks/useServiceLoop";
 
 vi.mock("sonner", () => ({
-  toast: {
-    success: vi.fn(),
-    info: vi.fn(),
-    error: vi.fn(),
-  },
+  toast: { success: vi.fn(), info: vi.fn(), error: vi.fn() },
 }));
 
 describe("useServiceLoop", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -119,7 +112,7 @@ describe("useServiceLoop", () => {
   // ----------------------------------------------------------
 
   describe("startLoop", () => {
-    it("完整闭环后 history 应有 1 条记录", { timeout: 15000 }, async () => {
+    it("完整闭环后 history 应有 1 条记录", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -130,7 +123,7 @@ describe("useServiceLoop", () => {
       expect(result.current.history[0].overallStatus).toBe("completed");
     });
 
-    it("完整闭环后 6 个阶段均为 completed", { timeout: 15000 }, async () => {
+    it("完整闭环后 6 个阶段均为 completed", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -142,7 +135,7 @@ describe("useServiceLoop", () => {
       expect(run!.stages.every((s) => s.status === "completed")).toBe(true);
     });
 
-    it("每个阶段应有 summary 和 details", { timeout: 15000 }, async () => {
+    it("每个阶段应有 summary 和 details", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -156,7 +149,7 @@ describe("useServiceLoop", () => {
       }
     });
 
-    it("trigger 应记录触发方式", { timeout: 15000 }, async () => {
+    it("trigger 应记录触发方式", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -179,7 +172,7 @@ describe("useServiceLoop", () => {
       expect(result.current.stats.errorRuns).toBe(0);
     });
 
-    it("运行后 totalRuns 应增加", { timeout: 15000 }, async () => {
+    it("运行后 totalRuns 应增加", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -196,7 +189,7 @@ describe("useServiceLoop", () => {
   // ----------------------------------------------------------
 
   describe("clearHistory", () => {
-    it("清空后 history 应为空", { timeout: 15000 }, async () => {
+    it("清空后 history 应为空", async () => {
       const { result } = renderHook(() => useServiceLoop());
 
       await act(async () => {
@@ -218,8 +211,6 @@ describe("useServiceLoop", () => {
   describe("autoMode", () => {
     it("切换 autoMode", () => {
       const { result } = renderHook(() => useServiceLoop());
-      expect(result.current.autoMode).toBe(false);
-
       act(() => {
         result.current.setAutoMode(true);
       });

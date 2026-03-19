@@ -1,21 +1,94 @@
-import { useState, useEffect, createContext, useCallback } from "react";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes.tsx";
-import Login from "./components/Login";
-import ErrorBoundary from "./components/ErrorBoundary";
-import { installGlobalErrorListeners, captureError } from "./lib/error-handler";
+/**
+ * @file: App.tsx
+ * @description: App.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import React, { useState, useEffect, useCallback } from "react";
+import { RouterProvider } from "react-router";
+import { router } from "./routes";
+import { Login } from "./components/Login";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { installGlobalErrorListeners } from "./lib/error-handler";
 import { supabase, ghostSignIn, isGhostMode } from "./lib/supabaseClient";
 import { useYYC3Head } from "./hooks/useYYC3Head";
 import { useI18nProvider, I18nContext } from "./hooks/useI18n";
-import type { AuthContextValue, UserRole, AppSession } from "./types";
+import { AuthContext } from "./lib/authContext";
+import { isFigmaPlatformError } from "./lib/figma-error-filter";
+import type { UserRole, AppSession } from "./types";
 
-/** 认证上下文 - 提供登出功能和当前用户信息 */
-export const AuthContext = createContext<AuthContextValue>({
-  logout: () => {},
-  userEmail: "",
-  userRole: "",
-  isGhost: false,
-});
+// ────────────────────────────────────────────────────────────────
+// RF-003: Figma 平台 iframe 通信错误静默拦截
+// 使用统一判定函数 isFigmaPlatformError()，消除重复逻辑
+// 必须在 React 挂载前注册 capture phase，阻止错误冒泡到 error-handler
+// ────────────────────────────────────────────────────────────────
+if (typeof window !== "undefined") {
+  window.addEventListener("unhandledrejection", (e) => {
+    const reason = e.reason;
+    const name = reason?.name || reason?.constructor?.name || "";
+    const msg = String(reason?.message || reason || "");
+    const stack = reason?.stack || "";
+    if (isFigmaPlatformError(name, msg, undefined, stack)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true); // capture phase — runs before any other listener
+
+  window.addEventListener("error", (e) => {
+    const src = e.filename || "";
+    const msg = String(e.message || "");
+    const name = e.error?.name || e.error?.constructor?.name || "";
+    const stack = e.error?.stack || "";
+    if (isFigmaPlatformError(name, msg, src, stack)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+
+  // Layer 0: legacy window.onerror — return true to fully swallow the error
+  const _prevOnerror = window.onerror;
+  window.onerror = function (message, source, _lineno, _colno, error) {
+    const name = error?.name || error?.constructor?.name || "";
+    const msg = String(message || "");
+    const src = String(source || "");
+    const stack = error?.stack || "";
+    if (isFigmaPlatformError(name, msg, src, stack)) {
+      return true; // suppress completely
+    }
+    if (typeof _prevOnerror === "function") {
+      return (_prevOnerror as any).apply(this, arguments);
+    }
+    return false;
+  };
+
+  // Layer 0b: MessagePort error — intercept broken port communications from Figma iframe
+  window.addEventListener("messageerror", (e) => {
+    // MessagePort errors from Figma's iframe channel are safe to suppress
+    e.stopImmediatePropagation();
+  }, true);
+
+  // Layer 0c: Suppress console.error noise from Figma platform errors
+  // Some Figma errors bypass event listeners and get logged directly via console.error
+  const _origConsoleError = console.error;
+  console.error = function (...args: unknown[]) {
+    const joined = args.map(a => String(a ?? "")).join(" ").toLowerCase();
+    if (
+      joined.includes("iframemessageaborterror") ||
+      joined.includes("message aborted") ||
+      joined.includes("message port was destroyed") ||
+      joined.includes("setupmessagechannel") ||
+      (joined.includes("figma") && joined.includes("abort"))
+    ) {
+      return; // suppress silently
+    }
+    return _origConsoleError.apply(console, args);
+  };
+}
 
 export default function App() {
   const [authenticated, setAuthenticated] = useState<boolean | null>(null);
@@ -29,47 +102,36 @@ export default function App() {
   // 注入 YYC3 品牌 <head> 标签 (favicon / manifest / theme-color / title)
   useYYC3Head();
 
-  // 抑制 Figma 平台特定错误信息
-  useEffect(() => {
-    const handleFigmaError = (event: ErrorEvent) => {
-      const errorMessage = event.error?.message || "";
-      if (
-        errorMessage.includes("Failed to fetch dynamically imported module") ||
-        errorMessage.includes("Figma") ||
-        errorMessage.includes("Module not found")
-      ) {
-        event.preventDefault();
-        captureError(event.error, {
-          category: "RUNTIME",
-          severity: "info",
-          source: "App.tsx",
-          silent: true,
-        });
-      }
-    };
-
-    window.addEventListener("error", handleFigmaError);
-    return () => {
-      window.removeEventListener("error", handleFigmaError);
-    };
-  }, []);
-
   // 安装全局错误监听器（仅一次）
   useEffect(() => {
     installGlobalErrorListeners();
   }, []);
 
   useEffect(() => {
-    // 检查现有会话
-    supabase.auth.getSession().then(({ data }) => {
-      setAuthenticated(!!data.session);
-      if (data.session) {
-        const session = data.session as AppSession;
-        setUserEmail(session.user?.email ?? "admin@cloudpivot.local");
-        setUserRole(session.user?.role ?? "admin");
-        setIsGhost(isGhostMode());
-      }
-    });
+    // 检查现有会话（带超时保护，防止 iframe 沙盒阻塞）
+    const timeout = setTimeout(() => {
+      // 超时兜底：3 秒内未完成认证检查，默认未登录
+      setAuthenticated((prev) => (prev === null ? false : prev));
+    }, 3000);
+
+    supabase.auth
+      .getSession()
+      .then(({ data }) => {
+        clearTimeout(timeout);
+        setAuthenticated(!!data.session);
+        if (data.session) {
+          const session = data.session as AppSession;
+          setUserEmail(session.user?.email ?? "admin@cloudpivot.local");
+          setUserRole(session.user?.role ?? "admin");
+          setIsGhost(isGhostMode());
+        }
+      })
+      .catch(() => {
+        clearTimeout(timeout);
+        setAuthenticated(false);
+      });
+
+    return () => clearTimeout(timeout);
   }, []);
 
   const handleLoginSuccess = useCallback(() => {
@@ -82,7 +144,7 @@ export default function App() {
     setAuthenticated(true);
   }, []);
 
-  /** 幽灵登录 · 跳过认证直接进入 */
+  /** ��灵登录 · 跳过认证直接进入 */
   const handleGhostLogin = useCallback(() => {
     const session = ghostSignIn();
     setUserEmail(session.user.email);

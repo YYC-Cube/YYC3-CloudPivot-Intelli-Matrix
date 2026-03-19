@@ -1,17 +1,17 @@
 /**
  * PatrolHistory.tsx
- * ==============
+ * ==================
  * 巡查历史记录列表
  * 支持时间范围筛选、查看历史报告
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
-  Clock, Calendar, ChevronRight, CheckCircle,
+  Clock, Calendar, Shield, ChevronRight, CheckCircle,
   AlertTriangle, XCircle, User, Zap, Timer,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import type { PatrolResult } from "../hooks/usePatrol";
+import { GlassCard } from "./GlassCard";
+import type { PatrolResult } from "../types";
 
 interface PatrolHistoryProps {
   history: PatrolResult[];
@@ -61,7 +61,7 @@ const triggerLabel: Record<string, { label: string; icon: React.ElementType }> =
   scheduled: { label: "计划", icon: Calendar },
 };
 
-export default function PatrolHistory({ history, onViewReport, isMobile = false }: PatrolHistoryProps) {
+export function PatrolHistory({ history, onViewReport, isMobile = false }: PatrolHistoryProps) {
   const [timeRange, setTimeRange] = useState<TimeRange>("recent");
   const filtered = filterByRange(history, timeRange);
 

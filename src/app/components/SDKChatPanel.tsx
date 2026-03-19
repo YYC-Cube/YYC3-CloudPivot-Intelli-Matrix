@@ -1,6 +1,6 @@
 /**
  * SDKChatPanel.tsx
- * =============
+ * =================
  * AI 对话面板 · 基于 BigModel SDK 桥接层
  *
  * 功能:
@@ -19,16 +19,17 @@ import {
   Activity, Zap, BarChart3, Clock, AlertCircle,
   ChevronDown, Loader2, Cpu,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { useModelProvider } from "../hooks/useModelProvider";
 import { useBigModelSDK, PROVIDER_CAPABILITIES } from "../hooks/useBigModelSDK";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
+import { YYC3LogoSvg } from "./YYC3LogoSvg";
 import type { ChatMessage, SDKConnectionStatus, ConfiguredModel } from "../types";
 
-// =============================================
+// ============================================================
 // 子组件: 连接状态指示器
-// =============================================
+// ============================================================
 
 function StatusBadge({ status, t }: { status: SDKConnectionStatus; t: (key: string, vars?: Record<string, string | number>) => string }) {
   const cfg: Record<SDKConnectionStatus, { color: string; label: string }> = {
@@ -50,9 +51,9 @@ function StatusBadge({ status, t }: { status: SDKConnectionStatus; t: (key: stri
   );
 }
 
-// =============================================
+// ============================================================
 // 子组件: 消息气泡
-// =============================================
+// ============================================================
 
 function MessageBubble({ msg, t }: { msg: ChatMessage; t: (key: string) => string }) {
   const isUser = msg.role === "user";
@@ -68,7 +69,9 @@ function MessageBubble({ msg, t }: { msg: ChatMessage; t: (key: string) => strin
           border: `1px solid ${isUser ? "rgba(0,212,255,0.3)" : "rgba(120,80,255,0.3)"}`,
         }}
       >
-        {isUser ? <User className="w-3.5 h-3.5" style={{ color: "#00d4ff" }} /> : <Bot className="w-3.5 h-3.5" style={{ color: "#7850ff" }} />}
+        {isUser ? <User className="w-3.5 h-3.5" style={{ color: "#00d4ff" }} /> : (
+          <YYC3LogoSvg size={14} showText={false} />
+        )}
       </div>
 
       {/* 消息体 */}
@@ -108,11 +111,11 @@ function MessageBubble({ msg, t }: { msg: ChatMessage; t: (key: string) => strin
   );
 }
 
-// =============================================
+// ============================================================
 // 主组件
-// =============================================
+// ============================================================
 
-export default function SDKChatPanel() {
+export function SDKChatPanel() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -138,9 +141,7 @@ export default function SDKChatPanel() {
 
   // 自动滚动到底部
   useEffect(() => {
-    if (messagesEndRef.current && typeof messagesEndRef.current.scrollIntoView === "function") {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [sdk.activeSession?.messages, sdk.streamingContent]);
 
   // 发送消息
@@ -179,7 +180,7 @@ export default function SDKChatPanel() {
 
   return (
     <div className={`flex ${isMobile ? "flex-col" : ""} gap-4 h-full`} style={{ minHeight: "500px" }}>
-      {/* ======== 左侧: 会话列表 (桌面端) ======== */}
+      {/* ========== 左侧: 会话列表 (桌面端) ========== */}
       {!isMobile && (
         <div className="w-56 shrink-0 flex flex-col gap-3">
           {/* 新建对话按钮 */}
@@ -239,7 +240,7 @@ export default function SDKChatPanel() {
         </div>
       )}
 
-      {/* ======== 中间: 对话区域 ======== */}
+      {/* ========== 中间: 对话区域 ========== */}
       <div className="flex-1 flex flex-col gap-3 min-w-0">
         {/* 顶部: 模型选择 + 状态 */}
         <GlassCard className="px-4 py-3">
@@ -317,7 +318,9 @@ export default function SDKChatPanel() {
         <GlassCard className="flex-1 overflow-y-auto p-4 min-h-[300px]">
           {messages.length === 0 && !sdk.streaming ? (
             <div className="h-full flex flex-col items-center justify-center gap-3">
-              <Bot className="w-10 h-10" style={{ color: "rgba(0,212,255,0.2)" }} />
+              <div style={{ opacity: 0.25 }}>
+                <YYC3LogoSvg size={40} showText={false} />
+              </div>
               <div style={{ fontSize: "0.8rem", color: "rgba(224,232,255,0.3)" }}>{t("sdk.noMessages")}</div>
               <div style={{ fontSize: "0.7rem", color: "rgba(224,232,255,0.2)" }}>{t("sdk.startHint")}</div>
             </div>
@@ -331,10 +334,10 @@ export default function SDKChatPanel() {
               {sdk.streaming && sdk.streamingContent && (
                 <div className="flex gap-2">
                   <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+                    className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 overflow-hidden"
                     style={{ background: "rgba(120,80,255,0.15)", border: "1px solid rgba(120,80,255,0.3)" }}
                   >
-                    <Bot className="w-3.5 h-3.5" style={{ color: "#7850ff" }} />
+                    <YYC3LogoSvg size={14} showText={false} />
                   </div>
                   <div
                     className="max-w-[80%] rounded-lg px-3 py-2"
@@ -404,7 +407,7 @@ export default function SDKChatPanel() {
         </GlassCard>
       </div>
 
-      {/* ======== 右侧: 统计面板 (桌面端) ======== */}
+      {/* ========== 右侧: 统计面板 (桌面端) ========== */}
       {!isMobile && (
         <div className="w-52 shrink-0 flex flex-col gap-3">
           {/* 使用统计 */}

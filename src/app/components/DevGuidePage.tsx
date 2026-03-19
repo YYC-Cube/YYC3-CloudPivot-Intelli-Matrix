@@ -1,6 +1,6 @@
 /**
  * DevGuidePage.tsx
- * ==============
+ * ==================
  * 第十章 · 开发实施建议 · 可视化面板
  *
  * 路由: /dev-guide
@@ -12,14 +12,19 @@
  */
 
 import React, { useState, useContext } from "react";
-import { BookOpen, Server, Database, Globe, Cpu, Check, Clock, AlertCircle, ChevronRight, HardDrive, Terminal, MonitorSmartphone, Layers,  } from "lucide-react";
-import GlassCard from "./GlassCard";
+import {
+  BookOpen, Server, Database, Globe, Cpu,
+  Check, Clock, AlertCircle, ChevronRight,
+  HardDrive, Terminal, MonitorSmartphone, Layers,
+  ArrowRight,
+} from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
-/* =============================================
+/* ============================================================
  *  10.1 技术选型
- * ============================================= */
+ * ============================================================ */
 
 interface TechChoice {
   feature: string;
@@ -88,9 +93,9 @@ const TECH_CHOICES: TechChoice[] = [
   },
 ];
 
-/* =============================================
- *  10.2 开发优先��
- * ============================================= */
+/* ============================================================
+ *  10.2 开发优先
+ * ============================================================ */
 
 type PhaseStatus = "completed" | "inProgress" | "planned";
 
@@ -200,9 +205,9 @@ const DEV_PHASES: DevPhase[] = [
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  架构概览节点
- * ============================================= */
+ * ============================================================ */
 
 interface ArchNode {
   label: string;
@@ -243,9 +248,9 @@ const ARCH_NODES: ArchNode[] = [
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  存储策略说明
- * ============================================= */
+ * ============================================================ */
 
 interface StorageLayer {
   name: string;
@@ -286,9 +291,9 @@ const STORAGE_LAYERS: StorageLayer[] = [
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  渲染组件
- * ============================================= */
+ * ============================================================ */
 
 const statusIcon: Record<PhaseStatus, { icon: React.ElementType; color: string; label: string }> = {
   completed:  { icon: Check,       color: "#00ff88", label: "已完成" },
@@ -296,10 +301,10 @@ const statusIcon: Record<PhaseStatus, { icon: React.ElementType; color: string; 
   planned:    { icon: AlertCircle, color: "rgba(0,212,255,0.3)", label: "已规划" },
 };
 
-export default function DevGuidePage() {
+export function DevGuidePage() {
   const view = useContext(ViewContext);
   const { t } = useI18n();
-   view?.isMobile ?? false;
+  const isMobile = view?.isMobile ?? false;
   const [activeTab, setActiveTab] = useState<string>("tech");
 
   const tabs = [
@@ -311,7 +316,7 @@ export default function DevGuidePage() {
 
   return (
     <div className="space-y-4" data-testid="dev-guide-page">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
           <BookOpen className="w-5 h-5 text-[#00d4ff]" />
@@ -326,7 +331,7 @@ export default function DevGuidePage() {
         </div>
       </div>
 
-      {/* ====== Tabs ====== */}
+      {/* ======== Tabs ======== */}
       <div className="flex flex-wrap gap-1">
         {tabs.map((tab) => (
           <button
@@ -345,7 +350,7 @@ export default function DevGuidePage() {
         ))}
       </div>
 
-      {/* =============== 技术选型 =============== */}
+      {/* ==================== 技术选型 ==================== */}
       {activeTab === "tech" && (
         <GlassCard className="p-4" data-testid="devguide-tech">
           <div className="space-y-2" data-testid="tech-list">
@@ -389,7 +394,7 @@ export default function DevGuidePage() {
         </GlassCard>
       )}
 
-      {/* =============== 开发优先级 =============== */}
+      {/* ==================== 开发优先级 ==================== */}
       {activeTab === "priority" && (
         <div className="space-y-4" data-testid="devguide-priority">
           {DEV_PHASES.map((phase) => {
@@ -471,7 +476,7 @@ export default function DevGuidePage() {
         </div>
       )}
 
-      {/* =============== 架构概��� =============== */}
+      {/* ==================== 架构概 ==================== */}
       {activeTab === "arch" && (
         <GlassCard className="p-4" data-testid="devguide-arch">
           <div className="space-y-3">
@@ -530,7 +535,7 @@ export default function DevGuidePage() {
         </GlassCard>
       )}
 
-      {/* =============== 存储策略 =============== */}
+      {/* ==================== 存储策略 ==================== */}
       {activeTab === "storage" && (
         <GlassCard className="p-4" data-testid="devguide-storage">
           <p className="text-[rgba(0,212,255,0.35)] mb-3" style={{ fontSize: "0.68rem" }}>

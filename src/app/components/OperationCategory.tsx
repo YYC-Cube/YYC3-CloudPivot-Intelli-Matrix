@@ -1,6 +1,6 @@
 /**
  * OperationCategory.tsx
- * =================
+ * ======================
  * 操作分类标签页
  */
 
@@ -20,7 +20,7 @@ interface OperationCategoryProps {
   onChange: (key: OperationCategoryType | "all") => void;
 }
 
-export default function OperationCategory({ categories, active, onChange }: OperationCategoryProps) {
+export function OperationCategory({ categories, active, onChange }: OperationCategoryProps) {
   return (
     <div className="flex items-center gap-1.5 flex-wrap" data-testid="operation-category">
       {/* All tab */}

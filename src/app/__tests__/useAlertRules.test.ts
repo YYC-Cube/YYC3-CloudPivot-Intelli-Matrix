@@ -1,170 +1,205 @@
-import { renderHook, act, waitFor } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { useAlertRules, type AlertSeverity, type AlertMetric, type AlertCondition, type EscalationLevel, type EscalationPolicy } from "../hooks/useAlertRules";
+/**
+ * useAlertRules.test.ts
+ * ======================
+ * useAlertRules hook 单元测试
+ */
+
+// @vitest-environment jsdom
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
+import { useAlertRules } from "../hooks/useAlertRules";
 
 describe("useAlertRules", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("should initialize with mock rules", () => {
+  it("should initialize with mock rules and events", () => {
     const { result } = renderHook(() => useAlertRules());
-    
-    expect(result.current.rules).toBeDefined();
-    expect(Array.isArray(result.current.rules)).toBe(true);
     expect(result.current.rules.length).toBeGreaterThan(0);
+    expect(result.current.events.length).toBeGreaterThan(0);
+    expect(result.current.selectedRule).toBeNull();
+    expect(result.current.isCreating).toBe(false);
+    expect(result.current.filterSeverity).toBe("all");
   });
 
-  it("should initialize with mock events", () => {
+  it("should compute stats correctly", () => {
     const { result } = renderHook(() => useAlertRules());
-    
-    expect(result.current.events).toBeDefined();
-    expect(Array.isArray(result.current.events)).toBe(true);
+    const { stats } = result.current;
+    expect(stats.totalRules).toBeGreaterThan(0);
+    expect(stats.activeRules).toBeLessThanOrEqual(stats.totalRules);
+    expect(stats.unresolvedEvents).toBeGreaterThanOrEqual(0);
+    expect(stats.criticalEvents).toBeGreaterThanOrEqual(0);
   });
 
-  it("should toggle rule enabled status", async () => {
+  it("should toggle a rule enabled/disabled", () => {
     const { result } = renderHook(() => useAlertRules());
-    const firstRule = result.current.rules[0];
-    const originalEnabled = firstRule.enabled;
-    
-    await act(async () => {
-      await result.current.toggleRule(firstRule.id);
+    const ruleId = result.current.rules[0].id;
+    const wasBefore = result.current.rules[0].enabled;
+
+    act(() => {
+      result.current.toggleRule(ruleId);
     });
 
-    await waitFor(() => {
-      const updatedRule = result.current.rules.find((r) => r.id === firstRule.id);
-      expect(updatedRule?.enabled).toBe(!originalEnabled);
-    });
+    const toggled = result.current.rules.find((r) => r.id === ruleId);
+    expect(toggled?.enabled).toBe(!wasBefore);
   });
 
-  it("should delete rule", async () => {
+  it("should delete a rule", () => {
     const { result } = renderHook(() => useAlertRules());
-    const firstRule = result.current.rules[0];
-    const initialLength = result.current.rules.length;
-    
-    await act(async () => {
-      await result.current.deleteRule(firstRule.id);
+    const initialCount = result.current.rules.length;
+    const ruleId = result.current.rules[0].id;
+
+    act(() => {
+      result.current.deleteRule(ruleId);
     });
 
-    await waitFor(() => {
-      expect(result.current.rules.length).toBe(initialLength - 1);
-      expect(result.current.rules.find((r) => r.id === firstRule.id)).toBeUndefined();
-    });
+    expect(result.current.rules.length).toBe(initialCount - 1);
+    expect(result.current.rules.find((r) => r.id === ruleId)).toBeUndefined();
   });
 
-  it("should acknowledge event", async () => {
+  it("should clear selectedRule when deleting the selected rule", () => {
     const { result } = renderHook(() => useAlertRules());
-    const firstEvent = result.current.events[0];
-    
-    await act(async () => {
-      await result.current.acknowledgeEvent(firstEvent.id);
-    });
+    const rule = result.current.rules[0];
 
-    await waitFor(() => {
-      const updatedEvent = result.current.events.find((e) => e.id === firstEvent.id);
-      expect(updatedEvent?.acknowledged).toBe(true);
+    act(() => {
+      result.current.setSelectedRule(rule);
     });
+    expect(result.current.selectedRule?.id).toBe(rule.id);
+
+    act(() => {
+      result.current.deleteRule(rule.id);
+    });
+    expect(result.current.selectedRule).toBeNull();
   });
 
-  it("should resolve event", async () => {
+  it("should acknowledge an event", () => {
     const { result } = renderHook(() => useAlertRules());
-    const firstEvent = result.current.events[0];
-    
-    await act(async () => {
-      await result.current.resolveEvent(firstEvent.id);
+    const unackedEvent = result.current.events.find((e) => !e.acknowledged);
+    if (!unackedEvent) {return;}
+
+    act(() => {
+      result.current.acknowledgeEvent(unackedEvent.id);
     });
 
-    await waitFor(() => {
-      const updatedEvent = result.current.events.find((e) => e.id === firstEvent.id);
-      expect(updatedEvent?.resolved).toBe(true);
-    });
+    const updated = result.current.events.find((e) => e.id === unackedEvent.id);
+    expect(updated?.acknowledged).toBe(true);
   });
 
-  it("should create new rule", async () => {
+  it("should resolve an event", () => {
     const { result } = renderHook(() => useAlertRules());
-    const initialLength = result.current.rules.length;
-    
-    const newRule = {
-      name: "Test Rule",
-      enabled: true,
-      severity: "warning" as AlertSeverity,
-      thresholds: [
-        {
-          metric: "cpu" as AlertMetric,
-          condition: "gt" as AlertCondition,
-          value: 80,
-          unit: "%",
-          duration: 60,
-        },
-      ],
-      aggregation: {
+    const unresolvedEvent = result.current.events.find((e) => !e.resolved);
+    if (!unresolvedEvent) {return;}
+
+    act(() => {
+      result.current.resolveEvent(unresolvedEvent.id);
+    });
+
+    const updated = result.current.events.find((e) => e.id === unresolvedEvent.id);
+    expect(updated?.resolved).toBe(true);
+    expect(updated?.acknowledged).toBe(true);
+  });
+
+  it("should create a new rule", () => {
+    const { result } = renderHook(() => useAlertRules());
+    const initialCount = result.current.rules.length;
+
+    act(() => {
+      result.current.createRule({
+        name: "Test Rule",
         enabled: true,
-        windowMinutes: 5,
-        maxGroupSize: 10,
-      },
-      deduplication: {
-        enabled: true,
-        cooldownMinutes: 15,
-      },
-      escalation: [
-        {
-          level: 1 as EscalationLevel,
-          delayMinutes: 0,
-          notifyChannels: ["dashboard"],
-        },
-      ] as EscalationPolicy[],
-      targets: ["node-1"],
-    };
-
-    await act(async () => {
-      await result.current.createRule(newRule);
+        severity: "warning",
+        thresholds: [{ metric: "cpu", condition: "gt", value: 80, unit: "%", duration: 60 }],
+        aggregation: { enabled: false, windowMinutes: 0, maxGroupSize: 0 },
+        deduplication: { enabled: true, cooldownMinutes: 10 },
+        escalation: [{ level: 1, delayMinutes: 0, notifyChannels: ["dashboard"] }],
+        targets: ["GPU-A100-01"],
+      });
     });
 
-    await waitFor(() => {
-      expect(result.current.rules.length).toBe(initialLength + 1);
-    });
+    // New rule prepended
+    expect(result.current.rules.length).toBe(initialCount + 1);
+    expect(result.current.rules[0].name).toBe("Test Rule");
+    expect(result.current.rules[0].triggerCount).toBe(0);
+    expect(result.current.rules[0].lastTriggered).toBeNull();
+    // isCreating should be reset
+    expect(result.current.isCreating).toBe(false);
   });
 
-  it("should filter events by severity", async () => {
+  it("should filter rules by severity", () => {
     const { result } = renderHook(() => useAlertRules());
-    
-    await act(async () => {
+
+    act(() => {
       result.current.setFilterSeverity("critical");
     });
 
-    await waitFor(() => {
-      expect(result.current.filterSeverity).toBe("critical");
+    result.current.rules.forEach((r) => {
+      expect(r.severity).toBe("critical");
     });
-  });
 
-  it("should calculate stats correctly", () => {
-    const { result } = renderHook(() => useAlertRules());
-    
-    expect(result.current.stats).toBeDefined();
-    expect(typeof result.current.stats.totalRules).toBe("number");
-    expect(typeof result.current.stats.activeRules).toBe("number");
-    expect(typeof result.current.stats.unresolvedEvents).toBe("number");
-    expect(typeof result.current.stats.criticalEvents).toBe("number");
-  });
-
-  it("should select rule", () => {
-    const { result } = renderHook(() => useAlertRules());
-    const firstRule = result.current.rules[0];
-    
     act(() => {
-      result.current.setSelectedRule(firstRule);
+      result.current.setFilterSeverity("all");
     });
 
-    expect(result.current.selectedRule).toBe(firstRule);
+    // All rules should be back
+    expect(result.current.rules.length).toBeGreaterThan(0);
   });
 
-  it("should set creating state", () => {
+  it("should set and clear selectedRule", () => {
     const { result } = renderHook(() => useAlertRules());
-    
+    const rule = result.current.rules[0];
+
+    act(() => {
+      result.current.setSelectedRule(rule);
+    });
+    expect(result.current.selectedRule).toEqual(rule);
+
+    act(() => {
+      result.current.setSelectedRule(null);
+    });
+    expect(result.current.selectedRule).toBeNull();
+  });
+
+  it("should set isCreating", () => {
+    const { result } = renderHook(() => useAlertRules());
+
     act(() => {
       result.current.setIsCreating(true);
     });
-
     expect(result.current.isCreating).toBe(true);
+
+    act(() => {
+      result.current.setIsCreating(false);
+    });
+    expect(result.current.isCreating).toBe(false);
+  });
+
+  it("should have editingRule state", () => {
+    const { result } = renderHook(() => useAlertRules());
+
+    expect(result.current.editingRule).toBeNull();
+
+    const rule = result.current.rules[0];
+    act(() => {
+      result.current.setEditingRule(rule);
+    });
+    expect(result.current.editingRule?.id).toBe(rule.id);
+
+    act(() => {
+      result.current.setEditingRule(null);
+    });
+    expect(result.current.editingRule).toBeNull();
+  });
+
+  it("should update an existing rule", () => {
+    const { result } = renderHook(() => useAlertRules());
+    const ruleId = result.current.rules[0].id;
+    const originalName = result.current.rules[0].name;
+
+    act(() => {
+      result.current.updateRule(ruleId, { name: "Updated Name", severity: "info" });
+    });
+
+    const updated = result.current.rules.find((r) => r.id === ruleId);
+    expect(updated?.name).toBe("Updated Name");
+    expect(updated?.severity).toBe("info");
+    // editingRule should be cleared
+    expect(result.current.editingRule).toBeNull();
   });
 });

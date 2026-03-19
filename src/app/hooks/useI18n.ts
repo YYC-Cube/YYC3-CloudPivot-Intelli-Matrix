@@ -10,10 +10,12 @@
  * - t() 函数支持嵌套 key 和模板变量
  */
 
-import { useState, useCallback, useMemo, createContext, useContext } from "react";
+import React, { useState, useCallback, useMemo, createContext, useContext } from "react";
 import { zhCN, enUS } from "../i18n";
 import type { TranslationKeys } from "../i18n";
-import type { Locale, LocaleInfo } from "../types";
+import type { Locale, LocaleInfo, I18nContextValue } from "../types";
+
+// RF-011: Re-export 已移除
 
 // ============================================================
 // 语言包映射
@@ -39,12 +41,12 @@ const STORAGE_KEY = "yyc3_locale";
  * 通过点分 key 获取嵌套翻译值
  * e.g. t("nav.dataMonitor") → zhCN.nav.dataMonitor
  */
-function getNestedValue(obj: Record<string, unknown>, path: string): string {
+function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
-  let result: unknown = obj;
+  let result: any = obj;
   for (const k of keys) {
     if (result === null || typeof result !== "object") {return path;}
-    result = (result as Record<string, unknown>)[k];
+    result = result[k];
   }
   return typeof result === "string" ? result : path;
 }
@@ -55,7 +57,7 @@ function getNestedValue(obj: Record<string, unknown>, path: string): string {
 function interpolate(template: string, vars?: Record<string, string | number>): string {
   if (!vars) {return template;}
   return template.replace(/\{(\w+)\}/g, (_, key) =>
-    vars[key] !== null && vars[key] !== undefined ? String(vars[key]) : `{${key}}`
+    vars[key] !== null ? String(vars[key]) : `{${key}}`
   );
 }
 
@@ -63,17 +65,13 @@ function interpolate(template: string, vars?: Record<string, string | number>): 
 // Context
 // ============================================================
 
-export interface I18nContextValue {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
-  t: (key: string, vars?: Record<string, string | number>) => string;
-  locales: LocaleInfo[];
-}
-
 export const I18nContext = createContext<I18nContextValue>({
   locale: "zh-CN",
   setLocale: () => {},
-  t: (key) => key,
+  t: (key, vars) => {
+    const raw = getNestedValue(zhCN as Record<string, any>, key);
+    return vars ? interpolate(raw, vars) : raw;
+  },
   locales: SUPPORTED_LOCALES,
 });
 
@@ -102,7 +100,7 @@ export function useI18nProvider() {
 
   const t = useCallback(
     (key: string, vars?: Record<string, string | number>): string => {
-      const raw = getNestedValue(translations as Record<string, unknown>, key);
+      const raw = getNestedValue(translations as Record<string, any>, key);
       return interpolate(raw, vars);
     },
     [translations]

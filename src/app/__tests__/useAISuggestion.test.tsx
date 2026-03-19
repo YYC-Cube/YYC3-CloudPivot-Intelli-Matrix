@@ -1,6 +1,6 @@
 /**
  * useAISuggestion.test.tsx
- * =============
+ * =========================
  * useAISuggestion Hook - AI 辅助决策状态管理测试
  *
  * 覆盖范围:
@@ -14,8 +14,9 @@
  * - stats 统计
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { useAISuggestion } from "../hooks/useAISuggestion";
 
 vi.mock("sonner", () => ({
@@ -25,10 +26,6 @@ vi.mock("sonner", () => ({
 describe("useAISuggestion", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -166,6 +163,7 @@ describe("useAISuggestion", () => {
     it("忽略模式后应移除模式和关联推荐", () => {
       const { result } = renderHook(() => useAISuggestion());
       const patId = "pat-1";
+      const relatedRecsBefore = result.current.recommendations.filter((r) => r.patternId === patId).length;
 
       act(() => {
         result.current.dismissPattern(patId);

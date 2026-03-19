@@ -1,6 +1,6 @@
 /**
  * usePatrol.test.tsx
- * =========
+ * ==================
  * usePatrol Hook - 巡查模式状态管理测试 (jsdom 环境)
  *
  * 覆盖范围:
@@ -12,8 +12,9 @@
  * - 历史记录追加
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { usePatrol } from "../hooks/usePatrol";
 
 // Mock sonner toast
@@ -28,10 +29,6 @@ vi.mock("sonner", () => ({
 describe("usePatrol", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------

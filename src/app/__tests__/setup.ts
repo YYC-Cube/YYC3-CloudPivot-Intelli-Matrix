@@ -1,39 +1,20 @@
 /**
  * setup.ts
- * =======
+ * =========
  * Vitest 全局 setup
  * - jsdom 环境: 注入 jest-dom matchers + polyfills
  * - node 环境: 安全跳过 DOM 相关 mock
+ * - figma:asset 虚拟模块 mock
+ * - axe-core 无障碍检测 matchers
  */
 
-// 检测环境类型
-const isJsdom = typeof window !== "undefined" && typeof document !== "undefined";
-
 // jest-dom matchers（仅 jsdom 环境生效）
-if (isJsdom) {
+if (typeof window !== "undefined") {
   await import("@testing-library/jest-dom/vitest");
 }
 
-// Mock Observer classes for jsdom
-class MockResizeObserver implements ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-}
-
-class MockIntersectionObserver implements IntersectionObserver {
-  readonly root: Document | Element | null = null;
-  readonly rootMargin: string = "";
-  readonly thresholds: ReadonlyArray<number> = [];
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
-  takeRecords(): IntersectionObserverEntry[] { return []; }
-}
-
-//以下仅在 jsdom 环境执行
-if (isJsdom) {
+// 以下仅在 jsdom 环境执行
+if (typeof window !== "undefined") {
   // Mock matchMedia (jsdom 不支持)
   if (!window.matchMedia) {
     Object.defineProperty(window, "matchMedia", {
@@ -52,18 +33,26 @@ if (isJsdom) {
   }
 
   // Mock ResizeObserver
-  if (!(window as Window & { ResizeObserver?: typeof ResizeObserver }).ResizeObserver) {
-    (window as Window & { ResizeObserver?: typeof ResizeObserver }).ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
+  if (!(window as any).ResizeObserver) {
+    (window as any).ResizeObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
   }
 
   // Mock IntersectionObserver
-  if (!(window as Window & { IntersectionObserver?: typeof IntersectionObserver }).IntersectionObserver) {
-    (window as Window & { IntersectionObserver?: typeof IntersectionObserver }).IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+  if (!(window as any).IntersectionObserver) {
+    (window as any).IntersectionObserver = class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    };
   }
 
   // Mock scrollTo
   if (!window.scrollTo) {
-    window.scrollTo = () => {};
+    window.scrollTo = (() => {}) as any;
   }
 
   // Mock navigator.clipboard
@@ -76,6 +65,45 @@ if (isJsdom) {
       writable: true,
     });
   }
+
+  // Mock HTMLCanvasElement.getContext (jsdom 不支持 canvas)
+  if (!(HTMLCanvasElement.prototype as any)._mockGetContext) {
+    (HTMLCanvasElement.prototype as any)._mockGetContext = true;
+    const originalGetContext = HTMLCanvasElement.prototype.getContext;
+    HTMLCanvasElement.prototype.getContext = function (this: HTMLCanvasElement, type: string, ...args: any[]) {
+      if (type === "2d") {
+        return {
+          fillRect: () => {},
+          clearRect: () => {},
+          getImageData: () => ({ data: [] }),
+          putImageData: () => {},
+          createImageData: () => [],
+          setTransform: () => {},
+          drawImage: () => {},
+          save: () => {},
+          fillText: () => {},
+          restore: () => {},
+          beginPath: () => {},
+          moveTo: () => {},
+          lineTo: () => {},
+          closePath: () => {},
+          stroke: () => {},
+          translate: () => {},
+          scale: () => {},
+          rotate: () => {},
+          arc: () => {},
+          fill: () => {},
+          measureText: () => ({ width: 0 }),
+          transform: () => {},
+          rect: () => {},
+          clip: () => {},
+          canvas: this,
+        } as unknown as CanvasRenderingContext2D;
+      }
+      return originalGetContext.call(this, type, ...args);
+    } as any;
+  }
 }
 
+// Ensure this file is treated as a module (required for top-level await + isolatedModules)
 export {};

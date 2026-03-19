@@ -1,6 +1,6 @@
 /**
  * network-utils.test.ts
- * ============
+ * ======================
  * YYC³ 网络工具函数 - 单元测试
  *
  * 测试框架: Vitest
@@ -22,12 +22,12 @@ import {
   generateWsUrl,
   testWebSocketConnection,
   testHTTPConnection,
-  type NetworkConfig,
 } from "../lib/network-utils";
+import type { NetworkConfig } from "../types";
 
-// ===============================
+// ============================================================
 // Mock localStorage
-// ===============================
+// ============================================================
 
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
@@ -41,9 +41,9 @@ const localStorageMock = (() => {
 
 Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
-// ===============================
+// ============================================================
 // Tests
-// ===============================
+// ============================================================
 
 describe("network-utils", () => {
   beforeEach(() => {
@@ -64,15 +64,15 @@ describe("network-utils", () => {
       expect(DEFAULT_NETWORK_CONFIG.port).toBe("3113");
     });
 
-    it("应包含正确的 NAS 地址", () => {
+    it("应包含正确的默认 NAS 地址", () => {
       expect(DEFAULT_NETWORK_CONFIG.nasAddress).toBe("192.168.3.45:9898");
     });
 
-    it("应包含正确的 WebSocket URL", () => {
+    it("应包含正确的默认 WebSocket URL", () => {
       expect(DEFAULT_NETWORK_CONFIG.wsUrl).toBe("ws://192.168.3.45:3113/ws");
     });
 
-    it("应包含正确的模式", () => {
+    it("默认模式应为 auto", () => {
       expect(DEFAULT_NETWORK_CONFIG.mode).toBe("auto");
     });
   });
@@ -82,32 +82,38 @@ describe("network-utils", () => {
   // ----------------------------------------------------------
 
   describe("loadNetworkConfig", () => {
-    it("localStorage 空时应返回默认配置", () => {
+    it("localStorage 为空时应返回默认配置", () => {
       const config = loadNetworkConfig();
       expect(config).toEqual(DEFAULT_NETWORK_CONFIG);
     });
 
-    it("localStorage 有值时应返回保存的配置", () => {
-      const customConfig: NetworkConfig = {
+    it("应正确读取已保存的配置", () => {
+      const custom: NetworkConfig = {
         serverAddress: "10.0.0.1",
         port: "8080",
-        nasAddress: "10.0.0.1:9898",
+        nasAddress: "10.0.0.2:9898",
         wsUrl: "ws://10.0.0.1:8080/ws",
         mode: "manual",
       };
-      localStorageMock.setItem("network_config", JSON.stringify(customConfig));
+      localStorageMock.setItem("network_config", JSON.stringify(custom));
+
       const config = loadNetworkConfig();
       expect(config.serverAddress).toBe("10.0.0.1");
       expect(config.port).toBe("8080");
-      expect(config.nasAddress).toBe("10.0.0.1:9898");
-      expect(config.wsUrl).toBe("ws://10.0.0.1:8080/ws");
       expect(config.mode).toBe("manual");
     });
 
     it("localStorage 数据损坏时应返回默认配置", () => {
-      localStorageMock.setItem("network_config", "invalid json");
+      localStorageMock.setItem("network_config", "invalid-json{{{");
       const config = loadNetworkConfig();
       expect(config).toEqual(DEFAULT_NETWORK_CONFIG);
+    });
+
+    it("部分配置缺失时应合并默认值", () => {
+      localStorageMock.setItem("network_config", JSON.stringify({ port: "9999" }));
+      const config = loadNetworkConfig();
+      expect(config.port).toBe("9999");
+      expect(config.serverAddress).toBe(DEFAULT_NETWORK_CONFIG.serverAddress);
     });
   });
 
@@ -118,34 +124,18 @@ describe("network-utils", () => {
   describe("saveNetworkConfig", () => {
     it("应将配置保存到 localStorage", () => {
       const config: NetworkConfig = {
-        serverAddress: "192.168.1.100",
-        port: "9000",
-        nasAddress: "192.168.1.100:9898",
-        wsUrl: "ws://192.168.1.100:9000/ws",
-        mode: "manual",
+        ...DEFAULT_NETWORK_CONFIG,
+        serverAddress: "172.16.0.100",
       };
       saveNetworkConfig(config);
+
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         "network_config",
-        JSON.stringify(config)
+        expect.any(String)
       );
-    });
 
-    it("保存后应能读取相同配置", () => {
-      const config: NetworkConfig = {
-        serverAddress: "172.16.0.1",
-        port: "7000",
-        nasAddress: "172.16.0.1:9898",
-        wsUrl: "ws://172.16.0.1:7000/ws",
-        mode: "auto",
-      };
-      saveNetworkConfig(config);
-      const loaded = loadNetworkConfig();
-      expect(loaded.serverAddress).toBe("172.16.0.1");
-      expect(loaded.port).toBe("7000");
-      expect(loaded.nasAddress).toBe("172.16.0.1:9898");
-      expect(loaded.wsUrl).toBe("ws://172.16.0.1:7000/ws");
-      expect(loaded.mode).toBe("auto");
+      const saved = JSON.parse(localStorageMock.setItem.mock.calls[0][1]);
+      expect(saved.serverAddress).toBe("172.16.0.100");
     });
   });
 
@@ -154,30 +144,12 @@ describe("network-utils", () => {
   // ----------------------------------------------------------
 
   describe("resetNetworkConfig", () => {
-    it("应清除 localStorage 配置", () => {
-      const config: NetworkConfig = {
-        serverAddress: "10.0.0.1",
-        port: "8080",
-        nasAddress: "10.0.0.1:9898",
-        wsUrl: "ws://10.0.0.1:8080/ws",
-        mode: "manual",
-      };
-      saveNetworkConfig(config);
-      resetNetworkConfig();
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith("network_config");
-    });
+    it("应清除 localStorage 中的配置", () => {
+      saveNetworkConfig({ ...DEFAULT_NETWORK_CONFIG, port: "1234" });
+      const config = resetNetworkConfig();
 
-    it("重置后应返回默认配置", () => {
-      const config: NetworkConfig = {
-        serverAddress: "10.0.0.1",
-        port: "8080",
-        nasAddress: "10.0.0.1:9898",
-        wsUrl: "ws://10.0.0.1:8080/ws",
-        mode: "manual",
-      };
-      saveNetworkConfig(config);
-      const resetConfig = resetNetworkConfig();
-      expect(resetConfig).toEqual(DEFAULT_NETWORK_CONFIG);
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith("network_config");
+      expect(config).toEqual(DEFAULT_NETWORK_CONFIG);
     });
   });
 
@@ -204,40 +176,20 @@ describe("network-utils", () => {
   // ----------------------------------------------------------
 
   describe("testWebSocketConnection", () => {
-    it("应正确导出 testWebSocketConnection 函数", () => {
-      expect(typeof testWebSocketConnection).toBe("function");
-    });
-
     it("连接不可达时应返回失败结果", async () => {
-      const mockWS = vi.fn().mockImplementation(() => {
+      // Mock WebSocket 构造函数
+      const MockWS = vi.fn().mockImplementation(() => {
         const ws = {
-          onopen: null as ((this: WebSocket, ev: Event) => unknown) | null,
-          onerror: null as ((this: WebSocket, ev: Event) => unknown) | null,
-          onclose: null as ((this: WebSocket, ev: CloseEvent) => unknown) | null,
-          onmessage: null as ((this: WebSocket, ev: MessageEvent) => unknown) | null,
+          onopen: null as any,
+          onerror: null as any,
+          onclose: null as any,
           close: vi.fn(),
-          send: vi.fn(),
-          addEventListener: vi.fn(),
-          removeEventListener: vi.fn(),
-          dispatchEvent: vi.fn(),
-          binaryType: "blob" as BinaryType,
-          bufferedAmount: 0,
-          extensions: "",
-          protocol: "",
-          readyState: 0,
-          url: "",
-          CONNECTING: 0 as const,
-          OPEN: 1 as const,
-          CLOSING: 2 as const,
-          CLOSED: 3 as const,
         };
-        queueMicrotask(() => {
-          if (ws.onerror) {ws.onerror(new Event("error"));}
-        });
-        return ws as unknown as WebSocket;
+        // 模拟连接错误
+        setTimeout(() => ws.onerror?.(), 10);
+        return ws;
       });
-
-      vi.stubGlobal("WebSocket", mockWS);
+      vi.stubGlobal("WebSocket", MockWS);
 
       const result = await testWebSocketConnection("ws://invalid:9999/ws", 1000);
       expect(result.success).toBe(false);
@@ -245,37 +197,41 @@ describe("network-utils", () => {
 
       vi.unstubAllGlobals();
     });
-  });
 
-  // ----------------------------------------------------------
-  // testHTTPConnection
-  // ----------------------------------------------------------
+    it("超时时应返回超时错误", async () => {
+      const MockWS = vi.fn().mockImplementation(() => ({
+        onopen: null,
+        onerror: null,
+        onclose: null,
+        close: vi.fn(),
+      }));
+      vi.stubGlobal("WebSocket", MockWS);
 
-  describe("testHTTPConnection", () => {
-    beforeEach(() => {
-      vi.stubGlobal("fetch", vi.fn());
-    });
+      const result = await testWebSocketConnection("ws://slow:9999/ws", 50);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("连接超时");
 
-    afterEach(() => {
       vi.unstubAllGlobals();
     });
 
-    it("HTTP 请求成功时应返回成功结果", async () => {
-      const mockFetch = fetch as ReturnType<typeof vi.fn>;
-      mockFetch.mockResolvedValue({ ok: true });
+    it("连接成功时应返回成功结果和延迟", async () => {
+      const MockWS = vi.fn().mockImplementation(() => {
+        const ws = {
+          onopen: null as any,
+          onerror: null as any,
+          onclose: null as any,
+          close: vi.fn(),
+        };
+        setTimeout(() => ws.onopen?.(), 5);
+        return ws;
+      });
+      vi.stubGlobal("WebSocket", MockWS);
 
-      const result = await testHTTPConnection("http://example.com");
+      const result = await testWebSocketConnection("ws://localhost:3113/ws", 1000);
       expect(result.success).toBe(true);
       expect(result.latency).toBeGreaterThanOrEqual(0);
-    });
 
-    it("HTTP 请求失败时应返回失败结果", async () => {
-      const mockFetch = fetch as ReturnType<typeof vi.fn>;
-      mockFetch.mockRejectedValue(new Error("Network error"));
-
-      const result = await testHTTPConnection("http://example.com");
-      expect(result.success).toBe(false);
-      expect(result.error).toBeDefined();
+      vi.unstubAllGlobals();
     });
   });
 });

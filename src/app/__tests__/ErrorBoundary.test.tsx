@@ -1,6 +1,6 @@
 /**
  * ErrorBoundary.test.tsx
- * ============
+ * =======================
  * ErrorBoundary 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -12,9 +12,10 @@
  * - onError 回调触发
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import ErrorBoundary from "../components/ErrorBoundary";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 // Mock error-handler 以避免 localStorage 问题
 vi.mock("../lib/error-handler", () => ({
@@ -29,7 +30,7 @@ vi.mock("../lib/error-handler", () => ({
 }));
 
 // 抛出错误的组件
-function ThrowingComponent({ message = "Test crash" }: { message?: string }): React.ReactNode {
+function ThrowingComponent({ message = "Test crash" }: { message?: string }): never {
   throw new Error(message);
 }
 
@@ -41,10 +42,6 @@ function NormalComponent() {
 // 抑制 React 的 console.error (ErrorBoundary 触发时)
 beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
-});
-
-afterEach(() => {
-  cleanup();
 });
 
 describe("ErrorBoundary", () => {
@@ -225,7 +222,7 @@ describe("ErrorBoundary", () => {
 
   describe("onError 回调", () => {
     it("错误发生时应调用 onError", () => {
-      const handleError = vi.fn() as any;
+      const handleError = vi.fn();
       render(
         <ErrorBoundary onError={handleError}>
           <ThrowingComponent message="callback test" />

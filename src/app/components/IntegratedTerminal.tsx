@@ -1,6 +1,6 @@
 /**
  * IntegratedTerminal.tsx
- * =================
+ * ======================
  * VS Code 风格集成终端面板
  * 底部滑出 · 可拖拽调节高度 · 多 Tab 终端实例
  * 快捷键 Ctrl+` 全局切换
@@ -35,8 +35,8 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 import { useNavigate } from "react-router";
 import { useTerminal } from "../hooks/useTerminal";
-import { ViewContext } from "@/lib/layoutContext";
-import { AuthContext } from "../App";
+import { ViewContext } from "../lib/view-context";
+import { AuthContext } from "../lib/authContext";
 import { isGhostMode } from "../lib/supabaseClient";
 
 /* ── 常量 ─────────────────────────────── */
@@ -211,26 +211,31 @@ function TerminalTabPane({
 }
 
 /* ── 主组件 ──────────────────────────── */
-export default function IntegratedTerminal({ open, onClose }: IntegratedTerminalProps) {
+export function IntegratedTerminal({ open, onClose }: IntegratedTerminalProps) {
   const view = useContext(ViewContext);
   const auth = useContext(AuthContext);
   const isMobile = view?.isMobile ?? false;
   const ghost = isGhostMode();
 
   // ── 多 Tab 管理 ──
-  const [tabs, setTabs] = useState<TerminalTabMeta[]>([
-    { id: "tab-1", label: "cpim", createdAt: Date.now() },
-  ]);
+  const [tabs, setTabs] = useState<TerminalTabMeta[]>([]);
   const [activeTabId, setActiveTabId] = useState("tab-1");
-  const tabCounter = useRef(1);
+  const tabCounter = useRef(0);
+
+  useEffect(() => {
+    if (tabs.length === 0) {
+      setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
+    }
+  }, []);
 
   const addTab = useCallback(() => {
     if (tabs.length >= MAX_TABS) {return;}
     tabCounter.current += 1;
     const newId = `tab-${tabCounter.current}`;
+    const now = Date.now();
     setTabs((prev) => [
       ...prev,
-      { id: newId, label: `cpim-${tabCounter.current}`, createdAt: Date.now() },
+      { id: newId, label: `cpim-${tabCounter.current}`, createdAt: now },
     ]);
     setActiveTabId(newId);
   }, [tabs.length]);
@@ -276,8 +281,10 @@ export default function IntegratedTerminal({ open, onClose }: IntegratedTerminal
     // reset if tabs empty
     if (tabs.length === 0) {
       tabCounter.current = 1;
-      setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
-      setActiveTabId("tab-1");
+      setTimeout(() => {
+        setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
+        setActiveTabId("tab-1");
+      }, 0);
     }
   }, [open, tabs.length]);
 
@@ -285,9 +292,7 @@ export default function IntegratedTerminal({ open, onClose }: IntegratedTerminal
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, String(panelHeight));
-    } catch {
-      /* ignore storage errors */
-    }
+    } catch {}
   }, [panelHeight]);
 
   /* ── 拖拽调高 ─────────────────────────── */

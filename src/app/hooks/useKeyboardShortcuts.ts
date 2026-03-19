@@ -18,6 +18,9 @@
 import { useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import type { RegisteredShortcut } from "../types";
+
+// RF-011: Re-export 已移除
 
 interface ShortcutConfig {
   /** 是否启用快捷键 */
@@ -30,18 +33,11 @@ interface ShortcutConfig {
   onToggleTerminal?: () => void;
 }
 
-export interface RegisteredShortcut {
-  id: string;
-  keys: string;
-  description: string;
-  category: string;
-}
-
 /** 平台检测 */
 const isMac = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform ?? "");
 const modLabel = isMac ? "⌘" : "Ctrl";
 
-/** 完整快捷键列表（用于帮助面板展示） */
+/** ��整快捷键列表（用于帮助面板展示） */
 export const SHORTCUT_LIST: RegisteredShortcut[] = [
   { id: "search",     keys: `${modLabel}+K`,           description: "快速搜索",     category: "全局" },
   { id: "alerts",     keys: `${modLabel}+Shift+A`,     description: "告警 / 一键跟进", category: "全局" },

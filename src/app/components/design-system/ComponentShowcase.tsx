@@ -1,6 +1,6 @@
 /**
  * ComponentShowcase.tsx
- * =================
+ * ======================
  * 9.1 Atoms / Molecules / Organisms / Templates 组件展示面板
  *
  * 交互原型 + 状态设计文档 合一
@@ -8,22 +8,19 @@
  */
 
 import React, { useState } from "react";
-import { Check, X, AlertTriangle, Info, Loader2 } from "lucide-react";
+import {
+  Check, X, AlertTriangle, Info, Loader2, Bell,
+  Activity, Shield, Server, Database, Zap,
+  ChevronRight, ExternalLink,
+} from "lucide-react";
+import { GlassCard } from "../GlassCard";
+import type { StatusDef, ComponentEntry, InteractionSpec } from "../../types";
 
-/* =============================================
+// RF-011: Re-export 已移除
+
+/* ============================================================
  *  状态颜色映射 (全局状态设计)
- * ============================================= */
-
-export interface StatusDef {
-  key: string;
-  label: string;
-  color: string;
-  bgColor: string;
-  borderColor: string;
-  glowColor: string;
-  icon: React.ElementType;
-  description: string;
-}
+ * ============================================================ */
 
 export const STATUS_DEFINITIONS: StatusDef[] = [
   {
@@ -78,19 +75,9 @@ export const STATUS_DEFINITIONS: StatusDef[] = [
   },
 ];
 
-/* =============================================
+/* ============================================================
  *  组件注册表
- * ============================================= */
-
-export interface ComponentEntry {
-  name: string;
-  tier: "atom" | "molecule" | "organism" | "template";
-  path: string;
-  description: string;
-  props: string[];
-  states: string[];
-  responsive: boolean;
-}
+ * ============================================================ */
 
 export const COMPONENT_REGISTRY: ComponentEntry[] = [
   // Atoms
@@ -126,17 +113,9 @@ export const COMPONENT_REGISTRY: ComponentEntry[] = [
   { name: "CommandPalette",     tier: "template", path: "components/CommandPalette.tsx",    description: "全局命令面板 (Cmd+K)",            props: ["isOpen","onClose"],                               states: ["closed","open","searching","shortcuts"], responsive: true },
 ];
 
-/* =============================================
+/* ============================================================
  *  交互规范常量
- * ============================================= */
-
-export interface InteractionSpec {
-  name: string;
-  trigger: string;
-  duration: string;
-  effect: string;
-  feedback: string;
-}
+ * ============================================================ */
 
 export const INTERACTION_SPECS: InteractionSpec[] = [
   { name: "按钮点击",     trigger: "click",          duration: "100ms",  effect: "scale(0.97) → scale(1)", feedback: "颜色加深 + 波纹扩散" },
@@ -151,9 +130,9 @@ export const INTERACTION_SPECS: InteractionSpec[] = [
   { name: "扫描线",       trigger: "持续",           duration: "8s 循环", effect: "translateY(0→100%)",       feedback: "赛博朋克氛围" },
 ];
 
-/* =============================================
+/* ============================================================
  *  渲染组件
- * ============================================= */
+ * ============================================================ */
 
 const tierLabels: Record<string, { label: string; color: string }> = {
   atom:     { label: "Atom 原子",       color: "#00d4ff" },
@@ -199,7 +178,7 @@ export function ComponentShowcase() {
         ))}
       </div>
 
-      {/* =============== 状态设计 =============== */}
+      {/* ==================== 状态设计 ==================== */}
       {activeTab === "states" && (
         <div data-testid="showcase-states">
           <p className="text-[rgba(0,212,255,0.35)] mb-3" style={{ fontSize: "0.68rem" }}>
@@ -253,21 +232,24 @@ export function ComponentShowcase() {
               实时状态条预览
             </p>
             <div className="flex items-center gap-3">
-              {STATUS_DEFINITIONS.map((s) => (
-                <div key={s.key} className="flex items-center gap-1">
-                  <s.icon
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: s.color, boxShadow: `0 0 6px ${s.glowColor}` }}
-                  />
-                  <span style={{ color: s.color, fontSize: "0.6rem" }}>{s.label}</span>
-                </div>
-              ))}
+              {STATUS_DEFINITIONS.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <div key={s.key} className="flex items-center gap-1">
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: s.color, boxShadow: `0 0 6px ${s.glowColor}` }}
+                    />
+                    <span style={{ color: s.color, fontSize: "0.6rem" }}>{s.label}</span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
       )}
 
-      {/* =============== 组件清单 =============== */}
+      {/* ==================== 组件清单 ==================== */}
       {activeTab === "components" && (
         <div data-testid="showcase-components">
           {/* Tier filter */}
@@ -349,7 +331,7 @@ export function ComponentShowcase() {
         </div>
       )}
 
-      {/* =============== 交互规范 =============== */}
+      {/* ==================== 交互规范 ==================== */}
       {activeTab === "interactions" && (
         <div data-testid="showcase-interactions">
           <p className="text-[rgba(0,212,255,0.35)] mb-3" style={{ fontSize: "0.68rem" }}>

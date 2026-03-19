@@ -1,6 +1,6 @@
 /**
  * OfflineIndicator.test.tsx
- * ===============
+ * ==========================
  * OfflineIndicator 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -9,26 +9,22 @@
  * - 恢复在线显示绿色提示
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 
 // Mock useOfflineMode
-const mockUseOfflineMode = vi.fn() as any;
+const mockUseOfflineMode = vi.fn();
 
 vi.mock("../hooks/useOfflineMode", () => ({
   useOfflineMode: () => mockUseOfflineMode(),
 }));
 
-import OfflineIndicator from "../components/OfflineIndicator";
+import { OfflineIndicator } from "../components/OfflineIndicator";
 
 describe("OfflineIndicator", () => {
   beforeEach(() => {
-    cleanup();
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   it("在线状态应不渲染任何内容", () => {
@@ -50,7 +46,7 @@ describe("OfflineIndicator", () => {
     });
 
     render(<OfflineIndicator />);
-    expect(screen.getAllByText("离线模式")[0]).toBeInTheDocument();
+    expect(screen.getByText("离线模式")).toBeInTheDocument();
   });
 
   it("离线且有同步时间应显示上次同步时间", () => {
@@ -62,7 +58,7 @@ describe("OfflineIndicator", () => {
     });
 
     render(<OfflineIndicator />);
-    expect(screen.getAllByText(/上次同步/)[0]).toBeInTheDocument();
+    expect(screen.getByText(/上次同步/)).toBeInTheDocument();
   });
 
   it("恢复在线后应显示'网络已恢复'", async () => {
@@ -74,7 +70,7 @@ describe("OfflineIndicator", () => {
     });
 
     const { rerender } = render(<OfflineIndicator />);
-    expect(screen.getAllByText("离线模式")[0]).toBeInTheDocument();
+    expect(screen.getByText("离线模式")).toBeInTheDocument();
 
     // 切换为在线
     mockUseOfflineMode.mockReturnValue({
@@ -85,7 +81,7 @@ describe("OfflineIndicator", () => {
 
     rerender(<OfflineIndicator />);
 
-    expect(screen.getAllByText("网络已恢复")[0]).toBeInTheDocument();
+    expect(screen.getByText("网络已恢复")).toBeInTheDocument();
   });
 
   it("恢复在线且同步中应显示同步状态", () => {
@@ -107,7 +103,7 @@ describe("OfflineIndicator", () => {
 
     rerender(<OfflineIndicator />);
 
-    expect(screen.getAllByText("网络已恢复")[0]).toBeInTheDocument();
-    expect(screen.getAllByText("同步中...")[0]).toBeInTheDocument();
+    expect(screen.getByText("网络已恢复")).toBeInTheDocument();
+    expect(screen.getByText("同步中...")).toBeInTheDocument();
   });
 });

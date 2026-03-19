@@ -1,6 +1,6 @@
 /**
  * AISuggestionPanel.tsx
- * =================
+ * ======================
  * AI 辅助决策主面板 · 路由: /ai
  *
  * 功能:
@@ -10,23 +10,31 @@
  * i18n 已迁移
  */
 
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Bot, RefreshCw, Activity, AlertTriangle,
   CheckCircle, Loader2, ToggleLeft, ToggleRight,
   MessageSquare,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import PatternAnalyzer from "./PatternAnalyzer";
-import ActionRecommender from "./ActionRecommender";
-import SDKChatPanel from "./SDKChatPanel";
+import { GlassCard } from "./GlassCard";
+import { PatternAnalyzer } from "./PatternAnalyzer";
+import { ActionRecommender } from "./ActionRecommender";
+import { SDKChatPanel } from "./SDKChatPanel";
 import { useAISuggestion } from "../hooks/useAISuggestion";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
 type AITab = "analysis" | "chat";
 
-export default function AISuggestionPanel() {
+function formatTimeAgo(ts: number, t: (key: string, vars?: Record<string, string | number>) => string): string {
+  const diff = Date.now() - ts;
+  const min = Math.floor(diff / 60000);
+  if (min < 1) {return t("common.justNow");}
+  if (min < 60) {return t("common.minutesAgo", { n: min });}
+  return t("common.hoursAgo", { n: Math.floor(min / 60) });
+}
+
+export function AISuggestionPanel() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -66,17 +74,9 @@ export default function AISuggestionPanel() {
     overallHealth >= 60 ? "#ffaa00" :
     overallHealth >= 40 ? "#ff6600" : "#ff0044";
 
-  function formatTimeAgo(ts: number): string {
-    const diff = Date.now() - ts;
-    const min = Math.floor(diff / 60000);
-    if (min < 1) {return t("common.justNow");}
-    if (min < 60) {return t("common.minutesAgo", { n: min });}
-    return t("common.hoursAgo", { n: Math.floor(min / 60) });
-  }
-
   return (
     <div className="space-y-4">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -161,7 +161,7 @@ export default function AISuggestionPanel() {
         </div>
       </div>
 
-      {/* ====== Tab: Analysis ====== */}
+      {/* ======== Tab: Analysis ======== */}
       {activeTab === "analysis" && (
         <>
           {/* Health + Stats */}
@@ -225,7 +225,7 @@ export default function AISuggestionPanel() {
             <GlassCard className="p-4 flex flex-col items-center justify-center">
               <Activity className="w-6 h-6 text-[#00d4ff] mb-2" />
               <span className="text-[#e0f0ff]" style={{ fontSize: "0.72rem" }}>
-                {lastAnalyzedAt ? formatTimeAgo(lastAnalyzedAt) : "--"}
+                {lastAnalyzedAt ? formatTimeAgo(lastAnalyzedAt, t) : "--"}
               </span>
               <p className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.65rem" }}>
                 {t("ai.lastAnalysis")}
@@ -251,7 +251,7 @@ export default function AISuggestionPanel() {
         </>
       )}
 
-      {/* ====== Tab: Chat ====== */}
+      {/* ======== Tab: Chat ======== */}
       {activeTab === "chat" && (
         <SDKChatPanel />
       )}

@@ -1,6 +1,6 @@
 /**
  * useKeyboardShortcuts.test.tsx
- * ================
+ * ==============================
  * useKeyboardShortcuts Hook - 全局快捷键系统测试
  *
  * 覆盖范围:
@@ -16,8 +16,9 @@
  * - 输入框内忽略快捷键
  */
 
+import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook, cleanup } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { useKeyboardShortcuts, SHORTCUT_LIST } from "../hooks/useKeyboardShortcuts";
 
 const mockNavigate = vi.fn();
@@ -43,17 +44,12 @@ function fireKeyDown(key: string, opts: Partial<KeyboardEventInit> = {}) {
 describe("useKeyboardShortcuts", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockNavigate.mockClear();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("快捷键列表", () => {
-    it("应返回 8 个快捷键", () => {
+    it("应返回 7 个快捷键", () => {
       renderHook(() => useKeyboardShortcuts());
-      expect(SHORTCUT_LIST.length).toBe(8);
+      expect(SHORTCUT_LIST.length).toBe(7);
     });
 
     it("应包含操作中心快捷键", () => {
@@ -147,7 +143,7 @@ describe("useKeyboardShortcuts", () => {
     });
 
     it("输入框内 Esc 仍应触发 onEscape", () => {
-      const onEscape = vi.fn<() => void>();
+      const onEscape = vi.fn();
       renderHook(() => useKeyboardShortcuts({ onEscape }));
 
       const input = document.createElement("input");

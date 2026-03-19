@@ -1,24 +1,24 @@
 /**
  * OperationCenter.tsx
- * ===============
+ * ====================
  * 操作中心主界面
  * 路由: /operations
  *
  * i18n 已迁移
  */
 
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Settings, Zap } from "lucide-react";
-import GlassCard from "./GlassCard";
-import OperationCategory from "./OperationCategory";
-import QuickActionGrid from "./QuickActionGrid";
-import OperationTemplate from "./OperationTemplate";
-import OperationLogStream from "./OperationLogStream";
+import { GlassCard } from "./GlassCard";
+import { OperationCategory } from "./OperationCategory";
+import { QuickActionGrid } from "./QuickActionGrid";
+import { OperationTemplate } from "./OperationTemplate";
+import { OperationLogStream } from "./OperationLogStream";
 import { useOperationCenter } from "../hooks/useOperationCenter";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
-export default function OperationCenter() {
+export function OperationCenter() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -43,7 +43,7 @@ export default function OperationCenter() {
 
   return (
     <div className="space-y-4">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -60,14 +60,14 @@ export default function OperationCenter() {
         </div>
       </div>
 
-      {/* ====== Category Tabs ====== */}
+      {/* ======== Category Tabs ======== */}
       <OperationCategory
         categories={categories}
         active={activeCategory}
         onChange={setActiveCategory}
       />
 
-      {/* ====== Quick Actions ====== */}
+      {/* ======== Quick Actions ======== */}
       <GlassCard className="p-4">
         <div className="flex items-center gap-2 mb-3">
           <Zap className="w-4 h-4 text-[#ffaa00]" />
@@ -86,7 +86,7 @@ export default function OperationCenter() {
         />
       </GlassCard>
 
-      {/* ====== Templates ====== */}
+      {/* ======== Templates ======== */}
       <OperationTemplate
         templates={templates}
         onRunTemplate={runTemplate}
@@ -94,7 +94,7 @@ export default function OperationCenter() {
         onAddTemplate={addTemplate}
       />
 
-      {/* ====== Log Stream ====== */}
+      {/* ======== Log Stream ======== */}
       <OperationLogStream
         logs={logs}
         filter={logFilter}

@@ -1,13 +1,15 @@
 /**
  * PatternAnalyzer.tsx
- * ===============
+ * ====================
  * 模式分析器 · 展示检测到的异常模式卡片
  */
 
+import React from "react";
 import {
   TrendingUp, TrendingDown, Minus, AlertTriangle,
   X, Clock, Repeat,
 } from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import type { DetectedPattern, PatternSeverity } from "../types";
 
 const severityConfig: Record<PatternSeverity, { color: string; bg: string; label: string }> = {
@@ -36,7 +38,7 @@ interface PatternAnalyzerProps {
   selectedPatternId?: string | null;
 }
 
-export default function PatternAnalyzer({
+export function PatternAnalyzer({
   patterns, onDismiss, onSelectPattern, selectedPatternId,
 }: PatternAnalyzerProps) {
   return (

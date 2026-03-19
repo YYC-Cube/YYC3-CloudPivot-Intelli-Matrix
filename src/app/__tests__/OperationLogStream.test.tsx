@@ -1,6 +1,6 @@
 /**
  * OperationLogStream.test.tsx
- * ===============
+ * ============================
  * OperationLogStream 组件 - 实时日志流测试
  *
  * 覆盖范围:
@@ -10,9 +10,10 @@
  * - 空状态
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import OperationLogStream from "../components/OperationLogStream";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { OperationLogStream } from "../components/OperationLogStream";
 import type { OperationLogEntry } from "../types";
 
 const mockLogs: OperationLogEntry[] = [
@@ -23,77 +24,84 @@ const mockLogs: OperationLogEntry[] = [
 ];
 
 describe("OperationLogStream", () => {
-  let onFilterChange: any;
-  let onSearchChange: any;
+  let onFilterChange: Mock;
+  let onSearchChange: Mock;
 
   beforeEach(() => {
-    cleanup();
-    onFilterChange = vi.fn() as any;
-    onSearchChange = vi.fn() as any;
+    onFilterChange = vi.fn();
+    onSearchChange = vi.fn();
   });
 
-  afterEach(() => {
-    cleanup();
-  });
+  // ----------------------------------------------------------
+  // 基础渲染
+  // ----------------------------------------------------------
 
   describe("基础渲染", () => {
     it("应渲染标题", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByText("操作日志")[0]).toBeInTheDocument();
+      expect(screen.getByText("操作日志")).toBeInTheDocument();
     });
 
     it("应渲染日志数量", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByText("(4)")[0]).toBeInTheDocument();
+      expect(screen.getByText("(4)")).toBeInTheDocument();
     });
 
     it("应渲染所有日志操作名", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByText("重启节点 GPU-A100-03")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("部署 LLaMA-70B")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("清理推理缓存")[0]).toBeInTheDocument();
+      expect(screen.getByText("重启节点 GPU-A100-03")).toBeInTheDocument();
+      expect(screen.getByText("部署 LLaMA-70B")).toBeInTheDocument();
+      expect(screen.getByText("清理推理缓存")).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByTestId("operation-log-stream")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("operation-log-stream")).toBeInTheDocument();
     });
   });
+
+  // ----------------------------------------------------------
+  // 筛选 Tab
+  // ----------------------------------------------------------
 
   describe("筛选 Tab", () => {
     it("应渲染 4 个筛选按钮", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByText("实时流")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("按类型")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("按用户")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("搜索")[0]).toBeInTheDocument();
+      expect(screen.getByText("实时流")).toBeInTheDocument();
+      expect(screen.getByText("按类型")).toBeInTheDocument();
+      expect(screen.getByText("按用户")).toBeInTheDocument();
+      expect(screen.getByText("搜索")).toBeInTheDocument();
     });
 
     it("点击搜索 tab 应触发 onFilterChange", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      fireEvent.click(screen.getAllByTestId("log-filter-search")[0]);
+      fireEvent.click(screen.getByTestId("log-filter-search"));
       expect(onFilterChange).toHaveBeenCalledWith("search");
     });
   });
+
+  // ----------------------------------------------------------
+  // 搜索
+  // ----------------------------------------------------------
 
   describe("搜索", () => {
     it("filter=search 时应显示搜索框", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="search" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByTestId("log-search-input")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("log-search-input")).toBeInTheDocument();
     });
 
     it("filter=all 时不应显示搜索框", () => {
@@ -107,18 +115,22 @@ describe("OperationLogStream", () => {
       render(
         <OperationLogStream logs={mockLogs} filter="search" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      const input = screen.getAllByTestId("log-search-input")[0];
+      const input = screen.getByTestId("log-search-input");
       fireEvent.change(input, { target: { value: "重启" } });
       expect(onSearchChange).toHaveBeenCalledWith("重启");
     });
   });
+
+  // ----------------------------------------------------------
+  // 空状态
+  // ----------------------------------------------------------
 
   describe("空状态", () => {
     it("无日志时应显示空提示", () => {
       render(
         <OperationLogStream logs={[]} filter="all" onFilterChange={onFilterChange} searchQuery="" onSearchChange={onSearchChange} />
       );
-      expect(screen.getAllByText("暂无操作日志")[0]).toBeInTheDocument();
+      expect(screen.getByText("暂无操作日志")).toBeInTheDocument();
     });
   });
 });

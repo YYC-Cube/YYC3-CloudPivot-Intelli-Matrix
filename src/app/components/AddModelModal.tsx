@@ -1,6 +1,6 @@
 /**
  * AddModelModal.tsx
- * ==============
+ * ==================
  * 添加模型 模态框
  *
  * UI 匹配截图:
@@ -10,7 +10,7 @@
  * - 添加模型按钮
  */
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { X, ChevronDown, ChevronUp, Loader2, Server, Key, Cpu, RefreshCw } from "lucide-react";
 import { useI18n } from "../hooks/useI18n";
 import type { ModelProviderId, ModelProviderDef, OllamaModel } from "../types";
@@ -23,10 +23,11 @@ interface AddModelModalProps {
   ollamaLoading: boolean;
   ollamaError: string | null;
   onFetchOllama: (baseUrl?: string) => Promise<OllamaModel[]>;
-  onAdd: (providerId: ModelProviderId, model: string, apiKey: string, customBaseUrl?: string) => void;
+  onAdd: (providerId: ModelProviderId, model: string, apiKey: string, customBaseUrl?: string, proxyUrl?: string) => void;
+  onAddModelToProvider?: (providerId: ModelProviderId, modelName: string) => void;
 }
 
-export default function AddModelModal({
+export function AddModelModal({
   isOpen,
   onClose,
   providers,
@@ -35,6 +36,7 @@ export default function AddModelModal({
   ollamaError,
   onFetchOllama,
   onAdd,
+  onAddModelToProvider,
 }: AddModelModalProps) {
   const { t } = useI18n();
 
@@ -43,6 +45,10 @@ export default function AddModelModal({
   const [selectedModel, setSelectedModel] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [ollamaUrl, setOllamaUrl] = useState("http://localhost:11434");
+  const [customModelName, setCustomModelName] = useState("");
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [proxyUrl, setProxyUrl] = useState("");
+  const [showProxyInput, setShowProxyInput] = useState(false);
 
   // Dropdown open state
   const [providerDropOpen, setProviderDropOpen] = useState(false);
@@ -68,11 +74,13 @@ export default function AddModelModal({
 
   // When provider changes, reset model and fetch Ollama if needed
   useEffect(() => {
-    setSelectedModel("");
+    setTimeout(() => {
+      setSelectedModel("");
+    }, 0);
     if (selectedProviderId === "ollama") {
       onFetchOllama(ollamaUrl);
     }
-  }, [selectedProviderId, ollamaUrl, onFetchOllama]);
+  }, [selectedProviderId]);
 
   // Get selected provider
   const selectedProvider = providers.find((p) => p.id === selectedProviderId);
@@ -96,6 +104,9 @@ export default function AddModelModal({
     setApiKey("");
     setProviderDropOpen(false);
     setModelDropOpen(false);
+    setShowCustomInput(false);
+    setProxyUrl("");
+    setShowProxyInput(false);
   };
 
   // Handle submit
@@ -105,7 +116,8 @@ export default function AddModelModal({
       selectedProviderId as ModelProviderId,
       selectedModel,
       apiKey,
-      selectedProviderId === "ollama" ? ollamaUrl : undefined
+      selectedProviderId === "ollama" ? ollamaUrl : undefined,
+      proxyUrl.trim() || undefined,
     );
     resetForm();
     onClose();
@@ -141,7 +153,7 @@ export default function AddModelModal({
         </div>
 
         <div className="px-6 pb-6 space-y-5">
-          {/* ==== 服务商下拉 ==== */}
+          {/* ===== 服务商下拉 ===== */}
           <div>
             <label className="flex items-center gap-1 mb-2">
               <span className="text-[#ff3366]" style={{ fontSize: "0.75rem" }}>*</span>
@@ -200,7 +212,7 @@ export default function AddModelModal({
             </div>
           </div>
 
-          {/* ==== Ollama URL (仅 Ollama 显示) ==== */}
+          {/* ===== Ollama URL (仅 Ollama 显示) ===== */}
           {selectedProviderId === "ollama" && (
             <div>
               <label className="flex items-center gap-1 mb-2">
@@ -244,7 +256,7 @@ export default function AddModelModal({
             </div>
           )}
 
-          {/* ==== 模型下拉 ==== */}
+          {/* ===== 模型下拉 ===== */}
           {selectedProviderId && (
             <div>
               <label className="flex items-center gap-1 mb-2">
@@ -318,7 +330,61 @@ export default function AddModelModal({
             </div>
           )}
 
-          {/* ==== API 密钥 (非 Ollama) ==== */}
+          {/* ===== 自定义模型名输入 ===== */}
+          {selectedProviderId && selectedProviderId !== "ollama" && (
+            <div>
+              <button
+                onClick={() => setShowCustomInput(!showCustomInput)}
+                className="text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] transition-all flex items-center gap-1"
+                style={{ fontSize: "0.7rem" }}
+              >
+                <Cpu className="w-3 h-3" />
+                {showCustomInput ? "收起自定义" : "输入自定义模型名"}
+              </button>
+              {showCustomInput && (
+                <div className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    value={customModelName}
+                    onChange={(e) => setCustomModelName(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && customModelName.trim()) {
+                        e.preventDefault();
+                        setSelectedModel(customModelName.trim());
+                        if (onAddModelToProvider && selectedProviderId) {
+                          onAddModelToProvider(selectedProviderId, customModelName.trim());
+                        }
+                        setCustomModelName("");
+                        setShowCustomInput(false);
+                      }
+                    }}
+                    placeholder="输入模型名称，回车确认..."
+                    className="flex-1 px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.3)] focus:outline-none focus:border-[rgba(0,212,255,0.4)] transition-all"
+                    style={{ fontSize: "0.78rem" }}
+                  />
+                  <button
+                    onClick={() => {
+                      if (customModelName.trim()) {
+                        setSelectedModel(customModelName.trim());
+                        if (onAddModelToProvider && selectedProviderId) {
+                          onAddModelToProvider(selectedProviderId, customModelName.trim());
+                        }
+                        setCustomModelName("");
+                        setShowCustomInput(false);
+                      }
+                    }}
+                    disabled={!customModelName.trim()}
+                    className="px-3 py-2 rounded-lg bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,140,200,0.25)] transition-all disabled:opacity-30"
+                    style={{ fontSize: "0.78rem" }}
+                  >
+                    确认
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ===== API 密钥 (非 Ollama) ===== */}
           {selectedProvider && selectedProvider.requiresApiKey && (
             <div>
               <label className="flex items-center gap-1 mb-2">
@@ -342,10 +408,36 @@ export default function AddModelModal({
             </div>
           )}
 
-          {/* ==== Divider ==== */}
+          {/* ===== 代理 URL (可选) ===== */}
+          {selectedProvider && selectedProvider.requiresApiKey && (
+            <div>
+              <button
+                onClick={() => setShowProxyInput(!showProxyInput)}
+                className="text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] transition-all flex items-center gap-1"
+                style={{ fontSize: "0.7rem" }}
+              >
+                <Cpu className="w-3 h-3" />
+                {showProxyInput ? "收起代理 URL" : "输入代理 URL"}
+              </button>
+              {showProxyInput && (
+                <div className="flex gap-2 mt-2">
+                  <input
+                    type="text"
+                    value={proxyUrl}
+                    onChange={(e) => setProxyUrl(e.target.value)}
+                    placeholder="输入代理 URL，回车确认..."
+                    className="flex-1 px-3 py-2 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.3)] focus:outline-none focus:border-[rgba(0,212,255,0.4)] transition-all"
+                    style={{ fontSize: "0.78rem" }}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ===== Divider ===== */}
           <div className="h-px bg-[rgba(0,180,255,0.1)]" />
 
-          {/* ==== Submit Button ==== */}
+          {/* ===== Submit Button ===== */}
           <button
             onClick={handleSubmit}
             disabled={!canSubmit}

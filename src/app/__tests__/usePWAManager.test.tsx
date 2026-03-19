@@ -1,6 +1,6 @@
 /**
  * usePWAManager.test.tsx
- * ==============
+ * ========================
  * usePWAManager Hook - PWA 缓存管理测试
  *
  * 覆盖范围:
@@ -14,8 +14,9 @@
  * - pwaState 概览
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import { usePWAManager } from "../hooks/usePWAManager";
 
 vi.mock("sonner", () => ({
@@ -25,10 +26,6 @@ vi.mock("sonner", () => ({
 describe("usePWAManager", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("初始状态", () => {

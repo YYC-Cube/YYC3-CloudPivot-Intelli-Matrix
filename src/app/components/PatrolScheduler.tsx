@@ -1,13 +1,14 @@
 /**
  * PatrolScheduler.tsx
- * ================
+ * =====================
  * 巡查计划配置面板
  * 设置自动巡查间隔、开关
  */
 
+import React from "react";
 import { Clock, Timer, ToggleLeft, ToggleRight } from "lucide-react";
-import GlassCard from "./GlassCard";
-import type { PatrolSchedule, PatrolInterval } from "../hooks/usePatrol";
+import { GlassCard } from "./GlassCard";
+import type { PatrolSchedule, PatrolInterval } from "../types";
 
 interface PatrolSchedulerProps {
   schedule: PatrolSchedule;
@@ -23,7 +24,7 @@ const INTERVALS: { value: PatrolInterval; label: string }[] = [
   { value: 60, label: "1 小时" },
 ];
 
-export default function PatrolScheduler({ schedule, onToggle, onIntervalChange }: PatrolSchedulerProps) {
+export function PatrolScheduler({ schedule, onToggle, onIntervalChange }: PatrolSchedulerProps) {
   return (
     <GlassCard className="p-4" data-testid="patrol-scheduler">
       <div className="flex items-center gap-2 mb-4">

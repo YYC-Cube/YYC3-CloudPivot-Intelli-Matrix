@@ -1,6 +1,6 @@
 /**
  * CommandPalette.test.tsx
- * ==============
+ * ========================
  * CommandPalette 组件 - 全局命令面板测试
  *
  * 覆盖范围:
@@ -12,68 +12,24 @@
  * - 键盘导航
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
-const mockNavigate = vi.fn() as any;
+const mockNavigate = vi.fn();
 
 vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
 }));
 
-const mockT = (key: string) => {
-  const translations: Record<string, string> = {
-    "nav.dataMonitor": "数据监控",
-    "nav.operations": "操作中心",
-    "nav.aiDecision": "AI 决策",
-    "nav.followUp": "跟进",
-    "nav.patrol": "巡查",
-    "nav.fileManager": "文件管理",
-    "nav.terminal": "终端",
-    "nav.ide": "IDE",
-    "nav.serviceLoop": "服务闭环",
-    "nav.designSystem": "设计系统",
-    "nav.devGuide": "开发指南",
-    "modelProvider.title": "模型提供商",
-    "modelProvider.subtitle": "管理 AI 模型提供商",
-    "nav.audit": "操作审计",
-    "nav.userMgmt": "用户管理",
-    "nav.settings": "设置",
-    "monitor.subtitle": "实时系统状态面板",
-    "followUp.subtitle": "跟进任务管理",
-    "patrol.subtitle": "系统巡查",
-    "operations.subtitle": "操作管理",
-    "fileManager.subtitle": "文件管理",
-    "palette.navigate": "导航",
-    "palette.enter": "确认",
-    "palette.escape": "关闭",
-    "palette.open": "打开",
-    "palette.noResults": "无匹配结果",
-    "ai.subtitle": "AI 决策分析",
-    "loop.subtitle": "服务闭环管理",
-    "devGuide.architecture": "系统架构设计",
-    "devGuide.subtitle": "开发指南",
-    "settings.title": "系统设置",
-  };
-  return translations[key] || key;
-};
-
-vi.mock("../hooks/useI18n", () => ({
-  useI18n: () => ({ t: mockT }),
-}));
-
-import CommandPalette from "../components/CommandPalette";
+import { CommandPalette } from "../components/CommandPalette";
 
 describe("CommandPalette", () => {
-  let onClose: any;
+  let onClose: Mock;
 
   beforeEach(() => {
-    onClose = vi.fn() as any;
+    onClose = vi.fn();
     vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("显示/隐藏", () => {

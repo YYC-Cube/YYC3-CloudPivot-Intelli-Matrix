@@ -4,11 +4,14 @@
  * 动态注入 YYC³ 品牌 <head> 标签
  *
  * 在无法直接编辑 index.html 的环境中，通过 React 运行时注入:
- * - favicon (16x16, 32x32, 96x96, .ico)
- * - apple-touch-icon
+ * - favicon (PNG 16/32)
+ * - apple-touch-icon (180×180)
  * - PWA manifest
  * - theme-color
  * - 页面标题
+ *
+ * 路径全部对齐 GitHub 仓库实际目录结构:
+ *   public/yyc3-badge-icons/Web App/*.png
  */
 
 import { useEffect } from "react";
@@ -31,7 +34,9 @@ export function useYYC3Head() {
     ): HTMLLinkElement {
       const selector = attrs?.sizes
         ? `link[rel="${rel}"][sizes="${attrs.sizes}"]`
-        : `link[rel="${rel}"]`;
+        : attrs?.type
+          ? `link[rel="${rel}"][type="${attrs.type}"]`
+          : `link[rel="${rel}"]`;
 
       let link = document.querySelector<HTMLLinkElement>(selector);
       if (!link) {
@@ -60,26 +65,16 @@ export function useYYC3Head() {
     }
 
     // ----------------------------------------------------------
-    // Favicon
+    // Favicon — PNG (仓库 Web App/ 目录)
+    //   本地优先，onError 可通过 handleIconError 回退 CDN
     // ----------------------------------------------------------
-    upsertLink("icon", icons.favicon, { type: "image/x-icon" });
-    upsertLink("icon", icons.favicon16, {
-      type: "image/png",
-      sizes: "16x16",
-    });
-    upsertLink("icon", icons.favicon32, {
-      type: "image/png",
-      sizes: "32x32",
-    });
-    upsertLink("icon", icons.favicon96, {
-      type: "image/png",
-      sizes: "96x96",
-    });
+    upsertLink("icon", icons.favicon16, { type: "image/png", sizes: "16x16" });
+    upsertLink("icon", icons.favicon32, { type: "image/png", sizes: "32x32" });
 
     // ----------------------------------------------------------
-    // Apple Touch Icon
+    // Apple Touch Icon — Web App/apple-touch-icon.png (180×180)
     // ----------------------------------------------------------
-    upsertLink("apple-touch-icon", icons.pwa192, { sizes: "192x192" });
+    upsertLink("apple-touch-icon", icons.webAppAppleTouch, { sizes: "180x180" });
 
     // ----------------------------------------------------------
     // PWA Manifest
@@ -100,21 +95,23 @@ export function useYYC3Head() {
     upsertMeta("description", "YYC³ CloudPivot Intelli-Matrix — 本地多端推理矩阵数据库数据看盘 — M4 Max + iMac + NAS 集群实时监控");
     upsertMeta("og:title", "YYC³ CloudPivot Intelli-Matrix");
     upsertMeta("og:description", "本地闭环多端推理矩阵数据看盘系统");
-    upsertMeta("og:image", icons.pwa512);
+    upsertMeta("og:image", icons.webAppChrome512);
     upsertMeta("og:type", "website");
 
     // ----------------------------------------------------------
-    // Favicon CDN 回退 — 监听 error 事件
+    // CDN Fallback: 为 favicon/apple-touch 添加 onerror 回退
     // ----------------------------------------------------------
-    const faviconLink = document.querySelector<HTMLLinkElement>(
-      'link[rel="icon"][sizes="32x32"]'
+    const faviconLinks = document.querySelectorAll<HTMLLinkElement>(
+      'link[rel="icon"], link[rel="apple-touch-icon"]'
     );
-    if (faviconLink) {
-      const handleFaviconError = () => {
-        faviconLink.href = iconsCDN.favicon32;
-        faviconLink.removeEventListener("error", handleFaviconError);
-      };
-      faviconLink.addEventListener("error", handleFaviconError);
-    }
+    faviconLinks.forEach((link) => {
+      if (link.sizes?.value === "16x16") {
+        link.onerror = () => { link.href = iconsCDN.favicon16; };
+      } else if (link.sizes?.value === "32x32") {
+        link.onerror = () => { link.href = iconsCDN.favicon32; };
+      } else if (link.sizes?.value === "180x180") {
+        link.onerror = () => { link.href = iconsCDN.webAppAppleTouch; };
+      }
+    });
   }, []);
 }

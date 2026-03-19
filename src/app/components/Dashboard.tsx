@@ -1,4 +1,15 @@
-import { useState, useContext } from "react";
+/**
+ * @file: Dashboard.tsx
+ * @description: Dashboard.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import React, { useState, useContext } from "react";
 import {
   Activity, Clock, Server, Cpu, Zap, HardDrive,
   ArrowUpRight, ArrowDownRight, BarChart3, Layers,
@@ -10,42 +21,19 @@ import {
   PieChart, Pie, Cell, RadarChart, Radar, PolarGrid, PolarAngleAxis,
   PolarRadiusAxis, Legend, BarChart, Bar, LineChart, Line,
 } from "recharts";
-import GlassCard from "./GlassCard";
-import NodeDetailModal from "./NodeDetailModal";
-import AlertBanner from "./AlertBanner";
-import { WebSocketContext, ViewContext } from "@/lib/layoutContext";
+import { GlassCard } from "./GlassCard";
+import { NodeDetailModal } from "./NodeDetailModal";
+import { AlertBanner } from "./AlertBanner";
+import { WebSocketContext, ViewContext } from "../lib/view-context";
 import { useI18n } from "../hooks/useI18n";
 import type { NodeData } from "../types";
 import { useSwipeable } from "react-swipeable";
+import { useNavigate } from "react-router";
+import { modelPerfStore, modelDistStore, radarStore, recentOpsStore } from "../stores/dashboard-stores";
 
-// =============================================
-// Static reference data (non-realtime)
-// =============================================
-
-const modelPerformance = [
-  { model: "LLaMA-70B", accuracy: 94.2, speed: 85, memory: 78, cost: 62 },
-  { model: "Qwen-72B", accuracy: 92.8, speed: 88, memory: 72, cost: 68 },
-  { model: "DeepSeek-V3", accuracy: 96.1, speed: 76, memory: 85, cost: 55 },
-  { model: "GLM-4", accuracy: 91.5, speed: 92, memory: 65, cost: 75 },
-  { model: "Mixtral-8x7B", accuracy: 89.3, speed: 95, memory: 60, cost: 82 },
-];
-
-const radarData = [
-  { metric: "inferenceSpeed", A: 92, B: 85 },
-  { metric: "modelAccuracy", A: 88, B: 94 },
-  { metric: "memoryEfficiency", A: 95, B: 78 },
-  { metric: "throughput", A: 90, B: 82 },
-  { metric: "reliability", A: 96, B: 91 },
-  { metric: "latency", A: 85, B: 88 },
-];
-
-const pieData = [
-  { name: "LLaMA-70B", value: 35 },
-  { name: "Qwen-72B", value: 25 },
-  { name: "DeepSeek-V3", value: 20 },
-  { name: "GLM-4", value: 12 },
-  { name: "other", value: 8 },
-];
+// ============================================================
+// Static reference data → 从 localStorage 读取 (可编辑)
+// ============================================================
 
 const PIE_COLORS = ["#00d4ff", "#00ff88", "#ff6600", "#aa55ff", "#ffdd00"];
 
@@ -60,14 +48,6 @@ const predictionData = [
   { time: "+12h", actual: null, predicted: 2200 },
 ];
 
-const recentOps = [
-  { id: "OP-20260222-001", action: "模型部署", target: "DeepSeek-V3 → GPU-A100-03", user: "admin", time: "14:28:32", status: "success" },
-  { id: "OP-20260222-002", action: "推理任务", target: "Batch#2847 → LLaMA-70B", user: "api_svc", time: "14:25:10", status: "running" },
-  { id: "OP-20260222-003", action: "节点扩容", target: "GPU-H100-03 加入集群", user: "ops_bot", time: "14:20:55", status: "pending" },
-  { id: "OP-20260222-004", action: "数据同步", target: "向量库 → 分片迁移", user: "admin", time: "14:15:22", status: "success" },
-  { id: "OP-20260222-005", action: "告警处理", target: "GPU-A100-03 温度预警", user: "system", time: "14:10:08", status: "warning" },
-];
-
 const customTooltipStyle = {
   backgroundColor: "rgba(8, 25, 55, 0.95)",
   border: "1px solid rgba(0, 180, 255, 0.3)",
@@ -78,9 +58,9 @@ const customTooltipStyle = {
   fontFamily: "'Rajdhani', sans-serif",
 };
 
-// =============================================
+// ============================================================
 // Chart tab selector for mobile
-// =============================================
+// ============================================================
 
 type AnalyticsTab = "radar" | "performance" | "prediction";
 const ANALYTICS_TABS: AnalyticsTab[] = ["radar", "performance", "prediction"];
@@ -112,20 +92,23 @@ function ChartTabBar({ active, onChange }: { active: AnalyticsTab; onChange: (t:
   );
 }
 
-// =============================================
+// ============================================================
 // Dashboard Component
-// =============================================
+// ============================================================
 
-export default function Dashboard() {
+export function Dashboard() {
   const ws = useContext(WebSocketContext);
   const view = useContext(ViewContext);
   const { t } = useI18n();
+  const navigate = useNavigate();
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null);
   const [analyticsTab, setAnalyticsTab] = useState<AnalyticsTab>("radar");
   const [swipeAnim, setSwipeAnim] = useState<"" | "left" | "right">("");
+  const [showAllNodes, setShowAllNodes] = useState(false);
 
   const isMobile = view?.isMobile ?? false;
   const isTablet = view?.isTablet ?? false;
+  const isDesktop = !isMobile && !isTablet;
 
   // Swipe handlers for chart tabs
   const swipeHandlers = useSwipeable({
@@ -178,16 +161,16 @@ export default function Dashboard() {
     { label: t("monitor.storageUsed"), value: storageStr, icon: HardDrive, trend: "+2.1%", up: true, color: "#ff3366" },
   ];
 
-  // ==========================================
+  // ========================================================
   // RENDER
-  // ==========================================
+  // ========================================================
 
   return (
     <div className="space-y-3 md:space-y-4">
-      {/* ==== Alert Banner → 一键跟进入口 ==== */}
+      {/* ===== Alert Banner → 一键跟进入口 ===== */}
       <AlertBanner compact={isMobile} />
 
-      {/* ==== Stats Row ==== */}
+      {/* ===== Stats Row ===== */}
       <div className={`grid gap-2 md:gap-3 ${isMobile ? "grid-cols-2" : isTablet ? "grid-cols-3" : "grid-cols-6"}`}>
         {statCards.map((stat) => (
           <GlassCard key={stat.label} className="p-3 md:p-4 group">
@@ -208,7 +191,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* ==== Main Charts Row ==== */}
+      {/* ===== Main Charts Row ===== */}
       <div className={`grid gap-2 md:gap-3 ${isMobile ? "grid-cols-1" : "grid-cols-12"}`}>
         {/* Throughput Chart */}
         <GlassCard className={`p-3 md:p-4 ${isMobile ? "" : isTablet ? "col-span-7" : "col-span-8"}`}>
@@ -245,7 +228,7 @@ export default function Dashboard() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,180,255,0.08)" />
-                  <XAxis dataKey="time" tick={{ fill: "rgba(0,212,255,0.4)", fontSize: 10 }} axisLine={{ stroke: "rgba(0,180,255,0.1)" }} />
+                  <XAxis dataKey="time" tick={{ fill: "rgba(0,212,255,0.4)", fontSize: 10 }} axisLine={{ stroke: "rgba(0,180,255,0.1)" }} tickFormatter={(v: string) => v.split(".")[0]} />
                   <YAxis yAxisId="left" tick={{ fill: "rgba(0,212,255,0.4)", fontSize: 10 }} axisLine={{ stroke: "rgba(0,180,255,0.1)" }} width={40} />
                   <YAxis yAxisId="right" orientation="right" tick={{ fill: "rgba(0,255,136,0.4)", fontSize: 10 }} axisLine={{ stroke: "rgba(0,255,136,0.1)" }} width={45} />
                   <Tooltip contentStyle={customTooltipStyle} />
@@ -263,29 +246,36 @@ export default function Dashboard() {
             <Layers className="w-4 h-4 text-[#aa55ff]" />
             <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.85rem" }}>{t("monitor.modelLoadDist")}</h3>
           </div>
-          <ResponsiveContainer width="100%" height={isMobile ? 140 : 160}>
-            <PieChart>
-              <Pie data={pieData} cx="50%" cy="50%" innerRadius={isMobile ? 35 : 45} outerRadius={isMobile ? 58 : 70} paddingAngle={3} dataKey="value" stroke="none">
-                {pieData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={PIE_COLORS[index]} fillOpacity={0.8} />
-                ))}
-              </Pie>
-              <Tooltip contentStyle={customTooltipStyle} />
-            </PieChart>
-          </ResponsiveContainer>
-          <div className={`grid gap-x-4 gap-y-1 mt-2 ${isMobile ? "grid-cols-2" : "grid-cols-2"}`}>
-            {pieData.map((item, i) => (
-              <div key={item.name} className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: PIE_COLORS[i] }} />
-                <span className="text-[rgba(0,212,255,0.6)] truncate" style={{ fontSize: "0.7rem" }}>{item.name}</span>
-                <span className="ml-auto shrink-0" style={{ fontSize: "0.7rem", color: PIE_COLORS[i] }}>{item.value}%</span>
-              </div>
-            ))}
-          </div>
+          {(() => {
+            const distData = modelDistStore.getAll();
+            return (
+              <>
+                <ResponsiveContainer width="100%" height={isMobile ? 140 : 160}>
+                  <PieChart>
+                    <Pie data={distData} cx="50%" cy="50%" innerRadius={isMobile ? 35 : 45} outerRadius={isMobile ? 58 : 70} paddingAngle={3} dataKey="value" nameKey="name" stroke="none">
+                      {distData.map((entry, index) => (
+                        <Cell key={`cell-${entry.id}`} fill={PIE_COLORS[index % PIE_COLORS.length]} fillOpacity={0.8} />
+                      ))}
+                    </Pie>
+                    <Tooltip contentStyle={customTooltipStyle} />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className={`grid gap-x-4 gap-y-1 mt-2 ${isMobile ? "grid-cols-2" : "grid-cols-2"}`}>
+                  {distData.map((item, i) => (
+                    <div key={item.id} className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: PIE_COLORS[i % PIE_COLORS.length] }} />
+                      <span className="text-[rgba(0,212,255,0.6)] truncate" style={{ fontSize: "0.7rem" }}>{item.name}</span>
+                      <span className="ml-auto shrink-0" style={{ fontSize: "0.7rem", color: PIE_COLORS[i % PIE_COLORS.length] }}>{item.value}%</span>
+                    </div>
+                  ))}
+                </div>
+              </>
+            );
+          })()}
         </GlassCard>
       </div>
 
-      {/* ==== Analytics Row (Tab-based on mobile) ==== */}
+      {/* ===== Analytics Row (Tab-based on mobile) ===== */}
       {isMobile || isTablet ? (
         <GlassCard className="p-3 md:p-4">
           <ChartTabBar active={analyticsTab} onChange={(t) => { setSwipeAnim(""); setAnalyticsTab(t); }} />
@@ -343,10 +333,10 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* ==== Nodes + Operations Row ==== */}
-      <div className={`grid gap-2 md:gap-3 ${isMobile ? "grid-cols-1" : "grid-cols-12"}`}>
+      {/* ===== Nodes + Operations Row ===== */}
+      <div className={`grid gap-2 md:gap-3 ${isMobile ? "grid-cols-1" : showAllNodes ? "grid-cols-1" : "grid-cols-12"}`}>
         {/* Node Status Grid */}
-        <GlassCard className={`p-3 md:p-4 ${isMobile ? "" : isTablet ? "col-span-7" : "col-span-7"}`}>
+        <GlassCard className={`p-3 md:p-4 ${isMobile ? "" : showAllNodes ? "" : isTablet ? "col-span-7" : "col-span-7"}`} data-testid="node-matrix-card">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="flex items-center gap-2">
               <Network className="w-4 h-4 text-[#00d4ff]" />
@@ -358,15 +348,27 @@ export default function Dashboard() {
                 {!isMobile && t("monitor.refresh")}
               </button>
               {!isMobile && (
-                <button className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.15)] transition-all min-h-[32px]" style={{ fontSize: "0.7rem" }}>
+                <button
+                  onClick={() => setShowAllNodes(!showAllNodes)}
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg border transition-all min-h-[32px] ${
+                    showAllNodes
+                      ? "bg-[rgba(0,212,255,0.15)] border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
+                      : "bg-[rgba(0,212,255,0.08)] border-[rgba(0,212,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.15)]"
+                  }`}
+                  style={{ fontSize: "0.7rem" }}
+                >
                   <Eye className="w-3 h-3" />
                   {t("monitor.panorama")}
                 </button>
               )}
             </div>
           </div>
-          <div className={`grid gap-2 ${isMobile ? "grid-cols-2" : isTablet ? "grid-cols-3" : "grid-cols-4"}`}>
-            {nodes.map((node: NodeData) => (
+          <div className={`grid gap-2 ${
+            showAllNodes
+              ? (isMobile ? "grid-cols-2" : isTablet ? "grid-cols-4" : "grid-cols-5")
+              : (isMobile ? "grid-cols-2" : isTablet ? "grid-cols-3" : "grid-cols-4")
+          }`}>
+            {nodes.map((node) => (
               <NodeCard key={node.id} node={node} onClick={() => setSelectedNode(node)} />
             ))}
           </div>
@@ -379,12 +381,16 @@ export default function Dashboard() {
               <Activity className="w-4 h-4 text-[#ffdd00]" />
               <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.85rem" }}>{t("monitor.realtimeOps")}</h3>
             </div>
-            <button className="text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-colors min-h-[32px]" style={{ fontSize: "0.7rem" }}>
+            <button
+              onClick={() => navigate("/audit")}
+              className="text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-colors min-h-[32px]"
+              style={{ fontSize: "0.7rem" }}
+            >
               {t("monitor.viewAll")}
             </button>
           </div>
           <div className="space-y-2">
-            {recentOps.map((op) => (
+            {recentOpsStore.getAll().map((op) => (
               <div key={op.id} className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 rounded-lg bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.15)] transition-all cursor-pointer">
                 <div className={`shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center ${
                   op.status === "success" ? "bg-[rgba(0,255,136,0.1)]" :
@@ -433,15 +439,15 @@ export default function Dashboard() {
   );
 }
 
-// =============================================
+// ============================================================
 // Sub-components extracted for cleanliness
-// =============================================
+// ============================================================
 
 function RadarSection({ isMobile }: { isMobile: boolean }) {
   const { t } = useI18n();
   return (
     <ResponsiveContainer width="100%" height={isMobile ? 240 : 220}>
-      <RadarChart data={radarData}>
+      <RadarChart data={radarStore.getAll()}>
         <PolarGrid stroke="rgba(0,180,255,0.15)" />
         <PolarAngleAxis dataKey="metric" tick={{ fill: "rgba(0,212,255,0.5)", fontSize: isMobile ? 10 : 11 }} />
         <PolarRadiusAxis tick={false} axisLine={false} domain={[0, 100]} />
@@ -460,7 +466,7 @@ function PerformanceSection({ isMobile }: { isMobile: boolean }) {
     <div className={isMobile ? "overflow-x-auto -mx-3" : ""}>
       <div style={isMobile ? { minWidth: "420px", paddingLeft: 12, paddingRight: 12 } : undefined}>
         <ResponsiveContainer width="100%" height={isMobile ? 220 : 220}>
-          <BarChart data={modelPerformance} barGap={2}>
+          <BarChart data={modelPerfStore.getAll()} barGap={2}>
             <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,180,255,0.08)" />
             <XAxis dataKey="model" tick={{ fill: "rgba(0,212,255,0.4)", fontSize: 9 }} axisLine={{ stroke: "rgba(0,180,255,0.1)" }} />
             <YAxis tick={{ fill: "rgba(0,212,255,0.4)", fontSize: 10 }} axisLine={{ stroke: "rgba(0,180,255,0.1)" }} domain={[0, 100]} />

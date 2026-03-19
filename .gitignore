@@ -124,3 +124,18 @@ out
 
 # pnpm
 .pnpm-debug.log*
+
+# Backup files
+*.bak
+*.backup
+*.import_backup
+*~
+
+# Temporary import files
+src/imports/
+imports/
+
+# YYC3 specific
+变形金刚.zip
+releases/
+dist-electron/

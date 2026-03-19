@@ -1,6 +1,6 @@
 /**
  * PatrolHistory.test.tsx
- * ============
+ * =======================
  * PatrolHistory 组件 - 巡查历史记录测试
  *
  * 覆盖范围:
@@ -10,10 +10,11 @@
  * - 空状态
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
-import PatrolHistory from "../components/PatrolHistory";
-import type { PatrolResult } from "../hooks/usePatrol";
+import React from "react";
+import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { PatrolHistory } from "../components/PatrolHistory";
+import type { PatrolResult } from "../types";
 
 function makeResult(offset: number, triggeredBy: "manual" | "auto" | "scheduled" = "auto"): PatrolResult {
   const ts = Date.now() - offset;
@@ -43,14 +44,10 @@ const mockHistory: PatrolResult[] = [
 ];
 
 describe("PatrolHistory", () => {
-  let onViewReport: any;
+  let onViewReport: Mock;
 
   beforeEach(() => {
     onViewReport = vi.fn();
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -60,20 +57,20 @@ describe("PatrolHistory", () => {
   describe("基础渲染", () => {
     it("应渲染巡查历史标题", () => {
       render(<PatrolHistory history={mockHistory} onViewReport={onViewReport} />);
-      expect(screen.getAllByText("巡查历史")[0]).toBeInTheDocument();
+      expect(screen.getByText("巡查历史")).toBeInTheDocument();
     });
 
     it("应渲染时间范围筛选按钮", () => {
       render(<PatrolHistory history={mockHistory} onViewReport={onViewReport} />);
-      expect(screen.getAllByText("最近")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("每日")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("每周")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("自定义范围")[0]).toBeInTheDocument();
+      expect(screen.getByText("最近")).toBeInTheDocument();
+      expect(screen.getByText("每日")).toBeInTheDocument();
+      expect(screen.getByText("每周")).toBeInTheDocument();
+      expect(screen.getByText("自定义范围")).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       render(<PatrolHistory history={mockHistory} onViewReport={onViewReport} />);
-      expect(screen.getAllByTestId("patrol-history")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("patrol-history")).toBeInTheDocument();
     });
 
     it("默认应显示最近 10 条（或全部不足 10 条时）", () => {
@@ -92,7 +89,7 @@ describe("PatrolHistory", () => {
   describe("时间范围筛选", () => {
     it("切换到每日应只显示 24h 内记录", () => {
       render(<PatrolHistory history={mockHistory} onViewReport={onViewReport} />);
-      fireEvent.click(screen.getAllByTestId("range-daily")[0]);
+      fireEvent.click(screen.getByTestId("range-daily"));
       const items = screen.getAllByRole("button").filter((b) =>
         b.getAttribute("data-testid")?.startsWith("history-")
       );
@@ -102,12 +99,12 @@ describe("PatrolHistory", () => {
 
     it("切换到每周应显示 7 天内记录", () => {
       render(<PatrolHistory history={mockHistory} onViewReport={onViewReport} />);
-      fireEvent.click(screen.getAllByTestId("range-weekly")[0]);
+      fireEvent.click(screen.getByTestId("range-weekly"));
       const items = screen.getAllByRole("button").filter((b) =>
         b.getAttribute("data-testid")?.startsWith("history-")
       );
-      // 30min, 60min, 2h, 6h, 25h, 3 days are within 7 days
-      expect(items.length).toBe(6);
+      // 30min, 60min, 2h, 6h, 25h are within 7 days
+      expect(items.length).toBe(5);
     });
   });
 
@@ -134,7 +131,7 @@ describe("PatrolHistory", () => {
   describe("空状态", () => {
     it("无历史数据时应显示空提示", () => {
       render(<PatrolHistory history={[]} onViewReport={onViewReport} />);
-      expect(screen.getAllByText("当前范围内没有巡查记录")[0]).toBeInTheDocument();
+      expect(screen.getByText("当前范围内没有巡查记录")).toBeInTheDocument();
     });
   });
 

@@ -1,6 +1,6 @@
 /**
  * ReportGenerator.tsx
- * ===============
+ * ====================
  * 报告生成器组件
  * 支持性能/健康/安全报告 · JSON/Markdown/CSV 格式
  */
@@ -10,7 +10,7 @@ import {
   FileText, Download, Eye, Loader2, Clock,
   BarChart3, Shield, Activity, Wrench,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import type { ReportConfig, ReportResult, ReportType, ReportFormat } from "../types";
 
 const reportTypes: Array<{ key: ReportType; label: string; icon: React.ElementType; color: string }> = [
@@ -38,7 +38,7 @@ interface ReportGeneratorProps {
   onGenerate: (config: ReportConfig) => void;
 }
 
-export default function ReportGenerator({ reports, isGenerating, onGenerate }: ReportGeneratorProps) {
+export function ReportGenerator({ reports, isGenerating, onGenerate }: ReportGeneratorProps) {
   const [type, setType] = useState<ReportType>("performance");
   const [format, setFormat] = useState<ReportFormat>("json");
   const [dateRange, setDateRange] = useState<"today" | "week" | "month" | "custom">("today");

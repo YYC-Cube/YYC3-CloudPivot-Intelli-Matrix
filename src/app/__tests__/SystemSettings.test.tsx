@@ -14,6 +14,7 @@
  */
 
 // @vitest-environment jsdom
+import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 
@@ -27,17 +28,16 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  __esModule: true,
-  default: ({ children, className }: { children?: React.ReactNode; className?: string }) => <div className={className}>{children}</div>,
+  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 vi.mock("../components/NetworkConfig", () => ({
-  default: () => <div data-testid="network-config" />,
+  NetworkConfig: () => <div data-testid="network-config" />,
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
-  default: () => <div data-testid="yyc3-logo" />,
-}))
+  YYC3Logo: () => <div data-testid="yyc3-logo" />,
+}));
 
 vi.mock("sonner", () => ({
   toast: {
@@ -46,6 +46,58 @@ vi.mock("sonner", () => ({
     info: vi.fn(),
   },
 }));
+
+vi.mock("../hooks/useModelProvider", () => ({
+  useModelProvider: () => ({
+    availableModels: [
+      { id: "gpt-4", name: "GPT-4", isLocal: false },
+      { id: "llama3", name: "LLaMA-3", isLocal: true },
+    ],
+  }),
+}));
+
+vi.mock("../hooks/useSettingsStore", () => ({
+  useSettingsStore: () => ({
+    settings: {
+      darkMode: true, autoScale: true, healthCheck: true, alertEmail: false,
+      alertSlack: false, autoBackup: true, mfa: false, auditLog: true,
+      rateLimiting: false, corsEnabled: false, debugMode: false, performanceLog: false,
+      autoUpdate: true, cacheEnabled: true, wsAutoReconnect: true, wsHeartbeat: true,
+      dataCompression: false, aiStreamMode: true, aiContextMemory: true,
+    },
+    values: {
+      systemName: "YYC³ CloudPivot", clusterId: "cpim-001", refreshInterval: "5",
+      language: "zh-CN", timezone: "Asia/Shanghai", maxNodes: "16",
+      healthCheckInterval: "30", loadBalanceStrategy: "轮询 (Round Robin)",
+      scaleUpThreshold: "85", scaleDownThreshold: "20", wsEndpoint: "ws://localhost:3113/ws",
+      dbHost: "localhost", dbPort: "5433", dbName: "yyc3_matrix", dbUser: "admin",
+      dbPassword: "", dbPoolSize: "10", backupSchedule: "0 2 * * *",
+      aiApiKey: "", aiBaseUrl: "https://api.openai.com/v1", aiModel: "gpt-4",
+      aiTemperature: "0.7", aiTopP: "0.9", aiMaxTokens: "4096", aiTimeout: "30000",
+      alertGpuThreshold: "90", alertTempThreshold: "80", alertEmailAddr: "",
+      webhookUrl: "", sessionTimeout: "60", ipWhitelist: "192.168.3.0/24",
+      logLevel: "info", logRetention: "30", maxConcurrency: "100",
+      cacheSize: "1024", cacheTTL: "3600", wsReconnectInterval: "3000",
+      wsMaxReconnect: "10", wsHeartbeatInterval: "15000", wsThrottleMs: "200",
+    },
+    toggleSetting: vi.fn(),
+    updateValue: vi.fn(),
+    resetSettings: vi.fn(),
+    exportSettings: vi.fn(() => "{}"),
+  }),
+}));
+
+// Mock api-config
+const mockAPIConfig = {
+  enableBackend: false,
+  timeout: 15000,
+  maxRetries: 2,
+  fsBase: "/api/fs",
+  dbBase: "/api/db",
+  wsEndpoint: "ws://localhost:3113/ws",
+  aiBase: "https://api.openai.com/v1",
+  clusterBase: "/api/cluster",
+};
 
 vi.mock("../lib/api-config", () => ({
   getAPIConfig: () => ({
@@ -58,7 +110,7 @@ vi.mock("../lib/api-config", () => ({
     aiBase: "https://api.openai.com/v1",
     clusterBase: "/api/cluster",
   }),
-  setAPIConfig: vi.fn((patch: Record<string, unknown>) => ({ ...patch })),
+  setAPIConfig: vi.fn((patch: any) => ({ ...patch })),
   resetAPIConfig: vi.fn(() => ({})),
   onAPIConfigChange: vi.fn(() => () => {}),
   ENDPOINT_META: [
@@ -69,7 +121,7 @@ vi.mock("../lib/api-config", () => ({
   ],
 }));
 
-import SystemSettings from "../components/SystemSettings";
+import { SystemSettings } from "../components/SystemSettings";
 
 describe("SystemSettings", () => {
   beforeEach(() => vi.clearAllMocks());
@@ -77,99 +129,101 @@ describe("SystemSettings", () => {
   describe("基础渲染", () => {
     it("应渲染设置标题", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("系统设置")[0]).toBeInTheDocument();
+      expect(screen.getByText("系统设置")).toBeInTheDocument();
     });
 
     it("应渲染 12 个设置分类", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("settings.general").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.network").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.cluster").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.model").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.storage").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.websocket").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.aiLlm").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.pwaOffline").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.security").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.notification").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.envVars").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("settings.advanced").length).toBeGreaterThan(0);
+      expect(screen.getByText("settings.general")).toBeInTheDocument();
+      expect(screen.getByText("settings.network")).toBeInTheDocument();
+      expect(screen.getByText("settings.cluster")).toBeInTheDocument();
+      expect(screen.getByText("settings.model")).toBeInTheDocument();
+      expect(screen.getByText("settings.storage")).toBeInTheDocument();
+      expect(screen.getByText("settings.websocket")).toBeInTheDocument();
+      expect(screen.getByText("settings.aiLlm")).toBeInTheDocument();
+      expect(screen.getByText("settings.pwaOffline")).toBeInTheDocument();
+      expect(screen.getByText("settings.security")).toBeInTheDocument();
+      expect(screen.getByText("settings.notification")).toBeInTheDocument();
+      expect(screen.getByText("settings.envVars")).toBeInTheDocument();
+      expect(screen.getByText("settings.advanced")).toBeInTheDocument();
     });
   });
 
   describe("分类切换", () => {
     it("默认显示 general 分类内容", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("settings.general").length).toBeGreaterThan(0);
+      // general section should be visible
+      expect(screen.getByText("settings.general")).toBeInTheDocument();
     });
 
     it("点击 network 应切换到网络配置", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.network")[0]);
-      expect(screen.getAllByText("网络连接配置").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("打开网络配置面板").length).toBeGreaterThan(0);
+      fireEvent.click(screen.getByText("settings.network"));
+      // Network section should render the network title
+      expect(screen.getByText("网络连接配置")).toBeInTheDocument();
+      expect(screen.getByText("打开网络配置面板")).toBeInTheDocument();
     });
 
     it("点击 cluster 应显示集群配置", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.cluster")[0]);
+      fireEvent.click(screen.getByText("settings.cluster"));
       // Cluster section should show cluster-related settings
-      expect(screen.getAllByText("settings.cluster").length).toBeGreaterThan(0);
+      expect(screen.getByText("settings.cluster")).toBeInTheDocument();
     });
   });
 
   describe("General 分类", () => {
     it("应渲染系统信息标题", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("系统信息")[0]).toBeInTheDocument();
+      expect(screen.getByText("系统信息")).toBeInTheDocument();
     });
 
     it("应渲染 YYC3 Logo", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByTestId("yyc3-logo").length).toBeGreaterThan(0);
+      expect(screen.getByTestId("yyc3-logo")).toBeInTheDocument();
     });
 
     it("应渲染系统名称字段", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("系统名称")[0]).toBeInTheDocument();
+      expect(screen.getByText("系统名称")).toBeInTheDocument();
     });
 
     it("应渲染运行时间", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("运行时间")[0]).toBeInTheDocument();
+      expect(screen.getByText("运行时间")).toBeInTheDocument();
     });
 
     it("应渲染许可证信息", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("Enterprise Pro")[0]).toBeInTheDocument();
+      expect(screen.getByText("Enterprise Pro")).toBeInTheDocument();
     });
 
     it("应渲染深色模式开关", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("深色模式")[0]).toBeInTheDocument();
+      expect(screen.getByText("深色模式")).toBeInTheDocument();
     });
 
     it("应渲染系统健康度", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("系统健康度")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("所有服务正常")[0]).toBeInTheDocument();
+      expect(screen.getByText("系统健康度")).toBeInTheDocument();
+      expect(screen.getByText("所有服务正常")).toBeInTheDocument();
     });
   });
 
   describe("保存和重置", () => {
     it("应渲染保存按钮", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("settings.saveChanges")[0]).toBeInTheDocument();
+      expect(screen.getByText("settings.saveChanges")).toBeInTheDocument();
     });
 
     it("应渲染重置按钮", () => {
       render(<SystemSettings />);
-      expect(screen.getAllByText("settings.resetDefault")[0]).toBeInTheDocument();
+      expect(screen.getByText("settings.resetDefault")).toBeInTheDocument();
     });
 
     it("无更改时保存按钮应禁用", () => {
       render(<SystemSettings />);
-      const saveBtn = screen.getAllByText("settings.saveChanges")[0].closest("button")!;
+      const saveBtn = screen.getByText("settings.saveChanges").closest("button")!;
       expect(saveBtn).toBeDisabled();
     });
   });
@@ -177,37 +231,37 @@ describe("SystemSettings", () => {
   describe("Model 分类", () => {
     it("应渲染模型管理标题和添加按钮", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.model")[0]);
-      expect(screen.getAllByText("模型管理")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("添加模型")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByText("settings.model"));
+      expect(screen.getByText("模型管理")).toBeInTheDocument();
+      expect(screen.getByText("添加模型")).toBeInTheDocument();
     });
 
     it("应渲染模型列表", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.model")[0]);
-      expect(screen.getAllByText("LLaMA-70B")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("Qwen-72B")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("DeepSeek-V3")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByText("settings.model"));
+      expect(screen.getByText("LLaMA-70B")).toBeInTheDocument();
+      expect(screen.getByText("Qwen-72B")).toBeInTheDocument();
+      expect(screen.getByText("DeepSeek-V3")).toBeInTheDocument();
     });
   });
 
   describe("Advanced 分类 (API 端点)", () => {
-    it("应渲染高级设置标题", () => {
+    it("应渲染后端 API 端点配置", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.advanced")[0]);
-      expect(screen.getAllByText("高级设置")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByText("settings.advanced"));
+      expect(screen.getByText("后端 API 端点配置")).toBeInTheDocument();
     });
 
-    it("应渲染调试模式开关", () => {
+    it("应渲染重置默认按钮", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.advanced")[0]);
-      expect(screen.getAllByText("调试模式")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByText("settings.advanced"));
+      expect(screen.getByText("重置默认")).toBeInTheDocument();
     });
 
     it("应渲染危险操作区域", () => {
       render(<SystemSettings />);
-      fireEvent.click(screen.getAllByText("settings.advanced")[0]);
-      expect(screen.getAllByText("危险操作")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByText("settings.advanced"));
+      expect(screen.getByText("危险操作")).toBeInTheDocument();
     });
   });
 
@@ -226,8 +280,8 @@ describe("SystemSettings", () => {
     categories.forEach((cat) => {
       it(`点击 ${cat} 不应抛出错误`, () => {
         render(<SystemSettings />);
-        fireEvent.click(screen.getAllByText(cat)[0]);
-        expect(screen.getAllByText(cat).length).toBeGreaterThan(0);
+        fireEvent.click(screen.getByText(cat));
+        expect(screen.getByText(cat)).toBeInTheDocument();
       });
     });
   });

@@ -38,6 +38,8 @@ const zhCN = {
     hoursAgo: "{n} 小时前",
     daysAgo: "{n} 天前",
     more: "更多",
+    logout: "退出登录",
+    notifications: "通知",
   },
 
   // ======== 导航 ========
@@ -48,7 +50,6 @@ const zhCN = {
     operations: "操作中心",
     fileManager: "文件管理",
     aiDecision: "AI 决策",
-    aiDiagnostics: "AI 辅助诊断",
     serviceLoop: "服务闭环",
     designSystem: "设计系统",
     devGuide: "开发指南",
@@ -56,10 +57,6 @@ const zhCN = {
     terminal: "终端",
     ide: "IDE",
     audit: "操作审计",
-    security: "安全监控",
-    diagnostics: "系统诊断",
-    alerts: "智能告警",
-    reports: "性能报表",
     userMgmt: "用户管理",
     settings: "系统设置",
     catMonitor: "监控中心",
@@ -67,6 +64,22 @@ const zhCN = {
     catAI: "AI 智能",
     catDev: "开发工具",
     catAdmin: "系统管理",
+    catAIFamily: "AI Family",
+    securityMonitor: "安全监控",
+    alertRules: "告警规则",
+    reportExport: "报表导出",
+    aiDiagnostics: "AI 诊断",
+    hostFiles: "宿主机文件",
+    database: "数据库管理",
+    dbConnections: "连接配置",
+    connectionTest: "连接测试",
+    refactoring: "重构分析",
+    pwa: "PWA 管理",
+    dataEditor: "数据管理",
+    performance: "性能监控",
+    envConfig: "环境变量",
+    architecture: "架构审计",
+    aiFamily: "AI Family",
   },
 
   // ======== 底部导航 ========
@@ -208,7 +221,7 @@ const zhCN = {
     searchPlaceholder: "搜索日志...",
     noMatch: "暂无匹配日志",
     levels: {
-      all: "部",
+      all: "全部",
       debug: "DEBUG",
       info: "INFO",
       warn: "WARN",
@@ -233,7 +246,7 @@ const zhCN = {
       performance: "性能报告",
       health: "健康报告",
       security: "安全报告",
-      custom: "自定义",
+      custom: "自定",
     },
     ranges: {
       today: "今日",
@@ -415,6 +428,8 @@ const zhCN = {
     backupCronDesc: "默认每天凌晨 2:00",
     dataCompression: "数据压缩",
     dataCompressionDesc: "启用传输和存储压缩",
+    performance: "性能",
+    envConfig: "环境配置",
   },
 
   // ======== 操作审计 ========
@@ -489,10 +504,10 @@ const zhCN = {
     addUser: "添加用户",
     colStatus: "状态",
     colUser: "用户",
-    colRole: "角色",
+    colRole: "角",
     colLastLogin: "最后登录",
     colSessions: "会话",
-    colApiCalls: "API调用",
+    colApiCalls: "API用",
     colActions: "操作",
     rolesPerms: "角色与权限",
     createRole: "+ 创建新角色",
@@ -529,7 +544,7 @@ const zhCN = {
     devPriority: "开发优先级",
     architecture: "架构概览",
     storageStrategy: "存储策略",
-    feature: "能",
+    feature: "功能",
     technology: "推荐技术",
     reason: "原因",
     phase: "阶段",
@@ -539,12 +554,12 @@ const zhCN = {
     completed: "已完成",
     inProgress: "进行中",
     planned: "已规划",
-    dualCache: "双层缓存策",
-    dualCacheDesc: "IndexedDB 负大数据持久化，localStorage 负责轻量配置和状态",
+    dualCache: "双层缓存策略",
+    dualCacheDesc: "IndexedDB 负责大数据持久化，localStorage 负责轻量配置和状态",
     localDevices: "本地设备",
     localStorage: "本地存储",
     dashboard: "Dashboard",
-    terminalCli: "端集成",
+    terminalCli: "终端集成",
   },
 
   // ======== 模型提供商 ========
@@ -656,6 +671,127 @@ const zhCN = {
     },
   },
 
+  // ======== 安全与性能监控 ========
+  security: {
+    title: "安全与性能监控",
+    subtitle: "安全检测 · 性能分析 · 系统诊断 · 数据管理",
+    tabs: {
+      security: "安全检测",
+      performance: "性能监控",
+      diagnostics: "系统诊断",
+      dataManagement: "数据管理",
+    },
+    // CSP
+    cspTitle: "内容安全策略 (CSP)",
+    cspStatus: "CSP 状态",
+    cspEnabled: "已启用",
+    cspDisabled: "未配置",
+    cspDirectives: "指令配置",
+    cspInlineBlocked: "内联脚本阻止",
+    cspRecommendation: "优化建议",
+    // Cookie
+    cookieTitle: "Cookie 安全检查",
+    cookieCount: "Cookie 数量",
+    cookieSecure: "Secure 标志",
+    cookieHttpOnly: "HttpOnly 标志",
+    cookieSameSite: "SameSite 属性",
+    cookiePassed: "通过",
+    cookieFailed: "未通过",
+    cookiePartial: "部分通过",
+    // Sensitive Data
+    sensitiveTitle: "敏感信息泄漏检测",
+    sensitiveLocalStorage: "localStorage 扫描",
+    sensitiveSessionStorage: "sessionStorage 扫描",
+    sensitiveConsole: "控制台日志检测",
+    sensitiveClean: "无敏感数据",
+    sensitiveFound: "发现 {n} 项风险",
+    sensitiveClearBtn: "清理建议",
+    // Performance
+    perfResourceTitle: "资源加载分析",
+    perfTotalResources: "总资源数",
+    perfTotalSize: "总大小",
+    perfLoadTime: "页面加载时间",
+    perfImgOptimize: "图片优化建议",
+    perfJsBundle: "JS 包分析",
+    perfLazyLoad: "懒加载效果",
+    // Memory
+    memoryTitle: "内存泄漏检测",
+    memoryUsed: "已用内存",
+    memoryLimit: "内存上限",
+    memoryListeners: "事件监听器",
+    memoryTimers: "定时器",
+    memoryDomNodes: "DOM 节点",
+    memoryTrend: "内存趋势",
+    memoryLeakRisk: "泄漏风险",
+    memoryLow: "低",
+    memoryMedium: "中",
+    memoryHigh: "高",
+    // Web Vitals
+    vitalsTitle: "用户体验指标",
+    vitalsFID: "首次输入延迟 (FID)",
+    vitalsINP: "交互延迟 (INP)",
+    vitalsCLS: "布局偏移 (CLS)",
+    vitalsTTFB: "首字节时间 (TTFB)",
+    vitalsLCP: "最大内容绘制 (LCP)",
+    vitalsGood: "良好",
+    vitalsNeedsImprovement: "需改善",
+    vitalsPoor: "差",
+    // Device
+    deviceTitle: "设备能力检测",
+    deviceCPU: "CPU 核心数",
+    deviceMemory: "设备内存",
+    deviceScreen: "屏幕分辨率",
+    devicePixelRatio: "像素比",
+    deviceTouch: "触控支持",
+    deviceGPU: "GPU 信息",
+    deviceSupported: "支持",
+    deviceNotSupported: "不支持",
+    // Network Quality
+    networkTitle: "网络质量监控",
+    networkType: "网络类型",
+    networkDownlink: "下行带宽",
+    networkRTT: "往返延迟",
+    networkEffective: "有效类型",
+    networkStability: "连接稳定性",
+    networkStable: "稳定",
+    networkUnstable: "不稳定",
+    // Browser Compat
+    browserTitle: "浏览器兼容性",
+    browserName: "浏览器",
+    browserVersion: "版本",
+    browserFeatures: "特性支持",
+    browserPolyfill: "Polyfill 需求",
+    browserUpgrade: "升级提醒",
+    // Data Management
+    dataSyncTitle: "数据同步",
+    dataSyncTabs: "多标签页同步",
+    dataSyncExport: "数据导出",
+    dataSyncImport: "数据导入",
+    dataSyncBackup: "备份与恢复",
+    dataCleanTitle: "数据清理",
+    dataCleanExpired: "过期数据",
+    dataCleanCache: "缓存管理",
+    dataCleanOptimize: "存储优化",
+    dataCleanPrivacy: "隐私清除",
+    dataCleanBtn: "执行清理",
+    dataTotalStorage: "总存储占用",
+    dataLastBackup: "上次备份",
+    // Scan
+    scanRunning: "扫描中...",
+    scanComplete: "扫描完成",
+    startScan: "开始扫描",
+    rescan: "重新扫描",
+    score: "评分",
+    riskLevel: "风险等级",
+    safe: "安全",
+    warning: "警告",
+    danger: "危险",
+    itemsPassed: "{n} 项通过",
+    itemsFailed: "{n} 项未通过",
+    lastScan: "上次扫描",
+    noScanYet: "尚未扫描",
+  },
+
   // ======== 智能告警规则 ========
   alerts: {
     title: "智能告警规则",
@@ -693,6 +829,7 @@ const zhCN = {
     acknowledge: "确认",
     resolve: "解决",
     noEvents: "暂无告警事件",
+    // Create Rule Modal
     createRuleTitle: "新建告警规则",
     ruleName: "规则名称",
     ruleNamePlaceholder: "输入规则名称",
@@ -716,6 +853,9 @@ const zhCN = {
     addThreshold: "添加阈值",
     removeThreshold: "移除阈值",
     removeEscalation: "移除升级",
+    editRule: "编辑规则",
+    editRuleTitle: "编辑告警规则",
+    saveRule: "保存修改",
   },
 
   // ======== 性能报表导出 ========
@@ -745,7 +885,7 @@ const zhCN = {
   // ======== AI 辅助诊断 ========
   aiDiag: {
     title: "AI 辅助诊断",
-    subtitle: "模式识别 · 异常分析 · 自动解决方案 · 预测性维护",
+    subtitle: "模式别 · 异常分析 · 自动解决方案 · 预测性维护",
     startDiagnosis: "启动诊断",
     analyzing: "AI 正在分析...",
     analyzingHint: "正在扫描历史数据、识别异常模式、生成解决方案",
@@ -780,7 +920,101 @@ const zhCN = {
     emptyHint: "点击「启动诊断」开始 AI 辅助分析",
     diagHistory: "诊断历史",
   },
+
+  // ======== IDE 面板 ========
+  ide: {
+    title: "智能 AI 编程工作台",
+    subtitle: "多联式低码设计面板",
+    explorer: "资源管理器",
+    aiChat: "AI 助手",
+    terminal: "终端",
+    preview: "预览",
+    code: "代码",
+    search: "搜索",
+    more: "更多",
+    back: "返回",
+    filterFiles: "过滤文件...",
+    selectFile: "选择文件开始编辑",
+    openFromExplorer: "从资源管理器打开文件",
+    newTerminal: "新建终端",
+    askAI: "向 AI 提问...",
+    modelSelector: "模型选择",
+    userOnline: "在线",
+    projectName: "项目名称",
+    deploy: "部署",
+    share: "分享",
+    settings: "设置",
+    notifications: "通知",
+    quickActions: "快速操作",
+    layoutMode: "布局模式",
+    editMode: "编辑模式",
+    previewMode: "预览模式",
+    editModeDesc: "终端仅在右栏显示",
+    previewModeDesc: "终端跨越中栏+右栏",
+    terminalToggle: "切换终端",
+    commandPlaceholder: "输入命令...",
+    fullscreen: "全屏",
+    // Git
+    git: "Git",
+    gitChanges: "变更",
+    gitHistory: "历史",
+    gitBranches: "分支",
+    gitStaged: "已暂存",
+    gitUnstaged: "未暂存",
+    gitCommit: "提交",
+    gitCommitMsg: "提交信息...",
+    gitClean: "工作区无变更",
+    gitSearchCommits: "搜索提交...",
+    // File operations
+    newFile: "新建文件",
+    newFolder: "新建文件夹",
+    rename: "重命名",
+    copyPath: "复制路径",
+    deleteFile: "删除",
+    // Status bar
+    ready: "就绪",
+  },
+
+  // ======== AI Family ========
+  aiFamily: {
+    title: "AI Family",
+    subtitle: "八魂归一，云枢乃成",
+    online: "在线",
+    activeTasks: "活跃任务",
+    uptime: "运行时间",
+    speaking: "发言中",
+    idle: "待命",
+    chat: "对话",
+    assignTask: "任务分配",
+    role: "角色定位",
+    responsibilities: "核心职责",
+    coreAbility: "核心能力",
+    metrics: "运行指标",
+    todayTasks: "今日处理",
+    avgLatency: "平均延迟",
+    accuracy: "准确率",
+    collaborations: "作次数",
+  },
+
+  // ======== 404 页面 ========
+  notFound: {
+    title: "页面未找到",
+    desc: "请求的路径在 YYC³ Matrix Dashboard 中不存在。",
+    goBack: "返回上页",
+    goHome: "返回首页",
+    footer: "YYC³ CloudPivot Intelli-Matrix · 404 NOT_FOUND",
+  },
+} as const;
+
+/** 递归将所有叶子字面量放宽为 string，保留结构用于其他语言包校验 */
+type DeepStringify<T> = {
+  readonly [K in keyof T]: T[K] extends string ? string : DeepStringify<T[K]>;
 };
 
-export type TranslationKeys = typeof zhCN;
+/** 原始字面量类型（用于 zh-CN 自身推导） */
+export type TranslationKeysLiteral = typeof zhCN;
+
+/** 结构类型（用于 en-US 等其他语言包约束 key 一致性，值为 string） */
+export type TranslationKeys = DeepStringify<typeof zhCN>;
+
 export default zhCN;

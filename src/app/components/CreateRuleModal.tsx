@@ -5,17 +5,17 @@
  * 赛博朋克风格 #060e1f + #00d4ff
  */
 
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import {
   X, Plus, Trash2, AlertTriangle, ShieldAlert, Info,
 } from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
 import type {
   AlertSeverity, AlertMetric, AlertCondition,
   AlertThreshold, EscalationPolicy, EscalationLevel,
-} from "../hooks/useAlertRules";
-
-type EscalationPolicyField = keyof EscalationPolicy;
+  AlertRule,
+} from "../types";
 
 // ============================================================
 // Available Options
@@ -43,6 +43,7 @@ const CONDITIONS: { value: AlertCondition; label: string }[] = [
 
 const SEVERITIES: { value: AlertSeverity; color: string; icon: React.ElementType }[] = [
   { value: "critical", color: "#ff3366", icon: ShieldAlert },
+  { value: "error", color: "#ff6b35", icon: AlertTriangle },
   { value: "warning", color: "#ffaa00", icon: AlertTriangle },
   { value: "info", color: "#00d4ff", icon: Info },
 ];
@@ -73,13 +74,15 @@ interface CreateRuleModalProps {
     escalation: EscalationPolicy[];
     targets: string[];
   }) => void;
+  /** When provided, modal switches to "edit" mode with pre-filled values */
+  editRule?: AlertRule | null;
 }
 
 // ============================================================
 // Component
 // ============================================================
 
-export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleModalProps) {
+export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRuleModalProps) {
   const { t } = useI18n();
 
   // Form state
@@ -99,6 +102,28 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
   const [selectedNodes, setSelectedNodes] = useState<string[]>(["GPU-A100-01"]);
   const [error, setError] = useState("");
 
+  // ── Backfill form when editing ──
+  const prevEditIdRef = React.useRef<string | null>(null);
+  React.useEffect(() => {
+    const editId = editRule?.id ?? null;
+    if (editId && editId !== prevEditIdRef.current) {
+      prevEditIdRef.current = editId;
+      setName(editRule!.name);
+      setSeverity(editRule!.severity);
+      setThresholds([...editRule!.thresholds]);
+      setAggEnabled(editRule!.aggregation.enabled);
+      setAggWindow(editRule!.aggregation.windowMinutes);
+      setAggMaxGroup(editRule!.aggregation.maxGroupSize);
+      setDedupEnabled(editRule!.deduplication.enabled);
+      setDedupCooldown(editRule!.deduplication.cooldownMinutes);
+      setEscalation([...editRule!.escalation]);
+      setSelectedNodes([...editRule!.targets]);
+      setError("");
+    } else if (!editId) {
+      prevEditIdRef.current = null;
+    }
+  }, [editRule]);
+
   // Threshold management
   const addThreshold = useCallback(() => {
     setThresholds((prev) => [
@@ -111,7 +136,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
     setThresholds((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateThreshold = useCallback((index: number, field: keyof AlertThreshold, value: AlertThreshold[keyof AlertThreshold]) => {
+  const updateThreshold = useCallback((index: number, field: keyof AlertThreshold, value: any) => {
     setThresholds((prev) =>
       prev.map((th, i) => (i === index ? { ...th, [field]: value } : th))
     );
@@ -130,7 +155,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
     setEscalation((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateEscalation = useCallback((index: number, field: EscalationPolicyField, value: EscalationPolicy[EscalationPolicyField]) => {
+  const updateEscalation = useCallback((index: number, field: string, value: any) => {
     setEscalation((prev) =>
       prev.map((esc, i) => (i === index ? { ...esc, [field]: value } : esc))
     );
@@ -141,7 +166,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
       prev.map((esc, i) => {
         if (i !== escIndex) {return esc;}
         const channels = esc.notifyChannels.includes(channel)
-          ? esc.notifyChannels.filter((c) => c !== channel)
+          ? esc.notifyChannels.filter((c: string) => c !== channel)
           : [...esc.notifyChannels, channel];
         return { ...esc, notifyChannels: channels.length > 0 ? channels : ["dashboard"] };
       })
@@ -174,7 +199,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
     setError("");
     onSubmit({
       name: name.trim(),
-      enabled: true,
+      enabled: editRule ? editRule.enabled : true,
       severity,
       thresholds,
       aggregation: { enabled: aggEnabled, windowMinutes: aggWindow, maxGroupSize: aggMaxGroup },
@@ -182,18 +207,20 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
       escalation,
       targets: selectedNodes,
     });
-    // Reset
-    setName("");
-    setSeverity("warning");
-    setThresholds([{ metric: "gpu", condition: "gt", value: 90, unit: "%", duration: 60 }]);
-    setAggEnabled(true);
-    setAggWindow(5);
-    setAggMaxGroup(10);
-    setDedupEnabled(true);
-    setDedupCooldown(15);
-    setEscalation([{ level: 1, delayMinutes: 0, notifyChannels: ["dashboard"] }]);
-    setSelectedNodes(["GPU-A100-01"]);
-  }, [name, severity, thresholds, aggEnabled, aggWindow, aggMaxGroup, dedupEnabled, dedupCooldown, escalation, selectedNodes, onSubmit, t]);
+    // Reset only if creating (not editing)
+    if (!editRule) {
+      setName("");
+      setSeverity("warning");
+      setThresholds([{ metric: "gpu", condition: "gt", value: 90, unit: "%", duration: 60 }]);
+      setAggEnabled(true);
+      setAggWindow(5);
+      setAggMaxGroup(10);
+      setDedupEnabled(true);
+      setDedupCooldown(15);
+      setEscalation([{ level: 1, delayMinutes: 0, notifyChannels: ["dashboard"] }]);
+      setSelectedNodes(["GPU-A100-01"]);
+    }
+  }, [name, severity, thresholds, aggEnabled, aggWindow, aggMaxGroup, dedupEnabled, dedupCooldown, escalation, selectedNodes, onSubmit, t, editRule]);
 
   if (!open) {return null;}
 
@@ -235,7 +262,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
         {/* Header */}
         <div className="flex items-center justify-between p-5 border-b border-[rgba(0,180,255,0.1)]">
           <h2 className="text-[#00d4ff]" style={{ fontSize: "0.95rem", fontFamily: "'Orbitron', sans-serif" }}>
-            {t("alerts.createRuleTitle")}
+            {editRule ? t("alerts.editRuleTitle") : t("alerts.createRuleTitle")}
           </h2>
           <button onClick={onClose} className="text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] transition-colors">
             <X className="w-5 h-5" />
@@ -552,7 +579,7 @@ export default function CreateRuleModal({ open, onClose, onSubmit }: CreateRuleM
             style={{ fontSize: "0.75rem" }}
             data-testid="submit-rule-btn"
           >
-            {t("alerts.createRule")}
+            {editRule ? t("alerts.saveRule") : t("alerts.createRule")}
           </button>
         </div>
       </div>

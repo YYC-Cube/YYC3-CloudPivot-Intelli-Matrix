@@ -1,15 +1,16 @@
 /**
  * QuickActionGrid.tsx
- * ===============
+ * ====================
  * 快速操作网格 · 操作中心核心组件
  */
 
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   RotateCw, Upload, Trash2, Download, FileText, RefreshCw,
   ArrowRightLeft, Pause, Play, HeartPulse, HardDrive, Terminal,
   Loader2, CheckCircle, XCircle, AlertTriangle,
 } from "lucide-react";
+import { GlassCard } from "./GlassCard";
 import type { OperationItem, OperationStatus } from "../types";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -40,7 +41,7 @@ interface QuickActionGridProps {
   isMobile?: boolean;
 }
 
-export default function QuickActionGrid({ actions, onExecute, isMobile = false }: QuickActionGridProps) {
+export function QuickActionGrid({ actions, isExecuting, onExecute, isMobile = false }: QuickActionGridProps) {
   const [confirmId, setConfirmId] = useState<string | null>(null);
 
   const handleClick = (action: OperationItem) => {

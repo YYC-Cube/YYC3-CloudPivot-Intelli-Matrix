@@ -1,6 +1,6 @@
 /**
  * i18n-packs.test.ts
- * ============
+ * ====================
  * 语言包完整性测试
  *
  * 覆盖范围:
@@ -13,12 +13,12 @@ import { describe, it, expect } from "vitest";
 import { zhCN, enUS } from "../i18n";
 
 /** 递归获取所有叶子节点 key */
-function getAllKeys(obj: Record<string, unknown>, prefix = ""): string[] {
+function getAllKeys(obj: Record<string, any>, prefix = ""): string[] {
   const keys: string[] = [];
   for (const key of Object.keys(obj)) {
     const fullKey = prefix ? `${prefix}.${key}` : key;
     if (typeof obj[key] === "object" && obj[key] !== null) {
-      keys.push(...getAllKeys(obj[key] as Record<string, unknown>, fullKey));
+      keys.push(...getAllKeys(obj[key], fullKey));
     } else {
       keys.push(fullKey);
     }
@@ -27,19 +27,19 @@ function getAllKeys(obj: Record<string, unknown>, prefix = ""): string[] {
 }
 
 /** 递归获取叶子值 */
-function getLeafValue(obj: Record<string, unknown>, path: string): unknown {
+function getLeafValue(obj: Record<string, any>, path: string): any {
   const parts = path.split(".");
-  let current: unknown = obj;
+  let current: any = obj;
   for (const p of parts) {
     if (current === null) {return undefined;}
-    current = (current as Record<string, unknown>)[p];
+    current = current[p];
   }
   return current;
 }
 
 describe("语言包完整性", () => {
-  const zhKeys = getAllKeys(zhCN as Record<string, unknown>);
-  const enKeys = getAllKeys(enUS as Record<string, unknown>);
+  const zhKeys = getAllKeys(zhCN as Record<string, any>);
+  const enKeys = getAllKeys(enUS as Record<string, any>);
 
   describe("结构一致性", () => {
     it("zh-CN 和 en-US 应有相同数量的 key", () => {
@@ -62,14 +62,14 @@ describe("语言包完整性", () => {
   describe("翻译值非空", () => {
     it("zh-CN 所有值应非空", () => {
       for (const key of zhKeys) {
-        const val = getLeafValue(zhCN as Record<string, unknown>, key);
+        const val = getLeafValue(zhCN as Record<string, any>, key);
         expect(val, `zh-CN key "${key}" should not be empty`).toBeTruthy();
       }
     });
 
     it("en-US 所有值应非空", () => {
       for (const key of enKeys) {
-        const val = getLeafValue(enUS as Record<string, unknown>, key);
+        const val = getLeafValue(enUS as Record<string, any>, key);
         expect(val, `en-US key "${key}" should not be empty`).toBeTruthy();
       }
     });
@@ -78,8 +78,8 @@ describe("语言包完整性", () => {
   describe("模板变量一致性", () => {
     it("包含 {n} 的 key 在两种语言中都应有 {n}", () => {
       for (const key of zhKeys) {
-        const zhVal = getLeafValue(zhCN as Record<string, unknown>, key);
-        const enVal = getLeafValue(enUS as Record<string, unknown>, key);
+        const zhVal = getLeafValue(zhCN as Record<string, any>, key);
+        const enVal = getLeafValue(enUS as Record<string, any>, key);
         if (typeof zhVal === "string" && zhVal.includes("{n}")) {
           expect(enVal, `en-US key "${key}" should contain {n}`).toContain("{n}");
         }

@@ -1,24 +1,28 @@
 /**
  * LocalFileManager.tsx
- * ================
+ * =====================
  * 本地文件管理器主界面 · 路由: /files
  *
  * i18n 已迁移
  */
 
-import { useState, useContext } from "react";
-import { FolderOpen, Download, HardDrive, Trash2, Keyboard } from "lucide-react";
-import GlassCard from "./GlassCard";
-import FileBrowser from "./FileBrowser";
-import LogViewer from "./LogViewer";
-import ReportGenerator from "./ReportGenerator";
+import React, { useState, useContext, useCallback } from "react";
+import {
+  FolderOpen, Download, HardDrive, Trash2, Keyboard,
+  Save, X, FileEdit,
+} from "lucide-react";
+import { GlassCard } from "./GlassCard";
+import { FileBrowser } from "./FileBrowser";
+import { LogViewer } from "./LogViewer";
+import { ReportGenerator } from "./ReportGenerator";
+import { CodeEditor, getLanguageLabel } from "./CodeEditor";
 import { useLocalFileSystem } from "../hooks/useLocalFileSystem";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
 type ActiveTab = "files" | "logs" | "reports";
 
-export default function LocalFileManager() {
+export function LocalFileManager() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();
@@ -34,7 +38,7 @@ export default function LocalFileManager() {
 
   return (
     <div className="space-y-4">
-      {/* ====== Header ====== */}
+      {/* ======== Header ======== */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[rgba(0,212,255,0.1)] flex items-center justify-center">
@@ -56,7 +60,7 @@ export default function LocalFileManager() {
         </div>
       </div>
 
-      {/* ====== Tab 导航 ====== */}
+      {/* ======== Tab 导航 ======== */}
       <div className="flex items-center gap-1">
         {tabs.map((tab) => (
           <button
@@ -75,7 +79,7 @@ export default function LocalFileManager() {
         ))}
       </div>
 
-      {/* ====== Quick Actions Bar ====== */}
+      {/* ======== Quick Actions Bar ======== */}
       <div className={`grid gap-2 ${isMobile ? "grid-cols-1" : "grid-cols-3"}`}>
         <button
           onClick={fs.downloadLogs}
@@ -112,7 +116,7 @@ export default function LocalFileManager() {
         </button>
       </div>
 
-      {/* ====== Tab Content ====== */}
+      {/* ======== Tab Content ======== */}
       {activeTab === "files" && (
         <FileBrowser
           items={fs.currentItems}
@@ -147,29 +151,139 @@ export default function LocalFileManager() {
         />
       )}
 
-      {/* ====== 文件详情 ====== */}
+      {/* ======== 文件详情 + 内容编辑器 ======== */}
       {fs.selectedFile && (
-        <GlassCard className="p-4" data-testid="file-detail">
-          <div className="flex items-center justify-between mb-2">
-            <h4 className="text-[#e0f0ff]" style={{ fontSize: "0.82rem" }}>
-              {fs.selectedFile.name}
-            </h4>
-            <button
-              onClick={() => fs.selectFile({ ...fs.selectedFile!, type: "directory", path: fs.currentPath })}
-              className="text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff]"
-              style={{ fontSize: "0.68rem" }}
-            >
-              {t("common.close")}
-            </button>
-          </div>
-          <div className="grid grid-cols-2 gap-2 text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.7rem" }}>
-            <div>Path: <span className="text-[#c0dcf0]">{fs.selectedFile.path}</span></div>
-            <div>Size: <span className="text-[#c0dcf0]">{fs.formatSize(fs.selectedFile.size)}</span></div>
-            <div>Type: <span className="text-[#c0dcf0]">.{fs.selectedFile.extension ?? t("common.unknown")}</span></div>
-            <div>Modified: <span className="text-[#c0dcf0]">{new Date(fs.selectedFile.modifiedAt).toLocaleString("zh-CN")}</span></div>
-          </div>
-        </GlassCard>
+        <FileDetailEditor
+          file={fs.selectedFile}
+          getContent={fs.getFileContent}
+          saveContent={fs.saveFileContent}
+          formatSize={fs.formatSize}
+          onClose={() => fs.selectFile({ ...fs.selectedFile!, type: "directory", path: fs.currentPath })}
+          t={t}
+        />
       )}
     </div>
+  );
+}
+
+// ============================================================
+// 文件详情 + 内容编辑器
+// ============================================================
+
+function FileDetailEditor({
+  file, getContent, saveContent, formatSize, onClose, t,
+}: {
+  file: { id: string; name: string; path: string; size?: number; extension?: string; modifiedAt: number };
+  getContent: (id: string) => string;
+  saveContent: (id: string, content: string) => void;
+  formatSize: (n?: number) => string;
+  onClose: () => void;
+  t: (key: string) => string;
+}) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [content, setContent] = useState("");
+  const [dirty, setDirty] = useState(false);
+
+  const openEditor = useCallback(() => {
+    setContent(getContent(file.id));
+    setIsEditing(true);
+    setDirty(false);
+  }, [getContent, file.id]);
+
+  const handleSave = useCallback(() => {
+    saveContent(file.id, content);
+    setDirty(false);
+  }, [saveContent, file.id, content]);
+
+  const handleClose = useCallback(() => {
+    setIsEditing(false);
+    setDirty(false);
+  }, []);
+
+  return (
+    <GlassCard className="p-4" data-testid="file-detail">
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <h4 className="text-[#e0f0ff]" style={{ fontSize: "0.82rem" }}>
+            {file.name}
+          </h4>
+          {dirty && (
+            <span className="px-1.5 py-0.5 rounded bg-[rgba(255,170,0,0.1)] text-[#ffaa00]" style={{ fontSize: "0.55rem" }}>
+              未保存
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {!isEditing && (
+            <button
+              onClick={openEditor}
+              className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[rgba(0,140,200,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all"
+              style={{ fontSize: "0.68rem" }}
+            >
+              <FileEdit className="w-3 h-3" /> 编辑内容
+            </button>
+          )}
+          {isEditing && (
+            <>
+              <button
+                onClick={handleSave}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.2)] text-[#00ff88] hover:bg-[rgba(0,255,136,0.2)] transition-all"
+                style={{ fontSize: "0.68rem" }}
+              >
+                <Save className="w-3 h-3" /> 保存
+              </button>
+              <button
+                onClick={handleClose}
+                className="flex items-center gap-1 px-2 py-1 rounded-lg text-[rgba(255,51,102,0.5)] hover:text-[#ff3366] transition-all"
+                style={{ fontSize: "0.68rem" }}
+              >
+                <X className="w-3 h-3" /> 关闭编辑
+              </button>
+            </>
+          )}
+          <button
+            onClick={onClose}
+            className="text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff]"
+            style={{ fontSize: "0.68rem" }}
+          >
+            {t("common.close")}
+          </button>
+        </div>
+      </div>
+
+      {/* 文件元信息 */}
+      <div className="grid grid-cols-2 gap-2 text-[rgba(0,212,255,0.4)] mb-3" style={{ fontSize: "0.7rem" }}>
+        <div>Path: <span className="text-[#c0dcf0]">{file.path}</span></div>
+        <div>Size: <span className="text-[#c0dcf0]">{formatSize(file.size)}</span></div>
+        <div>Type: <span className="text-[#c0dcf0]">.{file.extension ?? t("common.unknown")}</span></div>
+        <div>Modified: <span className="text-[#c0dcf0]">{new Date(file.modifiedAt).toLocaleString("zh-CN")}</span></div>
+      </div>
+
+      {/* 内容编辑器 */}
+      {isEditing && (
+        <div className="rounded-xl border border-[rgba(0,180,255,0.1)] overflow-hidden">
+          <div className="flex items-center justify-between px-3 py-1.5 bg-[rgba(0,20,40,0.5)] border-b border-[rgba(0,180,255,0.06)]">
+            <span className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.65rem" }}>
+              {file.name} — {new TextEncoder().encode(content).length} bytes
+            </span>
+            <div className="flex items-center gap-2">
+              <span className="px-1.5 py-0.5 rounded bg-[rgba(0,212,255,0.06)] text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.55rem" }}>
+                {getLanguageLabel(file.name)}
+              </span>
+              <span className="text-[rgba(0,212,255,0.2)]" style={{ fontSize: "0.55rem" }}>
+                Ctrl+S 保存
+              </span>
+            </div>
+          </div>
+          <CodeEditor
+            value={content}
+            onChange={(val) => { setContent(val); setDirty(true); }}
+            filename={file.name}
+            height="360px"
+            onSave={handleSave}
+          />
+        </div>
+      )}
+    </GlassCard>
   );
 }

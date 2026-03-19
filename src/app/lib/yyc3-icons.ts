@@ -1,143 +1,272 @@
 /**
+ * @file: yyc3-icons.ts
+ * @description: yyc3-icons.ts description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import type { ReactEventHandler } from "react";
+
+/**
  * yyc3-icons.ts
  * ==============
- * YYC³ 图标资源中心化配置
+ * YYC³ 图标资源中心化配置 — 与 GitHub 仓库 100% 对齐
  *
- * 双路径策略:
- * - 本地路径 (/yyc3-icons/...) → 优先使用，离线可用
- * - CDN 回退 (raw.githubusercontent.com) → 本地未部署时自动降级
+ * 仓库: https://github.com/YYC-Cube/Cloudpivotintellimatrix
+ * 路径: public/yyc3-badge-icons/
+ *
+ * GitHub 仓库实际目录结构 (5 平台, 32 PNG):
+ *   public/yyc3-badge-icons/
+ *   ├── Android/                     (6 files)
+ *   │   ├── Play Store.png           512×512   160KB
+ *   │   ├── hdpi.png                  72×72    6.7KB
+ *   │   ├── mdpi.png                  48×48    3.5KB
+ *   │   ├── xhdpi.png                 96×96    10KB
+ *   │   ├── xxhdpi.png               144×144   20KB
+ *   │   └── xxxhdpi.png              192×192   32KB
+ *   ├── Web App/                     (5 files)
+ *   │   ├── android-chrome-192.png   192×192   32KB
+ *   │   ├── android-chrome-512.png   512×512  160KB
+ *   │   ├── apple-touch-icon.png     180×180   29KB
+ *   │   ├── favicon-16.png            16×16   698B
+ *   │   └── favicon-32.png            32×32   1.8KB
+ *   ├── iOS/                         (14 files)
+ *   │   ├── App Store.png           1024×1024 475KB
+ *   │   ├── iPad App.png              76×76   7.4KB
+ *   │   ├── iPad Notification.png     20×20   1.0KB
+ *   │   ├── iPad Pro App 2x.png     167×167   26KB
+ *   │   ├── iPad Settings.png         29×29   1.7KB
+ *   │   ├── iPad Spotlight.png        40×40   2.7KB
+ *   │   ├── iPhone App 2x.png       120×120   15KB
+ *   │   ├── iPhone App 3x.png       180×180   29KB
+ *   │   ├── iPhone Notification 2x.png 40×40  2.7KB
+ *   │   ├── iPhone Notification 3x.png 60×60  5.0KB
+ *   │   ├── iPhone Settings 2x.png    58×58   4.7KB
+ *   │   ├── iPhone Settings 3x.png    87×87   9.0KB
+ *   │   ├── iPhone Spotlight 2x.png   80×80   8.0KB
+ *   │   └── iPhone Spotlight 3x.png  120×120  15KB
+ *   ├── macOS/                       (7 files)
+ *   │   ├── 16.png                    16×16   696B
+ *   │   ├── 32.png                    32×32   1.9KB
+ *   │   ├── 64.png                    64×64   5.3KB
+ *   │   ├── 128.png                  128×128   16KB
+ *   │   ├── 256.png                  256×256   52KB
+ *   │   ├── 512.png                  512×512  163KB
+ *   │   └── 1024.png               1024×1024 475KB
+ *   └── watchOS/                     (4 files)
+ *       ├── App Store.png           1024×1024 475KB
+ *       ├── Home Screen.png           80×80   8.0KB
+ *       ├── Notification.png          48×48   3.5KB
+ *       └── Short Look.png          172×172   27KB
+ *
+ * 注意:
+ * - 项目内所有 React 组件统一使用 <YYC3LogoSvg /> 内联 SVG 渲染，零网络依赖
+ * - 本文件仅供 useYYC3Head.ts (<head> 标签注入) 和测试文件使用
+ * - 本地 PNG 资源需通过 download-icons.sh 从仓库拉取
  *
  * 使用方式:
  *   import { icons } from '../lib/yyc3-icons';
- *   <img src={icons.logo192} alt="YYC³" />
+ *   <img src={icons.favicon32} alt="YYC³" />
  */
 
 // ============================================================
-//  GitHub Raw CDN 基础 URL
+//  GitHub Raw CDN 基础 URL (PNG 兜底)
 // ============================================================
 
 const GH_BASE =
-  "https://raw.githubusercontent.com/YYC-Cube/YYC-Data-Dashboard-Design/main/public/yyc3-icons";
+  "https://raw.githubusercontent.com/YYC-Cube/Cloudpivotintellimatrix/main/public/yyc3-badge-icons";
 
 // ============================================================
 //  本地路径基础 URL (public/ 目录下)
 // ============================================================
 
-const LOCAL_BASE = "/yyc3-icons";
+const LOCAL_BASE = "/yyc3-badge-icons";
 
 // ============================================================
-//  路径解析器 — 优先本地，CDN 回退
+//  路径解析器
 // ============================================================
 
-/**
- * 生成图标路径
- * 开发/预览环境使用 CDN URL，本地部署时使用 LOCAL 路径
- *
- * 策略: 尝试本地 → 降级 CDN
- *   如果你已经运行 `scripts/download-icons.sh`，图标会在本地。
- *   否则自动回退到 GitHub CDN。
- */
-function iconPath(subPath: string): string {
-  // 在 Vite 开发环境中，public/ 目录下的文件可以通过根路径访问
-  // 如果文件不存在，浏览器会返回 404，此时可通过 onError 回退到 CDN
+function localPath(subPath: string): string {
   return `${LOCAL_BASE}/${subPath}`;
 }
 
 function cdnPath(subPath: string): string {
-  return `${GH_BASE}/${subPath}`;
+  // GitHub Raw CDN 中带空格的文件名需编码
+  const encoded = subPath
+    .split("/")
+    .map((seg, i, arr) => (i === arr.length - 1 ? encodeURIComponent(seg) : seg))
+    .join("/");
+  return `${GH_BASE}/${encoded}`;
 }
 
 // ============================================================
-//  导出图标路径集
+//  完整图标路径集 — 与仓库 1:1 对齐 (32 文件)
 // ============================================================
 
 export const icons = {
-  // ---- Favicon ----
-  favicon: iconPath("favicon/favicon.ico"),
-  favicon16: iconPath("favicon/favicon-16x16.png"),
-  favicon32: iconPath("favicon/favicon-32x32.png"),
-  favicon96: iconPath("favicon/favicon-96x96.png"),
+  // ═══════════════════════════════════════════════════════════
+  //  Android/ (6 files)
+  // ═══════════════════════════════════════════════════════════
+  androidMdpi:       localPath("Android/mdpi.png"),           //  48×48
+  androidHdpi:       localPath("Android/hdpi.png"),           //  72×72
+  androidXhdpi:      localPath("Android/xhdpi.png"),          //  96×96
+  androidXxhdpi:     localPath("Android/xxhdpi.png"),         // 144×144
+  androidXxxhdpi:    localPath("Android/xxxhdpi.png"),        // 192×192
+  androidPlayStore:  localPath("Android/Play Store.png"),     // 512×512
 
-  // ---- PWA Icons ----
-  pwa72: iconPath("pwa/icon-72x72.png"),
-  pwa96: iconPath("pwa/icon-96x96.png"),
-  pwa128: iconPath("pwa/icon-128x128.png"),
-  pwa144: iconPath("pwa/icon-144x144.png"),
-  pwa152: iconPath("pwa/icon-152x152.png"),
-  pwa192: iconPath("pwa/icon-192x192.png"),
-  pwa384: iconPath("pwa/icon-384x384.png"),
-  pwa512: iconPath("pwa/icon-512x512.png"),
+  // ═══════════════════════════════════════════════════════════
+  //  Web App/ (5 files) — favicon / PWA / apple-touch
+  // ═══════════════════════════════════════════════════════════
+  favicon16:         localPath("Web App/favicon-16.png"),         //  16×16
+  favicon32:         localPath("Web App/favicon-32.png"),         //  32×32
+  webAppChrome192:   localPath("Web App/android-chrome-192.png"), // 192×192
+  webAppChrome512:   localPath("Web App/android-chrome-512.png"), // 512×512
+  webAppAppleTouch:  localPath("Web App/apple-touch-icon.png"),   // 180×180
 
-  // ---- WebP 优化版 ----
-  webp192: iconPath("webp/icon-192x192.webp"),
-  webp512: iconPath("webp/icon-512x512.webp"),
+  // ═══════════════════════════════════════════════════════════
+  //  iOS/ (14 files)
+  // ═══════════════════════════════════════════════════════════
+  iosAppStore:              localPath("iOS/App Store.png"),             // 1024×1024
+  iosiPadApp:               localPath("iOS/iPad App.png"),             //   76×76
+  iosiPadNotification:      localPath("iOS/iPad Notification.png"),    //   20×20
+  iosiPadProApp2x:          localPath("iOS/iPad Pro App 2x.png"),     //  167×167
+  iosiPadSettings:          localPath("iOS/iPad Settings.png"),        //   29×29
+  iosiPadSpotlight:         localPath("iOS/iPad Spotlight.png"),       //   40×40
+  iosiPhoneApp2x:           localPath("iOS/iPhone App 2x.png"),       //  120×120
+  iosiPhoneApp3x:           localPath("iOS/iPhone App 3x.png"),       //  180×180
+  iosiPhoneNotification2x:  localPath("iOS/iPhone Notification 2x.png"), // 40×40
+  iosiPhoneNotification3x:  localPath("iOS/iPhone Notification 3x.png"), // 60×60
+  iosiPhoneSettings2x:      localPath("iOS/iPhone Settings 2x.png"),  //   58×58
+  iosiPhoneSettings3x:      localPath("iOS/iPhone Settings 3x.png"),  //   87×87
+  iosiPhoneSpotlight2x:     localPath("iOS/iPhone Spotlight 2x.png"), //   80×80
+  iosiPhoneSpotlight3x:     localPath("iOS/iPhone Spotlight 3x.png"), //  120×120
 
-  // ---- 常用别名 ----
-  /** 应用 Logo (192x192) — TopBar / Login / 通用场景 */
-  logo192: iconPath("pwa/icon-192x192.png"),
-  /** 应用 Logo (512x512) — 大尺寸展示 */
-  logo512: iconPath("pwa/icon-512x512.png"),
-  /** 应用 Logo (96x96) — 小尺寸展示 */
-  logo96: iconPath("pwa/icon-96x96.png"),
-  /** 应用 Logo (72x72) — 最小尺寸 */
-  logo72: iconPath("pwa/icon-72x72.png"),
+  // ═══════════════════════════════════════════════════════════
+  //  macOS/ (7 files)
+  // ═══════════════════════════════════════════════════════════
+  macOS16:    localPath("macOS/16.png"),     //   16×16
+  macOS32:    localPath("macOS/32.png"),     //   32×32
+  macOS64:    localPath("macOS/64.png"),     //   64×64
+  macOS128:   localPath("macOS/128.png"),    //  128×128
+  macOS256:   localPath("macOS/256.png"),    //  256×256
+  macOS512:   localPath("macOS/512.png"),    //  512×512
+  macOS1024:  localPath("macOS/1024.png"),   // 1024×1024
 
-  // ---- iOS ----
-  ios1024: iconPath("ios/icon-1024.png"),
-  iosAppleTouch: iconPath("pwa/icon-192x192.png"), // Apple Touch Icon
+  // ═══════════════════════════════════════════════════════════
+  //  watchOS/ (4 files)
+  // ═══════════════════════════════════════════════════════════
+  watchOSAppStore:    localPath("watchOS/App Store.png"),     // 1024×1024
+  watchOSHome:        localPath("watchOS/Home Screen.png"),   //   80×80
+  watchOSNotification: localPath("watchOS/Notification.png"), //   48×48
+  watchOSShortLook:   localPath("watchOS/Short Look.png"),    //  172×172
 
-  // ---- Android ----
-  playstore: iconPath("android/playstore-icon.png"),
+  // ═══════════════════════════════════════════════════════════
+  //  语义化别名 (向后兼容 + 语义化快捷引用)
+  // ═══════════════════════════════════════════════════════════
+  /** 通用 Logo (最大尺寸 PNG) */
+  logo:         localPath("Web App/android-chrome-512.png"),
+  /** PWA 192x192 */
+  pwa192:       localPath("Web App/android-chrome-192.png"),
+  /** PWA 512x512 */
+  pwa512:       localPath("Web App/android-chrome-512.png"),
+  /** Apple Touch Icon */
+  iosAppleTouch: localPath("Web App/apple-touch-icon.png"),
+  /** iOS App Store 1024x1024 */
+  ios1024:      localPath("iOS/App Store.png"),
+  /** Android Play Store 512x512 */
+  playstore:    localPath("Android/Play Store.png"),
+  /** 通用小尺寸 Logo */
+  logo72:       localPath("Android/hdpi.png"),
+  /** 通用中尺寸 Logo */
+  logo192:      localPath("Web App/android-chrome-192.png"),
+  /** 通用大尺寸 Logo */
+  logo512:      localPath("Web App/android-chrome-512.png"),
 } as const;
 
 // ============================================================
-//  CDN 回退版 (当本地文件 404 时使用)
+//  CDN 回退版 — 完整 32 文件映射
+//  当本地 PNG 404 时使用 (GitHub Raw)
 // ============================================================
 
 export const iconsCDN = {
-  favicon: cdnPath("favicon/favicon.ico"),
-  favicon16: cdnPath("favicon/favicon-16x16.png"),
-  favicon32: cdnPath("favicon/favicon-32x32.png"),
-  favicon96: cdnPath("favicon/favicon-96x96.png"),
+  // Android
+  androidMdpi:       cdnPath("Android/mdpi.png"),
+  androidHdpi:       cdnPath("Android/hdpi.png"),
+  androidXhdpi:      cdnPath("Android/xhdpi.png"),
+  androidXxhdpi:     cdnPath("Android/xxhdpi.png"),
+  androidXxxhdpi:    cdnPath("Android/xxxhdpi.png"),
+  androidPlayStore:  cdnPath("Android/Play Store.png"),
 
-  pwa72: cdnPath("pwa/icon-72x72.png"),
-  pwa96: cdnPath("pwa/icon-96x96.png"),
-  pwa128: cdnPath("pwa/icon-128x128.png"),
-  pwa144: cdnPath("pwa/icon-144x144.png"),
-  pwa152: cdnPath("pwa/icon-152x152.png"),
-  pwa192: cdnPath("pwa/icon-192x192.png"),
-  pwa384: cdnPath("pwa/icon-384x384.png"),
-  pwa512: cdnPath("pwa/icon-512x512.png"),
+  // Web App
+  favicon16:         cdnPath("Web App/favicon-16.png"),
+  favicon32:         cdnPath("Web App/favicon-32.png"),
+  webAppChrome192:   cdnPath("Web App/android-chrome-192.png"),
+  webAppChrome512:   cdnPath("Web App/android-chrome-512.png"),
+  webAppAppleTouch:  cdnPath("Web App/apple-touch-icon.png"),
 
-  webp192: cdnPath("webp/icon-192x192.webp"),
-  webp512: cdnPath("webp/icon-512x512.webp"),
+  // iOS
+  iosAppStore:              cdnPath("iOS/App Store.png"),
+  iosiPadApp:               cdnPath("iOS/iPad App.png"),
+  iosiPadNotification:      cdnPath("iOS/iPad Notification.png"),
+  iosiPadProApp2x:          cdnPath("iOS/iPad Pro App 2x.png"),
+  iosiPadSettings:          cdnPath("iOS/iPad Settings.png"),
+  iosiPadSpotlight:         cdnPath("iOS/iPad Spotlight.png"),
+  iosiPhoneApp2x:           cdnPath("iOS/iPhone App 2x.png"),
+  iosiPhoneApp3x:           cdnPath("iOS/iPhone App 3x.png"),
+  iosiPhoneNotification2x:  cdnPath("iOS/iPhone Notification 2x.png"),
+  iosiPhoneNotification3x:  cdnPath("iOS/iPhone Notification 3x.png"),
+  iosiPhoneSettings2x:      cdnPath("iOS/iPhone Settings 2x.png"),
+  iosiPhoneSettings3x:      cdnPath("iOS/iPhone Settings 3x.png"),
+  iosiPhoneSpotlight2x:     cdnPath("iOS/iPhone Spotlight 2x.png"),
+  iosiPhoneSpotlight3x:     cdnPath("iOS/iPhone Spotlight 3x.png"),
 
-  logo192: cdnPath("pwa/icon-192x192.png"),
-  logo512: cdnPath("pwa/icon-512x512.png"),
-  logo96: cdnPath("pwa/icon-96x96.png"),
-  logo72: cdnPath("pwa/icon-72x72.png"),
+  // macOS
+  macOS16:    cdnPath("macOS/16.png"),
+  macOS32:    cdnPath("macOS/32.png"),
+  macOS64:    cdnPath("macOS/64.png"),
+  macOS128:   cdnPath("macOS/128.png"),
+  macOS256:   cdnPath("macOS/256.png"),
+  macOS512:   cdnPath("macOS/512.png"),
+  macOS1024:  cdnPath("macOS/1024.png"),
 
-  ios1024: cdnPath("ios/icon-1024.png"),
-  iosAppleTouch: cdnPath("pwa/icon-192x192.png"),
-  playstore: cdnPath("android/playstore-icon.png"),
+  // watchOS
+  watchOSAppStore:    cdnPath("watchOS/App Store.png"),
+  watchOSHome:        cdnPath("watchOS/Home Screen.png"),
+  watchOSNotification: cdnPath("watchOS/Notification.png"),
+  watchOSShortLook:   cdnPath("watchOS/Short Look.png"),
+
+  // 别名
+  logo:         cdnPath("Web App/android-chrome-512.png"),
+  pwa192:       cdnPath("Web App/android-chrome-192.png"),
+  pwa512:       cdnPath("Web App/android-chrome-512.png"),
+  iosAppleTouch: cdnPath("Web App/apple-touch-icon.png"),
+  ios1024:      cdnPath("iOS/App Store.png"),
+  playstore:    cdnPath("Android/Play Store.png"),
+  logo72:       cdnPath("Android/hdpi.png"),
+  logo192:      cdnPath("Web App/android-chrome-192.png"),
+  logo512:      cdnPath("Web App/android-chrome-512.png"),
 } as const;
 
 // ============================================================
-//  Logo 组件辅助 — 支持 onError CDN 回退
+//  Logo CDN 回退 onError handler
 // ============================================================
 
 /**
  * 获取带 CDN 回退的 onError handler
  * 使用方式:
  *   <img
- *     src={icons.logo192}
- *     onError={handleIconError('logo192')}
+ *     src={icons.logo}
+ *     onError={handleIconError('logo')}
  *     alt="YYC³"
  *   />
  */
 export function handleIconError(
   iconKey: keyof typeof iconsCDN
-): React.ReactEventHandler<HTMLImageElement> {
+): ReactEventHandler<HTMLImageElement> {
   return (e) => {
     const img = e.currentTarget;
     const cdnSrc = iconsCDN[iconKey];
@@ -149,16 +278,72 @@ export function handleIconError(
 }
 
 // ============================================================
-//  PWA Manifest 图标数组 (用于动态生成)
+//  PWA Manifest 图标数组 (manifest.json 动态生成用)
+//  路径全部对齐仓库实际结构，纯 PNG
 // ============================================================
 
 export const pwaManifestIcons = [
-  { src: "yyc3-icons/pwa/icon-72x72.png", sizes: "72x72", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-96x96.png", sizes: "96x96", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-128x128.png", sizes: "128x128", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-144x144.png", sizes: "144x144", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-152x152.png", sizes: "152x152", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-192x192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
-  { src: "yyc3-icons/pwa/icon-384x384.png", sizes: "384x384", type: "image/png" },
-  { src: "yyc3-icons/pwa/icon-512x512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+  { src: "yyc3-badge-icons/Web App/favicon-16.png",          sizes: "16x16",     type: "image/png" },
+  { src: "yyc3-badge-icons/Web App/favicon-32.png",          sizes: "32x32",     type: "image/png" },
+  { src: "yyc3-badge-icons/Web App/apple-touch-icon.png",    sizes: "180x180",   type: "image/png" },
+  { src: "yyc3-badge-icons/Web App/android-chrome-192.png",  sizes: "192x192",   type: "image/png", purpose: "any maskable" },
+  { src: "yyc3-badge-icons/Web App/android-chrome-512.png",  sizes: "512x512",   type: "image/png", purpose: "any maskable" },
+  { src: "yyc3-badge-icons/macOS/64.png",                    sizes: "64x64",     type: "image/png" },
+  { src: "yyc3-badge-icons/macOS/128.png",                   sizes: "128x128",   type: "image/png" },
+  { src: "yyc3-badge-icons/macOS/256.png",                   sizes: "256x256",   type: "image/png" },
+  { src: "yyc3-badge-icons/macOS/512.png",                   sizes: "512x512",   type: "image/png" },
+  { src: "yyc3-badge-icons/Android/mdpi.png",                sizes: "48x48",     type: "image/png" },
+  { src: "yyc3-badge-icons/Android/hdpi.png",                sizes: "72x72",     type: "image/png" },
+  { src: "yyc3-badge-icons/Android/xhdpi.png",               sizes: "96x96",     type: "image/png" },
+  { src: "yyc3-badge-icons/Android/xxhdpi.png",              sizes: "144x144",   type: "image/png" },
+  { src: "yyc3-badge-icons/Android/xxxhdpi.png",             sizes: "192x192",   type: "image/png" },
 ];
+
+// ============================================================
+//  下载清单 — 用于 download-icons.sh 参考
+//  完整列出仓库内 32 个 PNG 的相对路径
+// ============================================================
+
+export const REMOTE_FILE_MANIFEST = [
+  // Android (6)
+  "Android/mdpi.png",
+  "Android/hdpi.png",
+  "Android/xhdpi.png",
+  "Android/xxhdpi.png",
+  "Android/xxxhdpi.png",
+  "Android/Play Store.png",
+  // Web App (5)
+  "Web App/favicon-16.png",
+  "Web App/favicon-32.png",
+  "Web App/android-chrome-192.png",
+  "Web App/android-chrome-512.png",
+  "Web App/apple-touch-icon.png",
+  // iOS (14)
+  "iOS/App Store.png",
+  "iOS/iPad App.png",
+  "iOS/iPad Notification.png",
+  "iOS/iPad Pro App 2x.png",
+  "iOS/iPad Settings.png",
+  "iOS/iPad Spotlight.png",
+  "iOS/iPhone App 2x.png",
+  "iOS/iPhone App 3x.png",
+  "iOS/iPhone Notification 2x.png",
+  "iOS/iPhone Notification 3x.png",
+  "iOS/iPhone Settings 2x.png",
+  "iOS/iPhone Settings 3x.png",
+  "iOS/iPhone Spotlight 2x.png",
+  "iOS/iPhone Spotlight 3x.png",
+  // macOS (7)
+  "macOS/16.png",
+  "macOS/32.png",
+  "macOS/64.png",
+  "macOS/128.png",
+  "macOS/256.png",
+  "macOS/512.png",
+  "macOS/1024.png",
+  // watchOS (4)
+  "watchOS/App Store.png",
+  "watchOS/Home Screen.png",
+  "watchOS/Notification.png",
+  "watchOS/Short Look.png",
+] as const;

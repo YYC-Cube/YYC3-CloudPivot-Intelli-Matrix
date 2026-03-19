@@ -1,10 +1,11 @@
 /**
  * ConnectionStatus 组件
- * ================
+ * =====================
  * WebSocket 连接状态指示器
  * 显示当前连接模式：在线 / 重连中 / 模拟模式 / 离线
  */
 
+import React from "react";
 import { Wifi, WifiOff, RefreshCw, Radio, Zap } from "lucide-react";
 import type { ConnectionState } from "../types";
 
@@ -66,7 +67,7 @@ const stateConfig: Record<ConnectionState, {
   },
 };
 
-export default function ConnectionStatus({
+export function ConnectionStatus({
   state,
   reconnectCount,
   lastSyncTime,

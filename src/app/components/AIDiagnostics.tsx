@@ -9,34 +9,38 @@
 import React from "react";
 import {
   BrainCircuit, Play, Loader2, Search, Zap,
-  AlertTriangle, TrendingUp, TrendingDown,
+  AlertTriangle, CheckCircle2, TrendingUp, TrendingDown,
   Minus, Target, Lightbulb, Clock, ArrowRight,
   Activity, Eye, BarChart3, ChevronRight,
-  Cpu, MemoryStick, Wifi,
+  Cpu, MemoryStick, Wifi, HardDrive,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import {
-  useAIDiagnostics,
-  type PatternType,
-  type ConfidenceLevel,
-  type ActionPriority,
-  type DetectedPattern,
-  type AnomalyRecord,
-  type SuggestedAction,
-  type PredictiveForecast,
-} from "../hooks/useAIDiagnostics";
+import { useAIDiagnostics } from "../hooks/useAIDiagnostics";
+import type {
+  PatternType,
+  ConfidenceLevel,
+  ActionPriority,
+  DiagnosticPattern,
+  AnomalyRecord,
+  SuggestedAction,
+  PredictiveForecast,
+} from "../types";
 import { useWebSocketData } from "../hooks/useWebSocketData";
 
+// ============================================================
+// Helpers
+// ============================================================
+
 function confidenceColor(c: ConfidenceLevel): string {
-  if (c === "high") { return "#00ff88"; }
-  if (c === "medium") { return "#ffaa00"; }
+  if (c === "high") {return "#00ff88";}
+  if (c === "medium") {return "#ffaa00";}
   return "rgba(0,212,255,0.5)";
 }
 
 function priorityColor(p: ActionPriority): string {
-  if (p === "urgent") { return "#ff3366"; }
-  if (p === "recommended") { return "#ffaa00"; }
+  if (p === "urgent") {return "#ff3366";}
+  if (p === "recommended") {return "#ffaa00";}
   return "#00d4ff";
 }
 
@@ -52,20 +56,24 @@ function patternTypeLabel(type: PatternType, t: (k: string) => string): string {
 }
 
 function riskColor(risk: string): string {
-  if (risk === "danger") { return "#ff3366"; }
-  if (risk === "warning") { return "#ffaa00"; }
+  if (risk === "danger") {return "#ff3366";}
+  if (risk === "warning") {return "#ffaa00";}
   return "#00ff88";
 }
 
 function metricIcon(metric: string) {
-  if (metric.includes("GPU")) { return <Cpu className="w-3.5 h-3.5" />; }
-  if (metric.includes("内存") || metric.includes("Memory")) { return <MemoryStick className="w-3.5 h-3.5" />; }
-  if (metric.includes("网络") || metric.includes("Network")) { return <Wifi className="w-3.5 h-3.5" />; }
-  if (metric.includes("延迟") || metric.includes("Latency")) { return <Activity className="w-3.5 h-3.5" />; }
+  if (metric.includes("GPU")) {return <Cpu className="w-3.5 h-3.5" />;}
+  if (metric.includes("内存") || metric.includes("Memory")) {return <MemoryStick className="w-3.5 h-3.5" />;}
+  if (metric.includes("网络") || metric.includes("Network")) {return <Wifi className="w-3.5 h-3.5" />;}
+  if (metric.includes("延迟") || metric.includes("Latency")) {return <Activity className="w-3.5 h-3.5" />;}
   return <BarChart3 className="w-3.5 h-3.5" />;
 }
 
-function PatternCard({ pattern, t }: { pattern: DetectedPattern; t: (k: string) => string }) {
+// ============================================================
+// Sub Components
+// ============================================================
+
+function PatternCard({ pattern, t }: { pattern: DiagnosticPattern; t: (k: string) => string }) {
   const maxVal = Math.max(...pattern.dataPoints);
   return (
     <GlassCard
@@ -105,6 +113,7 @@ function PatternCard({ pattern, t }: { pattern: DetectedPattern; t: (k: string) 
         {pattern.description}
       </p>
 
+      {/* Mini spark chart */}
       <div className="flex items-end gap-0.5 h-10 mb-2">
         {pattern.dataPoints.map((v, i) => (
           <div
@@ -222,6 +231,7 @@ function ActionCard({
         <span className="text-[#00ff88]">{action.estimatedImpact}</span>
       </div>
 
+      {/* Steps */}
       <div className="space-y-1.5 mb-3">
         {action.steps.map((step, i) => (
           <div key={i} className="flex items-start gap-2" style={{ fontSize: "0.68rem" }}>
@@ -241,6 +251,7 @@ function ActionCard({
         ))}
       </div>
 
+      {/* Execute Button */}
       {action.autoExecutable && (
         <button
           onClick={onExecute}
@@ -317,8 +328,13 @@ function ForecastCard({ forecast, t }: { forecast: PredictiveForecast; t: (k: st
   );
 }
 
-export default function AIDiagnostics() {
+// ============================================================
+// Main Component
+// ============================================================
+
+export function AIDiagnostics() {
   const { t } = useI18n();
+  // Integrate with WebSocket live data
   const wsData = useWebSocketData();
   const {
     status, session, history,
@@ -339,6 +355,7 @@ export default function AIDiagnostics() {
 
   return (
     <div className="space-y-4 max-w-[1400px] mx-auto">
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h1 className="text-[#00d4ff] flex items-center gap-2" style={{ fontSize: "1.1rem", fontFamily: "'Orbitron', sans-serif" }}>
@@ -375,6 +392,7 @@ export default function AIDiagnostics() {
         </button>
       </div>
 
+      {/* Stats / Summary */}
       {session && (
         <GlassCard className="p-4">
           <div className="flex items-start gap-3">
@@ -407,6 +425,7 @@ export default function AIDiagnostics() {
         </GlassCard>
       )}
 
+      {/* View Tabs */}
       {session && (
         <div className="flex gap-1 p-1 rounded-lg bg-[rgba(0,180,255,0.05)] border border-[rgba(0,180,255,0.1)]">
           {views.map(({ key, labelKey, icon: Icon }) => (
@@ -428,6 +447,7 @@ export default function AIDiagnostics() {
         </div>
       )}
 
+      {/* Content */}
       {session && activeView === "patterns" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {session.patterns.map((p) => (
@@ -466,8 +486,10 @@ export default function AIDiagnostics() {
         </div>
       )}
 
+      {/* History */}
       {!session && status !== "analyzing" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* Empty State */}
           <GlassCard className="p-12 flex items-center justify-center">
             <div className="text-center">
               <BrainCircuit className="w-12 h-12 text-[rgba(0,212,255,0.12)] mx-auto mb-4" />
@@ -477,6 +499,7 @@ export default function AIDiagnostics() {
             </div>
           </GlassCard>
 
+          {/* History */}
           <GlassCard className="p-4">
             <div className="text-[rgba(0,212,255,0.5)] mb-3" style={{ fontSize: "0.72rem" }}>
               {t("aiDiag.diagHistory")}
@@ -490,10 +513,10 @@ export default function AIDiagnostics() {
                   <BrainCircuit className="w-4 h-4 text-[rgba(0,212,255,0.3)]" />
                   <div className="flex-1">
                     <div className="text-[rgba(224,240,255,0.6)]" style={{ fontSize: "0.72rem" }}>
-                      {h.patterns.length} {t("aiDiag.patternsFound")} · {h.actions.length} {t("aiDiag.actionsGenerated")}
+                      {h.patterns} {t("aiDiag.patternsFound")} · {h.actions} {t("aiDiag.actionsGenerated")}
                     </div>
                     <div className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.58rem" }}>
-                      {new Date(h.startedAt).toLocaleString("zh-CN")}
+                      {new Date(h.time).toLocaleString("zh-CN")}
                     </div>
                   </div>
                   <ChevronRight className="w-3.5 h-3.5 text-[rgba(0,212,255,0.2)]" />
@@ -502,6 +525,23 @@ export default function AIDiagnostics() {
             </div>
           </GlassCard>
         </div>
+      )}
+
+      {/* Analyzing Animation */}
+      {status === "analyzing" && (
+        <GlassCard className="p-12 flex items-center justify-center">
+          <div className="text-center">
+            <div className="relative w-16 h-16 mx-auto mb-4">
+              <div className="absolute inset-0 rounded-full border-2 border-[rgba(0,212,255,0.15)]" />
+              <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-[#00d4ff] animate-spin" />
+              <div className="absolute inset-2 rounded-full border-2 border-transparent border-b-[#aa55ff] animate-spin" style={{ animationDirection: "reverse", animationDuration: "1.5s" }} />
+              <BrainCircuit className="absolute inset-0 m-auto w-6 h-6 text-[#00d4ff]" />
+            </div>
+            <p className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.68rem" }}>
+              {t("aiDiag.analyzingHint")}
+            </p>
+          </div>
+        </GlassCard>
       )}
     </div>
   );

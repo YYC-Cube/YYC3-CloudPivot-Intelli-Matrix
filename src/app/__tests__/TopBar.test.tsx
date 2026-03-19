@@ -15,8 +15,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 const mockNavigate = vi.fn();
 let mockPathname = "/";
@@ -40,35 +40,35 @@ vi.mock("../hooks/useI18n", () => ({
 
 vi.mock("motion/react", () => ({
   motion: {
-    div: (() => {
-      const Component = React.forwardRef(({ children, ...props }: React.HTMLAttributes<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => <div ref={ref} {...props}>{children}</div>);
-      Component.displayName = "MotionDiv";
-      return Component;
-    })(),
-  } as unknown,
-  AnimatePresence: ({ children }: React.PropsWithChildren) => <>{children}</>,
+    div: Object.assign(
+      React.forwardRef(({ children, ...props }: any, ref: any) => <div ref={ref} {...props}>{children}</div>),
+      { displayName: "motion.div" }
+    ),
+  },
+  AnimatePresence: Object.assign(
+    ({ children }: any) => <>{children}</>,
+    { displayName: "AnimatePresence" }
+  ),
 }));
 
 vi.mock("../components/ConnectionStatus", () => ({
-  __esModule: true,
-  default: ({ state }: { state: string }) => <div data-testid="connection-status">{state}</div>,
+  ConnectionStatus: ({ state }: any) => <div data-testid="connection-status">{state}</div>,
 }));
 
 vi.mock("../components/LanguageSwitcher", () => ({
-  __esModule: true,
-  default: () => <div data-testid="lang-switcher" />,
+  LanguageSwitcher: () => <div data-testid="lang-switcher" />,
 }));
 
 vi.mock("../components/YYC3Logo", () => ({
-  default: () => <div data-testid="yyc3-logo" />,
-}))
+  YYC3Logo: () => <div data-testid="yyc3-logo" />,
+}));
 
 let mockGhostMode = false;
 vi.mock("../lib/supabaseClient", () => ({
   isGhostMode: () => mockGhostMode,
 }));
 
-import TopBar from "../components/TopBar";
+import { TopBar } from "../components/TopBar";
 
 const defaultProps = {
   connectionState: "connected" as const,
@@ -90,10 +90,6 @@ describe("TopBar", () => {
     vi.clearAllMocks();
     mockPathname = "/";
     mockGhostMode = false;
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("桌面端基础渲染", () => {
@@ -139,7 +135,7 @@ describe("TopBar", () => {
     it("点击通知按钮应显示通知面板", () => {
       render(<TopBar {...defaultProps} />);
       fireEvent.click(screen.getByText("3").closest("button")!);
-      expect(screen.getByText("common.info")).toBeInTheDocument();
+      expect(screen.getByText("common.notifications")).toBeInTheDocument();
     });
 
     it("通知面板应包含 3 条通知", () => {
@@ -161,14 +157,14 @@ describe("TopBar", () => {
     it("用户菜单应包含导航项", () => {
       render(<TopBar {...defaultProps} />);
       fireEvent.click(screen.getByText("AD").closest("button")!);
-      expect(screen.getAllByText("nav.userMgmt").length).toBeGreaterThan(0);
-      expect(screen.getAllByText("nav.settings").length).toBeGreaterThan(0);
+      expect(screen.getByText("nav.userMgmt")).toBeInTheDocument();
+      expect(screen.getByText("nav.settings")).toBeInTheDocument();
     });
 
     it("点击登出应调用 onLogout", () => {
       render(<TopBar {...defaultProps} />);
       fireEvent.click(screen.getByText("AD").closest("button")!);
-      fireEvent.click(screen.getByText("common.close"));
+      fireEvent.click(screen.getByText("common.logout"));
       expect(defaultProps.onLogout).toHaveBeenCalled();
     });
 
@@ -191,9 +187,9 @@ describe("TopBar", () => {
 
     it("移动端应渲染汉堡按钮", () => {
       render(<TopBar {...mobileProps} />);
-      // Find hamburger button (contains Menu icon)
+      // Find the toggle button
       const buttons = screen.getAllByRole("button");
-      // First button should be hamburger
+      // First button should be the hamburger
       expect(buttons.length).toBeGreaterThanOrEqual(3);
     });
 
@@ -250,7 +246,7 @@ describe("TopBar", () => {
 
     it("抽屉底部应渲染登出按钮", () => {
       render(<TopBar {...defaultProps} isMobile={true} isTablet={false} mobileMenuOpen={true} />);
-      const logoutBtns = screen.getAllByText("common.close");
+      const logoutBtns = screen.getAllByText("common.logout");
       expect(logoutBtns.length).toBeGreaterThanOrEqual(1);
     });
   });
@@ -284,7 +280,7 @@ describe("TopBar", () => {
   });
 
   describe("navItems 导出", () => {
-    it("应导出扁平导航数组", async () => {
+    it("应导出扁平���航数组", async () => {
       const mod = await import("../components/TopBar");
       expect(Array.isArray(mod.navItems)).toBe(true);
       expect(mod.navItems.length).toBeGreaterThan(5);

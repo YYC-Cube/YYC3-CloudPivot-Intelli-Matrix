@@ -1,6 +1,6 @@
 /**
  * i18n-consistency.test.ts
- * =============
+ * =========================
  * 全量 i18n key 一致性验证
  *
  * 覆盖范围:
@@ -14,12 +14,12 @@ import { describe, it, expect } from "vitest";
 import zhCN from "../i18n/zh-CN";
 import enUS from "../i18n/en-US";
 
-function getNestedKeys(obj: Record<string, unknown>, prefix = ""): string[] {
+function getNestedKeys(obj: Record<string, any>, prefix = ""): string[] {
   const keys: string[] = [];
   for (const k of Object.keys(obj)) {
     const path = prefix ? `${prefix}.${k}` : k;
     if (typeof obj[k] === "object" && obj[k] !== null) {
-      keys.push(...getNestedKeys(obj[k] as Record<string, unknown>, path));
+      keys.push(...getNestedKeys(obj[k], path));
     } else {
       keys.push(path);
     }
@@ -27,18 +27,18 @@ function getNestedKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   return keys;
 }
 
-function getNestedValue(obj: Record<string, unknown>, path: string): unknown {
+function getNestedValue(obj: Record<string, any>, path: string): any {
   const keys = path.split(".");
-  let result: unknown = obj;
+  let result: any = obj;
   for (const k of keys) {
     if (result === null) {return undefined;}
-    result = (result as Record<string, unknown>)[k];
+    result = result[k];
   }
   return result;
 }
 
-const zhKeys = getNestedKeys(zhCN as Record<string, unknown>);
-const enKeys = getNestedKeys(enUS as Record<string, unknown>);
+const zhKeys = getNestedKeys(zhCN as Record<string, any>);
+const enKeys = getNestedKeys(enUS as Record<string, any>);
 
 describe("i18n 全量一致性验证", () => {
   describe("key 数量", () => {
@@ -90,7 +90,7 @@ describe("i18n 全量一致性验证", () => {
       "common", "nav", "bottomNav", "monitor", "followUp",
       "patrol", "operations", "fileManager", "log", "report",
       "ai", "palette", "pwa", "settings", "loop", "devGuide",
-      "modelProvider", "sdk",
+      "modelProvider", "sdk", "security",
     ];
 
     expectedNamespaces.forEach((ns) => {

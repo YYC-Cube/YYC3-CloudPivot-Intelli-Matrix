@@ -1,12 +1,40 @@
-import GlassCard from "./GlassCard";
+/**
+ * @file: OperationAudit.tsx
+ * @description: OperationAudit.tsx description
+ * @author: YanYuCloudCube Team
+ * @version: v1.0.0
+ * @created: 2026-03-19
+ * @updated: 2026-03-19
+ * @status: active
+ * @tags: [tag1],[tag2],[tag3]
+ */
+
+import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import { useState } from "react";
-import { Search, Download, ChevronLeft, ChevronRight, CheckCircle2, XCircle, AlertTriangle, Clock, RefreshCw, Eye, User, Shield, Database, Activity } from "lucide-react";
+import React, { useState, useMemo, useCallback } from "react";
+import {
+  Search, Filter, Download, Calendar, ChevronDown, ChevronLeft, ChevronRight,
+  CheckCircle2, XCircle, AlertTriangle, Clock, RefreshCw, Eye, MoreHorizontal,
+  User, Shield, Database, Server, Activity, FileJson, Copy, Check
+} from "lucide-react";
 import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell
 } from "recharts";
+import { toast } from "sonner";
 
-const auditLogs = [
+interface AuditLog {
+  id: string;
+  time: string;
+  user: string;
+  role: string;
+  action: string;
+  target: string;
+  ip: string;
+  status: "success" | "running" | "failed" | "warning";
+  risk: "low" | "medium" | "high";
+}
+
+const ALL_AUDIT_LOGS: AuditLog[] = [
   { id: "AUD-20260222-0001", time: "14:32:08", user: "admin", role: "超级管理员", action: "模型部署", target: "DeepSeek-V3 部署至 GPU-A100-03", ip: "192.168.1.100", status: "success", risk: "low" },
   { id: "AUD-20260222-0002", time: "14:28:45", user: "ops_bot", role: "运维机器人", action: "节点重启", target: "GPU-H100-03 执行热重启", ip: "10.0.0.50", status: "success", risk: "medium" },
   { id: "AUD-20260222-0003", time: "14:25:10", user: "api_svc", role: "API 服务", action: "批量推理", target: "Batch#2847 提交 → LLaMA-70B", ip: "10.0.1.20", status: "running", risk: "low" },
@@ -17,6 +45,8 @@ const auditLogs = [
   { id: "AUD-20260222-0008", time: "14:00:11", user: "ops_bot", role: "运维机器人", action: "健康检查", target: "全节点巡检 → 7/8 正常", ip: "10.0.0.50", status: "success", risk: "low" },
   { id: "AUD-20260222-0009", time: "13:55:48", user: "admin", role: "超级管理员", action: "权限变更", target: "dev_wang 升级为运维角色", ip: "192.168.1.100", status: "success", risk: "high" },
   { id: "AUD-20260222-0010", time: "13:50:20", user: "api_svc", role: "API 服务", action: "异常请求", target: "非法Token访问 /api/v2/infer", ip: "203.0.113.45", status: "failed", risk: "high" },
+  { id: "AUD-20260222-0011", time: "13:45:15", user: "dev_wang", role: "开发者", action: "模型测试", target: "Qwen-72B A/B 测试启动", ip: "192.168.2.88", status: "success", risk: "low" },
+  { id: "AUD-20260222-0012", time: "13:40:30", user: "ops_bot", role: "运维机器人", action: "缓存清理", target: "清理 GPU-A100-01 推理缓存", ip: "10.0.0.50", status: "success", risk: "low" },
 ];
 
 const auditTrend = [
@@ -45,10 +75,91 @@ const tooltipStyle = {
   fontFamily: "'Rajdhani', sans-serif",
 };
 
-export default function OperationAudit() {
+const toastStyle = {
+  background: "rgba(8, 25, 55, 0.95)",
+  border: "1px solid rgba(0, 255, 136, 0.3)",
+  color: "#e0f0ff",
+};
+
+const PAGE_SIZE = 5;
+
+export function OperationAudit() {
   const { t } = useI18n();
   const [selectedFilter, setSelectedFilter] = useState("all");
-  const [detailLog, setDetailLog] = useState<typeof auditLogs[0] | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [detailLog, setDetailLog] = useState<AuditLog | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // Filter logic
+  const filteredLogs = useMemo(() => {
+    let logs = ALL_AUDIT_LOGS;
+
+    // Category filter
+    if (selectedFilter === "success") {
+      logs = logs.filter(l => l.status === "success");
+    } else if (selectedFilter === "abnormal") {
+      logs = logs.filter(l => l.status === "failed" || l.status === "warning");
+    } else if (selectedFilter === "alert") {
+      logs = logs.filter(l => l.risk === "high");
+    }
+
+    // Search
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      logs = logs.filter(l =>
+        l.id.toLowerCase().includes(q) ||
+        l.user.toLowerCase().includes(q) ||
+        l.action.toLowerCase().includes(q) ||
+        l.target.toLowerCase().includes(q) ||
+        l.ip.includes(q)
+      );
+    }
+
+    return logs;
+  }, [selectedFilter, searchQuery]);
+
+  // Pagination
+  const totalPages = Math.max(1, Math.ceil(filteredLogs.length / PAGE_SIZE));
+  const pagedLogs = filteredLogs.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  // Reset page when filter changes
+  React.useEffect(() => { setCurrentPage(1); }, [selectedFilter, searchQuery]);
+
+  const handleExport = useCallback(() => {
+    const data = JSON.stringify(filteredLogs, null, 2);
+    const blob = new Blob([data], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `audit-log-${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`已导出 ${filteredLogs.length} 条审计日志`, { style: toastStyle });
+  }, [filteredLogs]);
+
+  const handleTraceLink = useCallback((log: AuditLog) => {
+    toast.success(`追踪链路: ${log.id}`, {
+      description: `${log.user} → ${log.action} → ${log.target}`,
+      style: toastStyle,
+    });
+  }, []);
+
+  const handleExportReport = useCallback((log: AuditLog) => {
+    const report = {
+      ...log,
+      exportedAt: new Date().toISOString(),
+      fullTimestamp: `2026-02-22 ${log.time}`,
+    };
+    const blob = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `audit-${log.id}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success("报告已导出", { style: toastStyle });
+    setDetailLog(null);
+  }, []);
 
   const statusIcon = (status: string) => {
     switch (status) {
@@ -60,15 +171,30 @@ export default function OperationAudit() {
     }
   };
 
+  // Pagination display
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {pages.push(i);}
+    } else {
+      pages.push(1);
+      if (currentPage > 3) {pages.push("...");}
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {pages.push(i);}
+      if (currentPage < totalPages - 2) {pages.push("...");}
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
   return (
     <div className="space-y-3 md:space-y-4">
       {/* Summary Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {[
           { label: t("audit.todayOps"), value: "1,284", icon: Activity, color: "#00d4ff", sub: t("audit.comparedYesterday") },
-          { label: t("audit.abnormalEvents"), value: "18", icon: AlertTriangle, color: "#ffdd00", sub: t("audit.needProcess") },
-          { label: t("audit.securityEvents"), value: "3", icon: Shield, color: "#ff3366", sub: t("audit.unprocessed") },
-          { label: t("audit.activeUsers"), value: "24", icon: User, color: "#00ff88", sub: t("audit.onlineCount") },
+          { label: t("audit.abnormalEvents"), value: String(ALL_AUDIT_LOGS.filter(l => l.status === "failed" || l.status === "warning").length), icon: AlertTriangle, color: "#ffdd00", sub: t("audit.needProcess") },
+          { label: t("audit.securityEvents"), value: String(ALL_AUDIT_LOGS.filter(l => l.risk === "high").length), icon: Shield, color: "#ff3366", sub: t("audit.unprocessed") },
+          { label: t("audit.activeUsers"), value: String(new Set(ALL_AUDIT_LOGS.map(l => l.user)).size), icon: User, color: "#00ff88", sub: t("audit.onlineCount") },
         ].map((card) => (
           <GlassCard key={card.label} className="p-4">
             <div className="flex items-center justify-between mb-2">
@@ -138,12 +264,21 @@ export default function OperationAudit() {
           <div className="flex items-center gap-2">
             <Database className="w-4 h-4 text-[#00d4ff]" />
             <h3 className="text-[#e0f0ff]" style={{ fontSize: "0.9rem" }}>{t("audit.auditLog")}</h3>
+            <span className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.65rem" }}>
+              ({filteredLogs.length} 条)
+            </span>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             {/* Search */}
             <div className="relative">
               <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />
-              <input placeholder={t("audit.searchLog")} className="pl-8 pr-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.3)] focus:outline-none focus:border-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.75rem", width: "180px" }} />
+              <input
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder={t("audit.searchLog")}
+                className="pl-8 pr-3 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.3)] focus:outline-none focus:border-[rgba(0,212,255,0.4)]"
+                style={{ fontSize: "0.75rem", width: "180px" }}
+              />
             </div>
             {/* Filter */}
             {[
@@ -158,7 +293,11 @@ export default function OperationAudit() {
                 style={{ fontSize: "0.72rem" }}
               >{f.label}</button>
             ))}
-            <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
+            <button
+              onClick={handleExport}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[rgba(0,212,255,0.08)] border border-[rgba(0,212,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all"
+              style={{ fontSize: "0.72rem" }}
+            >
               <Download className="w-3 h-3" /> {t("audit.export")}
             </button>
           </div>
@@ -175,7 +314,7 @@ export default function OperationAudit() {
               </tr>
             </thead>
             <tbody>
-              {auditLogs.map((log) => (
+              {pagedLogs.map((log) => (
                 <tr key={log.id} className="border-t border-[rgba(0,180,255,0.05)] hover:bg-[rgba(0,180,255,0.03)] cursor-pointer transition-colors" onClick={() => setDetailLog(log)}>
                   <td className="px-3 py-2.5">{statusIcon(log.status)}</td>
                   <td className="px-3 py-2.5 text-[rgba(0,212,255,0.6)]" style={{ fontSize: "0.7rem", fontFamily: "'Orbitron', sans-serif" }}>{log.id}</td>
@@ -197,29 +336,57 @@ export default function OperationAudit() {
                     </span>
                   </td>
                   <td className="px-3 py-2.5">
-                    <button className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); setDetailLog(log); }}
+                      className="p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all"
+                    >
                       <Eye className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />
                     </button>
                   </td>
                 </tr>
               ))}
+              {pagedLogs.length === 0 && (
+                <tr>
+                  <td colSpan={10} className="text-center py-8 text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.78rem" }}>
+                    无匹配记录
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
 
         {/* Pagination */}
         <div className="flex items-center justify-between mt-4">
-          <span className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.72rem" }}>{t("audit.totalRecords").replace("{n}", "1,284")}</span>
+          <span className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.72rem" }}>
+            {t("audit.totalRecords").replace("{n}", String(filteredLogs.length))}
+          </span>
           <div className="flex items-center gap-1">
-            <button className="p-1.5 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all">
+            <button
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+              className="p-1.5 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all disabled:opacity-30"
+            >
               <ChevronLeft className="w-4 h-4 text-[rgba(0,212,255,0.4)]" />
             </button>
-            {[1, 2, 3, "...", 128].map((p, i) => (
-              <button key={i} className={`px-2.5 py-1 rounded transition-all ${p === 1 ? "bg-[rgba(0,212,255,0.15)] text-[#00d4ff]" : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff]"}`} style={{ fontSize: "0.72rem" }}>
+            {getPageNumbers().map((p, i) => (
+              <button
+                key={i}
+                onClick={() => typeof p === "number" && setCurrentPage(p)}
+                disabled={typeof p === "string"}
+                className={`px-2.5 py-1 rounded transition-all ${
+                  p === currentPage ? "bg-[rgba(0,212,255,0.15)] text-[#00d4ff]" : typeof p === "string" ? "text-[rgba(0,212,255,0.2)] cursor-default" : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff]"
+                }`}
+                style={{ fontSize: "0.72rem" }}
+              >
                 {p}
               </button>
             ))}
-            <button className="p-1.5 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all">
+            <button
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+              className="p-1.5 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all disabled:opacity-30"
+            >
               <ChevronRight className="w-4 h-4 text-[rgba(0,212,255,0.4)]" />
             </button>
           </div>
@@ -256,10 +423,19 @@ export default function OperationAudit() {
               ))}
             </div>
             <div className="flex gap-3 mt-5">
-              <button className="flex-1 py-2 rounded-xl bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.2)] transition-all" style={{ fontSize: "0.8rem" }}>
+              <button
+                onClick={() => handleTraceLink(detailLog)}
+                className="flex-1 py-2 rounded-xl bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.2)] transition-all"
+                style={{ fontSize: "0.8rem" }}
+              >
                 {t("audit.traceLink")}
               </button>
-              <button className="flex-1 py-2 rounded-xl bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.8rem" }}>
+              <button
+                onClick={() => handleExportReport(detailLog)}
+                className="flex-1 py-2 rounded-xl bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all flex items-center justify-center gap-1.5"
+                style={{ fontSize: "0.8rem" }}
+              >
+                <FileJson className="w-3.5 h-3.5" />
                 {t("audit.exportReport")}
               </button>
             </div>

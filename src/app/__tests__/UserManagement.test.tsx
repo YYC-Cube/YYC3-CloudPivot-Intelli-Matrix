@@ -8,17 +8,18 @@
  * - 用户列表表格渲染 (8 条)
  * - 搜索过滤
  * - 角色面板渲染 (5 个角色)
- * - 添加用户按钮
- * - 创建角色/权限矩阵按钮
+ * - 添加用户按钮 + 模态框
+ * - 编辑用户功能
+ * - 锁定/解锁用户
+ * - 删除用户
+ * - 权限矩阵
  * - 用户详情 Modal 打开/关闭
- * - Modal 内用户信息字段
- * - 操作按钮 (查看/编辑/锁定)
  */
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
   useI18n: () => ({
@@ -30,19 +31,21 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 vi.mock("../components/GlassCard", () => ({
-  default: ({ children, className }: { children: React.ReactNode; className?: string }) => <div className={className}>{children}</div>,
+  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
-import UserManagement from "../components/UserManagement";
+vi.mock("sonner", () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn(),
+    info: vi.fn(),
+  },
+}));
+
+import { UserManagement } from "../components/UserManagement";
 
 describe("UserManagement", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    cleanup();
-  });
+  beforeEach(() => vi.clearAllMocks());
 
   describe("统计卡片", () => {
     it("应渲染 5 个统计卡片", () => {
@@ -54,11 +57,10 @@ describe("UserManagement", () => {
       expect(screen.getByText("userMgmt.todayApiCalls")).toBeInTheDocument();
     });
 
-    it("应渲染统计数值", () => {
+    it("应渲染动态统计数值", () => {
       render(<UserManagement />);
-      expect(screen.getByText("24")).toBeInTheDocument();
-      expect(screen.getByText("18")).toBeInTheDocument();
-      expect(screen.getByText("72.4K")).toBeInTheDocument();
+      // 8 initial users
+      expect(screen.getByText("8")).toBeInTheDocument();
     });
   });
 
@@ -99,10 +101,9 @@ describe("UserManagement", () => {
 
     it("应渲染角色标签", () => {
       render(<UserManagement />);
-      // 角色名称在用户列表和角色面板中都出现，所以检查数量
-      expect(screen.getAllByText("超级管理员")).toHaveLength(2); // 角色面板 + 用户列表
-      expect(screen.getAllByText("运维工程师")).toHaveLength(2);
-      expect(screen.getAllByText("开发者")).toHaveLength(2);
+      expect(screen.getByText("超级管理员")).toBeInTheDocument();
+      expect(screen.getByText("运维工程师")).toBeInTheDocument();
+      expect(screen.getByText("开发者")).toBeInTheDocument();
     });
 
     it("应渲染添加用户按钮", () => {
@@ -158,7 +159,6 @@ describe("UserManagement", () => {
 
     it("应渲染 5 个角色卡片", () => {
       render(<UserManagement />);
-      // Role names in sidebar panel (different from table role badges)
       const roleNames = ["超级管理员", "运维工程师", "开发者", "数据分析师", "系统服务"];
       roleNames.forEach(name => {
         expect(screen.getAllByText(name).length).toBeGreaterThanOrEqual(1);
@@ -180,12 +180,19 @@ describe("UserManagement", () => {
       render(<UserManagement />);
       expect(screen.getByText("userMgmt.permMatrix")).toBeInTheDocument();
     });
+
+    it("点击权限矩阵按钮应显示权限表", () => {
+      render(<UserManagement />);
+      const btn = screen.getByText("userMgmt.permMatrix");
+      fireEvent.click(btn);
+      expect(screen.getByText("权限矩阵")).toBeInTheDocument();
+      expect(screen.getByText("节点管理")).toBeInTheDocument();
+    });
   });
 
   describe("用户详情 Modal", () => {
     it("点击查看按钮应打开 Modal", () => {
       render(<UserManagement />);
-      // Each row has Eye button for viewing. Click first one
       const row = screen.getByText("张管理").closest("tr")!;
       const eyeBtn = row.querySelector("button");
       if (eyeBtn) {
@@ -223,7 +230,6 @@ describe("UserManagement", () => {
       if (eyeBtn) {
         fireEvent.click(eyeBtn);
         expect(screen.getByText("userMgmt.userDetail")).toBeInTheDocument();
-        // Click close button
         const closeBtn = screen.getByText("userMgmt.userDetail").parentElement?.querySelector("button");
         if (closeBtn) {
           fireEvent.click(closeBtn);
@@ -238,12 +244,34 @@ describe("UserManagement", () => {
       const eyeBtn = row.querySelector("button");
       if (eyeBtn) {
         fireEvent.click(eyeBtn);
-        // Click backdrop (the outer div with onClick)
         const backdrop = screen.getByText("userMgmt.userDetail").closest(".fixed");
         if (backdrop) {
           fireEvent.click(backdrop);
           expect(screen.queryByText("userMgmt.userDetail")).not.toBeInTheDocument();
         }
+      }
+    });
+  });
+
+  describe("添加用户", () => {
+    it("点击添加按钮应打开添加模态框", () => {
+      render(<UserManagement />);
+      const addBtn = screen.getByText("userMgmt.addUser");
+      fireEvent.click(addBtn);
+      expect(screen.getByText("添加用户")).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("输入名称...")).toBeInTheDocument();
+    });
+  });
+
+  describe("编辑用户", () => {
+    it("点击编辑按钮应打开编辑模态框", () => {
+      render(<UserManagement />);
+      const row = screen.getByText("张管理").closest("tr")!;
+      const buttons = row.querySelectorAll("button");
+      // Second button is edit (after eye)
+      if (buttons[1]) {
+        fireEvent.click(buttons[1]);
+        expect(screen.getByText("编辑用户")).toBeInTheDocument();
       }
     });
   });

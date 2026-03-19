@@ -17,12 +17,12 @@
  */
 
 // @vitest-environment jsdom
+import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 vi.mock("../components/GlassCard", () => ({
-  __esModule: true,
-  default: ({ children, className }: any) => <div className={className}>{children}</div>,
+  GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
 }));
 
 vi.mock("sonner", () => ({
@@ -41,7 +41,7 @@ vi.mock("../hooks/useNetworkConfig", () => ({
   useNetworkConfig: () => mockHookState,
 }));
 
-import NetworkConfig from "../components/NetworkConfig";
+import { NetworkConfig } from "../components/NetworkConfig";
 
 function defaultHookState() {
   return {
@@ -74,7 +74,6 @@ const defaultProps = { open: true, onClose: vi.fn() };
 describe("NetworkConfig", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    cleanup();
     mockHookState = defaultHookState();
   });
 
@@ -101,6 +100,7 @@ describe("NetworkConfig", () => {
       expect(screen.getByText("自动检测")).toBeInTheDocument();
       expect(screen.getByText("WiFi 配置")).toBeInTheDocument();
       expect(screen.getByText("手动配置")).toBeInTheDocument();
+      expect(screen.getByText("连接历史")).toBeInTheDocument();
     });
 
     it("应渲染测试连接按钮", () => {
@@ -128,8 +128,8 @@ describe("NetworkConfig", () => {
     it("应显示本机 IP", () => {
       render(<NetworkConfig {...defaultProps} />);
       expect(screen.getByText("本机 IP")).toBeInTheDocument();
-      const ipElements = screen.getAllByText("192.168.3.100");
-      expect(ipElements.length).toBeGreaterThan(0);
+      // localIP 和 interfaces[0].ip 相同，使用 getAllByText
+      expect(screen.getAllByText("192.168.3.100").length).toBeGreaterThan(0);
     });
 
     it("应显示网络接口列表", () => {
@@ -218,7 +218,7 @@ describe("NetworkConfig", () => {
   describe("测试连接", () => {
     it("点击测试连接应调用 testConnection", async () => {
       render(<NetworkConfig {...defaultProps} />);
-      fireEvent.click(screen.getByText("测试连接"));
+      fireEvent.click(screen.getByText("测��连接"));
       await waitFor(() => expect(mockTestConnection).toHaveBeenCalled());
     });
 
@@ -270,9 +270,9 @@ describe("NetworkConfig", () => {
   describe("关闭", () => {
     it("点击关闭按钮应调用 onClose", () => {
       render(<NetworkConfig {...defaultProps} />);
-      // Close button is in the header
-      const header = screen.getByText("网络连接配置").closest("div")!;
-      const closeBtn = header.querySelector("button");
+      // Close button is in the header bar, sibling of the title wrapper
+      const headerBar = screen.getByText("网络连接配置").closest(".flex.items-center.justify-between")!;
+      const closeBtn = headerBar.querySelector("button");
       if (closeBtn) {
         fireEvent.click(closeBtn);
         expect(defaultProps.onClose).toHaveBeenCalled();
@@ -287,6 +287,30 @@ describe("NetworkConfig", () => {
         fireEvent.click(backdrop);
         expect(defaultProps.onClose).toHaveBeenCalled();
       }
+    });
+  });
+
+  describe("连接历史 Tab", () => {
+    it("切换到连接历史 Tab 应显示内容", () => {
+      render(<NetworkConfig {...defaultProps} />);
+      fireEvent.click(screen.getByText("连接历史"));
+      expect(screen.getByText("自动重连设置")).toBeInTheDocument();
+      expect(screen.getByText("连接历史记录")).toBeInTheDocument();
+    });
+
+    it("应显示自动重连设置项", () => {
+      render(<NetworkConfig {...defaultProps} />);
+      fireEvent.click(screen.getByText("连接历史"));
+      expect(screen.getByText("自动重连")).toBeInTheDocument();
+      expect(screen.getByText("优先网络")).toBeInTheDocument();
+      expect(screen.getByText("重连间隔")).toBeInTheDocument();
+      expect(screen.getByText("最大重试次数")).toBeInTheDocument();
+    });
+
+    it("无历史记录时应显示提示", () => {
+      render(<NetworkConfig {...defaultProps} />);
+      fireEvent.click(screen.getByText("连接历史"));
+      expect(screen.getByText("暂无连接历史记录")).toBeInTheDocument();
     });
   });
 });

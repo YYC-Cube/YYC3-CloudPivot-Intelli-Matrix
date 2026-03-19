@@ -1,19 +1,19 @@
 /**
  * CLITerminal.tsx
- * ============
+ * ================
  * Web 端 CLI 终端模拟器
  * 支持 yyc3 命令、自动补全、历史导航
  */
 
 import React, { useRef, useEffect, useContext } from "react";
 import { Terminal, ChevronRight } from "lucide-react";
-import GlassCard from "./GlassCard";
+import { GlassCard } from "./GlassCard";
 import { useTerminal } from "../hooks/useTerminal";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 import { useNavigate } from "react-router";
 
-export default function CLITerminal() {
+export function CLITerminal() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const navigate = useNavigate();

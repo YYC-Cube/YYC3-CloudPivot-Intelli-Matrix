@@ -1,6 +1,6 @@
 /**
  * FollowUpPanel.tsx
- * ==============
+ * ==================
  * 一键跟进系统 · 主面板页面
  * 路由: /follow-up
  *
@@ -12,14 +12,14 @@ import {
   AlertTriangle, AlertCircle, XCircle, Info, Filter, Bell,
   Activity, CheckCircle,
 } from "lucide-react";
-import GlassCard from "./GlassCard";
-import FollowUpCard from "./FollowUpCard";
-import FollowUpDrawer from "./FollowUpDrawer";
+import { GlassCard } from "./GlassCard";
+import { FollowUpCard } from "./FollowUpCard";
+import { FollowUpDrawer } from "./FollowUpDrawer";
 import { useFollowUp } from "../hooks/useFollowUp";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "@/lib/layoutContext";
+import { ViewContext } from "../lib/view-context";
 
-export default function FollowUpPanel() {
+export function FollowUpPanel() {
   const view = useContext(ViewContext);
   const isMobile = view?.isMobile ?? false;
   const { t } = useI18n();

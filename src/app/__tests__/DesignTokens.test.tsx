@@ -1,6 +1,6 @@
 /**
  * DesignTokens.test.tsx
- * ============
+ * =======================
  * Design Tokens 展示组件测试
  *
  * 覆盖范围:
@@ -9,8 +9,9 @@
  * - 标签切换
  */
 
-import { describe, it, expect, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import React from "react";
+import { describe, it, expect } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 import {
   DesignTokens,
   COLOR_TOKENS,
@@ -21,15 +22,7 @@ import {
 } from "../components/design-system/DesignTokens";
 
 describe("DesignTokens", () => {
-
-afterEach(() => {
-  cleanup();
-});
   describe("Token 数据完整性", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应有 19 个色彩 Token", () => {
       expect(COLOR_TOKENS.length).toBe(19);
     });
@@ -61,59 +54,51 @@ afterEach(() => {
   });
 
   describe("渲染", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应渲染主容器", () => {
       render(<DesignTokens />);
-      expect(screen.getAllByTestId("design-tokens")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("design-tokens")).toBeInTheDocument();
     });
 
     it("应有 5 个标签按钮", () => {
       render(<DesignTokens />);
-      expect(screen.getAllByTestId("token-tab-colors")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("token-tab-typography")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("token-tab-spacing")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("token-tab-shadows")[0]).toBeInTheDocument();
-      expect(screen.getAllByTestId("token-tab-animations")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("token-tab-colors")).toBeInTheDocument();
+      expect(screen.getByTestId("token-tab-typography")).toBeInTheDocument();
+      expect(screen.getByTestId("token-tab-spacing")).toBeInTheDocument();
+      expect(screen.getByTestId("token-tab-shadows")).toBeInTheDocument();
+      expect(screen.getByTestId("token-tab-animations")).toBeInTheDocument();
     });
 
     it("默认应显示色彩面板", () => {
       render(<DesignTokens />);
-      expect(screen.getAllByTestId("token-colors")[0]).toBeInTheDocument();
+      expect(screen.getByTestId("token-colors")).toBeInTheDocument();
     });
 
     it("切换到字体标签应显示字体面板", () => {
       render(<DesignTokens />);
-      fireEvent.click(screen.getAllByTestId("token-tab-typography")[0]);
-      expect(screen.getAllByTestId("token-typography")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("token-tab-typography"));
+      expect(screen.getByTestId("token-typography")).toBeInTheDocument();
     });
 
     it("切换到间距标签", () => {
       render(<DesignTokens />);
-      fireEvent.click(screen.getAllByTestId("token-tab-spacing")[0]);
-      expect(screen.getAllByTestId("token-spacing")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("token-tab-spacing"));
+      expect(screen.getByTestId("token-spacing")).toBeInTheDocument();
     });
 
     it("切换到阴影标签", () => {
       render(<DesignTokens />);
-      fireEvent.click(screen.getAllByTestId("token-tab-shadows")[0]);
-      expect(screen.getAllByTestId("token-shadows")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("token-tab-shadows"));
+      expect(screen.getByTestId("token-shadows")).toBeInTheDocument();
     });
 
     it("切换到动效标签", () => {
       render(<DesignTokens />);
-      fireEvent.click(screen.getAllByTestId("token-tab-animations")[0]);
-      expect(screen.getAllByTestId("token-animations")[0]).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("token-tab-animations"));
+      expect(screen.getByTestId("token-animations")).toBeInTheDocument();
     });
   });
 
   describe("Primary 色彩标注", () => {
-
-afterEach(() => {
-  cleanup();
-});
     it("应含 #00d4ff 主色", () => {
       const primary = COLOR_TOKENS.find((c) => c.name === "Primary");
       expect(primary?.value).toBe("#00d4ff");
