@@ -213,6 +213,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               >
                 {/* ── 分类按钮 ── */}
                 <button
+                  data-testid={`nav-cat-${cat.id}`}
                   onClick={() => {
                     // 点击分类：导航到第一个子项
                     const firstChild = cat.children[0];
@@ -266,6 +267,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                       return (
                         <button
                           key={child.path}
+                          data-testid={`nav-item-${child.key}`}
                           onClick={() => navigate(child.path)}
                           className={`
                             w-full flex items-center gap-2 rounded-md my-px transition-all duration-150
@@ -320,6 +322,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                           return (
                             <button
                               key={child.path}
+                              data-testid={`flyout-nav-item-${child.key}`}
                               onClick={() => navigate(child.path)}
                               className={`
                                 w-full flex items-center gap-2.5 text-left transition-all duration-100
@@ -351,6 +354,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         <div className="shrink-0 border-t border-[rgba(0,180,255,0.06)] py-2">
           <button
             onClick={onToggle}
+            data-testid="sidebar-toggle-btn"
             className="w-full flex items-center gap-2 text-[rgba(0,212,255,0.25)] hover:text-[rgba(0,212,255,0.5)] transition-all"
             style={{
               padding: collapsed ? "8px 0" : "6px 18px",

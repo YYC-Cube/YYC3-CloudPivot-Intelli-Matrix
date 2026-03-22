@@ -5,13 +5,14 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { ModelProviderPanel } from "../components/ModelProviderPanel";
 import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
 import zhCN from "../i18n/zh-CN";
+import "./setup";
 
 function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
@@ -62,6 +63,10 @@ function renderPanel() {
 describe("ModelProviderPanel", () => {
   beforeEach(() => {
     localStorage.clear();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   it("应渲染页面标题", () => {

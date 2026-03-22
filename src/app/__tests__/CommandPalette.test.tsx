@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup, within } from "@testing-library/react";
 
 const mockNavigate = vi.fn();
 
@@ -30,6 +30,10 @@ describe("CommandPalette", () => {
   beforeEach(() => {
     onClose = vi.fn();
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("显示/隐藏", () => {
@@ -58,16 +62,18 @@ describe("CommandPalette", () => {
   describe("搜索筛选", () => {
     it("初始应显示所有项目", () => {
       render(<CommandPalette isOpen={true} onClose={onClose} />);
-      expect(screen.getByTestId("palette-results")).toBeInTheDocument();
-      expect(screen.getByText("数据监控")).toBeInTheDocument();
-      expect(screen.getByText("操作中心")).toBeInTheDocument();
+      const results = screen.getByTestId("palette-results");
+      expect(results).toBeInTheDocument();
+      expect(within(results).getByText("数据监控")).toBeInTheDocument();
+      expect(within(results).getByText("操作中心")).toBeInTheDocument();
     });
 
     it("输入关键词应筛选结果", () => {
       render(<CommandPalette isOpen={true} onClose={onClose} />);
       fireEvent.change(screen.getByTestId("palette-input"), { target: { value: "操作" } });
-      expect(screen.getByText("操作中心")).toBeInTheDocument();
-      expect(screen.getByText("操作审计")).toBeInTheDocument();
+      const results = screen.getByTestId("palette-results");
+      expect(within(results).getByText("操作中心")).toBeInTheDocument();
+      expect(within(results).getByText("操作审计")).toBeInTheDocument();
     });
 
     it("无匹配时应显示空提示", () => {
@@ -87,8 +93,9 @@ describe("CommandPalette", () => {
     it("帮助面板应包含快捷键列表", () => {
       render(<CommandPalette isOpen={true} onClose={onClose} />);
       fireEvent.click(screen.getByTestId("shortcuts-toggle"));
-      expect(screen.getByText("快速搜索")).toBeInTheDocument();
-      expect(screen.getByText("操作中心")).toBeInTheDocument();
+      const shortcutsPanel = screen.getByTestId("shortcuts-panel");
+      expect(within(shortcutsPanel).getByText("快速搜索")).toBeInTheDocument();
+      expect(within(shortcutsPanel).getByText("操作中心")).toBeInTheDocument();
     });
   });
 

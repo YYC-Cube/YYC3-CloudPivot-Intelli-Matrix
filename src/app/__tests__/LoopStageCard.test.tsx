@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { LoopStageCard } from "../components/LoopStageCard";
 import type { StageResult } from "../types";
 import type { StageMeta } from "../types";
@@ -26,6 +26,10 @@ const mockMeta: StageMeta = {
 };
 
 describe("LoopStageCard", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("idle 状态", () => {
     const idleResult: StageResult = {
       stage: "monitor",

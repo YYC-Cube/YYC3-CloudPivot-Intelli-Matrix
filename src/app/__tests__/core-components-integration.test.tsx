@@ -17,8 +17,9 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import "./setup";
 
 // ============================================================
 // Global mocks
@@ -129,6 +130,10 @@ describe("SystemSettings 集成测试", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("模型管理 CRUD", () => {
@@ -270,6 +275,10 @@ describe("UserManagement 集成测试", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("用户列表渲染", () => {
@@ -429,6 +438,10 @@ import { createLocalStore } from "../lib/create-local-store";
 describe("createLocalStore 集成测试", () => {
   beforeEach(() => localStorage.clear());
 
+  afterEach(() => {
+    cleanup();
+  });
+
   interface TestItem {
     id: string;
     name: string;
@@ -577,8 +590,12 @@ import {
 describe("Dashboard stores 集成测试", () => {
   beforeEach(() => localStorage.clear());
 
+  afterEach(() => {
+    cleanup();
+  });
+
   const storeConfigs = [
-    { name: "nodeStore", store: nodeStore, defaultCount: 8 },
+    { name: "nodeStore", store: nodeStore, defaultCount: 9 },
     { name: "modelPerfStore", store: modelPerfStore, defaultCount: 5 },
     { name: "modelDistStore", store: modelDistStore, defaultCount: 5 },
     { name: "recentOpsStore", store: recentOpsStore, defaultCount: 5 },
@@ -675,6 +692,10 @@ describe("Dashboard stores 集成测试", () => {
 // ============================================================
 
 describe("api-config 类型导出验证", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("getAPIConfig 应返回完整配置对象", async () => {
     const { getAPIConfig } = await vi.importMock<any>("../lib/api-config");
     const config = getAPIConfig();
@@ -704,6 +725,10 @@ describe("api-config 类型导出验证", () => {
 
 describe("跨组件数据流集成", () => {
   beforeEach(() => localStorage.clear());
+
+  afterEach(() => {
+    cleanup();
+  });
 
   it("userStore 修改后 UserManagement 应反映变更", () => {
     userStore.reset();

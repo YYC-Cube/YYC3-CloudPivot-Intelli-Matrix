@@ -18,7 +18,7 @@
 // @vitest-environment jsdom
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act, cleanup } from "@testing-library/react";
 
 vi.mock("../components/YYC3LogoSvg", () => ({
   YYC3LogoSvg: () => <div data-testid="yyc3-logo-svg" />,
@@ -66,10 +66,12 @@ describe("AIAssistant", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers({ shouldAdvanceTime: true });
+    cleanup();
   });
 
   afterEach(() => {
     vi.useRealTimers();
+    cleanup();
   });
 
   describe("浮动按钮", () => {
@@ -85,7 +87,7 @@ describe("AIAssistant", () => {
 
     it("点击浮动按钮应打开面板", () => {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button"));
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn"));
       expect(screen.getByText("AI 智能助理")).toBeInTheDocument();
     });
   });
@@ -93,12 +95,13 @@ describe("AIAssistant", () => {
   describe("面板基础", () => {
     function openPanel() {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button")); // open
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn")); // open
     }
 
     it("面板应渲染 header 和模型名称", () => {
       openPanel();
       expect(screen.getByText("AI 智能助理")).toBeInTheDocument();
+      // Model name is displayed in header, not as a button in settings tab
       expect(screen.getByText("qwen2.5:7b")).toBeInTheDocument(); // model from useModelProvider mock
     });
 
@@ -135,7 +138,7 @@ describe("AIAssistant", () => {
   describe("Chat Tab", () => {
     function openChat() {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button")); // open panel
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn")); // open panel
     }
 
     it("应渲染欢迎消息", () => {
@@ -152,12 +155,8 @@ describe("AIAssistant", () => {
       openChat();
       const input = screen.getByPlaceholderText(/输入指令/);
       fireEvent.change(input, { target: { value: "查看集群状态" } });
-      const sendBtn = screen.getByRole("button", { name: "" });
-      // The send button should not be disabled
-      // We find it by looking for the Send icon button
-      const allBtns = screen.getAllByRole("button");
-      const lastBtn = allBtns[allBtns.length - 1];
-      expect(lastBtn).not.toBeDisabled();
+      const sendBtn = screen.getByTestId("ai-assistant-send-btn");
+      expect(sendBtn).not.toBeDisabled();
     });
 
     it("发送消息后应显示用户消息", async () => {
@@ -179,18 +178,18 @@ describe("AIAssistant", () => {
   describe("Commands Tab", () => {
     function openCommands() {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button")); // open panel
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn")); // open panel
       fireEvent.click(screen.getByText("命令")); // switch to commands tab
     }
 
     it("应渲染命令分类过滤按钮", () => {
       openCommands();
-      expect(screen.getByText("全部")).toBeInTheDocument();
-      expect(screen.getByText("集群")).toBeInTheDocument();
-      expect(screen.getByText("模型")).toBeInTheDocument();
-      expect(screen.getByText("数据")).toBeInTheDocument();
-      expect(screen.getByText("安全")).toBeInTheDocument();
-      expect(screen.getByText("监控")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-all")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-cluster")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-model")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-data")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-security")).toBeInTheDocument();
+      expect(screen.getByTestId("cmd-cat-monitor")).toBeInTheDocument();
     });
 
     it("应渲染命令列表", () => {
@@ -218,7 +217,7 @@ describe("AIAssistant", () => {
   describe("Prompts Tab", () => {
     function openPrompts() {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button"));
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn"));
       fireEvent.click(screen.getByText("提示词"));
     }
 
@@ -254,7 +253,7 @@ describe("AIAssistant", () => {
   describe("Settings Tab", () => {
     function openSettings() {
       render(<AIAssistant isMobile={false} />);
-      fireEvent.click(screen.getByRole("button"));
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn"));
       fireEvent.click(screen.getByText("配置"));
     }
 
@@ -279,13 +278,13 @@ describe("AIAssistant", () => {
     it("应渲染模型选择按钮", () => {
       openSettings();
       // Models come from useModelProvider mock
-      expect(screen.getByText("qwen2.5:7b")).toBeInTheDocument();
-      expect(screen.getByText("codegeex4:latest")).toBeInTheDocument();
+      expect(screen.getByTestId("model-btn-ollama-live-qwen2.5:7b")).toBeInTheDocument();
+      expect(screen.getByTestId("model-btn-ollama-live-codegeex4:latest")).toBeInTheDocument();
     });
 
     it("点击模型应调用 updateValue", () => {
       openSettings();
-      const modelBtn = screen.getByText("codegeex4:latest").closest("button")!;
+      const modelBtn = screen.getByTestId("model-btn-ollama-live-codegeex4:latest");
       fireEvent.click(modelBtn);
       expect(mockUpdateValue).toHaveBeenCalledWith("aiModel", "ollama-live-codegeex4:latest");
     });
@@ -306,13 +305,13 @@ describe("AIAssistant", () => {
   describe("移动端", () => {
     it("移动端浮动按钮定位不同", () => {
       render(<AIAssistant isMobile={true} />);
-      const btn = screen.getByRole("button");
+      const btn = screen.getByTestId("ai-assistant-float-btn");
       expect(btn).toBeInTheDocument();
     });
 
     it("移动端打开面板应全屏", () => {
       render(<AIAssistant isMobile={true} />);
-      fireEvent.click(screen.getByRole("button"));
+      fireEvent.click(screen.getByTestId("ai-assistant-float-btn"));
       expect(screen.getByText("AI 智能助理")).toBeInTheDocument();
       // In mobile, no maximize button
       expect(screen.queryByTitle("最大化")).not.toBeInTheDocument();

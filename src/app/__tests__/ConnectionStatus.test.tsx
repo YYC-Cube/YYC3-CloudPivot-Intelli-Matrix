@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ConnectionStatus } from "../components/ConnectionStatus";
 import type { ConnectionState } from "../types";
 
@@ -24,6 +24,10 @@ const defaultProps = {
 };
 
 describe("ConnectionStatus", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 5 种连接状态
   // ----------------------------------------------------------
@@ -108,7 +112,7 @@ describe("ConnectionStatus", () => {
       render(
         <ConnectionStatus state="disconnected" {...defaultProps} />
       );
-      const reconnectBtn = screen.getByTitle("手动重连");
+      const reconnectBtn = screen.getByTestId("manual-reconnect-btn");
       expect(reconnectBtn).toBeInTheDocument();
     });
 
@@ -116,7 +120,7 @@ describe("ConnectionStatus", () => {
       render(
         <ConnectionStatus state="simulated" {...defaultProps} />
       );
-      const reconnectBtn = screen.getByTitle("手动重连");
+      const reconnectBtn = screen.getByTestId("manual-reconnect-btn");
       expect(reconnectBtn).toBeInTheDocument();
     });
 
@@ -124,7 +128,7 @@ describe("ConnectionStatus", () => {
       render(
         <ConnectionStatus state="connected" {...defaultProps} />
       );
-      expect(screen.queryByTitle("手动重连")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("manual-reconnect-btn")).not.toBeInTheDocument();
     });
 
     it("重连按钮点击应触发 onReconnect", () => {
@@ -136,7 +140,7 @@ describe("ConnectionStatus", () => {
           onReconnect={handleReconnect}
         />
       );
-      fireEvent.click(screen.getByTitle("手动重连"));
+      fireEvent.click(screen.getByTestId("manual-reconnect-btn"));
       expect(handleReconnect).toHaveBeenCalledTimes(1);
     });
   });

@@ -10,8 +10,8 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import {
   DesignTokens,
   COLOR_TOKENS,
@@ -22,6 +22,10 @@ import {
 } from "../components/design-system/DesignTokens";
 
 describe("DesignTokens", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("Token 数据完整性", () => {
     it("应有 19 个色彩 Token", () => {
       expect(COLOR_TOKENS.length).toBe(19);

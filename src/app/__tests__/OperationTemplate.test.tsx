@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { OperationTemplate } from "../components/OperationTemplate";
 import type { OperationTemplateItem } from "../types";
 
@@ -46,6 +46,10 @@ describe("OperationTemplate", () => {
     onRunTemplate = vi.fn();
     onDeleteTemplate = vi.fn();
     onAddTemplate = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

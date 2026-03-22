@@ -17,8 +17,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import {
   InlineEditableTable,
   formatSQLValue,
@@ -58,6 +58,10 @@ const mockRows = [
 describe("InlineEditableTable", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ──────────────────────────────────────
@@ -165,7 +169,7 @@ describe("InlineEditableTable", () => {
 
     it("渲染数据行", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} primaryKey="id" />);
-      expect(screen.getByText("LLaMA-70B")).toBeTruthy();
+      expect(screen.getByTestId("cell-0-name")).toBeTruthy();
       expect(screen.getByText("Qwen-72B")).toBeTruthy();
       expect(screen.getByText("DeepSeek-V3")).toBeTruthy();
     });
@@ -177,12 +181,12 @@ describe("InlineEditableTable", () => {
 
     it("显示编辑提示文字", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} editable={true} primaryKey="id" />);
-      expect(screen.getByText(/双击编辑/)).toBeTruthy();
+      expect(screen.getByTestId("edit-hint")).toBeInTheDocument();
     });
 
     it("editable=false 时不显示编辑提示", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} editable={false} primaryKey="id" />);
-      expect(screen.queryByText(/双击编辑/)).toBeNull();
+      expect(screen.queryByTestId("edit-hint")).not.toBeInTheDocument();
     });
   });
 
@@ -198,7 +202,7 @@ describe("InlineEditableTable", () => {
   describe("双击编辑", () => {
     it("双击非主键列进入编辑模式", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       expect(input).toBeTruthy();
       expect((input as HTMLInputElement).value).toBe("LLaMA-70B");
@@ -207,7 +211,7 @@ describe("InlineEditableTable", () => {
     it("编辑后按 Enter 确认", () => {
       const onCellChange = vi.fn();
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onCellChange={onCellChange} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "GPT-4o" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -225,7 +229,7 @@ describe("InlineEditableTable", () => {
     it("编辑后按 Escape 取消", () => {
       const onCellChange = vi.fn();
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onCellChange={onCellChange} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "something" } });
       fireEvent.keyDown(input, { key: "Escape" });
@@ -236,7 +240,7 @@ describe("InlineEditableTable", () => {
     it("值未变化时不触发 onCellChange", () => {
       const onCellChange = vi.fn();
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onCellChange={onCellChange} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       fireEvent.keyDown(screen.getByRole("textbox"), { key: "Enter" });
       expect(onCellChange).not.toHaveBeenCalled();
     });
@@ -295,7 +299,7 @@ describe("InlineEditableTable", () => {
   describe("批量提交 & 确认弹窗", () => {
     it("显示待提交计数徽章", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={vi.fn()} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "GPT-4" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -304,7 +308,7 @@ describe("InlineEditableTable", () => {
 
     it("点击'提交变更'打开确认弹窗", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={vi.fn()} />);
-      fireEvent.doubleClick(screen.getByText("primary"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-tier"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "tertiary" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -315,7 +319,7 @@ describe("InlineEditableTable", () => {
     it("确认提交后执行 SQL 并清空待提交", async () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true, affectedRows: 1 });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("primary"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-tier"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "tertiary" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -346,7 +350,7 @@ describe("InlineEditableTable", () => {
   describe("撤销未提交变更", () => {
     it("点击'撤销'清空所有待提交变更", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={vi.fn()} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "Test" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -365,7 +369,7 @@ describe("InlineEditableTable", () => {
     it("提交成功后显示 Undo 按钮", async () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "Test" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -379,7 +383,7 @@ describe("InlineEditableTable", () => {
     it("点击 Undo 展开历史面板并执行整批回滚", async () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "Rolled" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -400,12 +404,12 @@ describe("InlineEditableTable", () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
       // 做两项修改
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       let input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "AAA" } });
       fireEvent.keyDown(input, { key: "Enter" });
 
-      fireEvent.doubleClick(screen.getByText("primary"));
+      fireEvent.doubleClick(screen.getByTestId("cell-2-tier"));
       input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "secondary" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -425,7 +429,7 @@ describe("InlineEditableTable", () => {
     it("行级 Undo: 单项回滚后该项显示'已撤销'", async () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "SingleUndo" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -436,14 +440,16 @@ describe("InlineEditableTable", () => {
       await waitFor(() => expect(screen.getByText("撤销")).toBeTruthy());
       fireEvent.click(screen.getByText("撤销"));
       await waitFor(() => {
-        expect(screen.getByText("已撤销")).toBeTruthy();
+        expect(mockToast.success).toHaveBeenCalledWith(
+          expect.stringContaining("已回滚:")
+        );
       });
     });
 
     it("行级 Undo: 所有单项回滚后整批标记 rolledBack", async () => {
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "AllSingle" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -464,7 +470,7 @@ describe("InlineEditableTable", () => {
       const idbPut = vi.spyOn(storageModule, "idbPut") as unknown as Mock;
       const onExecuteSQL = vi.fn().mockResolvedValue({ ok: true });
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} onExecuteSQL={onExecuteSQL} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "Persisted" } });
       fireEvent.keyDown(input, { key: "Enter" });
@@ -482,7 +488,7 @@ describe("InlineEditableTable", () => {
   describe("已修改标记", () => {
     it("修改的单元格显示 * 标记", () => {
       render(<InlineEditableTable columns={mockColumns} rows={mockRows} tableName="core.models" primaryKey="id" editable={true} />);
-      fireEvent.doubleClick(screen.getByText("LLaMA-70B"));
+      fireEvent.doubleClick(screen.getByTestId("cell-0-name"));
       const input = screen.getByRole("textbox");
       fireEvent.change(input, { target: { value: "Modified" } });
       fireEvent.keyDown(input, { key: "Enter" });

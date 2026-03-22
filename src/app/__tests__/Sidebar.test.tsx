@@ -16,8 +16,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 const mockNavigate = vi.fn();
 let mockPathname = "/";
@@ -48,6 +48,10 @@ describe("Sidebar", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockPathname = "/";
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("折叠状态", () => {
@@ -81,48 +85,48 @@ describe("Sidebar", () => {
 
     it("展开时应显示分类标签", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      expect(screen.getByText("nav.catMonitor")).toBeInTheDocument();
-      expect(screen.getByText("nav.catOps")).toBeInTheDocument();
-      expect(screen.getByText("nav.catAI")).toBeInTheDocument();
-      expect(screen.getByText("nav.catDev")).toBeInTheDocument();
-      expect(screen.getByText("nav.catAdmin")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-cat-monitor")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-cat-ops")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-cat-ai")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-cat-dev")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-cat-admin")).toBeInTheDocument();
     });
 
     it("展开时应显示子菜单项", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      expect(screen.getByText("nav.dataMonitor")).toBeInTheDocument();
-      expect(screen.getByText("nav.followUp")).toBeInTheDocument();
-      expect(screen.getByText("nav.patrol")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-item-nav.dataMonitor")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-item-nav.followUp")).toBeInTheDocument();
+      expect(screen.getByTestId("nav-item-nav.patrol")).toBeInTheDocument();
     });
 
     it("展开时应显示收起按钮", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      expect(screen.getByText("收起")).toBeInTheDocument();
+      expect(screen.getByTestId("sidebar-toggle-btn")).toBeInTheDocument();
     });
   });
 
   describe("导航交互", () => {
     it("点击子菜单项应导航到对应路径", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      fireEvent.click(screen.getByText("nav.followUp"));
+      fireEvent.click(screen.getByTestId("nav-item-nav.followUp"));
       expect(mockNavigate).toHaveBeenCalledWith("/follow-up");
     });
 
     it("点击分类按钮应导航到第一个子项路径", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      fireEvent.click(screen.getByText("nav.catOps"));
+      fireEvent.click(screen.getByTestId("nav-cat-ops"));
       expect(mockNavigate).toHaveBeenCalledWith("/operations");
     });
 
     it("点击 Logo 区域应导航到首页", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      fireEvent.click(screen.getByText("YYC³"));
+      fireEvent.click(screen.getByTestId("yyc3-logo"));
       expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 
     it("点击收起按钮应调用 onToggle", () => {
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      fireEvent.click(screen.getByText("收起"));
+      fireEvent.click(screen.getByTestId("sidebar-toggle-btn"));
       expect(mockToggle).toHaveBeenCalled();
     });
   });
@@ -131,7 +135,7 @@ describe("Sidebar", () => {
     it("首页时 monitor 分类应高亮", () => {
       mockPathname = "/";
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      const monitorBtn = screen.getByText("nav.catMonitor").closest("button");
+      const monitorBtn = screen.getByTestId("nav-cat-monitor");
       // The active category button's inner div contains text-[#00d4ff]
       const innerDiv = monitorBtn?.querySelector("div");
       expect(innerDiv?.className).toContain("text-[#00d4ff]");
@@ -140,14 +144,14 @@ describe("Sidebar", () => {
     it("/patrol 页时 nav.patrol 子项应高亮", () => {
       mockPathname = "/patrol";
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      const patrolBtn = screen.getByText("nav.patrol").closest("button");
+      const patrolBtn = screen.getByTestId("nav-item-nav.patrol");
       expect(patrolBtn?.className).toContain("text-[#00d4ff]");
     });
 
     it("/settings 页时 admin 分类应高亮", () => {
       mockPathname = "/settings";
       render(<Sidebar collapsed={false} onToggle={mockToggle} />);
-      const adminBtn = screen.getByText("nav.catAdmin").closest("button");
+      const adminBtn = screen.getByTestId("nav-cat-admin");
       const innerDiv = adminBtn?.querySelector("div");
       expect(innerDiv?.className).toContain("text-[#00d4ff]");
     });

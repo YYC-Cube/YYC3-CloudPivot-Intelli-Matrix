@@ -15,7 +15,7 @@
  */
 
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 // IndexedDB 在 jsdom 中不完全可用，测试静态结构和降级行为
 import {
@@ -33,12 +33,17 @@ import {
   LOCALSTORAGE_KEYS,
   clearAllLocalStorage,
   clearAllStorage,
+  ALL_STORES,
 } from "../lib/yyc3-storage";
 import type { StoreName } from "../types";
 
 describe("yyc3-storage", () => {
   beforeEach(() => {
     localStorage.clear();
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   // ──────────────────────────────────────
@@ -48,7 +53,6 @@ describe("yyc3-storage", () => {
   describe("StoreName 注册完整性", () => {
     it("所有 14 个 store 名称类型可用", () => {
       // RF-004: 现在直接引用 ALL_STORES 常量，不再重复声明
-      const { ALL_STORES } = require("../lib/yyc3-storage");
       expect(ALL_STORES.length).toBe(14);
     });
 

@@ -10,8 +10,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 
 // Mock figma:asset imports — 返回占位 URL
@@ -50,6 +50,10 @@ import { YYC3Logo } from "../components/YYC3Logo";
 // ============================================================
 
 describe("YYC3Logo", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("基础渲染", () => {
     it("应渲染 img 标签 (PNG)", () => {
       render(<YYC3Logo size="md" />);
@@ -164,7 +168,7 @@ describe("YYC3Logo", () => {
 
     it("img 应有 alt 属性", () => {
       render(<YYC3Logo />);
-      const img = screen.getByTestId("yyc3-logo-img");
+      const img = screen.getAllByTestId("yyc3-logo-img")[0];
       expect(img).toHaveAttribute("alt", "YYC³ Logo");
     });
   });

@@ -15,6 +15,25 @@ if (typeof window !== "undefined") {
 
 // 以下仅在 jsdom 环境执行
 if (typeof window !== "undefined") {
+  // Mock localStorage - 在 jsdom 环境中强制覆盖
+  const localStorageMock = (() => {
+    let store: Record<string, string> = {};
+    return {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => { store[key] = String(value); },
+      removeItem: (key: string) => { delete store[key]; },
+      clear: () => { store = {}; },
+      get length() { return Object.keys(store).length; },
+      key: (index: number) => Object.keys(store)[index] || null,
+    };
+  })();
+
+  Object.defineProperty(window, "localStorage", {
+    value: localStorageMock,
+    writable: true,
+    configurable: true,
+  });
+
   // Mock matchMedia (jsdom 不支持)
   if (!window.matchMedia) {
     Object.defineProperty(window, "matchMedia", {
@@ -53,6 +72,11 @@ if (typeof window !== "undefined") {
   // Mock scrollTo
   if (!window.scrollTo) {
     window.scrollTo = (() => {}) as any;
+  }
+
+  // Mock scrollIntoView
+  if (!Element.prototype.scrollIntoView) {
+    Element.prototype.scrollIntoView = (() => {}) as any;
   }
 
   // Mock navigator.clipboard
@@ -102,6 +126,22 @@ if (typeof window !== "undefined") {
       }
       return originalGetContext.call(this, type, ...args);
     } as any;
+  }
+}
+
+// Mock figma:asset imports (仅 jsdom 环境)
+if (typeof window !== "undefined") {
+  if (!(window as any).__figmaAssetMocked) {
+    (window as any).__figmaAssetMocked = true;
+    const originalImport = (global as any).import;
+    
+    // Mock all figma:asset imports to return a placeholder
+    (global as any).import = function (specifier: string) {
+      if (specifier.startsWith("figma:asset/")) {
+        return Promise.resolve("");
+      }
+      return originalImport ? originalImport(specifier) : Promise.reject(new Error(`Module not found: ${specifier}`));
+    };
   }
 }
 

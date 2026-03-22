@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useOperationCenter } from "../hooks/useOperationCenter";
 
 vi.mock("sonner", () => ({
@@ -27,6 +27,10 @@ vi.mock("sonner", () => ({
 describe("useOperationCenter", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

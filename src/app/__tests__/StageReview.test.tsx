@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import {
   StageReview,
   CHAPTER_REVIEWS,
@@ -23,6 +23,10 @@ import {
 } from "../components/design-system/StageReview";
 
 describe("StageReview", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("数据完整性", () => {
     it("应有 10 章", () => {
       expect(CHAPTER_REVIEWS.length).toBe(10);
@@ -177,7 +181,7 @@ describe("StageReview", () => {
       render(<StageReview />);
       const completed = CHAPTER_REVIEWS.filter((c) => c.status === "completed").length;
       const pct = Math.round((completed / CHAPTER_REVIEWS.length) * 100);
-      expect(screen.getByText(`${pct}%`)).toBeInTheDocument();
+      expect(screen.getAllByText(`${pct}%`)[0]).toBeInTheDocument();
     });
 
     it("应显示 x/10 章完成", () => {

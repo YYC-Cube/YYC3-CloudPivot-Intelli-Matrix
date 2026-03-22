@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 
 // Mock error-handler 以避免 localStorage 问题
@@ -45,6 +45,10 @@ beforeEach(() => {
 });
 
 describe("ErrorBoundary", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 正常渲染
   // ----------------------------------------------------------

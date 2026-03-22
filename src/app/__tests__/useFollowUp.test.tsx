@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useFollowUp } from "../hooks/useFollowUp";
 
 // Mock sonner toast
@@ -29,6 +29,10 @@ vi.mock("sonner", () => ({
 describe("useFollowUp", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

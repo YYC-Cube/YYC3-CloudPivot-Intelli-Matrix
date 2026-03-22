@@ -50,8 +50,8 @@ describe("dashboard-stores", () => {
 
   // ───────────── nodeStore ─────────────
   describe("nodeStore", () => {
-    it("should have 8 default nodes", () => {
-      expect(nodeStore.count()).toBe(8);
+    it("should have 9 default nodes", () => {
+      expect(nodeStore.count()).toBe(9);
     });
 
     it("should contain GPU-A100-01", () => {
@@ -78,13 +78,13 @@ describe("dashboard-stores", () => {
         tasks: 10,
       });
       expect(added.id).toBe("GPU-TEST-01");
-      expect(nodeStore.count()).toBe(9);
+      expect(nodeStore.count()).toBe(10);
 
       nodeStore.update("GPU-TEST-01", { gpu: 90 });
       expect(nodeStore.getById("GPU-TEST-01")!.gpu).toBe(90);
 
       nodeStore.remove("GPU-TEST-01");
-      expect(nodeStore.count()).toBe(8);
+      expect(nodeStore.count()).toBe(9);
     });
   });
 

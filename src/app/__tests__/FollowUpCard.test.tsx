@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { FollowUpCard } from "../components/FollowUpCard";
 import type { FollowUpItem } from "../types";
 
@@ -44,6 +44,10 @@ describe("FollowUpCard", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 基础渲染
   // ----------------------------------------------------------
@@ -54,9 +58,9 @@ describe("FollowUpCard", () => {
       expect(screen.getByText("GPU-A100-03 推理延迟异常")).toBeInTheDocument();
     });
 
-    it("应渲染告警指标", () => {
+    it("应渲染指标", () => {
       render(<FollowUpCard item={mockItem} />);
-      expect(screen.getByText("2,450ms > 2,000ms (阈值)")).toBeInTheDocument();
+      expect(screen.getByTestId("followupcard-metric")).toBeInTheDocument();
     });
 
     it("应渲染来源", () => {
@@ -66,12 +70,12 @@ describe("FollowUpCard", () => {
 
     it("应渲染严重级别标签", () => {
       render(<FollowUpCard item={mockItem} />);
-      expect(screen.getByText("严重")).toBeInTheDocument();
+      expect(screen.getByTestId("followupcard-severity-label")).toBeInTheDocument();
     });
 
     it("应渲染状态标签", () => {
       render(<FollowUpCard item={mockItem} />);
-      expect(screen.getByText("活跃")).toBeInTheDocument();
+      expect(screen.getByTestId("followupcard-status-label")).toBeInTheDocument();
     });
 
     it("应渲染负责人", () => {

@@ -8,6 +8,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "figma:asset/*": path.resolve(__dirname, "./public/placeholder-logo.png"),
     },
   },
   test: {

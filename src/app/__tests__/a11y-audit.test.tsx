@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 
 // Mock react-router navigate
@@ -28,6 +28,10 @@ vi.mock("react-router", () => ({
 import { GlassCard } from "../components/GlassCard";
 
 describe("GlassCard a11y", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应通过 axe-core 检测", async () => {
     const { container } = render(
       <GlassCard>
@@ -73,6 +77,10 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 describe("LanguageSwitcher a11y", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应通过 axe-core 检测", async () => {
     const { container } = render(<LanguageSwitcher />);
     const results = await axe(container);
@@ -87,6 +95,10 @@ describe("LanguageSwitcher a11y", () => {
 import { ConnectionStatus } from "../components/ConnectionStatus";
 
 describe("ConnectionStatus a11y", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("connected 状态应通过 a11y 检测", async () => {
     const { container } = render(
       <ConnectionStatus

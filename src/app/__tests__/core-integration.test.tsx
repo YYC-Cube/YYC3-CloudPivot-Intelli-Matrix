@@ -16,7 +16,7 @@
  * 运行命令: npx vitest run src/app/__tests__/core-integration.test.tsx
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 
 // ============================================================
 // Mock localStorage
@@ -48,6 +48,10 @@ describe("createLocalStore 集成测试", () => {
     localStorageMock.clear();
     vi.clearAllMocks();
     store = createLocalStore<TestItem>("test_store", defaults, "t");
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
   });
 
   it("getAll 首次返回默认数据并写入 localStorage", () => {
@@ -167,6 +171,10 @@ describe("dashboard-stores 集成测试", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   describe("nodeStore", () => {
     it("应初始化包含默认节点", async () => {
       const { nodeStore } = await import("../stores/dashboard-stores");
@@ -283,6 +291,10 @@ describe("api-config 集成测试", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("getAPIConfig 应返回默认配置", async () => {
     const { getAPIConfig } = await import("../lib/api-config");
     const config = getAPIConfig();
@@ -311,6 +323,10 @@ describe("api-config 集成测试", () => {
 describe("跨 store 数据一致性", () => {
   beforeEach(() => {
     localStorageMock.clear();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
     vi.clearAllMocks();
   });
 
@@ -365,6 +381,10 @@ describe("env-config 集成测试", () => {
 describe("Store 数据持久化验证", () => {
   beforeEach(() => {
     localStorageMock.clear();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
     vi.clearAllMocks();
   });
 

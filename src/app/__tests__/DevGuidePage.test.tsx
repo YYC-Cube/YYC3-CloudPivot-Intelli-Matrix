@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { DevGuidePage } from "../components/DevGuidePage";
 import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
@@ -64,6 +64,10 @@ function renderPage() {
 }
 
 describe("DevGuidePage", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应渲染页面标题", () => {
     renderPage();
     expect(screen.getByText("开发实施指南")).toBeInTheDocument();

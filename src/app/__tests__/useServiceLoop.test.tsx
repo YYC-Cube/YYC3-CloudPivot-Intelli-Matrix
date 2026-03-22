@@ -14,8 +14,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useServiceLoop, STAGE_META, DATA_FLOW_NODES, DATA_FLOW_EDGES } from "../hooks/useServiceLoop";
 
 vi.mock("sonner", () => ({
@@ -25,6 +25,10 @@ vi.mock("sonner", () => ({
 describe("useServiceLoop", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

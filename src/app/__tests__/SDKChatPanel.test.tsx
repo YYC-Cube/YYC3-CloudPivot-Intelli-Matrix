@@ -14,8 +14,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 // ============================================================
 // Mock 依赖
@@ -179,6 +179,10 @@ describe("SDKChatPanel", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应正确渲染", () => {
     const { container } = render(<SDKChatPanel />);
     expect(container).toBeTruthy();
@@ -244,13 +248,13 @@ describe("SDKChatPanel", () => {
 
   it("应有消息输入区域", () => {
     render(<SDKChatPanel />);
-    const textarea = screen.getByPlaceholderText("Type a message...");
+    const textarea = screen.getByTestId("sdk-chat-input");
     expect(textarea).toBeTruthy();
   });
 
   it("输入后应可发送 (模拟 Enter)", () => {
     render(<SDKChatPanel />);
-    const textarea = screen.getByPlaceholderText("Type a message...");
+    const textarea = screen.getByTestId("sdk-chat-input");
     fireEvent.change(textarea, { target: { value: "test message" } });
     fireEvent.keyDown(textarea, { key: "Enter", shiftKey: false });
     expect(mockSendMessageStream).toHaveBeenCalled();
@@ -258,7 +262,7 @@ describe("SDKChatPanel", () => {
 
   it("Shift+Enter 不应触发发送", () => {
     render(<SDKChatPanel />);
-    const textarea = screen.getByPlaceholderText("Type a message...");
+    const textarea = screen.getByTestId("sdk-chat-input");
     fireEvent.change(textarea, { target: { value: "test" } });
     fireEvent.keyDown(textarea, { key: "Enter", shiftKey: true });
     // sendMessageStream 不应被调用

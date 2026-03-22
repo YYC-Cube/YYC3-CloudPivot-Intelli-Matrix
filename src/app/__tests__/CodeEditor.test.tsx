@@ -9,8 +9,8 @@
  * - SQLEditor 渲染
  */
 
-import { describe, it, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import React from "react";
 
 // Mock @uiw/react-codemirror (CodeMirror 在 jsdom 中无法正常初始化)
@@ -45,6 +45,10 @@ vi.mock("@codemirror/state", () => ({}));
 import { CodeEditor, SQLEditor, getLanguageLabel } from "../components/CodeEditor";
 
 describe("getLanguageLabel", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("should return JavaScript for .js", () => {
     expect(getLanguageLabel("app.js")).toBe("JavaScript");
   });
@@ -115,6 +119,10 @@ describe("getLanguageLabel", () => {
 });
 
 describe("CodeEditor", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("should render with CodeMirror", () => {
     render(
       <CodeEditor
@@ -143,6 +151,10 @@ describe("CodeEditor", () => {
 });
 
 describe("SQLEditor", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("should render with placeholder", () => {
     render(
       <SQLEditor

@@ -15,8 +15,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { NodeDetailModal } from "../components/NodeDetailModal";
 import type { NodeData } from "../types";
 
@@ -79,6 +79,10 @@ describe("NodeDetailModal", () => {
     vi.clearAllMocks();
     mockOnClose = vi.fn();
     mockOnNodeRemoved = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -284,7 +288,7 @@ describe("NodeDetailModal", () => {
       fireEvent.click(screen.getByTestId("restart-node-btn"));
       fireEvent.click(screen.getByTestId("restart-confirm-btn"));
 
-      expect(screen.getByText("重启中...")).toBeInTheDocument();
+      expect(screen.getAllByText("重启中...")[0]).toBeInTheDocument();
     });
 
     it("重启中按钮应被禁用", () => {

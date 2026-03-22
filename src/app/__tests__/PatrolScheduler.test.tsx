@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PatrolScheduler } from "../components/PatrolScheduler";
 import type { PatrolSchedule } from "../types";
 
@@ -30,6 +30,10 @@ describe("PatrolScheduler", () => {
   beforeEach(() => {
     onToggle = vi.fn();
     onIntervalChange = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -78,11 +82,11 @@ describe("PatrolScheduler", () => {
           onIntervalChange={onIntervalChange}
         />
       );
-      expect(screen.getByText("5 分钟")).toBeInTheDocument();
-      expect(screen.getByText("10 分钟")).toBeInTheDocument();
-      expect(screen.getByText("15 分钟")).toBeInTheDocument();
-      expect(screen.getByText("30 分钟")).toBeInTheDocument();
-      expect(screen.getByText("1 小时")).toBeInTheDocument();
+      expect(screen.getByTestId("interval-5")).toBeInTheDocument();
+      expect(screen.getByTestId("interval-10")).toBeInTheDocument();
+      expect(screen.getByTestId("interval-15")).toBeInTheDocument();
+      expect(screen.getByTestId("interval-30")).toBeInTheDocument();
+      expect(screen.getByTestId("interval-60")).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
@@ -172,7 +176,7 @@ describe("PatrolScheduler", () => {
           onIntervalChange={onIntervalChange}
         />
       );
-      expect(screen.getByText(/上次巡查/)).toBeInTheDocument();
+      expect(screen.getByTestId("patrol-last-run")).toBeInTheDocument();
     });
 
     it("应显示下次巡查时间（当 enabled + nextRun 有值）", () => {
@@ -183,7 +187,7 @@ describe("PatrolScheduler", () => {
           onIntervalChange={onIntervalChange}
         />
       );
-      expect(screen.getByText(/下次巡查/)).toBeInTheDocument();
+      expect(screen.getByTestId("patrol-next-run")).toBeInTheDocument();
     });
 
     it("disabled 时不应显示下次巡查", () => {

@@ -185,16 +185,16 @@ export function DatabaseConnectionPanel() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={exportAll} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={exportAll} data-testid="db-export-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
             <Download className="w-3.5 h-3.5" /> 导出
           </button>
-          <button onClick={importAll} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={importAll} data-testid="db-import-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
             <Upload className="w-3.5 h-3.5" /> 导入
           </button>
-          <button onClick={() => { dbConnectionStore.reset(); refresh(); toast.info("已恢复默认"); }} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(255,170,0,0.08)] border border-[rgba(255,170,0,0.2)] text-[#ffaa00] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={() => { dbConnectionStore.reset(); refresh(); toast.info("已恢复默认"); }} data-testid="db-reset-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(255,170,0,0.08)] border border-[rgba(255,170,0,0.2)] text-[#ffaa00] transition-all" style={{ fontSize: "0.72rem" }}>
             <RotateCcw className="w-3.5 h-3.5" /> 重置
           </button>
-          <button onClick={() => { setShowAddForm(true); setDraft({ type: "postgresql", host: "localhost", port: "5432" }); }} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff] transition-all" style={{ fontSize: "0.78rem" }}>
+          <button onClick={() => { setShowAddForm(true); setDraft({ type: "postgresql", host: "localhost", port: "5432" }); }} data-testid="db-new-connection-btn" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff] transition-all" style={{ fontSize: "0.78rem" }}>
             <Plus className="w-4 h-4" /> 新建连接
           </button>
         </div>

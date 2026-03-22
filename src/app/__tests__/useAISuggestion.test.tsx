@@ -15,8 +15,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useAISuggestion } from "../hooks/useAISuggestion";
 
 vi.mock("sonner", () => ({
@@ -26,6 +26,10 @@ vi.mock("sonner", () => ({
 describe("useAISuggestion", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

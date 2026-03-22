@@ -5,7 +5,7 @@
  * 快捷操作 + 聊天历史 + 输入框（模型选择已移至顶部导航栏）
  */
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
   Bot, User, Send, Image as ImageIcon,
   FileCode, Link, Figma, Clipboard, Plus,

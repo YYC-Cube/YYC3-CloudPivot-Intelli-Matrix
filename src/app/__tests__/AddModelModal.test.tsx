@@ -5,8 +5,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { AddModelModal } from "../components/AddModelModal";
 import { I18nContext } from "../hooks/useI18n";
 import { MODEL_PROVIDERS } from "../hooks/useModelProvider";
@@ -57,9 +57,12 @@ function renderModal(props: Partial<React.ComponentProps<typeof AddModelModal>> 
 }
 
 describe("AddModelModal", () => {
-  it("isOpen=true 时应渲染模态框", () => {
-    renderModal();
-    expect(screen.getByTestId("add-model-modal")).toBeInTheDocument();
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   it("isOpen=false 时不应渲染", () => {

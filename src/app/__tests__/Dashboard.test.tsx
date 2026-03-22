@@ -17,8 +17,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 // ── Mocks ──
 
@@ -151,6 +151,10 @@ function renderDashboard(wsOverrides?: Partial<WebSocketDataState>, viewOverride
 describe("Dashboard", () => {
   beforeEach(() => vi.clearAllMocks());
 
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("基础渲染", () => {
     it("应渲染 AlertBanner", () => {
       renderDashboard();
@@ -185,9 +189,9 @@ describe("Dashboard", () => {
 
     it("应渲染饼图图例项", () => {
       renderDashboard();
-      expect(screen.getByText("LLaMA-70B")).toBeInTheDocument();
-      expect(screen.getByText("Qwen-72B")).toBeInTheDocument();
-      expect(screen.getByText("DeepSeek-V3")).toBeInTheDocument();
+      expect(screen.getAllByText("LLaMA-70B")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("Qwen-72B")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("DeepSeek-V3")[0]).toBeInTheDocument();
     });
   });
 

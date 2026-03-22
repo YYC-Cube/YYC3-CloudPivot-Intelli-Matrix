@@ -301,9 +301,9 @@ describe("types/index.ts 完整性审计", () => {
   });
 
   describe("Section 35: 存储基础设施类型", () => {
-    it("StoreName 包含所有 14 个 store", () => {
+    it("StoreName 包含所有 14 个 store", async () => {
       // RF-004: import ALL_STORES 进行断言
-      const { ALL_STORES } = require("../lib/yyc3-storage");
+      const { ALL_STORES } = await import("../lib/yyc3-storage");
       expect(ALL_STORES).toHaveLength(14);
       expect(ALL_STORES).toContain("alertRules");
       expect(ALL_STORES).toContain("committedChanges");

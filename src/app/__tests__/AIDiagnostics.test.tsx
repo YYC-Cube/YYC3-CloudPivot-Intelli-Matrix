@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MemoryRouter } from "react-router";
 import { AIDiagnostics } from "../components/AIDiagnostics";
@@ -84,6 +84,7 @@ describe("AIDiagnostics", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    cleanup();
   });
 
   it("renders the page title", () => {
@@ -91,14 +92,14 @@ describe("AIDiagnostics", () => {
     expect(screen.getByText("AI 辅助诊断")).toBeInTheDocument();
   });
 
-  it("renders the subtitle", () => {
+  it("renders subtitle", () => {
     renderWithProviders(<AIDiagnostics />);
-    expect(screen.getByText(/模式识别/)).toBeInTheDocument();
+    expect(screen.getByText(/异常分析/)).toBeInTheDocument();
   });
 
   it("renders the start diagnosis button", () => {
     renderWithProviders(<AIDiagnostics />);
-    expect(screen.getByText("启动诊断")).toBeInTheDocument();
+    expect(screen.getByTestId("start-diagnosis-button")).toBeInTheDocument();
   });
 
   it("renders empty state hint", () => {
@@ -113,13 +114,13 @@ describe("AIDiagnostics", () => {
 
   it("shows analyzing state when diagnosis starts", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
     expect(screen.getByText("AI 正在分析...")).toBeInTheDocument();
   });
 
   it("completes diagnosis and shows summary", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -132,7 +133,7 @@ describe("AIDiagnostics", () => {
 
   it("shows view tabs after diagnosis", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -146,7 +147,7 @@ describe("AIDiagnostics", () => {
 
   it("shows pattern cards after diagnosis", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -158,7 +159,7 @@ describe("AIDiagnostics", () => {
 
   it("switches to anomalies view", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -171,7 +172,7 @@ describe("AIDiagnostics", () => {
 
   it("switches to forecasts view", () => {
     renderWithProviders(<AIDiagnostics />);
-    fireEvent.click(screen.getByText("启动诊断"));
+    fireEvent.click(screen.getByTestId("start-diagnosis-button"));
 
     act(() => {
       vi.advanceTimersByTime(3000);
@@ -183,7 +184,7 @@ describe("AIDiagnostics", () => {
 
   it("disables button during analysis", () => {
     renderWithProviders(<AIDiagnostics />);
-    const btn = screen.getByText("启动诊断").closest("button")!;
+    const btn = screen.getByTestId("start-diagnosis-button").closest("button")!;
     fireEvent.click(btn);
 
     expect(btn).toBeDisabled();

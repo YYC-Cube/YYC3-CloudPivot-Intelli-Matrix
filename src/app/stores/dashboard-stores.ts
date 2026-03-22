@@ -29,6 +29,7 @@ const DEFAULT_NODES: (NodeData & { id: string })[] = [
   { id: "GPU-A100-06", status: "active",   gpu: 56, mem: 48, temp: 58, model: "GPT-4o",       tasks: 112 },
   { id: "GPU-A100-07", status: "active",   gpu: 81, mem: 76, temp: 71, model: "Qwen-72B",     tasks: 143 },
   { id: "GPU-A100-08", status: "inactive", gpu: 0,  mem: 5,  temp: 32, model: "",              tasks: 0 },
+  { id: "GPU-H100-01", status: "active",   gpu: 95, mem: 88, temp: 72, model: "GLM-4",        tasks: 167 },
 ];
 
 export const nodeStore = createLocalStore<NodeData & { id: string }>("yyc3_nodes", DEFAULT_NODES, "node");

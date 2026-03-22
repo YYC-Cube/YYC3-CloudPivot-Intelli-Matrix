@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PWAStatusPanel } from "../components/PWAStatusPanel";
 import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
@@ -72,6 +72,10 @@ describe("PWAStatusPanel", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("基础渲染", () => {
     it("应渲染标题", () => {
       renderPanel();
@@ -85,7 +89,7 @@ describe("PWAStatusPanel", () => {
 
     it("应渲染 SW 版本", () => {
       renderPanel();
-      expect(screen.getByText(/v1\.4\.2/)).toBeInTheDocument();
+      expect(screen.getAllByText(/v1\.4\.2/)[0]).toBeInTheDocument();
     });
 
     it("应渲染在线状态", () => {

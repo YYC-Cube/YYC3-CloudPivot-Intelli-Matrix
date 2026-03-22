@@ -458,7 +458,7 @@ export function InlineEditableTable({
     <div>
       {/* ═══ 编辑模式提示 + 操作栏 ═══ */}
       {editable && (
-        <div className="flex items-center gap-2 mb-1 flex-wrap">
+        <div className="flex items-center gap-2 mb-1 flex-wrap" data-testid="edit-hint">
           <Edit3 className="w-3 h-3 text-[rgba(0,212,255,0.3)]" />
           <span style={{ fontSize: f.xs, color: textDim }}>
             双击编辑 · 勾选行可批量删除
@@ -779,6 +779,7 @@ export function InlineEditableTable({
                     return (
                       <td
                         key={col}
+                        data-testid={`cell-${ri}-${col}`}
                         className={`py-1.5 px-2 font-mono whitespace-nowrap max-w-[200px] truncate ${
                           isPK
                             ? "text-[#7b8cff]"

@@ -84,13 +84,13 @@ export function PatrolScheduler({ schedule, onToggle, onIntervalChange }: Patrol
         <div className="p-3 rounded-lg bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
           <div className="flex items-center gap-4 flex-wrap">
             {schedule.lastRun && (
-              <span className="flex items-center gap-1.5 text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.7rem" }}>
+              <span data-testid="patrol-last-run" className="flex items-center gap-1.5 text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.7rem" }}>
                 <Clock className="w-3 h-3" />
                 上次巡查: {new Date(schedule.lastRun).toLocaleString("zh-CN")}
               </span>
             )}
             {schedule.nextRun && schedule.enabled && (
-              <span className="flex items-center gap-1.5 text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.7rem" }}>
+              <span data-testid="patrol-next-run" className="flex items-center gap-1.5 text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.7rem" }}>
                 <Clock className="w-3 h-3" />
                 下次巡查: {new Date(schedule.nextRun).toLocaleString("zh-CN")}
               </span>

@@ -230,6 +230,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
     remove: removeRule,
     setAll: setAllRules,
     loaded: rulesLoaded,
+    prepend: prependRule,
   } = usePersistedList<AlertRule>("alertRules", MOCK_RULES);
 
   const {
@@ -267,7 +268,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
             let value: number | null = null;
             if (th.metric === "gpu") {value = node.gpu;}
             else if (th.metric === "memory") {value = node.mem;}
-            else if (th.metric === "latency" && opts.liveLatency !== null) {value = opts.liveLatency;}
+            else if (th.metric === "latency" && opts.liveLatency != null) {value = opts.liveLatency;}
 
             if (value === null) {continue;}
 
@@ -353,9 +354,9 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
       lastTriggered: null,
       triggerCount: 0,
     };
-    upsertRule(newRule);
+    prependRule(newRule);
     setIsCreating(false);
-  }, [upsertRule]);
+  }, [prependRule]);
 
   /** Update an existing rule (edit mode) */
   const updateRule = useCallback((ruleId: string, updates: Partial<Omit<AlertRule, "id" | "createdAt" | "lastTriggered" | "triggerCount">>) => {

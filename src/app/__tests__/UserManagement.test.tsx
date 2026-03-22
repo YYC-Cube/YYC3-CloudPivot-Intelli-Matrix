@@ -18,8 +18,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
   useI18n: () => ({
@@ -46,6 +46,10 @@ import { UserManagement } from "../components/UserManagement";
 
 describe("UserManagement", () => {
   beforeEach(() => vi.clearAllMocks());
+
+  afterEach(() => {
+    cleanup();
+  });
 
   describe("统计卡片", () => {
     it("应渲染 5 个统计卡片", () => {
@@ -101,9 +105,9 @@ describe("UserManagement", () => {
 
     it("应渲染角色标签", () => {
       render(<UserManagement />);
-      expect(screen.getByText("超级管理员")).toBeInTheDocument();
-      expect(screen.getByText("运维工程师")).toBeInTheDocument();
-      expect(screen.getByText("开发者")).toBeInTheDocument();
+      expect(screen.getAllByText("超级管理员")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("运维工程师")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("开发者")[0]).toBeInTheDocument();
     });
 
     it("应渲染添加用户按钮", () => {

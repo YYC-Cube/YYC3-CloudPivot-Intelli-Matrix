@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PatternAnalyzer } from "../components/PatternAnalyzer";
 import type { DetectedPattern } from "../types";
 
@@ -40,6 +40,10 @@ describe("PatternAnalyzer", () => {
     onSelectPattern = vi.fn();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("基础渲染", () => {
     it("应渲染所有模式标题", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
@@ -49,8 +53,8 @@ describe("PatternAnalyzer", () => {
 
     it("应渲染严重级别标签", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByText("严重")).toBeInTheDocument();
-      expect(screen.getByText("中")).toBeInTheDocument();
+      expect(screen.getByTestId("pattern-severity-pat-1")).toBeInTheDocument();
+      expect(screen.getByTestId("pattern-severity-pat-2")).toBeInTheDocument();
     });
 
     it("应渲染指标", () => {

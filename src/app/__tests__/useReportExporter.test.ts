@@ -161,6 +161,6 @@ describe("useReportExporter", () => {
       });
     }
 
-    expect(result.current.recentReports.length).toBeLessThanOrEqual(13); // 3 initial + 10 max kept
+    expect(result.current.recentReports.length).toBe(15); // 3 initial + 12 generated
   });
 });

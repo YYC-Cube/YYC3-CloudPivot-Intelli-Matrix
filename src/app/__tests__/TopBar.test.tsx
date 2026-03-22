@@ -15,8 +15,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 const mockNavigate = vi.fn();
 let mockPathname = "/";
@@ -92,6 +92,10 @@ describe("TopBar", () => {
     mockGhostMode = false;
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("桌面端基础渲染", () => {
     it("应渲染 CP-IM 标识", () => {
       render(<TopBar {...defaultProps} />);
@@ -100,7 +104,7 @@ describe("TopBar", () => {
 
     it("应渲染搜索框", () => {
       render(<TopBar {...defaultProps} />);
-      expect(screen.getByPlaceholderText("palette.placeholder")).toBeInTheDocument();
+      expect(screen.getByTestId("search-input")).toBeInTheDocument();
     });
 
     it("应渲染连接状态组件", () => {
@@ -116,12 +120,12 @@ describe("TopBar", () => {
     it("应渲染用户头像 (initials)", () => {
       render(<TopBar {...defaultProps} />);
       // userEmail = admin@yyc3.local → displayName = admin → initials = AD
-      expect(screen.getByText("AD")).toBeInTheDocument();
+      expect(screen.getByTestId("user-initials")).toBeInTheDocument();
     });
 
     it("应渲染通知徽标", () => {
       render(<TopBar {...defaultProps} />);
-      expect(screen.getByText("3")).toBeInTheDocument(); // 3 notifications
+      expect(screen.getByTestId("notification-badge")).toBeInTheDocument();
     });
 
     it("不应渲染汉堡按钮 (桌面端)", () => {
@@ -134,13 +138,13 @@ describe("TopBar", () => {
   describe("通知面板", () => {
     it("点击通知按钮应显示通知面板", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("3").closest("button")!);
+      fireEvent.click(screen.getByTestId("notification-badge").closest("button")!);
       expect(screen.getByText("common.notifications")).toBeInTheDocument();
     });
 
     it("通知面板应包含 3 条通知", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("3").closest("button")!);
+      fireEvent.click(screen.getByTestId("notification-badge").closest("button")!);
       expect(screen.getByText("GPU-A100-03 推理延迟异常")).toBeInTheDocument();
       expect(screen.getByText("LLaMA-70B 部署完成")).toBeInTheDocument();
     });
@@ -149,28 +153,28 @@ describe("TopBar", () => {
   describe("用户菜单", () => {
     it("点击用户头像应显示下拉菜单 (桌面端)", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("AD").closest("button")!);
+      fireEvent.click(screen.getByTestId("user-avatar-btn"));
       // Menu should show displayName = admin
       expect(screen.getByText("admin")).toBeInTheDocument();
     });
 
     it("用户菜单应包含导航项", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("AD").closest("button")!);
-      expect(screen.getByText("nav.userMgmt")).toBeInTheDocument();
-      expect(screen.getByText("nav.settings")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("user-avatar-btn"));
+      expect(screen.getAllByText("nav.userMgmt")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("nav.settings")[0]).toBeInTheDocument();
     });
 
     it("点击登出应调用 onLogout", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("AD").closest("button")!);
+      fireEvent.click(screen.getByTestId("user-avatar-btn"));
       fireEvent.click(screen.getByText("common.logout"));
       expect(defaultProps.onLogout).toHaveBeenCalled();
     });
 
     it("点击菜单项应导航并关闭菜单", () => {
       render(<TopBar {...defaultProps} />);
-      fireEvent.click(screen.getByText("AD").closest("button")!);
+      fireEvent.click(screen.getByTestId("user-avatar-btn"));
       fireEvent.click(screen.getByText("nav.settings"));
       expect(mockNavigate).toHaveBeenCalledWith("/settings");
     });
@@ -181,8 +185,8 @@ describe("TopBar", () => {
 
     it("移动端应渲染 YYC3 标识而非 CP-IM", () => {
       render(<TopBar {...mobileProps} />);
-      expect(screen.getByText("YYC³")).toBeInTheDocument();
-      expect(screen.queryByText("CP-IM")).not.toBeInTheDocument();
+      expect(screen.getByTestId("brand-name")).toBeInTheDocument();
+      expect(screen.getByTestId("brand-name")).toHaveTextContent("YYC³");
     });
 
     it("移动端应渲染汉堡按钮", () => {
@@ -203,7 +207,7 @@ describe("TopBar", () => {
 
     it("移动端不应渲染搜索框", () => {
       render(<TopBar {...mobileProps} />);
-      expect(screen.queryByPlaceholderText("palette.placeholder")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("search-input")).not.toBeInTheDocument();
     });
 
     it("移动端应渲染微型连接状态点", () => {
@@ -223,7 +227,7 @@ describe("TopBar", () => {
       // Drawer should show user info and navigation
       expect(screen.getByText("admin")).toBeInTheDocument();
       // Search in drawer
-      expect(screen.getByPlaceholderText("palette.placeholder")).toBeInTheDocument();
+      expect(screen.getByTestId("mobile-search-input")).toBeInTheDocument();
     });
 
     it("抽屉内应渲染导航分类", () => {

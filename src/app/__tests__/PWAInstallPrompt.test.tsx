@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 // Mock useInstallPrompt
 const mockPromptInstall = vi.fn();
@@ -31,6 +31,10 @@ describe("PWAInstallPrompt", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 显示/隐藏
   // ----------------------------------------------------------
@@ -45,7 +49,7 @@ describe("PWAInstallPrompt", () => {
       });
 
       render(<PWAInstallPrompt />);
-      expect(screen.getByText("安装 YYC3 Dashboard")).toBeInTheDocument();
+      expect(screen.getByText("安装 CP-IM CloudPivot")).toBeInTheDocument();
     });
 
     it("已安装时不应显示", () => {

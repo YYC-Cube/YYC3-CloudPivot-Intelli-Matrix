@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Login } from "../components/Login";
 
@@ -38,6 +38,10 @@ describe("Login", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 基础渲染
   // ----------------------------------------------------------
@@ -46,10 +50,10 @@ describe("Login", () => {
     it("应渲染登录表单", () => {
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      expect(screen.getByText("YYC³")).toBeInTheDocument();
+      expect(screen.getByTestId("login-title")).toBeInTheDocument();
       expect(screen.getByText("登录邮箱")).toBeInTheDocument();
       expect(screen.getByText("密码")).toBeInTheDocument();
-      expect(screen.getByText("登 录")).toBeInTheDocument();
+      expect(screen.getByTestId("login-submit-button")).toBeInTheDocument();
     });
 
     it("应渲染 Demo 账号提示", () => {
@@ -62,8 +66,8 @@ describe("Login", () => {
     it("应包含邮箱和密码输入框", () => {
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const emailInput = screen.getByPlaceholderText("admin@cloudpivot.local");
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const emailInput = screen.getByTestId("login-email-input");
+      const pwdInput = screen.getByTestId("login-password-input");
 
       expect(emailInput).toBeInTheDocument();
       expect(emailInput).toHaveAttribute("type", "email");
@@ -73,9 +77,7 @@ describe("Login", () => {
 
     it("应显示品牌标语", () => {
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
-      expect(
-        screen.getByText(/本地多端推理矩阵数据库/)
-      ).toBeInTheDocument();
+      expect(screen.getByTestId("login-subtitle")).toBeInTheDocument();
     });
   });
 
@@ -87,20 +89,14 @@ describe("Login", () => {
     it("点击眼睛按钮应切换密码可见性", async () => {
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const pwdInput = screen.getByTestId("login-password-input");
       expect(pwdInput).toHaveAttribute("type", "password");
 
-      // 找到切换按钮 (眼睛图标的 button)
-      const toggleBtns = screen.getAllByRole("button");
-      const eyeBtn = toggleBtns.find(
-        (btn) => btn.getAttribute("type") === "button"
-      );
-      expect(eyeBtn).toBeDefined();
-
-      fireEvent.click(eyeBtn!);
+      const eyeBtn = screen.getByTestId("login-toggle-password");
+      fireEvent.click(eyeBtn);
       expect(pwdInput).toHaveAttribute("type", "text");
 
-      fireEvent.click(eyeBtn!);
+      fireEvent.click(eyeBtn);
       expect(pwdInput).toHaveAttribute("type", "password");
     });
   });
@@ -118,13 +114,13 @@ describe("Login", () => {
 
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const emailInput = screen.getByPlaceholderText("admin@cloudpivot.local");
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const emailInput = screen.getByTestId("login-email-input");
+      const pwdInput = screen.getByTestId("login-password-input");
 
       await userEvent.type(emailInput, "admin@cloudpivot.local");
       await userEvent.type(pwdInput, "admin123");
 
-      fireEvent.submit(screen.getByText("登 录").closest("form")!);
+      fireEvent.submit(screen.getByTestId("login-submit-button").closest("form")!);
 
       await waitFor(() => {
         expect(mockOnLoginSuccess).toHaveBeenCalledTimes(1);
@@ -145,13 +141,13 @@ describe("Login", () => {
 
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const emailInput = screen.getByPlaceholderText("admin@cloudpivot.local");
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const emailInput = screen.getByTestId("login-email-input");
+      const pwdInput = screen.getByTestId("login-password-input");
 
       await userEvent.type(emailInput, "admin@cloudpivot.local");
       await userEvent.type(pwdInput, "wrongpassword");
 
-      fireEvent.submit(screen.getByText("登 录").closest("form")!);
+      fireEvent.submit(screen.getByTestId("login-submit-button").closest("form")!);
 
       await waitFor(() => {
         expect(screen.getByText("邮箱或密码不正确")).toBeInTheDocument();
@@ -165,13 +161,13 @@ describe("Login", () => {
 
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const emailInput = screen.getByPlaceholderText("admin@cloudpivot.local");
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const emailInput = screen.getByTestId("login-email-input");
+      const pwdInput = screen.getByTestId("login-password-input");
 
       await userEvent.type(emailInput, "admin@cloudpivot.local");
       await userEvent.type(pwdInput, "admin123");
 
-      fireEvent.submit(screen.getByText("登 录").closest("form")!);
+      fireEvent.submit(screen.getByTestId("login-submit-button").closest("form")!);
 
       await waitFor(() => {
         expect(
@@ -187,18 +183,17 @@ describe("Login", () => {
 
   describe("加载状态", () => {
     it("提交后按钮应显示加载状态", async () => {
-      // 永不 resolve，保持加载
       mockSignIn.mockReturnValue(new Promise(() => {}));
 
       render(<Login onLoginSuccess={mockOnLoginSuccess} />);
 
-      const emailInput = screen.getByPlaceholderText("admin@cloudpivot.local");
-      const pwdInput = screen.getByPlaceholderText("输入密码");
+      const emailInput = screen.getByTestId("login-email-input");
+      const pwdInput = screen.getByTestId("login-password-input");
 
       await userEvent.type(emailInput, "admin@cloudpivot.local");
       await userEvent.type(pwdInput, "admin123");
 
-      fireEvent.submit(screen.getByText("登 录").closest("form")!);
+      fireEvent.submit(screen.getByTestId("login-submit-button").closest("form")!);
 
       await waitFor(() => {
         expect(screen.getByText("验证中...")).toBeInTheDocument();

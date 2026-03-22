@@ -1,15 +1,4 @@
-/**
- * @file: GlassCard.tsx
- * @description: GlassCard.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
-import React from "react";
+import React, { forwardRef } from "react";
 
 interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -17,9 +6,10 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   glowColor?: string;
 }
 
-export function GlassCard({ children, className = "", glowColor, onClick, style, ...rest }: GlassCardProps) {
+export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(({ children, className = "", glowColor, onClick, style, ...rest }, ref) => {
   return (
     <div
+      ref={ref}
       onClick={onClick}
       className={`
         relative rounded-xl
@@ -38,4 +28,6 @@ export function GlassCard({ children, className = "", glowColor, onClick, style,
       {children}
     </div>
   );
-}
+});
+
+GlassCard.displayName = "GlassCard";

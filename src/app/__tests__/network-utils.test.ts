@@ -177,61 +177,76 @@ describe("network-utils", () => {
 
   describe("testWebSocketConnection", () => {
     it("连接不可达时应返回失败结果", async () => {
-      // Mock WebSocket 构造函数
-      const MockWS = vi.fn().mockImplementation(() => {
+      const originalWebSocket = globalThis.WebSocket;
+      const MockWS = vi.fn();
+      MockWS.mockImplementation(function() {
         const ws = {
           onopen: null as any,
           onerror: null as any,
           onclose: null as any,
           close: vi.fn(),
         };
-        // 模拟连接错误
-        setTimeout(() => ws.onerror?.(), 10);
+        setTimeout(() => {
+          if (ws.onerror) {
+            ws.onerror();
+          }
+        }, 10);
         return ws;
       });
-      vi.stubGlobal("WebSocket", MockWS);
+      globalThis.WebSocket = MockWS as any;
 
       const result = await testWebSocketConnection("ws://invalid:9999/ws", 1000);
       expect(result.success).toBe(false);
       expect(result.error).toBeDefined();
 
-      vi.unstubAllGlobals();
+      globalThis.WebSocket = originalWebSocket;
     });
 
     it("超时时应返回超时错误", async () => {
-      const MockWS = vi.fn().mockImplementation(() => ({
-        onopen: null,
-        onerror: null,
-        onclose: null,
-        close: vi.fn(),
-      }));
-      vi.stubGlobal("WebSocket", MockWS);
-
-      const result = await testWebSocketConnection("ws://slow:9999/ws", 50);
-      expect(result.success).toBe(false);
-      expect(result.error).toBe("连接超时");
-
-      vi.unstubAllGlobals();
-    });
-
-    it("连接成功时应返回成功结果和延迟", async () => {
-      const MockWS = vi.fn().mockImplementation(() => {
+      const originalWebSocket = globalThis.WebSocket;
+      const MockWS = vi.fn();
+      MockWS.mockImplementation(function() {
         const ws = {
           onopen: null as any,
           onerror: null as any,
           onclose: null as any,
           close: vi.fn(),
         };
-        setTimeout(() => ws.onopen?.(), 5);
         return ws;
       });
-      vi.stubGlobal("WebSocket", MockWS);
+      globalThis.WebSocket = MockWS as any;
+
+      const result = await testWebSocketConnection("ws://slow:9999/ws", 50);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("连接超时");
+
+      globalThis.WebSocket = originalWebSocket;
+    });
+
+    it("连接成功时应返回成功结果和延迟", async () => {
+      const originalWebSocket = globalThis.WebSocket;
+      const MockWS = vi.fn();
+      MockWS.mockImplementation(function() {
+        const ws = {
+          onopen: null as any,
+          onerror: null as any,
+          onclose: null as any,
+          close: vi.fn(),
+        };
+        setTimeout(() => {
+          if (ws.onopen) {
+            ws.onopen();
+          }
+        }, 5);
+        return ws;
+      });
+      globalThis.WebSocket = MockWS as any;
 
       const result = await testWebSocketConnection("ws://localhost:3113/ws", 1000);
       expect(result.success).toBe(true);
       expect(result.latency).toBeGreaterThanOrEqual(0);
 
-      vi.unstubAllGlobals();
+      globalThis.WebSocket = originalWebSocket;
     });
   });
 });

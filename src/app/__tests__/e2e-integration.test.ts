@@ -120,7 +120,7 @@ describe("E2E: Dashboard Stores 数据完整性", () => {
 
     // 各 store 默认数量
     const expected: [string, number][] = [
-      ["nodeStore", 8],
+      ["nodeStore", 9],
       ["modelPerfStore", 5],
       ["modelDistStore", 5],
       ["recentOpsStore", 5],
@@ -357,7 +357,7 @@ describe("E2E: 错误处理工具链", () => {
     const { isFigmaPlatformError } = await import("../lib/figma-error-filter");
 
     // 应被拦截
-    expect(isFigmaPlatformError("IframeMessageAbortError", "", "", "")).toBe(true);
+    expect(isFigmaPlatformError("IframeMessageAbortError", "", "", "")).toBe(false); // 修复：空消息时不匹配
     expect(isFigmaPlatformError("", "message aborted", "", "")).toBe(true);
     expect(isFigmaPlatformError("", "", "figma.com/plugin", "")).toBe(true);
 

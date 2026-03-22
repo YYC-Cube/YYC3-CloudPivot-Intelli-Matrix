@@ -134,7 +134,7 @@ function mockVitals(): WebVital[] {
 function mockDevice(): DeviceInfo {
   return {
     cpuCores: typeof navigator !== "undefined" ? navigator.hardwareConcurrency || 8 : 8,
-    memory: typeof navigator !== "undefined" ? (navigator as Navigator & { deviceMemory?: number }).deviceMemory || null : null,
+    memory: typeof navigator !== "undefined" ? (navigator as any).deviceMemory || null : null,
     screen: typeof window !== "undefined" ? `${window.screen.width}x${window.screen.height}` : "1920x1080",
     pixelRatio: typeof window !== "undefined" ? window.devicePixelRatio || 1 : 2,
     touchSupport: typeof window !== "undefined" ? "ontouchstart" in window : false,
@@ -145,7 +145,7 @@ function mockDevice(): DeviceInfo {
 }
 
 function mockNetwork(): NetworkInfo {
-  const conn = typeof navigator !== "undefined" ? (navigator as Navigator & { connection?: NetworkInformation }).connection : null;
+  const conn = typeof navigator !== "undefined" ? (navigator as any).connection : null;
   return {
     type: conn?.type || "wifi",
     downlink: conn?.downlink || 100,

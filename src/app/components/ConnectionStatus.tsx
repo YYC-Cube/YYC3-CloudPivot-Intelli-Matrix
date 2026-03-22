@@ -115,6 +115,7 @@ export function ConnectionStatus({
       {(state === "disconnected" || state === "simulated") && (
         <button
           onClick={onReconnect}
+          data-testid="manual-reconnect-btn"
           className="ml-1 p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all"
           title="手动重连"
         >

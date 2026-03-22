@@ -10,8 +10,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { DesignSystemPage } from "../components/design-system/DesignSystemPage";
 import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
@@ -29,7 +29,19 @@ function renderPage() {
   const i18nValue = {
     locale: "zh-CN" as const,
     setLocale: vi.fn(),
-    t: (key: string) => key,
+    t: (key: string) => {
+      const translations: Record<string, string> = {
+        "designSystem.title": "YYC³ Design System",
+        "designSystem.subtitle": "设计交付物 · 组件库 · 规范文档 · 阶段审核",
+        "designSystem.tokens": "Design Tokens",
+        "designSystem.tokensDesc": "色彩 · 字体 · 间距 · 阴影 · 动效",
+        "designSystem.components": "组件库",
+        "designSystem.componentsDesc": "Atoms · Molecules · Organisms · Templates",
+        "designSystem.review": "阶段审核总结",
+        "designSystem.reviewDesc": "10 章实施进度 · 验收清单 · 统计概览",
+      };
+      return translations[key] || key;
+    },
     locales: [],
   };
 
@@ -43,6 +55,10 @@ function renderPage() {
 }
 
 describe("DesignSystemPage", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应渲染页面标题", () => {
     renderPage();
     expect(screen.getByText("YYC³ Design System")).toBeInTheDocument();

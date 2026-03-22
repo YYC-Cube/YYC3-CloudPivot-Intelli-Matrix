@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { OperationLogStream } from "../components/OperationLogStream";
 import type { OperationLogEntry } from "../types";
 
@@ -30,6 +30,10 @@ describe("OperationLogStream", () => {
   beforeEach(() => {
     onFilterChange = vi.fn();
     onSearchChange = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------

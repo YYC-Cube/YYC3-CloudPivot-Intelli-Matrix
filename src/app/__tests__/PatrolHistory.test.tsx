@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PatrolHistory } from "../components/PatrolHistory";
 import type { PatrolResult } from "../types";
 
@@ -48,6 +48,10 @@ describe("PatrolHistory", () => {
 
   beforeEach(() => {
     onViewReport = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   // ----------------------------------------------------------
@@ -103,8 +107,8 @@ describe("PatrolHistory", () => {
       const items = screen.getAllByRole("button").filter((b) =>
         b.getAttribute("data-testid")?.startsWith("history-")
       );
-      // 30min, 60min, 2h, 6h, 25h are within 7 days
-      expect(items.length).toBe(5);
+      // 30min, 60min, 2h, 6h, 25h, 3d are within 7 days
+      expect(items.length).toBe(6);
     });
   });
 

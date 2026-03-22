@@ -238,6 +238,7 @@ export function BottomNav() {
                 <button
                   key={tab.path}
                   onClick={() => navigate(tab.path)}
+                  data-testid={`primary-tab-${tab.i18nKey}`}
                   className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[52px] pt-2 pb-1 transition-all duration-150"
                 >
                   {/* 激活背景光 */}
@@ -274,6 +275,7 @@ export function BottomNav() {
             {/* ── 更多 Tab ── */}
             <button
               onClick={() => setMoreOpen((v) => !v)}
+              data-testid="bottom-nav-more-btn"
               className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[52px] pt-2 pb-1 transition-all duration-150"
             >
               {(isInMoreSection || moreOpen) && (

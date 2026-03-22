@@ -109,10 +109,18 @@ export function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
             <div className="flex justify-center mb-4">
               <YYC3Logo size="xl" glow showStatus={false} className="shadow-[0_0_30px_rgba(0,180,255,0.4)]" />
             </div>
-            <h1 className="text-[#00d4ff] tracking-[0.3em] mb-1" style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "1.4rem" }}>
+            <h1 
+              className="text-[#00d4ff] tracking-[0.3em] mb-1" 
+              style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "1.4rem" }}
+              data-testid="login-title"
+            >
               YYC³ CP-IM
             </h1>
-            <p className="text-[rgba(0,212,255,0.4)]" style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}>
+            <p 
+              className="text-[rgba(0,212,255,0.4)]" 
+              style={{ fontSize: "0.75rem", letterSpacing: "0.15em" }}
+              data-testid="login-subtitle"
+            >
               CloudPivot Intelli-Matrix · 数据看盘
             </p>
           </div>
@@ -132,6 +140,7 @@ export function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@cloudpivot.local"
                   required
+                  data-testid="login-email-input"
                   className="w-full pl-10 pr-4 py-3 rounded-xl bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.25)] focus:outline-none focus:border-[rgba(0,212,255,0.5)] focus:shadow-[0_0_15px_rgba(0,180,255,0.1)] transition-all"
                   style={{ fontSize: "0.85rem" }}
                 />
@@ -151,12 +160,14 @@ export function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="输入密码"
                   required
+                  data-testid="login-password-input"
                   className="w-full pl-10 pr-12 py-3 rounded-xl bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.25)] focus:outline-none focus:border-[rgba(0,212,255,0.5)] focus:shadow-[0_0_15px_rgba(0,180,255,0.1)] transition-all"
                   style={{ fontSize: "0.85rem" }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPwd(!showPwd)}
+                  data-testid="login-toggle-password"
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg hover:bg-[rgba(0,212,255,0.1)] transition-all"
                 >
                   {showPwd
@@ -178,6 +189,7 @@ export function Login({ onLoginSuccess, onGhostLogin }: LoginProps) {
             <button
               type="submit"
               disabled={loading}
+              data-testid="login-submit-button"
               className="w-full py-3 rounded-xl bg-gradient-to-r from-[#00d4ff] to-[#0066ff] text-white transition-all hover:shadow-[0_0_25px_rgba(0,180,255,0.4)] disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden min-h-[48px]"
               style={{ fontSize: "0.9rem", letterSpacing: "0.1em" }}
             >

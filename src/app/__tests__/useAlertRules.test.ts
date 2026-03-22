@@ -5,11 +5,15 @@
  */
 
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useAlertRules } from "../hooks/useAlertRules";
 
 describe("useAlertRules", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("should initialize with mock rules and events", () => {
     const { result } = renderHook(() => useAlertRules());
     expect(result.current.rules.length).toBeGreaterThan(0);

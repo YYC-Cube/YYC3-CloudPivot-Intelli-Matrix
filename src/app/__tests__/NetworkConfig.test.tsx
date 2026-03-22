@@ -18,8 +18,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 
 vi.mock("../components/GlassCard", () => ({
   GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
@@ -75,6 +75,10 @@ describe("NetworkConfig", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockHookState = defaultHookState();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("显示/隐藏", () => {
@@ -218,7 +222,7 @@ describe("NetworkConfig", () => {
   describe("测试连接", () => {
     it("点击测试连接应调用 testConnection", async () => {
       render(<NetworkConfig {...defaultProps} />);
-      fireEvent.click(screen.getByText("测��连接"));
+      fireEvent.click(screen.getByText("测试连接"));
       await waitFor(() => expect(mockTestConnection).toHaveBeenCalled());
     });
 

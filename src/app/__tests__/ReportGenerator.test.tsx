@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ReportGenerator } from "../components/ReportGenerator";
 import type { ReportResult } from "../types";
 
@@ -33,6 +33,10 @@ describe("ReportGenerator", () => {
 
   beforeEach(() => {
     onGenerate = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("基础渲染", () => {

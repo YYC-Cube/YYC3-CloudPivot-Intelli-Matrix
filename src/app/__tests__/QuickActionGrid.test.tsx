@@ -11,8 +11,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { QuickActionGrid } from "../components/QuickActionGrid";
 import type { OperationItem } from "../types";
 
@@ -31,6 +31,10 @@ describe("QuickActionGrid", () => {
     onExecute = vi.fn();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 基础渲染
   // ----------------------------------------------------------
@@ -40,7 +44,7 @@ describe("QuickActionGrid", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
       expect(screen.getByText("重启节点")).toBeInTheDocument();
       expect(screen.getByText("部署模型")).toBeInTheDocument();
-      expect(screen.getByText("清理缓存")).toBeInTheDocument();
+      expect(screen.getAllByText("清理缓存")[0]).toBeInTheDocument();
       expect(screen.getByText("批量重启")).toBeInTheDocument();
     });
 

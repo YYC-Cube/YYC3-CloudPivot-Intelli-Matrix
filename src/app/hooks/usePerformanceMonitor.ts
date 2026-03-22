@@ -95,7 +95,7 @@ function measureFPS(callback: (fps: number) => void) {
 }
 
 function getMemoryInfo(): { usedMB: number; totalMB: number; percent: number } {
-  const mem = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
+  const mem = (performance as any).memory;
   if (!mem) {return { usedMB: 0, totalMB: 0, percent: 0 };}
   const used = mem.usedJSHeapSize / (1024 * 1024);
   const total = mem.jsHeapSizeLimit / (1024 * 1024);
@@ -113,7 +113,7 @@ function getDOMNodeCount(): number {
 }
 
 function getNetworkInfo(): { type: string; rtt: number } {
-  const conn = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+  const conn = (navigator as any).connection;
   if (!conn) {return { type: "unknown", rtt: 0 };}
   return { type: conn.effectiveType || "unknown", rtt: conn.rtt || 0 };
 }
@@ -137,7 +137,7 @@ function getWebVitals(): WebVitals {
 // ============================================================
 
 export function usePerformanceMonitor() {
-  const [state, setState] = useState<PerfState>(() => ({
+  const [state, setState] = useState<PerfState>({
     current: {
       timestamp: Date.now(), fps: 60, memUsedMB: 0, memTotalMB: 0, memPercent: 0,
       domNodes: 0, resourceCount: 0, transferSizeKB: 0, longTasks: 0, networkType: "unknown", rttMs: 0,
@@ -145,7 +145,7 @@ export function usePerformanceMonitor() {
     vitals: { fcp: null, lcp: null, cls: null, fid: null, ttfb: null },
     history: loadHistory(),
     isMonitoring: true,
-  }));
+  });
 
   const fpsRef = useRef(60);
   const longTaskCountRef = useRef(0);
@@ -235,7 +235,7 @@ export function usePerformanceMonitor() {
       vitals: state.vitals,
       history: state.history,
     }, null, 2);
-  }, [state.current, state.vitals, state.history]);
+  }, [state]);
 
   return {
     ...state,

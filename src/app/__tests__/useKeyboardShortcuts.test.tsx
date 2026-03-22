@@ -18,7 +18,7 @@
 
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { renderHook, cleanup } from "@testing-library/react";
 import { useKeyboardShortcuts, SHORTCUT_LIST } from "../hooks/useKeyboardShortcuts";
 
 const mockNavigate = vi.fn();
@@ -46,10 +46,14 @@ describe("useKeyboardShortcuts", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("快捷键列表", () => {
-    it("应返回 7 个快捷键", () => {
+    it("应返回 8 个快捷键", () => {
       renderHook(() => useKeyboardShortcuts());
-      expect(SHORTCUT_LIST.length).toBe(7);
+      expect(SHORTCUT_LIST.length).toBe(8);
     });
 
     it("应包含操作中心快捷键", () => {

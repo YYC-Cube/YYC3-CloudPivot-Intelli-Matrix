@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { I18nContext } from "../hooks/useI18n";
 import type { Locale } from "../types";
@@ -36,6 +36,10 @@ function renderWithI18n(locale: Locale = "zh-CN") {
 }
 
 describe("LanguageSwitcher", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("基础渲染", () => {
     it("应渲染触发按钮", () => {
       renderWithI18n();

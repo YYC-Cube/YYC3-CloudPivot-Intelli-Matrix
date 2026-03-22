@@ -10,8 +10,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup, waitFor } from "@testing-library/react";
 
 // Mock useOfflineMode
 const mockUseOfflineMode = vi.fn();
@@ -25,6 +25,10 @@ import { OfflineIndicator } from "../components/OfflineIndicator";
 describe("OfflineIndicator", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   it("在线状态应不渲染任何内容", () => {
@@ -81,10 +85,10 @@ describe("OfflineIndicator", () => {
 
     rerender(<OfflineIndicator />);
 
-    expect(screen.getByText("网络已恢复")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("网络已恢复")).toBeInTheDocument());
   });
 
-  it("恢复在线且同步中应显示同步状态", () => {
+  it("恢复在线且同步中应显示同步状态", async () => {
     // 先离线
     mockUseOfflineMode.mockReturnValue({
       isOnline: false,
@@ -103,7 +107,9 @@ describe("OfflineIndicator", () => {
 
     rerender(<OfflineIndicator />);
 
-    expect(screen.getByText("网络已恢复")).toBeInTheDocument();
-    expect(screen.getByText("同步中...")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("网络已恢复")).toBeInTheDocument();
+      expect(screen.getByText("同步中...")).toBeInTheDocument();
+    });
   });
 });

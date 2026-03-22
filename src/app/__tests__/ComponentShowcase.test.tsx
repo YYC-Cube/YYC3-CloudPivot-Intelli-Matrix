@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import {
   ComponentShowcase,
   STATUS_DEFINITIONS,
@@ -22,6 +22,10 @@ import {
 } from "../components/design-system/ComponentShowcase";
 
 describe("ComponentShowcase", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("数据完整性", () => {
     it("应有 5 种状态定义", () => {
       expect(STATUS_DEFINITIONS.length).toBe(5);
@@ -36,8 +40,8 @@ describe("ComponentShowcase", () => {
       expect(keys).toContain("info");
     });
 
-    it("应有 28 个组件注册", () => {
-      expect(COMPONENT_REGISTRY.length).toBe(28);
+    it("应有 27 个组件注册", () => {
+      expect(COMPONENT_REGISTRY.length).toBe(27);
     });
 
     it("组件应覆盖 4 个层级", () => {

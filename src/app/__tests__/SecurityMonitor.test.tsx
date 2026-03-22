@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MemoryRouter } from "react-router";
 import { SecurityMonitor } from "../components/SecurityMonitor";
@@ -64,6 +64,7 @@ describe("SecurityMonitor", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    cleanup();
   });
 
   it("renders the title and subtitle", () => {

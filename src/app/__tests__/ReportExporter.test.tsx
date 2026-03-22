@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, cleanup } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { MemoryRouter } from "react-router";
 import { ReportExporter } from "../components/ReportExporter";
@@ -71,6 +71,7 @@ describe("ReportExporter", () => {
 
   afterEach(() => {
     vi.useRealTimers();
+    cleanup();
   });
 
   it("renders the page title", () => {

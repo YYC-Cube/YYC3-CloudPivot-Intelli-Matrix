@@ -13,8 +13,8 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PatrolReport } from "../components/PatrolReport";
 import type { PatrolResult } from "../types";
 
@@ -40,6 +40,10 @@ const mockResult: PatrolResult = {
 };
 
 describe("PatrolReport", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 基础渲染
   // ----------------------------------------------------------
@@ -88,7 +92,7 @@ describe("PatrolReport", () => {
 
     it("应显示警告数量 badge", () => {
       render(<PatrolReport result={mockResult} />);
-      expect(screen.getByText("1")).toBeInTheDocument();
+      expect(screen.getAllByText("1")[0]).toBeInTheDocument();
     });
   });
 
@@ -106,8 +110,8 @@ describe("PatrolReport", () => {
 
     it("应显示每个分类的检查项数量", () => {
       render(<PatrolReport result={mockResult} />);
-      expect(screen.getByText("(3)")).toBeInTheDocument(); // 节点健康: 3
-      expect(screen.getByText("(1)")).toBeInTheDocument(); // 存储: 1 or 网络: 1
+      expect(screen.getAllByText("(3)")[0]).toBeInTheDocument(); // 节点健康: 3
+      expect(screen.getAllByText("(1)")[0]).toBeInTheDocument(); // 存储: 1 or 网络: 1
     });
   });
 

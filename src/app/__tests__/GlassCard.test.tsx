@@ -12,11 +12,15 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { GlassCard } from "../components/GlassCard";
 
 describe("GlassCard", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应正确渲染子元素", () => {
     render(
       <GlassCard>

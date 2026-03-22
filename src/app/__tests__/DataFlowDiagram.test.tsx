@@ -11,12 +11,16 @@
  */
 
 import React from "react";
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { DataFlowDiagram } from "../components/DataFlowDiagram";
 import { DATA_FLOW_NODES, DATA_FLOW_EDGES } from "../hooks/useServiceLoop";
 
 describe("DataFlowDiagram", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   describe("节点渲染", () => {
     it("应渲染 4 个节点", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
@@ -28,10 +32,10 @@ describe("DataFlowDiagram", () => {
 
     it("应渲染节点标签", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByText("本地设备")).toBeInTheDocument();
-      expect(screen.getByText("本地存储")).toBeInTheDocument();
-      expect(screen.getByText("YYC³ Dashboard")).toBeInTheDocument();
-      expect(screen.getByText("终端集成")).toBeInTheDocument();
+      expect(screen.getAllByText("本地设备")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("本地存储")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("YYC³ Dashboard")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("终端集成")[0]).toBeInTheDocument();
     });
 
     it("应渲染子标签", () => {

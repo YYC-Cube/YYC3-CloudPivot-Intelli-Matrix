@@ -508,7 +508,7 @@ export function useLocalFileSystem() {
   }, []);
 
   const formatSize = useCallback((bytes?: number): string => {
-    if (bytes === null) {return "--";}
+    if (bytes == null) {return "--";}
     if (bytes < 1024) {return `${bytes}B`;}
     if (bytes < 1048576) {return `${(bytes / 1024).toFixed(1)}KB`;}
     return `${(bytes / 1048576).toFixed(1)}MB`;

@@ -49,6 +49,7 @@ export function YYC3Logo({
 
   return (
     <div
+      data-testid="yyc3-logo"
       className={`
         relative shrink-0 ${cfg.radius} overflow-hidden
         flex items-center justify-center

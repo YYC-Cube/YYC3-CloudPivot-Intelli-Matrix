@@ -10,8 +10,8 @@
  * - 搜索框
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import React from "react";
 
 // Mock sonner
@@ -123,6 +123,10 @@ import { DataEditorPanel } from "../components/DataEditorPanel";
 describe("DataEditorPanel", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   it("should render the panel with header", async () => {

@@ -10,8 +10,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { OperationCategory } from "../components/OperationCategory";
 import { CATEGORY_META } from "../hooks/useOperationCenter";
 
@@ -22,9 +22,13 @@ describe("OperationCategory", () => {
     onChange = vi.fn();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   it("应渲染「全部」按钮", () => {
     render(<OperationCategory categories={CATEGORY_META} active="all" onChange={onChange} />);
-    expect(screen.getByText("全部")).toBeInTheDocument();
+    expect(screen.getByTestId("category-all")).toBeInTheDocument();
   });
 
   it("应渲染 5 个分类按钮", () => {

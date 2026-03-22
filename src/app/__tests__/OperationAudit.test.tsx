@@ -20,8 +20,8 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
   useI18n: () => ({
@@ -64,6 +64,10 @@ import { OperationAudit } from "../components/OperationAudit";
 
 describe("OperationAudit", () => {
   beforeEach(() => vi.clearAllMocks());
+
+  afterEach(() => {
+    cleanup();
+  });
 
   describe("统计卡片", () => {
     it("应渲染 4 个统计卡片", () => {

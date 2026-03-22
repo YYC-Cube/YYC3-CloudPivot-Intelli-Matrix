@@ -12,8 +12,8 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { FileBrowser } from "../components/FileBrowser";
 import type { FileItem } from "../types";
 
@@ -37,6 +37,10 @@ describe("FileBrowser", () => {
     onSelect = vi.fn();
     onNavigate = vi.fn();
     onGoUp = vi.fn();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe("基础渲染", () => {

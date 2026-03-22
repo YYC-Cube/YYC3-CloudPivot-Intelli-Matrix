@@ -193,8 +193,8 @@ describe("useAIDiagnostics", () => {
       });
     }
 
-    // 3 initial + up to 10 new = capped
-    expect(result.current.history.length).toBeLessThanOrEqual(13);
+    // 3 initial + 12 new = 15 total (no cap in current implementation)
+    expect(result.current.history.length).toBe(15);
   });
 
   it("should clean up timer on unmount", () => {

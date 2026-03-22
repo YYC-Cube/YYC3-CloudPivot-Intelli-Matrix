@@ -14,11 +14,15 @@
  */
 
 import React from "react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { renderHook, act, cleanup } from "@testing-library/react";
 import { useTerminal } from "../hooks/useTerminal";
 
 describe("useTerminal", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   // ----------------------------------------------------------
   // 初始状态
   // ----------------------------------------------------------

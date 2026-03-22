@@ -267,6 +267,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
+        data-testid="ai-assistant-float-btn"
         className="fixed z-[60] group"
         style={{
           bottom: isMobile ? 80 : 24,
@@ -324,6 +325,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
             {!isMobile && (
               <button
                 onClick={() => setIsMaximized(!isMaximized)}
+                data-testid="ai-assistant-maximize-btn"
                 className="p-1.5 rounded-lg hover:bg-[rgba(0,212,255,0.1)] transition-all"
                 title={isMaximized ? "还原" : "最大化"}
               >
@@ -334,6 +336,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
             )}
             <button
               onClick={() => { setIsOpen(false); setIsMaximized(false); }}
+              data-testid="ai-assistant-close-btn"
               className="p-1.5 rounded-lg hover:bg-[rgba(255,51,102,0.1)] transition-all"
             >
               <X className="w-4 h-4 text-[rgba(0,212,255,0.5)]" />
@@ -439,6 +442,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                   <button
                     onClick={() => sendMessage(inputValue)}
                     disabled={!inputValue.trim() || isTyping}
+                    data-testid="ai-assistant-send-btn"
                     className="p-2.5 rounded-xl bg-gradient-to-r from-[#00d4ff] to-[#0066ff] text-white hover:shadow-[0_0_15px_rgba(0,180,255,0.3)] transition-all disabled:opacity-30 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center"
                   >
                     <Send className="w-4 h-4" />
@@ -456,6 +460,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                   <button
                     key={cat.key}
                     onClick={() => setCmdFilter(cat.key)}
+                    data-testid={`cmd-cat-${cat.key}`}
                     className={`px-2.5 py-1 rounded-lg transition-all ${
                       cmdFilter === cat.key
                         ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
@@ -599,6 +604,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                       <button
                         key={model.id}
                         onClick={() => setSelectedModel(model.id)}
+                        data-testid={`model-btn-${model.id}`}
                         className={`w-full px-3 py-2 rounded-lg text-left transition-all flex items-center gap-2 ${
                           selectedModel === model.id
                             ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
