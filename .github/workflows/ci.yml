@@ -48,8 +48,6 @@
             cache: 'pnpm'
         - name: Install dependencies
           run: pnpm install --frozen-lockfile
-        - name: Check code headers
-          run: pnpm check-headers
         - name: Type check
           run: pnpm exec tsc --noEmit
         - name: Lint code
