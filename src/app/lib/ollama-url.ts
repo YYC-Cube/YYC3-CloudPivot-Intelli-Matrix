@@ -23,7 +23,7 @@ import { env } from "./env-config";
 
 /** 是否运行在本地部署环境 (非远程沙箱) */
 export function isLocalDeployment(): boolean {
-  if (typeof window === "undefined") return false;
+  if (typeof window === "undefined") {return false;}
   const hostname = window.location.hostname;
   return (
     hostname === "localhost" ||

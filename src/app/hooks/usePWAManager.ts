@@ -82,7 +82,7 @@ export function usePWAManager() {
 
   // 更新 Service Worker
   const updateSW = useCallback(async () => {
-    if (!updateAvailable) return;
+    if (!updateAvailable) {return;}
     setIsUpdating(true);
     toast.info("正在更新 Service Worker...");
 
@@ -129,8 +129,8 @@ export function usePWAManager() {
 
   // 格式化大小
   const formatSize = useCallback((bytes: number): string => {
-    if (bytes < 1024) return `${bytes}B`;
-    if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)}KB`;
+    if (bytes < 1024) {return `${bytes}B`;}
+    if (bytes < 1048576) {return `${(bytes / 1024).toFixed(1)}KB`;}
     return `${(bytes / 1048576).toFixed(1)}MB`;
   }, []);
 

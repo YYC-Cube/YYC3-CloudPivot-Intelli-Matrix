@@ -161,7 +161,7 @@ export function useOperationCenter() {
   // Execute an action
   const executeAction = useCallback(async (actionId: string) => {
     const action = actions.find((a) => a.id === actionId);
-    if (!action) return;
+    if (!action) {return;}
 
     setIsExecuting(actionId);
     setActions((prev) =>
@@ -208,7 +208,7 @@ export function useOperationCenter() {
   // Run template
   const runTemplate = useCallback(async (templateId: string) => {
     const tpl = templates.find((t) => t.id === templateId);
-    if (!tpl) return;
+    if (!tpl) {return;}
 
     await upsertTemplate({ ...tpl, lastUsed: Date.now() });
 

@@ -45,7 +45,7 @@ function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
   let result: any = obj;
   for (const k of keys) {
-    if (result == null || typeof result !== "object") return path;
+    if (result == null || typeof result !== "object") {return path;}
     result = result[k];
   }
   return typeof result === "string" ? result : path;
@@ -55,7 +55,7 @@ function getNestedValue(obj: Record<string, any>, path: string): string {
  * 替换模板变量 e.g. "{n} 分钟前" + { n: 5 } → "5 分钟前"
  */
 function interpolate(template: string, vars?: Record<string, string | number>): string {
-  if (!vars) return template;
+  if (!vars) {return template;}
   return template.replace(/\{(\w+)\}/g, (_, key) =>
     vars[key] != null ? String(vars[key]) : `{${key}}`
   );
@@ -81,9 +81,9 @@ export const I18nContext = createContext<I18nContextValue>({
 
 export function useI18nProvider() {
   const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window === "undefined") return "zh-CN";
+    if (typeof window === "undefined") {return "zh-CN";}
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === "en-US" || saved === "zh-CN") return saved;
+    if (saved === "en-US" || saved === "zh-CN") {return saved;}
     return "zh-CN"; // 默认中文
   });
 

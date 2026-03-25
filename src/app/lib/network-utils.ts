@@ -79,7 +79,7 @@ export async function getLocalIP(): Promise<string> {
 /** 检测网络接口信息 */
 export async function getNetworkInterfaces(): Promise<NetworkInterface[]> {
   const ip = await getLocalIP();
-  const connection = (navigator as any).connection;
+  const connection = (navigator as Navigator & { connection?: { effectiveType?: string; type?: string } }).connection;
   const effectiveType = connection?.effectiveType || "unknown";
   const isWifi = effectiveType === "4g" || connection?.type === "wifi";
 
@@ -155,14 +155,14 @@ export function testWebSocketConnection(
           });
         }
       };
-    } catch (err: any) {
+    } catch (err: unknown) {
       if (!resolved) {
         resolved = true;
         clearTimeout(timer);
         resolve({
           success: false,
           latency: Date.now() - start,
-          error: err?.message || "网络不可达",
+          error: err instanceof Error ? err.message : "网络不可达",
         });
       }
     }
@@ -186,12 +186,12 @@ export async function testHTTPConnection(
     });
     clearTimeout(timer);
     return { success: true, latency: Date.now() - start };
-  } catch (err: any) {
+  } catch (err: unknown) {
     clearTimeout(timer);
     return {
       success: false,
       latency: Date.now() - start,
-      error: err?.name === "AbortError" ? "连接超时" : "网络不可达",
+      error: err instanceof Error && err.name === "AbortError" ? "连接超时" : "网络不可达",
     };
   }
 }

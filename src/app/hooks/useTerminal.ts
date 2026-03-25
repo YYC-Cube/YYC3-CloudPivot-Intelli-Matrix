@@ -122,10 +122,10 @@ function aiTextToCli(prompt: string): { suggestion: string; explanation: string 
     return { suggestion: "neofetch", explanation: "显示系统详细信息" };
   }
   if (p.includes("跳转") || p.includes("打开") || p.includes("去")) {
-    if (p.includes("监控")) return { suggestion: "goto /", explanation: "跳转到数据监控页面" };
-    if (p.includes("巡查")) return { suggestion: "goto /patrol", explanation: "跳转到巡查模式" };
-    if (p.includes("操作")) return { suggestion: "goto /operations", explanation: "跳转到操作中心" };
-    if (p.includes("设置")) return { suggestion: "goto /settings", explanation: "跳转到系统设置" };
+    if (p.includes("监控")) {return { suggestion: "goto /", explanation: "跳转到数据监控页面" };}
+    if (p.includes("巡查")) {return { suggestion: "goto /patrol", explanation: "跳转到巡查模式" };}
+    if (p.includes("操作")) {return { suggestion: "goto /operations", explanation: "跳转到操作中心" };}
+    if (p.includes("设置")) {return { suggestion: "goto /settings", explanation: "跳转到系统设置" };}
     return { suggestion: "goto /", explanation: "跳转到首页" };
   }
   if (p.includes("清") && (p.includes("屏") || p.includes("空"))) {
@@ -159,7 +159,7 @@ function processEnvCommand(parts: string[]): CommandResult {
 
   if (action === "get") {
     const key = parts[2];
-    if (!key) return { status: "error", output: "用法: env get <KEY>\n  示例: env get SYSTEM_NAME" };
+    if (!key) {return { status: "error", output: "用法: env get <KEY>\n  示例: env get SYSTEM_NAME" };}
     const cfg = getEnvConfig();
     const k = key as keyof EnvConfig;
     if (k in cfg) {
@@ -192,7 +192,7 @@ function processEnvCommand(parts: string[]): CommandResult {
       newVal = rawVal === "true" || rawVal === "1";
     } else if (typeof currentVal === "number") {
       newVal = rawVal.includes(".") ? parseFloat(rawVal) : parseInt(rawVal, 10);
-      if (isNaN(newVal as number)) return { status: "error", output: `无效数值: ${rawVal}` };
+      if (isNaN(newVal as number)) {return { status: "error", output: `无效数值: ${rawVal}` };}
     } else {
       newVal = rawVal.replace(/^["']|["']$/g, ""); // strip quotes
     }
@@ -229,11 +229,11 @@ function processCommand(input: string): CommandResult {
   const parts = input.trim().split(/\s+/);
   const base = parts[0]?.toLowerCase();
 
-  if (!base) return { output: "", status: "info" };
-  if (base === "clear") return { output: "__CLEAR__", status: "info" };
+  if (!base) {return { output: "", status: "info" };}
+  if (base === "clear") {return { output: "__CLEAR__", status: "info" };}
 
   // ── env 命令 (真实 env-config 读写) ──
-  if (base === "env") return processEnvCommand(parts);
+  if (base === "env") {return processEnvCommand(parts);}
 
   // ── goto / open 路由跳转 ──
   if (base === "goto" || base === "open") {
@@ -246,7 +246,7 @@ function processCommand(input: string): CommandResult {
     }
     let matchedPath = target.startsWith("/") ? target : `/${target}`;
     const byLabel = Object.entries(ROUTE_LABELS).find(([, label]) => label.includes(target));
-    if (byLabel) matchedPath = byLabel[0];
+    if (byLabel) {matchedPath = byLabel[0];}
     const label = ROUTE_LABELS[matchedPath];
     if (label) {
       return { status: "success", output: `导航至: ${label} (${matchedPath})`, navigate: matchedPath };
@@ -523,7 +523,7 @@ AI 助手:
   // ── Unix-like 命令 ──
   if (base === "ls") {
     const dir = parts[1];
-    if (!dir) return { status: "success", output: "logs/  reports/  backups/  configs/  cache/" };
+    if (!dir) {return { status: "success", output: "logs/  reports/  backups/  configs/  cache/" };}
     const dirs: Record<string, string> = {
       "logs": "node/  system/",
       "logs/": "node/  system/",
@@ -543,9 +543,9 @@ AI 助手:
       output: dirs[dir] ?? `ls: cannot access '${dir}': No such file or directory`,
     };
   }
-  if (base === "pwd") return { status: "success", output: "~/.cpim-cloudpivot" };
-  if (base === "whoami") return { status: "success", output: "admin@cpim-cloudpivot" };
-  if (base === "date") return { status: "success", output: new Date().toLocaleString("zh-CN") };
+  if (base === "pwd") {return { status: "success", output: "~/.cpim-cloudpivot" };}
+  if (base === "whoami") {return { status: "success", output: "admin@cpim-cloudpivot" };}
+  if (base === "date") {return { status: "success", output: new Date().toLocaleString("zh-CN") };}
   if (base === "uptime") {
     return {
       status: "success",
@@ -611,7 +611,7 @@ round-trip min/avg/max = 0.123/0.456/0.789 ms`,
 tmpfs           64G   12G   52G    19%   /dev/shm`,
     };
   }
-  if (base === "echo") return { status: "success", output: parts.slice(1).join(" ") };
+  if (base === "echo") {return { status: "success", output: parts.slice(1).join(" ") };}
   if (base === "cat") {
     const file = parts[1];
     if (file === "configs/patrol.json") {
@@ -657,9 +657,9 @@ tmpfs           64G   12G   52G    19%   /dev/shm`,
     }
     return { status: "error", output: file ? `cat: ${file}: No such file or directory` : "cat: missing operand" };
   }
-  if (base === "cd") return { status: "success", output: "" };
-  if (base === "history") return { status: "info", output: "Command history is maintained in session.\nUse ↑/↓ arrow keys to navigate." };
-  if (base === "exit" || base === "quit") return { status: "info", output: "Use Ctrl+` or click ✕ to close the integrated terminal." };
+  if (base === "cd") {return { status: "success", output: "" };}
+  if (base === "history") {return { status: "info", output: "Command history is maintained in session.\nUse ↑/↓ arrow keys to navigate." };}
+  if (base === "exit" || base === "quit") {return { status: "info", output: "Use Ctrl+` or click ✕ to close the integrated terminal." };}
 
   return { status: "error", output: `命令未找到: ${base}\n输入 help 查看可用命令` };
 }
@@ -744,7 +744,7 @@ export function useTerminal(options: UseTerminalOptions = {}) {
   const inputHistory = useRef<string[]>([]);
 
   const execute = useCallback((input: string) => {
-    if (!input.trim()) return;
+    if (!input.trim()) {return;}
 
     inputHistory.current = [input, ...inputHistory.current.slice(0, 49)];
     setHistoryIndex(-1);
@@ -772,7 +772,7 @@ export function useTerminal(options: UseTerminalOptions = {}) {
 
       setTimeout(() => {
         const followUp = processCommand(suggestion);
-        if (followUp.navigate && onNavigate) onNavigate(followUp.navigate);
+        if (followUp.navigate && onNavigate) {onNavigate(followUp.navigate);}
         if (followUp.output !== "__CLEAR__") {
           const followEntry: TerminalHistoryEntry = {
             id: `cmd-ai-${Date.now()}`,
@@ -790,7 +790,7 @@ export function useTerminal(options: UseTerminalOptions = {}) {
       return;
     }
 
-    if (result.navigate && onNavigate) onNavigate(result.navigate);
+    if (result.navigate && onNavigate) {onNavigate(result.navigate);}
 
     const entry: TerminalHistoryEntry = {
       id: `cmd-${Date.now()}`,
@@ -815,7 +815,7 @@ export function useTerminal(options: UseTerminalOptions = {}) {
   }, []);
 
   const handleHistoryNav = useCallback((direction: "up" | "down") => {
-    if (inputHistory.current.length === 0) return;
+    if (inputHistory.current.length === 0) {return;}
     if (direction === "up") {
       const newIndex = Math.min(historyIndex + 1, inputHistory.current.length - 1);
       setHistoryIndex(newIndex);

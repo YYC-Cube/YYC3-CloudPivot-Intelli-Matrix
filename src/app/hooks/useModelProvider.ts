@@ -236,7 +236,7 @@ export function useModelProvider() {
   const removeProvider = useCallback((id: ModelProviderId) => {
     setProviders((prev) => {
       const target = prev.find((p) => p.id === id);
-      if (target?.isBuiltin) return prev; // 内置服务商不可删除
+      if (target?.isBuiltin) {return prev;} // 内置服务商不可删除
       return prev.filter((p) => p.id !== id);
     });
     // 同步删除该服务商下的已配置模型
@@ -246,7 +246,7 @@ export function useModelProvider() {
   /** 重置内置服务商到默认配置 */
   const resetProvider = useCallback((id: ModelProviderId) => {
     const builtin = BUILTIN_PROVIDERS.find((p) => p.id === id);
-    if (!builtin) return;
+    if (!builtin) {return;}
     setProviders((prev) =>
       prev.map((p) => (p.id === id ? { ...builtin, updatedAt: Date.now() } : p))
     );
@@ -428,7 +428,7 @@ export function useModelProvider() {
     proxyUrl?: string,
   ) => {
     const provider = providers.find((p) => p.id === providerId);
-    if (!provider) return;
+    if (!provider) {return;}
 
     const newModel: ConfiguredModel = {
       id: `${providerId}-${model}-${Date.now()}`,

@@ -22,7 +22,7 @@ import { render, screen, fireEvent, waitFor, cleanup, act } from "@testing-libra
 
 // Mock localStorage for settings state
 const createMockSettings = () => {
-  let settings: Record<string, any> = {
+  const settings: Record<string, any> = {
     aiModel: "qwen-72b",
     aiApiKey: "",
     aiTemperature: "0.7",

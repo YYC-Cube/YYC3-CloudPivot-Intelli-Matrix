@@ -74,7 +74,7 @@ class MockSupabaseClient {
     getSession: async () => {
       try {
         const raw = localStorage.getItem(SESSION_KEY);
-        if (!raw) return { data: { session: null }, error: null };
+        if (!raw) {return { data: { session: null }, error: null };}
         const session: AppSession = JSON.parse(raw);
         if (Date.now() > session.expiresAt) {
           localStorage.removeItem(SESSION_KEY);
@@ -121,18 +121,18 @@ class MockSupabaseClient {
   };
 
   /** Mock 数据查询（模拟 Supabase .from().select() 链） */
-  from(table: string) {
+  from(_table: string) {
     return {
-      select: (columns?: string) => ({
-        eq: (col: string, val: any) => this._mockQuery(table, { [col]: val }),
-        order: (col: string, opts?: { ascending?: boolean }) => this._mockQuery(table),
-        limit: (n: number) => this._mockQuery(table),
-        then: (resolve: (val: any) => void) => resolve(this._mockQuery(table)),
+      select: (_columns?: string) => ({
+        eq: (_col: string, _val: unknown) => this._mockQuery(),
+        order: (_col: string, _opts?: { ascending?: boolean }) => this._mockQuery(),
+        limit: (_n: number) => this._mockQuery(),
+        then: (resolve: (val: unknown) => void) => resolve(this._mockQuery()),
       }),
     };
   }
 
-  private _mockQuery(table: string, filters?: Record<string, any>) {
+  private _mockQuery() {
     return { data: [], error: null, count: 0 };
   }
 }

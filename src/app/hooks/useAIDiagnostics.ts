@@ -177,7 +177,7 @@ export function useAIDiagnostics(opts: DiagnosticsOptions = {}) {
   // Clean up on unmount
   useEffect(() => {
     return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
+      if (timerRef.current) {clearTimeout(timerRef.current);}
     };
   }, []);
 
@@ -231,7 +231,7 @@ export function useAIDiagnostics(opts: DiagnosticsOptions = {}) {
       setExecutingAction(null);
       // Mark the executed action in the session
       setSession((prev) => {
-        if (!prev) return prev;
+        if (!prev) {return prev;}
         return {
           ...prev,
           actions: prev.actions.map((a) =>

@@ -208,7 +208,7 @@ export function useSettingsStore() {
   useEffect(() => {
     try {
       const channel = getSharedChannel(CHANNEL_NAME);
-      if (!channel) return;
+      if (!channel) {return;}
       const handler = (e: MessageEvent) => {
         if (e.data?.type === "settings_update") {
           setState(e.data.state);

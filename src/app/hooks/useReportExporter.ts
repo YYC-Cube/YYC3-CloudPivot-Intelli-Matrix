@@ -137,7 +137,7 @@ function exportCSV(data: ReportData) {
 
 function exportPrintable(data: ReportData) {
   const win = window.open("", "_blank");
-  if (!win) return;
+  if (!win) {return;}
 
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -246,10 +246,10 @@ export function useReportExporter() {
   }, [reportType, timeRange, prependReport]);
 
   const exportReport = useCallback((format: ExportFormat) => {
-    if (!report) return;
-    if (format === "json") exportJSON(report);
-    else if (format === "csv") exportCSV(report);
-    else if (format === "print") exportPrintable(report);
+    if (!report) {return;}
+    if (format === "json") {exportJSON(report);}
+    else if (format === "csv") {exportCSV(report);}
+    else if (format === "print") {exportPrintable(report);}
   }, [report]);
 
   return {

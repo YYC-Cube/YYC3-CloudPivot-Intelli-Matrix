@@ -111,7 +111,7 @@ function getDB(): Promise<IDBDatabase> {
   return dbPromise.then((db) => {
     try {
       // 如果连接已关闭，访问 objectStoreNames 会抛出 InvalidStateError
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+       
       db.objectStoreNames;
       return db;
     } catch {
@@ -265,9 +265,9 @@ let channelInitialized = false;
 
 /** 确保 storage channel 已初始化（注册 onmessage 监听） */
 function ensureChannelListener(): void {
-  if (channelInitialized) return;
+  if (channelInitialized) {return;}
   const ch = getSharedChannel(STORAGE_CHANNEL_NAME);
-  if (!ch) return;
+  if (!ch) {return;}
   ch.onmessage = (event: MessageEvent<StorageChangeEvent>) => {
     for (const fn of listeners) {
       try {
@@ -304,7 +304,7 @@ export function onStorageChange(listener: ChangeListener): () => void {
   listeners.push(listener);
   return () => {
     const idx = listeners.indexOf(listener);
-    if (idx >= 0) listeners.splice(idx, 1);
+    if (idx >= 0) {listeners.splice(idx, 1);}
   };
 }
 

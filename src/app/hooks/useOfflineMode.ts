@@ -55,7 +55,7 @@ export function useOfflineMode() {
     snapshotTimer.current = setInterval(saveSnapshot, 30_000);
 
     return () => {
-      if (snapshotTimer.current) clearInterval(snapshotTimer.current);
+      if (snapshotTimer.current) {clearInterval(snapshotTimer.current);}
     };
   }, []);
 

@@ -24,7 +24,7 @@ export function usePushNotifications() {
   }, []);
 
   const requestPermission = useCallback(async () => {
-    if (!supported) return "denied" as NotificationPermission;
+    if (!supported) {return "denied" as NotificationPermission;}
     const result = await Notification.requestPermission();
     setPermission(result);
     return result;
@@ -32,7 +32,7 @@ export function usePushNotifications() {
 
   const showNotification = useCallback(
     (title: string, options: NotificationOptions = {}) => {
-      if (permission !== "granted") return null;
+      if (permission !== "granted") {return null;}
 
       try {
         return new Notification(title, {

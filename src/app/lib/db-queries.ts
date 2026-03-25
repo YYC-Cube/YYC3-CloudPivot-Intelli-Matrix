@@ -72,7 +72,7 @@ const DEFAULT_NODES: NodeStatusRecord[] = [
 function loadData<T>(key: string, defaults: T[]): T[] {
   try {
     const raw = localStorage.getItem(key);
-    if (raw) return JSON.parse(raw);
+    if (raw) {return JSON.parse(raw);}
   } catch { /* ignore */ }
   // 首次: 写入默认值
   try { localStorage.setItem(key, JSON.stringify(defaults)); } catch { /* ignore */ }
@@ -92,17 +92,17 @@ let _agents: Agent[] | null = null;
 let _nodes: NodeStatusRecord[] | null = null;
 
 function getModels(): Model[] {
-  if (!_models) _models = loadData<Model>(MODELS_KEY, DEFAULT_MODELS);
+  if (!_models) {_models = loadData<Model>(MODELS_KEY, DEFAULT_MODELS);}
   return _models;
 }
 
 function getAgents(): Agent[] {
-  if (!_agents) _agents = loadData<Agent>(AGENTS_KEY, DEFAULT_AGENTS);
+  if (!_agents) {_agents = loadData<Agent>(AGENTS_KEY, DEFAULT_AGENTS);}
   return _agents;
 }
 
 function getNodes(): NodeStatusRecord[] {
-  if (!_nodes) _nodes = loadData<NodeStatusRecord>(NODES_KEY, DEFAULT_NODES);
+  if (!_nodes) {_nodes = loadData<NodeStatusRecord>(NODES_KEY, DEFAULT_NODES);}
   return _nodes;
 }
 
@@ -125,7 +125,7 @@ export function addDbModel(model: Omit<Model, "id">): Model {
 export function updateDbModel(id: string, updates: Partial<Model>): Model | null {
   const models = getModels();
   const idx = models.findIndex((m) => m.id === id);
-  if (idx < 0) return null;
+  if (idx < 0) {return null;}
   models[idx] = { ...models[idx], ...updates };
   persistModels();
   return models[idx];
@@ -134,7 +134,7 @@ export function updateDbModel(id: string, updates: Partial<Model>): Model | null
 export function deleteDbModel(id: string): boolean {
   const models = getModels();
   const idx = models.findIndex((m) => m.id === id);
-  if (idx < 0) return false;
+  if (idx < 0) {return false;}
   models.splice(idx, 1);
   persistModels();
   return true;
@@ -155,7 +155,7 @@ export function addDbAgent(agent: Omit<Agent, "id">): Agent {
 export function updateDbAgent(id: string, updates: Partial<Agent>): Agent | null {
   const agents = getAgents();
   const idx = agents.findIndex((a) => a.id === id);
-  if (idx < 0) return null;
+  if (idx < 0) {return null;}
   agents[idx] = { ...agents[idx], ...updates };
   persistAgents();
   return agents[idx];
@@ -164,7 +164,7 @@ export function updateDbAgent(id: string, updates: Partial<Agent>): Agent | null
 export function deleteDbAgent(id: string): boolean {
   const agents = getAgents();
   const idx = agents.findIndex((a) => a.id === id);
-  if (idx < 0) return false;
+  if (idx < 0) {return false;}
   agents.splice(idx, 1);
   persistAgents();
   return true;
@@ -185,7 +185,7 @@ export function addDbNode(node: Omit<NodeStatusRecord, "id">): NodeStatusRecord 
 export function updateDbNode(id: string, updates: Partial<NodeStatusRecord>): NodeStatusRecord | null {
   const nodes = getNodes();
   const idx = nodes.findIndex((n) => n.id === id);
-  if (idx < 0) return null;
+  if (idx < 0) {return null;}
   nodes[idx] = { ...nodes[idx], ...updates };
   persistNodes();
   return nodes[idx];
@@ -194,7 +194,7 @@ export function updateDbNode(id: string, updates: Partial<NodeStatusRecord>): No
 export function deleteDbNode(id: string): boolean {
   const nodes = getNodes();
   const idx = nodes.findIndex((n) => n.id === id);
-  if (idx < 0) return false;
+  if (idx < 0) {return false;}
   nodes.splice(idx, 1);
   persistNodes();
   return true;
@@ -257,7 +257,7 @@ function generateMockLogs(count: number): InferenceLog[] {
   const modelIds = getModels().map((m) => m.id);
   const agentIds = getAgents().filter((a) => a.is_active).map((a) => a.id);
 
-  if (modelIds.length === 0 || agentIds.length === 0) return [];
+  if (modelIds.length === 0 || agentIds.length === 0) {return [];}
 
   return Array.from({ length: count }, (_, i) => ({
     id: `log-${String(i + 1).padStart(5, "0")}`,
@@ -291,7 +291,7 @@ export async function getModelStats(
   modelId: string
 ): Promise<{ data: ModelStats | null; error: null }> {
   const model = getModels().find((m) => m.id === modelId);
-  if (!model) return { data: null, error: null };
+  if (!model) {return { data: null, error: null };}
 
   return {
     data: {

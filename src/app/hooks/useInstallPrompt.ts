@@ -50,7 +50,7 @@ export function useInstallPrompt() {
   }, []);
 
   const promptInstall = useCallback(async () => {
-    if (!deferredPrompt) return false;
+    if (!deferredPrompt) {return false;}
 
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;

@@ -56,7 +56,7 @@ export interface ValidationResult {
 // ============================================================
 
 export function validateUrl(value: string): string | null {
-  if (!value) return null; // 空值由 required 规则处理
+  if (!value) {return null;} // 空值由 required 规则处理
   try {
     const url = new URL(value);
     if (!["http:", "https:", "ws:", "wss:"].includes(url.protocol)) {
@@ -69,21 +69,21 @@ export function validateUrl(value: string): string | null {
 }
 
 export function validateApiKey(value: string): string | null {
-  if (!value) return null;
-  if (value.length < 8) return "API Key 长度不足 (最少 8 位)";
-  if (/\s/.test(value)) return "API Key 不应包含空格";
+  if (!value) {return null;}
+  if (value.length < 8) {return "API Key 长度不足 (最少 8 位)";}
+  if (/\s/.test(value)) {return "API Key 不应包含空格";}
   return null;
 }
 
 export function validatePort(value: string | number): string | null {
   const num = typeof value === "string" ? parseInt(value, 10) : value;
-  if (isNaN(num)) return "端口号必须为数字";
-  if (num < 1 || num > 65535) return "端口号范围 1-65535";
+  if (isNaN(num)) {return "端口号必须为数字";}
+  if (num < 1 || num > 65535) {return "端口号范围 1-65535";}
   return null;
 }
 
 export function validateIp(value: string): string | null {
-  if (!value) return null;
+  if (!value) {return null;}
   // 简单 IPv4 / CIDR 校验
   const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}(\/\d{1,2})?$/;
   const lines = value.split("\n").map((l) => l.trim()).filter(Boolean);
@@ -100,17 +100,17 @@ export function validateIp(value: string): string | null {
 }
 
 export function validateModelName(value: string): string | null {
-  if (!value) return null;
-  if (value.length > 128) return "模型名称过长 (最多 128 字符)";
-  if (/[<>{}|\\]/.test(value)) return "模型名称包含非法字符";
+  if (!value) {return null;}
+  if (value.length > 128) {return "模型名称过长 (最多 128 字符)";}
+  if (/[<>{}|\\]/.test(value)) {return "模型名称包含非法字符";}
   return null;
 }
 
 export function validateRange(value: string | number, min?: number, max?: number): string | null {
   const num = typeof value === "string" ? parseFloat(value) : value;
-  if (isNaN(num)) return "必须为数字";
-  if (min !== undefined && num < min) return `不能小于 ${min}`;
-  if (max !== undefined && num > max) return `不能大于 ${max}`;
+  if (isNaN(num)) {return "必须为数字";}
+  if (min !== undefined && num < min) {return `不能小于 ${min}`;}
+  if (max !== undefined && num > max) {return `不能大于 ${max}`;}
   return null;
 }
 
@@ -129,7 +129,7 @@ export function validateFields(rules: ValidationRule[]): ValidationResult {
 
       switch (r.type) {
         case "required":
-          if (!val.trim()) errMsg = r.message || `${rule.label} 不能为空`;
+          if (!val.trim()) {errMsg = r.message || `${rule.label} 不能为空`;}
           break;
         case "url":
           errMsg = validateUrl(val) ? (r.message || validateUrl(val)) : null;
@@ -150,13 +150,13 @@ export function validateFields(rules: ValidationRule[]): ValidationResult {
           errMsg = validateRange(val, r.min, r.max) ? (r.message || validateRange(val, r.min, r.max)) : null;
           break;
         case "minLength":
-          if (val.length < r.min) errMsg = r.message || `${rule.label} 最少 ${r.min} 字符`;
+          if (val.length < r.min) {errMsg = r.message || `${rule.label} 最少 ${r.min} 字符`;}
           break;
         case "maxLength":
-          if (val.length > r.max) errMsg = r.message || `${rule.label} 最多 ${r.max} 字符`;
+          if (val.length > r.max) {errMsg = r.message || `${rule.label} 最多 ${r.max} 字符`;}
           break;
         case "pattern":
-          if (!r.regex.test(val)) errMsg = r.message || `${rule.label} 格式不正确`;
+          if (!r.regex.test(val)) {errMsg = r.message || `${rule.label} 格式不正确`;}
           break;
         case "custom":
           errMsg = r.validate(val);

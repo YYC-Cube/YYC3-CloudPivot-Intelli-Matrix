@@ -276,9 +276,9 @@ export function useSecurityMonitor() {
 
   const cleanupData = useCallback((type: "expired" | "cache" | "privacy") => {
     setState((prev) => {
-      if (!prev.dataManagement) return prev;
+      if (!prev.dataManagement) {return prev;}
       const dm = { ...prev.dataManagement };
-      if (type === "expired") dm.expiredItems = 0;
+      if (type === "expired") {dm.expiredItems = 0;}
       if (type === "cache") { dm.cacheSize = 0; dm.storage = { ...dm.storage, cacheAPI: 0 }; }
       if (type === "privacy") {
         dm.storage = { ...dm.storage, sessionStorage: 0 };
@@ -301,7 +301,7 @@ export function useSecurityMonitor() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (scanTimer.current) clearTimeout(scanTimer.current);
+      if (scanTimer.current) {clearTimeout(scanTimer.current);}
     };
   }, []);
 

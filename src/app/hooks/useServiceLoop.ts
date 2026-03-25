@@ -227,7 +227,7 @@ export function useServiceLoop() {
 
   // 当前阶段索引
   const currentStageIndex = useMemo(() => {
-    if (!currentRun) return -1;
+    if (!currentRun) {return -1;}
     return ALL_STAGES.indexOf(currentRun.currentStage);
   }, [currentRun]);
 
@@ -303,7 +303,7 @@ export function useServiceLoop() {
   // 执行完整闭环
   const startLoop = useCallback(
     async (trigger: "manual" | "auto" | "alert" = "manual") => {
-      if (isRunning) return;
+      if (isRunning) {return;}
 
       abortRef.current = false;
       setIsRunning(true);

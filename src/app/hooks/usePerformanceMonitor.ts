@@ -61,7 +61,7 @@ const MAX_HISTORY = 100;
 function loadHistory(): PerfSnapshot[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {return JSON.parse(raw);}
   } catch { /* ignore */ }
   return [];
 }
@@ -96,7 +96,7 @@ function measureFPS(callback: (fps: number) => void) {
 
 function getMemoryInfo(): { usedMB: number; totalMB: number; percent: number } {
   const mem = (performance as any).memory;
-  if (!mem) return { usedMB: 0, totalMB: 0, percent: 0 };
+  if (!mem) {return { usedMB: 0, totalMB: 0, percent: 0 };}
   const used = mem.usedJSHeapSize / (1024 * 1024);
   const total = mem.jsHeapSizeLimit / (1024 * 1024);
   return { usedMB: Math.round(used * 10) / 10, totalMB: Math.round(total * 10) / 10, percent: Math.round((used / total) * 1000) / 10 };
@@ -114,7 +114,7 @@ function getDOMNodeCount(): number {
 
 function getNetworkInfo(): { type: string; rtt: number } {
   const conn = (navigator as any).connection;
-  if (!conn) return { type: "unknown", rtt: 0 };
+  if (!conn) {return { type: "unknown", rtt: 0 };}
   return { type: conn.effectiveType || "unknown", rtt: conn.rtt || 0 };
 }
 
@@ -123,11 +123,11 @@ function getWebVitals(): WebVitals {
 
   // FCP
   const fcpEntries = performance.getEntriesByName("first-contentful-paint", "paint");
-  if (fcpEntries.length > 0) vitals.fcp = Math.round(fcpEntries[0].startTime);
+  if (fcpEntries.length > 0) {vitals.fcp = Math.round(fcpEntries[0].startTime);}
 
   // TTFB
   const navEntries = performance.getEntriesByType("navigation") as PerformanceNavigationTiming[];
-  if (navEntries.length > 0) vitals.ttfb = Math.round(navEntries[0].responseStart);
+  if (navEntries.length > 0) {vitals.ttfb = Math.round(navEntries[0].responseStart);}
 
   return vitals;
 }
@@ -152,13 +152,13 @@ export function usePerformanceMonitor() {
 
   // FPS 采集
   useEffect(() => {
-    if (!state.isMonitoring) return;
+    if (!state.isMonitoring) {return;}
     return measureFPS((fps) => { fpsRef.current = fps; });
   }, [state.isMonitoring]);
 
   // Long Tasks (PerformanceObserver)
   useEffect(() => {
-    if (!state.isMonitoring) return;
+    if (!state.isMonitoring) {return;}
     try {
       const observer = new PerformanceObserver((list) => {
         longTaskCountRef.current += list.getEntries().length;
@@ -170,7 +170,7 @@ export function usePerformanceMonitor() {
 
   // 定期采样 (每 3 秒)
   useEffect(() => {
-    if (!state.isMonitoring) return;
+    if (!state.isMonitoring) {return;}
 
     const interval = setInterval(() => {
       const mem = getMemoryInfo();

@@ -178,8 +178,8 @@ const MOCK_RESPONSES: Record<string, string> = {
 
 function getMockResponse(input: string): string {
   const lower = input.toLowerCase();
-  if (lower.includes("状态") || lower.includes("status")) return MOCK_RESPONSES.status;
-  if (lower.includes("异常") || lower.includes("error") || lower.includes("告警")) return MOCK_RESPONSES.error;
+  if (lower.includes("状态") || lower.includes("status")) {return MOCK_RESPONSES.status;}
+  if (lower.includes("异常") || lower.includes("error") || lower.includes("告警")) {return MOCK_RESPONSES.error;}
   return MOCK_RESPONSES.default;
 }
 
@@ -522,12 +522,12 @@ export function useBigModelSDK() {
         signal: abortRef.current.signal,
       });
 
-      if (!res.ok) throw new Error(`API ${res.status}: ${res.statusText}`);
+      if (!res.ok) {throw new Error(`API ${res.status}: ${res.statusText}`);}
 
       setConnectionStatus("connected");
 
       const reader = res.body?.getReader();
-      if (!reader) throw new Error("Response body is not readable");
+      if (!reader) {throw new Error("Response body is not readable");}
 
       const decoder = new TextDecoder();
       let buffer = "";
@@ -535,7 +535,7 @@ export function useBigModelSDK() {
 
       while (true) {
         const { done, value } = await reader.read();
-        if (done) break;
+        if (done) {break;}
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split("\n");
@@ -544,7 +544,7 @@ export function useBigModelSDK() {
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             const data = line.slice(6).trim();
-            if (data === "[DONE]") continue;
+            if (data === "[DONE]") {continue;}
             try {
               const chunk = JSON.parse(data);
               const delta = configuredModel.providerId === "ollama"
@@ -667,7 +667,7 @@ export function useBigModelSDK() {
         const res = await fetch(testUrl, {
           signal: AbortSignal.timeout(5000),
         });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        if (!res.ok) {throw new Error(`HTTP ${res.status}`);}
         return { success: true, latencyMs: Date.now() - start };
       }
 

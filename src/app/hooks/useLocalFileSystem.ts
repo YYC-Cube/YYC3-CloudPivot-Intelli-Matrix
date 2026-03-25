@@ -128,7 +128,7 @@ const DEFAULT_FILE_TREE: FileItem[] = [
 function loadFileTree(): FileItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
+    if (raw) {return JSON.parse(raw);}
   } catch { /* ignore */ }
   const defaults = JSON.parse(JSON.stringify(DEFAULT_FILE_TREE));
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(defaults)); } catch { /* ignore */ }
@@ -145,10 +145,10 @@ function saveFileTree(tree: FileItem[]) {
 
 function findParent(tree: FileItem[], targetId: string): FileItem | null {
   for (const item of tree) {
-    if (item.children?.some((c) => c.id === targetId)) return item;
+    if (item.children?.some((c) => c.id === targetId)) {return item;}
     if (item.children) {
       const found = findParent(item.children, targetId);
-      if (found) return found;
+      if (found) {return found;}
     }
   }
   return null;
@@ -156,10 +156,10 @@ function findParent(tree: FileItem[], targetId: string): FileItem | null {
 
 function findItem(tree: FileItem[], id: string): FileItem | null {
   for (const item of tree) {
-    if (item.id === id) return item;
+    if (item.id === id) {return item;}
     if (item.children) {
       const found = findItem(item.children, id);
-      if (found) return found;
+      if (found) {return found;}
     }
   }
   return null;
@@ -168,7 +168,7 @@ function findItem(tree: FileItem[], id: string): FileItem | null {
 function removeItem(tree: FileItem[], id: string): boolean {
   for (let i = 0; i < tree.length; i++) {
     if (tree[i].id === id) { tree.splice(i, 1); return true; }
-    if (tree[i].children && removeItem(tree[i].children!, id)) return true;
+    if (tree[i].children && removeItem(tree[i].children!, id)) {return true;}
   }
   return false;
 }
@@ -272,10 +272,10 @@ export function useLocalFileSystem() {
     // 查找父目录
     function findByPath(items: FileItem[], p: string): FileItem | null {
       for (const item of items) {
-        if (item.path === p && item.type === "directory") return item;
+        if (item.path === p && item.type === "directory") {return item;}
         if (item.children) {
           const found = findByPath(item.children, p);
-          if (found) return found;
+          if (found) {return found;}
         }
       }
       return null;
@@ -296,7 +296,7 @@ export function useLocalFileSystem() {
     };
 
     if (target) {
-      if (!target.children) target.children = [];
+      if (!target.children) {target.children = [];}
       target.children.push(newFile);
     } else {
       tree.push(newFile);
@@ -313,10 +313,10 @@ export function useLocalFileSystem() {
 
     function findByPath(items: FileItem[], p: string): FileItem | null {
       for (const item of items) {
-        if (item.path === p && item.type === "directory") return item;
+        if (item.path === p && item.type === "directory") {return item;}
         if (item.children) {
           const found = findByPath(item.children, p);
-          if (found) return found;
+          if (found) {return found;}
         }
       }
       return null;
@@ -334,7 +334,7 @@ export function useLocalFileSystem() {
     };
 
     if (target) {
-      if (!target.children) target.children = [];
+      if (!target.children) {target.children = [];}
       target.children.push(newDir);
     } else {
       tree.push(newDir);
@@ -349,7 +349,7 @@ export function useLocalFileSystem() {
   const renameItem = useCallback((id: string, newName: string) => {
     const tree = JSON.parse(JSON.stringify(fileTree)) as FileItem[];
     const item = findItem(tree, id);
-    if (!item) return false;
+    if (!item) {return false;}
 
     const oldPath = item.path;
     const parentPath = oldPath.substring(0, oldPath.lastIndexOf("/"));
@@ -381,7 +381,7 @@ export function useLocalFileSystem() {
     const tree = JSON.parse(JSON.stringify(fileTree)) as FileItem[];
     let count = 0;
     for (const id of ids) {
-      if (removeItem(tree, id)) count++;
+      if (removeItem(tree, id)) {count++;}
     }
     if (count > 0) {
       persistTree(tree);
@@ -421,12 +421,12 @@ export function useLocalFileSystem() {
 
   const currentItems = useMemo(() => {
     function findDir(items: FileItem[], path: string): FileItem[] | null {
-      if (path === "~/.yyc3-cloudpivot") return items;
+      if (path === "~/.yyc3-cloudpivot") {return items;}
       for (const item of items) {
-        if (item.path === path && item.type === "directory") return item.children ?? [];
+        if (item.path === path && item.type === "directory") {return item.children ?? [];}
         if (item.children) {
           const found = findDir(item.children, path);
-          if (found) return found;
+          if (found) {return found;}
         }
       }
       return null;
@@ -459,7 +459,7 @@ export function useLocalFileSystem() {
   }, [navigateTo]);
 
   const goUp = useCallback(() => {
-    if (currentPath === "~/.yyc3-cloudpivot") return;
+    if (currentPath === "~/.yyc3-cloudpivot") {return;}
     const parts = currentPath.split("/");
     parts.pop();
     setCurrentPath(parts.join("/"));
@@ -470,8 +470,8 @@ export function useLocalFileSystem() {
 
   const filteredLogs = useMemo(() => {
     let result = logs;
-    if (logLevelFilter !== "all") result = result.filter((l) => l.level === logLevelFilter);
-    if (logSourceFilter !== "all") result = result.filter((l) => l.source === logSourceFilter);
+    if (logLevelFilter !== "all") {result = result.filter((l) => l.level === logLevelFilter);}
+    if (logSourceFilter !== "all") {result = result.filter((l) => l.source === logSourceFilter);}
     if (logSearchQuery) {
       const q = logSearchQuery.toLowerCase();
       result = result.filter((l) => l.message.toLowerCase().includes(q) || l.source.toLowerCase().includes(q));
@@ -508,9 +508,9 @@ export function useLocalFileSystem() {
   }, []);
 
   const formatSize = useCallback((bytes?: number): string => {
-    if (bytes == null) return "--";
-    if (bytes < 1024) return `${bytes}B`;
-    if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)}KB`;
+    if (bytes == null) {return "--";}
+    if (bytes < 1024) {return `${bytes}B`;}
+    if (bytes < 1048576) {return `${(bytes / 1024).toFixed(1)}KB`;}
     return `${(bytes / 1048576).toFixed(1)}MB`;
   }, []);
 
@@ -531,15 +531,15 @@ export function useLocalFileSystem() {
     try {
       const raw = localStorage.getItem(FILE_CONTENT_KEY);
       const contents = raw ? JSON.parse(raw) : {};
-      if (contents[fileId]) return contents[fileId];
+      if (contents[fileId]) {return contents[fileId];}
     } catch { /* ignore */ }
     // 生成模拟内容
     const file = findItem(fileTree, fileId);
-    if (!file) return "";
-    if (file.extension === "json") return JSON.stringify({ system: "yyc3-matrix", node: file.name, status: "active", timestamp: new Date().toISOString(), metrics: { gpu: 72, mem: 65, temp: 45 } }, null, 2);
-    if (file.extension === "log") return `[${new Date().toISOString()}] INFO  系统启动完成\n[${new Date().toISOString()}] INFO  模型加载 LLaMA-70B\n[${new Date().toISOString()}] INFO  推理服务就绪\n[${new Date().toISOString()}] WARN  GPU温度接近阈值\n[${new Date().toISOString()}] INFO  任务 #12847 完成`;
-    if (file.extension === "md") return `# ${file.name}\n\nYYC³ CloudPivot 文档\n`;
-    if (file.extension === "csv") return `node,gpu,mem,temp,status\nGPU-A100-01,72,65,45,active\nGPU-A100-03,91,89,78,warning`;
+    if (!file) {return "";}
+    if (file.extension === "json") {return JSON.stringify({ system: "yyc3-matrix", node: file.name, status: "active", timestamp: new Date().toISOString(), metrics: { gpu: 72, mem: 65, temp: 45 } }, null, 2);}
+    if (file.extension === "log") {return `[${new Date().toISOString()}] INFO  系统启动完成\n[${new Date().toISOString()}] INFO  模型加载 LLaMA-70B\n[${new Date().toISOString()}] INFO  推理服务就绪\n[${new Date().toISOString()}] WARN  GPU温度接近阈值\n[${new Date().toISOString()}] INFO  任务 #12847 完成`;}
+    if (file.extension === "md") {return `# ${file.name}\n\nYYC³ CloudPivot 文档\n`;}
+    if (file.extension === "csv") {return `node,gpu,mem,temp,status\nGPU-A100-01,72,65,45,active\nGPU-A100-03,91,89,78,warning`;}
     return `// ${file.name}\n// Auto-generated content`;
   }, [fileTree]);
 
