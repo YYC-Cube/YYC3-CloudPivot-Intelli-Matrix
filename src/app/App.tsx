@@ -11,7 +11,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { RouterProvider } from "react-router";
-import { router } from "./routes";
+import { router } from "./routes.tsx";
 import { Login } from "./components/Login";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { installGlobalErrorListeners } from "./lib/error-handler";
