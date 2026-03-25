@@ -43,6 +43,10 @@ export interface SettingsToggles {
 export interface SettingsValues {
   systemName: string;
   clusterId: string;
+  brandName: string;
+  brandSlogan1: string;
+  brandSlogan2: string;
+  brandSlogan3: string;
   refreshInterval: string;
   language: string;
   timezone: string;
@@ -117,6 +121,10 @@ const DEFAULT_TOGGLES: SettingsToggles = {
 const DEFAULT_VALUES: SettingsValues = {
   systemName: "YYC³ CloudPivot Intelli-Matrix v3.2",
   clusterId: "CN-EAST-PROD-01",
+  brandName: "YanYuCloudCube",
+  brandSlogan1: "言启象限 | 语枢未来",
+  brandSlogan2: "言启千行代码 | 语枢万物智能",
+  brandSlogan3: "万象归元于云枢 | 深栈智启新纪元",
   refreshInterval: "5",
   language: "zh-CN",
   timezone: "Asia/Shanghai",
@@ -200,7 +208,7 @@ export function useSettingsStore() {
   useEffect(() => {
     try {
       const channel = getSharedChannel(CHANNEL_NAME);
-      if (!channel) {return;}
+      if (!channel) return;
       const handler = (e: MessageEvent) => {
         if (e.data?.type === "settings_update") {
           setState(e.data.state);
