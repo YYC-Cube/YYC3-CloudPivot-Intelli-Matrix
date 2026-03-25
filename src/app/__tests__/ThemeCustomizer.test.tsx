@@ -21,6 +21,20 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
 import { render, screen, fireEvent , cleanup } from "@testing-library/react";
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+    get length() { return Object.keys(store).length; },
+    key: (index: number) => Object.keys(store)[index] || null,
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+
 vi.mock("../components/GlassCard", () => ({
   __esModule: true,
   GlassCard: ({ children, className }: any) => <div className={className}>{children}</div>,
@@ -126,14 +140,12 @@ import { ThemeCustomizer } from "../components/ThemeCustomizer";
 describe("ThemeCustomizer", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorageMock.clear();
   });
 
   afterEach(() => {
     cleanup();
   });
-
-
-  beforeEach(() => vi.clearAllMocks());
 
   describe("Header", () => {
     it("应渲染标题", () => {
