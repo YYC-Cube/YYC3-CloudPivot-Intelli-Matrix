@@ -19,8 +19,8 @@
 import React, { useState, useCallback, useEffect } from "react";
 import {
   Panel,
-  Group,
-  Separator,
+  PanelGroup,
+  PanelResizeHandle,
 } from "react-resizable-panels";
 import { useNavigate } from "react-router";
 import { useI18n } from "../../hooks/useI18n";
@@ -38,14 +38,14 @@ import type { IDEViewMode, IDELayoutMode, OpenTab } from "./ide-types";
 /** Resize handle styling */
 function ResizeHandle() {
   return (
-    <Separator
+    <PanelResizeHandle
       className={`group relative flex items-center justify-center transition-all w-[3px] hover:w-[5px]`}
       style={{ background: "rgba(0,180,255,0.06)" }}
     >
       <div
         className={`rounded-full bg-[rgba(0,212,255,0.15)] group-hover:bg-[rgba(0,212,255,0.4)] transition-all w-[2px] h-8`}
       />
-    </Separator>
+    </PanelResizeHandle>
   );
 }
 
@@ -58,8 +58,8 @@ export function IDELayout() {
   const [layoutMode, setLayoutMode] = useState<IDELayoutMode>(() => {
     try {
       const stored = localStorage.getItem(LAYOUT_MODE_STORAGE_KEY);
-      if (stored === "edit" || stored === "preview") {return stored;}
-    } catch {}
+      if (stored === "edit" || stored === "preview") { return stored; }
+    } catch { }
     return "preview";
   });
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
@@ -72,7 +72,7 @@ export function IDELayout() {
   useEffect(() => {
     try {
       localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, layoutMode);
-    } catch {}
+    } catch { }
   }, [layoutMode]);
 
   const handleBack = useCallback(() => {
@@ -81,9 +81,9 @@ export function IDELayout() {
 
   const handleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch(() => { });
     } else {
-      document.documentElement.requestFullscreen().catch(() => {});
+      document.documentElement.requestFullscreen().catch(() => { });
     }
   }, []);
 
@@ -194,7 +194,7 @@ export function IDELayout() {
    * 终端仅在右栏(代码编辑器下方)
    */
   const renderEditModeLayout = () => (
-    <Group orientation="horizontal" className="h-full">
+    <PanelGroup direction="horizontal" className="h-full">
       {/* Left Panel - AI Chat */}
       {showLeftPanel && (
         <>
@@ -229,7 +229,7 @@ export function IDELayout() {
         minSize={20}
         id="right-panel-e"
       >
-        <Group orientation="vertical" className="h-full">
+        <PanelGroup direction="vertical" className="h-full">
           <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="code-panel-e">
             {codeEditorElement}
           </Panel>
@@ -242,9 +242,9 @@ export function IDELayout() {
           >
             {terminalElement}
           </Panel>
-        </Group>
+        </PanelGroup>
       </Panel>
-    </Group>
+    </PanelGroup>
   );
 
   /**
@@ -258,7 +258,7 @@ export function IDELayout() {
    * 终端跨越中栏+右栏
    */
   const renderPreviewModeLayout = () => (
-    <Group orientation="horizontal" className="h-full">
+    <PanelGroup direction="horizontal" className="h-full">
       {/* Left Panel - AI Chat */}
       {showLeftPanel && (
         <>
@@ -275,10 +275,10 @@ export function IDELayout() {
         minSize={40}
         id="main-panel-p"
       >
-        <Group orientation="vertical" className="h-full">
+        <PanelGroup direction="vertical" className="h-full">
           {/* Top: Center + Right horizontal split */}
           <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="editor-area-p">
-            <Group orientation="horizontal" className="h-full">
+            <PanelGroup direction="horizontal" className="h-full">
               {/* Center Panel - File Explorer */}
               {showCenterPanel && (
                 <>
@@ -305,7 +305,7 @@ export function IDELayout() {
               >
                 {codeEditorElement}
               </Panel>
-            </Group>
+            </PanelGroup>
           </Panel>
 
           {/* Bottom - Terminal (spans center+right) */}
@@ -318,9 +318,9 @@ export function IDELayout() {
           >
             {terminalElement}
           </Panel>
-        </Group>
+        </PanelGroup>
       </Panel>
-    </Group>
+    </PanelGroup>
   );
 
   return (
