@@ -1,13 +1,26 @@
+// @vitest-environment jsdom
 /**
  * useModelProvider.test.tsx
- * ==========================
+ * ===============
  * useModelProvider Hook 测试
  */
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useModelProvider, MODEL_PROVIDERS } from "../hooks/useModelProvider";
-import "./setup";
 
 describe("useModelProvider", () => {
   beforeEach(() => {

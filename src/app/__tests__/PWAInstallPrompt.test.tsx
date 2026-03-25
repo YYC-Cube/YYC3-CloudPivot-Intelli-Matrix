@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * PWAInstallPrompt.test.tsx
- * ==========================
+ * ===============
  * PWAInstallPrompt 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -11,14 +12,14 @@
  * - 关闭按钮触发
  */
 
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 // Mock useInstallPrompt
-const mockPromptInstall = vi.fn();
-const mockDismiss = vi.fn();
-const mockUseInstallPrompt = vi.fn();
+const mockPromptInstall = vi.fn() as any;
+const mockDismiss = vi.fn() as any;
+const mockUseInstallPrompt = vi.fn() as any;
 
 vi.mock("../hooks/useInstallPrompt", () => ({
   useInstallPrompt: () => mockUseInstallPrompt(),
@@ -91,6 +92,10 @@ describe("PWAInstallPrompt", () => {
       });
     });
 
+    afterEach(() => {
+      cleanup();
+    });
+
     it("应显示安装描述文案", () => {
       render(<PWAInstallPrompt />);
       expect(
@@ -100,7 +105,7 @@ describe("PWAInstallPrompt", () => {
 
     it("应包含安装到桌面按钮", () => {
       render(<PWAInstallPrompt />);
-      expect(screen.getByText("安装到桌面")).toBeInTheDocument();
+      expect(screen.getAllByText("安装到桌面")[0]).toBeInTheDocument();
     });
   });
 
@@ -118,9 +123,13 @@ describe("PWAInstallPrompt", () => {
       });
     });
 
+    afterEach(() => {
+      cleanup();
+    });
+
     it("点击安装按钮应触发 promptInstall", () => {
       render(<PWAInstallPrompt />);
-      fireEvent.click(screen.getByText("安装到桌面"));
+      fireEvent.click(screen.getAllByText("安装到桌面")[0]);
       expect(mockPromptInstall).toHaveBeenCalledTimes(1);
     });
 

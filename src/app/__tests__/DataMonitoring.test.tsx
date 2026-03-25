@@ -1,0 +1,31 @@
+// @vitest-environment jsdom
+/**
+ * DataMonitoring.test.tsx
+ * =====================
+ * DataMonitoring 组件测试
+ *
+ * 覆盖范围:
+ * - 组件基本渲染
+ */
+
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import React from "react";
+import { DataMonitoring } from "../components/DataMonitoring";
+
+vi.mock("../components/Dashboard", () => ({
+  Dashboard: () => React.createElement("div", { "data-testid": "dashboard" }, "Dashboard Mock"),
+}));
+
+describe("DataMonitoring", () => {
+  afterEach(() => {
+    cleanup();
+  });
+
+  describe("组件渲染", () => {
+    it("应该渲染 Dashboard 组件", () => {
+      render(React.createElement(DataMonitoring));
+      expect(screen.getByTestId("dashboard")).toBeInTheDocument();
+    });
+  });
+});

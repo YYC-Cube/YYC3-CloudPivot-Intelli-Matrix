@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * useSecurityMonitor.test.tsx
  * =============================
@@ -16,7 +17,6 @@ describe("useSecurityMonitor", () => {
 
   afterEach(() => {
     vi.useRealTimers();
-    cleanup();
   });
 
   it("initializes with idle state", () => {

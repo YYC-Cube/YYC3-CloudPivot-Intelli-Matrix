@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * DataFlowDiagram.test.tsx
- * =========================
+ * =============
  * DataFlowDiagram 组件 - 数据流向可视化测试
  *
  * 覆盖范围:
@@ -10,8 +11,8 @@
  * - data-testid
  */
 
-import React from "react";
 import { describe, it, expect, afterEach } from "vitest";
+import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import { DataFlowDiagram } from "../components/DataFlowDiagram";
 import { DATA_FLOW_NODES, DATA_FLOW_EDGES } from "../hooks/useServiceLoop";
@@ -24,10 +25,10 @@ describe("DataFlowDiagram", () => {
   describe("节点渲染", () => {
     it("应渲染 4 个节点", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-node-device")).toBeInTheDocument();
-      expect(screen.getByTestId("flow-node-storage")).toBeInTheDocument();
-      expect(screen.getByTestId("flow-node-dashboard")).toBeInTheDocument();
-      expect(screen.getByTestId("flow-node-terminal")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-node-device")[0]).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-node-storage")[0]).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-node-dashboard")[0]).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-node-terminal")[0]).toBeInTheDocument();
     });
 
     it("应渲染节点标签", () => {
@@ -40,49 +41,49 @@ describe("DataFlowDiagram", () => {
 
     it("应渲染子标签", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByText("192.168.3.x")).toBeInTheDocument();
-      expect(screen.getByText("PostgreSQL + NAS")).toBeInTheDocument();
+      expect(screen.getAllByText("192.168.3.x")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("PostgreSQL + NAS")[0]).toBeInTheDocument();
     });
   });
 
   describe("连线渲染", () => {
     it("应渲染连线容器", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-edges")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-edges")[0]).toBeInTheDocument();
     });
 
     it("应渲染 device→storage 连线", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-edge-device-storage")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-edge-device-storage")[0]).toBeInTheDocument();
     });
 
     it("应渲染 storage→dashboard 连线", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-edge-storage-dashboard")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-edge-storage-dashboard")[0]).toBeInTheDocument();
     });
 
     it("应渲染 dashboard→device 连线", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-edge-dashboard-device")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-edge-dashboard-device")[0]).toBeInTheDocument();
     });
 
     it("应渲染 dashboard→terminal 连线", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("flow-edge-dashboard-terminal")).toBeInTheDocument();
+      expect(screen.getAllByTestId("flow-edge-dashboard-terminal")[0]).toBeInTheDocument();
     });
   });
 
   describe("data-testid", () => {
     it("应有根容器", () => {
       render(<DataFlowDiagram nodes={DATA_FLOW_NODES} edges={DATA_FLOW_EDGES} />);
-      expect(screen.getByTestId("data-flow-diagram")).toBeInTheDocument();
+      expect(screen.getAllByTestId("data-flow-diagram")[0]).toBeInTheDocument();
     });
   });
 
   describe("空数据", () => {
     it("空节点和空连线应渲染空容器", () => {
       render(<DataFlowDiagram nodes={[]} edges={[]} />);
-      expect(screen.getByTestId("data-flow-diagram")).toBeInTheDocument();
+      expect(screen.getAllByTestId("data-flow-diagram")[0]).toBeInTheDocument();
     });
   });
 });

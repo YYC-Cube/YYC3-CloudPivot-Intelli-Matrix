@@ -12,15 +12,17 @@
  * 布局模式:
  *   编辑模式 (edit):   终端仅在右栏显示
  *   预览模式 (preview): 终端跨越中栏+右栏显示
+ *   自由模式 (free):   可拖拽面板系统 (新功能)
  *
  * 使用 react-resizable-panels 实现面板拖拽调节
+ * 新增自由模式支持完全自定义拖拽面板布局
  */
 
 import React, { useState, useCallback, useEffect } from "react";
 import {
   Panel,
-  PanelGroup,
-  PanelResizeHandle,
+  Group,
+  Separator,
 } from "react-resizable-panels";
 import { useNavigate } from "react-router";
 import { useI18n } from "../../hooks/useI18n";
@@ -34,18 +36,21 @@ import { IDEStatusBar } from "./IDEStatusBar";
 import { MOCK_FILE_CONTENTS } from "./ide-mock-data";
 import { AI_MODELS } from "./ide-mock-data";
 import type { IDEViewMode, IDELayoutMode, OpenTab } from "./ide-types";
+import { LayoutProvider } from "./LayoutContext";
+import { Workspace } from "./Workspace";
+import type { PanelType } from "./ide-layout-types";
 
 /** Resize handle styling */
 function ResizeHandle() {
   return (
-    <PanelResizeHandle
+    <Separator
       className={`group relative flex items-center justify-center transition-all w-[3px] hover:w-[5px]`}
       style={{ background: "rgba(0,180,255,0.06)" }}
     >
       <div
         className={`rounded-full bg-[rgba(0,212,255,0.15)] group-hover:bg-[rgba(0,212,255,0.4)] transition-all w-[2px] h-8`}
       />
-    </PanelResizeHandle>
+    </Separator>
   );
 }
 
@@ -58,8 +63,8 @@ export function IDELayout() {
   const [layoutMode, setLayoutMode] = useState<IDELayoutMode>(() => {
     try {
       const stored = localStorage.getItem(LAYOUT_MODE_STORAGE_KEY);
-      if (stored === "edit" || stored === "preview") { return stored; }
-    } catch { }
+      if (stored === "edit" || stored === "preview" || stored === "free") {return stored;}
+    } catch {}
     return "preview";
   });
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
@@ -72,7 +77,7 @@ export function IDELayout() {
   useEffect(() => {
     try {
       localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, layoutMode);
-    } catch { }
+    } catch {}
   }, [layoutMode]);
 
   const handleBack = useCallback(() => {
@@ -81,9 +86,9 @@ export function IDELayout() {
 
   const handleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => { });
+      document.exitFullscreen().catch(() => {});
     } else {
-      document.documentElement.requestFullscreen().catch(() => { });
+      document.documentElement.requestFullscreen().catch(() => {});
     }
   }, []);
 
@@ -128,6 +133,13 @@ export function IDELayout() {
     );
   }, []);
 
+  const handleAddPanel = useCallback((type: PanelType) => {
+    // 此方法仅在自由模式下使用，通过 LayoutProvider 的 addPanel 方法添加面板
+    console.log('Adding panel in layout mode:', layoutMode, 'type:', type);
+    // 编辑模式和预览模式下，面板由固定布局控制
+    // 自由模式下，面板由 LayoutContext 管理
+  }, [layoutMode]);
+
   // Keyboard shortcuts
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -153,12 +165,16 @@ export function IDELayout() {
       // Ctrl+3 to toggle layout mode
       if ((e.ctrlKey || e.metaKey) && e.key === "3") {
         e.preventDefault();
-        setLayoutMode((m) => (m === "edit" ? "preview" : "edit"));
+        setLayoutMode((m) => {
+          if (m === "edit") {return "preview";}
+          if (m === "preview") {return "free";}
+          return "edit";
+        });
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, []);
+  }, [layoutMode, viewMode]);
 
   // Determine panel visibility based on view mode
   const showLeftPanel = viewMode !== "code";
@@ -194,7 +210,7 @@ export function IDELayout() {
    * 终端仅在右栏(代码编辑器下方)
    */
   const renderEditModeLayout = () => (
-    <PanelGroup direction="horizontal" className="h-full">
+    <Group orientation="horizontal" className="h-full">
       {/* Left Panel - AI Chat */}
       {showLeftPanel && (
         <>
@@ -229,7 +245,7 @@ export function IDELayout() {
         minSize={20}
         id="right-panel-e"
       >
-        <PanelGroup direction="vertical" className="h-full">
+        <Group orientation="vertical" className="h-full">
           <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="code-panel-e">
             {codeEditorElement}
           </Panel>
@@ -242,9 +258,9 @@ export function IDELayout() {
           >
             {terminalElement}
           </Panel>
-        </PanelGroup>
+        </Group>
       </Panel>
-    </PanelGroup>
+    </Group>
   );
 
   /**
@@ -258,7 +274,7 @@ export function IDELayout() {
    * 终端跨越中栏+右栏
    */
   const renderPreviewModeLayout = () => (
-    <PanelGroup direction="horizontal" className="h-full">
+    <Group orientation="horizontal" className="h-full">
       {/* Left Panel - AI Chat */}
       {showLeftPanel && (
         <>
@@ -275,10 +291,10 @@ export function IDELayout() {
         minSize={40}
         id="main-panel-p"
       >
-        <PanelGroup direction="vertical" className="h-full">
+        <Group orientation="vertical" className="h-full">
           {/* Top: Center + Right horizontal split */}
           <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="editor-area-p">
-            <PanelGroup direction="horizontal" className="h-full">
+            <Group orientation="horizontal" className="h-full">
               {/* Center Panel - File Explorer */}
               {showCenterPanel && (
                 <>
@@ -305,7 +321,7 @@ export function IDELayout() {
               >
                 {codeEditorElement}
               </Panel>
-            </PanelGroup>
+            </Group>
           </Panel>
 
           {/* Bottom - Terminal (spans center+right) */}
@@ -318,9 +334,22 @@ export function IDELayout() {
           >
             {terminalElement}
           </Panel>
-        </PanelGroup>
+        </Group>
       </Panel>
-    </PanelGroup>
+    </Group>
+  );
+
+  /**
+   * 自由模式布局:
+   * ┌─────────────────────────────────────────────┐
+   * │ 可拖拽面板系统 - 完全自定义布局            │
+   * │ 支持面板拖拽、调整大小、最小化、最大化等   │
+   * └─────────────────────────────────────────────┘
+   */
+  const renderFreeModeLayout = () => (
+    <LayoutProvider>
+      <Workspace />
+    </LayoutProvider>
   );
 
   return (
@@ -373,7 +402,9 @@ export function IDELayout() {
           height: "18px",
           background: layoutMode === "edit"
             ? "linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.05) 50%, transparent 100%)"
-            : "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)",
+            : layoutMode === "preview"
+            ? "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)"
+            : "linear-gradient(90deg, transparent 0%, rgba(255,193,7,0.05) 50%, transparent 100%)",
           borderBottom: "1px solid rgba(0,180,255,0.05)",
         }}
       >
@@ -381,13 +412,13 @@ export function IDELayout() {
           className="text-[rgba(0,212,255,0.3)]"
           style={{ fontSize: "0.5rem", letterSpacing: "1px" }}
         >
-          {layoutMode === "edit" ? t("ide.editModeDesc") : t("ide.previewModeDesc")}
+          {layoutMode === "edit" ? t("ide.editModeDesc") : layoutMode === "preview" ? t("ide.previewModeDesc") : t("ide.freeModeDesc")}
         </span>
       </div>
 
       {/* Main Content Area - conditional layout based on layoutMode */}
       <div className="flex-1 min-h-0">
-        {layoutMode === "edit" ? renderEditModeLayout() : renderPreviewModeLayout()}
+        {layoutMode === "free" ? renderFreeModeLayout() : layoutMode === "edit" ? renderEditModeLayout() : renderPreviewModeLayout()}
       </div>
 
       {/* Status Bar */}

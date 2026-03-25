@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * QuickActionGrid.test.tsx
- * =========================
+ * =============
  * QuickActionGrid 组件 - 快速操作网格测试
  *
  * 覆盖范围:
@@ -10,8 +11,8 @@
  * - running 状态禁用
  */
 
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { QuickActionGrid } from "../components/QuickActionGrid";
 import type { OperationItem } from "../types";
@@ -25,7 +26,7 @@ const mockActions: OperationItem[] = [
 ];
 
 describe("QuickActionGrid", () => {
-  let onExecute: Mock;
+  let onExecute: any;
 
   beforeEach(() => {
     onExecute = vi.fn();
@@ -42,20 +43,20 @@ describe("QuickActionGrid", () => {
   describe("基础渲染", () => {
     it("应渲染所有操作项", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      expect(screen.getByText("重启节点")).toBeInTheDocument();
-      expect(screen.getByText("部署模型")).toBeInTheDocument();
+      expect(screen.getAllByText("重启节点")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("部署模型")[0]).toBeInTheDocument();
       expect(screen.getAllByText("清理缓存")[0]).toBeInTheDocument();
-      expect(screen.getByText("批量重启")).toBeInTheDocument();
+      expect(screen.getAllByText("批量重启")[0]).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      expect(screen.getByTestId("quick-action-grid")).toBeInTheDocument();
+      expect(screen.getAllByTestId("quick-action-grid")[0]).toBeInTheDocument();
     });
 
     it("应渲染操作描述", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      expect(screen.getByText("重启 GPU 节点")).toBeInTheDocument();
+      expect(screen.getAllByText("重启 GPU 节点")[0]).toBeInTheDocument();
     });
   });
 
@@ -66,27 +67,27 @@ describe("QuickActionGrid", () => {
   describe("点击执行", () => {
     it("点击普通操作应触发 onExecute", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      fireEvent.click(screen.getByTestId("action-qa1"));
+      fireEvent.click(screen.getAllByTestId("action-qa1")[0]);
       expect(onExecute).toHaveBeenCalledWith("qa1");
     });
 
     it("点击危险操作第一次应显示确认提示", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      fireEvent.click(screen.getByTestId("action-qa4"));
+      fireEvent.click(screen.getAllByTestId("action-qa4")[0]);
       expect(onExecute).not.toHaveBeenCalled();
-      expect(screen.getByText("确认 批量重启？")).toBeInTheDocument();
+      expect(screen.getAllByText("确认 批量重启？")[0]).toBeInTheDocument();
     });
 
     it("再次点击危险操作应执行", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} />);
-      fireEvent.click(screen.getByTestId("action-qa4"));
-      fireEvent.click(screen.getByTestId("action-qa4"));
+      fireEvent.click(screen.getAllByTestId("action-qa4")[0]);
+      fireEvent.click(screen.getAllByTestId("action-qa4")[0]);
       expect(onExecute).toHaveBeenCalledWith("qa4");
     });
 
     it("running 状态的操作应禁用", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting="qa5" onExecute={onExecute} />);
-      const btn = screen.getByTestId("action-qa5");
+      const btn = screen.getAllByTestId("action-qa5")[0];
       expect(btn).toBeDisabled();
     });
   });
@@ -98,7 +99,7 @@ describe("QuickActionGrid", () => {
   describe("移动端", () => {
     it("isMobile 时应使用 2 列网格", () => {
       render(<QuickActionGrid actions={mockActions} isExecuting={null} onExecute={onExecute} isMobile />);
-      const grid = screen.getByTestId("quick-action-grid");
+      const grid = screen.getAllByTestId("quick-action-grid")[0];
       expect(grid.className).toContain("grid-cols-2");
     });
   });

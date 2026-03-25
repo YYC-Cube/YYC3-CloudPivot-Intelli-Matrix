@@ -1,6 +1,6 @@
 /**
  * backgroundSync.test.ts
- * =======================
+ * ============
  * YYC³ 后台同步 - 单元测试
  *
  * 覆盖范围:
@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
 import {
   addToSyncQueue,
   getSyncQueue,

@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * PatternAnalyzer.test.tsx
- * =========================
+ * =============
  * PatternAnalyzer 组件 - 异常模式分析器测试
  *
  * 覆盖范围:
@@ -10,8 +11,8 @@
  * - 空状态
  */
 
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { PatternAnalyzer } from "../components/PatternAnalyzer";
 import type { DetectedPattern } from "../types";
@@ -32,8 +33,8 @@ const mockPatterns: DetectedPattern[] = [
 ];
 
 describe("PatternAnalyzer", () => {
-  let onDismiss: Mock;
-  let onSelectPattern: Mock;
+  let onDismiss: any;
+  let onSelectPattern: any;
 
   beforeEach(() => {
     onDismiss = vi.fn();
@@ -47,19 +48,19 @@ describe("PatternAnalyzer", () => {
   describe("基础渲染", () => {
     it("应渲染所有模式标题", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByText("GPU-A100-03 延迟异常")).toBeInTheDocument();
-      expect(screen.getByText("显存压力过大")).toBeInTheDocument();
+      expect(screen.getAllByText("GPU-A100-03 延迟异常")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("显存压力过大")[0]).toBeInTheDocument();
     });
 
     it("应渲染严重级别标签", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByTestId("pattern-severity-pat-1")).toBeInTheDocument();
-      expect(screen.getByTestId("pattern-severity-pat-2")).toBeInTheDocument();
+      expect(screen.getAllByText("严重")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("中")[0]).toBeInTheDocument();
     });
 
     it("应渲染指标", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByText("2,450ms > 2,000ms")).toBeInTheDocument();
+      expect(screen.getAllByText("2,450ms > 2,000ms")[0]).toBeInTheDocument();
     });
 
     it("应渲染来源", () => {
@@ -69,20 +70,20 @@ describe("PatternAnalyzer", () => {
 
     it("应渲染趋势", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByText("趋势 上升")).toBeInTheDocument();
-      expect(screen.getByText("趋势 稳定")).toBeInTheDocument();
+      expect(screen.getAllByText("趋势 上升")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("趋势 稳定")[0]).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      expect(screen.getByTestId("pattern-analyzer")).toBeInTheDocument();
+      expect(screen.getAllByTestId("pattern-analyzer")[0]).toBeInTheDocument();
     });
   });
 
   describe("交互", () => {
     it("点击忽略应触发 onDismiss", () => {
       render(<PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} />);
-      fireEvent.click(screen.getByTestId("dismiss-pat-1"));
+      fireEvent.click(screen.getAllByTestId("dismiss-pat-1")[0]);
       expect(onDismiss).toHaveBeenCalledWith("pat-1");
     });
 
@@ -90,7 +91,7 @@ describe("PatternAnalyzer", () => {
       render(
         <PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} onSelectPattern={onSelectPattern} />
       );
-      fireEvent.click(screen.getByTestId("pattern-pat-2"));
+      fireEvent.click(screen.getAllByTestId("pattern-pat-2")[0]);
       expect(onSelectPattern).toHaveBeenCalledWith("pat-2");
     });
 
@@ -98,7 +99,7 @@ describe("PatternAnalyzer", () => {
       render(
         <PatternAnalyzer patterns={mockPatterns} onDismiss={onDismiss} selectedPatternId="pat-1" />
       );
-      const el = screen.getByTestId("pattern-pat-1");
+      const el = screen.getAllByTestId("pattern-pat-1")[0];
       expect(el.className).toContain("border-[rgba(0,212,255,0.3)]");
     });
   });
@@ -106,7 +107,7 @@ describe("PatternAnalyzer", () => {
   describe("空状态", () => {
     it("无模式时应显示正常提示", () => {
       render(<PatternAnalyzer patterns={[]} onDismiss={onDismiss} />);
-      expect(screen.getByText("未检测到异常模式")).toBeInTheDocument();
+      expect(screen.getAllByText("未检测到异常模式")[0]).toBeInTheDocument();
     });
   });
 });

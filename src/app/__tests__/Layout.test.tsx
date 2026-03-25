@@ -17,7 +17,7 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 
 // ── Mocks ──
@@ -29,6 +29,8 @@ vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: mockPathname }),
   Outlet: () => <div data-testid="outlet">Page Content</div>,
+  createBrowserRouter: vi.fn(),
+  RouterProvider: () => <div data-testid="router-provider" />,
 }));
 
 vi.mock("../hooks/useI18n", () => ({
@@ -40,13 +42,14 @@ vi.mock("../hooks/useI18n", () => ({
   }),
 }));
 
-const MockMotionDiv = React.forwardRef(({ children, ...props }: any, ref: any) => <div ref={ref} {...props}>{children}</div>);
-MockMotionDiv.displayName = "MockMotionDiv";
-
 vi.mock("motion/react", () => ({
   motion: {
-    div: MockMotionDiv,
-  },
+    div: (() => {
+      const Component = React.forwardRef(({ children, ...props }: any, ref: any) => <div ref={ref} {...props}>{children}</div>);
+      Component.displayName = "MotionDiv";
+      return Component;
+    })(),
+  } as any,
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
@@ -123,7 +126,9 @@ vi.mock("../components/OfflineIndicator", () => ({
 }));
 
 vi.mock("../components/ErrorBoundary", () => ({
+  __esModule: true,
   ErrorBoundary: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
+  default: ({ children }: any) => <div data-testid="error-boundary">{children}</div>,
 }));
 
 vi.mock("sonner", () => ({
@@ -145,12 +150,19 @@ vi.mock("../lib/authContext", () => ({
   }),
 }));
 
+// Mock view-context
+vi.mock("../lib/view-context", () => ({
+  ViewContext: React.createContext({ isMobile: false, isTablet: false, isDesktop: true, width: 1200, breakpoint: "xl", isTouch: false }),
+  WebSocketContext: React.createContext(null),
+}));
+
 import { Layout } from "../components/Layout";
 import { WebSocketContext, ViewContext } from "../lib/view-context";
 
 describe("Layout", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    cleanup();
     mockView = {
       isMobile: false,
       isTablet: false,
@@ -159,10 +171,6 @@ describe("Layout", () => {
       breakpoint: "xl",
       isTouch: false,
     };
-  });
-
-  afterEach(() => {
-    cleanup();
   });
 
   describe("基础渲染", () => {

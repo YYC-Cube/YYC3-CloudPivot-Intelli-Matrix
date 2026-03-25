@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * AlertBanner.test.tsx
- * =====================
+ * ============
  * AlertBanner 组件 - 告警横幅跳转测试
  *
  * 覆盖范围:
@@ -10,11 +11,11 @@
  * - 严重级别色带
  */
 
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
-const mockNavigate = vi.fn();
+const mockNavigate = vi.fn() as any;
 
 vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
@@ -38,27 +39,32 @@ describe("AlertBanner", () => {
   describe("基础渲染", () => {
     it("应渲染告警标题", () => {
       render(<AlertBanner />);
-      expect(screen.getByText("GPU-A100-03 推理延迟异常")).toBeInTheDocument();
+      const titleTexts = screen.getAllByText("GPU-A100-03 推理延迟异常");
+      expect(titleTexts.length).toBeGreaterThan(0);
     });
 
     it("应渲染告警指标", () => {
       render(<AlertBanner />);
-      expect(screen.getByText("2,450ms > 2,000ms")).toBeInTheDocument();
+      const metricTexts = screen.getAllByText("2,450ms > 2,000ms");
+      expect(metricTexts.length).toBeGreaterThan(0);
     });
 
     it("应渲染告警计数信息", () => {
       render(<AlertBanner />);
-      expect(screen.getByText("5 条告警")).toBeInTheDocument();
+      const countTexts = screen.getAllByText("5 条告警");
+      expect(countTexts.length).toBeGreaterThan(0);
     });
 
     it("应渲染严重告警数", () => {
       render(<AlertBanner />);
-      expect(screen.getByText("1 严重")).toBeInTheDocument();
+      const severeTexts = screen.getAllByText("1 严重");
+      expect(severeTexts.length).toBeGreaterThan(0);
     });
 
     it("应渲染一键跟进按钮文字", () => {
       render(<AlertBanner />);
-      expect(screen.getByText("一键跟进")).toBeInTheDocument();
+      const actionTexts = screen.getAllByText("一键跟进");
+      expect(actionTexts.length).toBeGreaterThan(0);
     });
 
     it("应有 data-testid=alert-banner", () => {

@@ -10,6 +10,7 @@
  * - resetEnvConfig() 重置
  * - exportEnvConfig() 导出 JSON
  * - importEnvConfig() 导入 JSON
+import React from "react";
  * - 所有 31 个环境变量默认值验证
  */
 
@@ -21,7 +22,7 @@ const localStorageMock = {
   getItem: vi.fn((key: string) => store[key] ?? null),
   setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
   removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
+  clear: vi.fn(() => { for (const k of Object.keys(store)) delete store[k]; }),
   get length() { return Object.keys(store).length; },
   key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
 };

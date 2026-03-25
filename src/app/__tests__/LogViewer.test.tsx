@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * LogViewer.test.tsx
- * ===================
+ * ===========
  * LogViewer 组件 - 日志查看器测试
  *
  * 覆盖范围:
@@ -11,8 +12,8 @@
  * - 空状态
  */
 
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { LogViewer } from "../components/LogViewer";
 import type { LogEntry } from "../types";
@@ -27,14 +28,15 @@ const mockLogs: LogEntry[] = [
 const sources = ["GPU-A100-01", "GPU-A100-03", "system", "scheduler"];
 
 describe("LogViewer", () => {
-  let onLevelChange: Mock;
-  let onSourceChange: Mock;
-  let onSearchChange: Mock;
+  let onLevelChange: any;
+  let onSourceChange: any;
+  let onSearchChange: any;
 
   beforeEach(() => {
-    onLevelChange = vi.fn();
-    onSourceChange = vi.fn();
-    onSearchChange = vi.fn();
+    cleanup();
+    onLevelChange = vi.fn() as any;
+    onSourceChange = vi.fn() as any;
+    onSearchChange = vi.fn() as any;
   });
 
   afterEach(() => {
@@ -48,7 +50,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByText("日志查看器")).toBeInTheDocument();
+      expect(screen.getAllByText("日志查看器")[0]).toBeInTheDocument();
     });
 
     it("应渲染日志数量", () => {
@@ -57,7 +59,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByText("(4 条)")).toBeInTheDocument();
+      expect(screen.getAllByText("(4 条)")[0]).toBeInTheDocument();
     });
 
     it("应渲染日志消息", () => {
@@ -66,8 +68,8 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByText("推理完成 延迟 820ms")).toBeInTheDocument();
-      expect(screen.getByText("推理超时 5000ms")).toBeInTheDocument();
+      expect(screen.getAllByText("推理完成 延迟 820ms")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("推理超时 5000ms")[0]).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
@@ -76,7 +78,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByTestId("log-viewer")).toBeInTheDocument();
+      expect(screen.getAllByTestId("log-viewer")[0]).toBeInTheDocument();
     });
   });
 
@@ -87,9 +89,9 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByTestId("level-all")).toBeInTheDocument();
-      expect(screen.getByTestId("level-error")).toBeInTheDocument();
-      expect(screen.getByTestId("level-warn")).toBeInTheDocument();
+      expect(screen.getAllByTestId("level-all")[0]).toBeInTheDocument();
+      expect(screen.getAllByTestId("level-error")[0]).toBeInTheDocument();
+      expect(screen.getAllByTestId("level-warn")[0]).toBeInTheDocument();
     });
 
     it("点击级别按钮应触发 onLevelChange", () => {
@@ -98,7 +100,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      fireEvent.click(screen.getByTestId("level-error"));
+      fireEvent.click(screen.getAllByTestId("level-error")[0]);
       expect(onLevelChange).toHaveBeenCalledWith("error");
     });
   });
@@ -110,7 +112,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByTestId("source-filter")).toBeInTheDocument();
+      expect(screen.getAllByTestId("source-filter")[0]).toBeInTheDocument();
     });
 
     it("更改来源应触发 onSourceChange", () => {
@@ -119,7 +121,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      fireEvent.change(screen.getByTestId("source-filter"), { target: { value: "system" } });
+      fireEvent.change(screen.getAllByTestId("source-filter")[0], { target: { value: "system" } });
       expect(onSourceChange).toHaveBeenCalledWith("system");
     });
   });
@@ -131,7 +133,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByTestId("log-search")).toBeInTheDocument();
+      expect(screen.getAllByTestId("log-search")[0]).toBeInTheDocument();
     });
 
     it("输入搜索应触发 onSearchChange", () => {
@@ -140,7 +142,7 @@ describe("LogViewer", () => {
           sources={sources} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      fireEvent.change(screen.getByTestId("log-search"), { target: { value: "超时" } });
+      fireEvent.change(screen.getAllByTestId("log-search")[0], { target: { value: "超时" } });
       expect(onSearchChange).toHaveBeenCalledWith("超时");
     });
   });
@@ -152,7 +154,7 @@ describe("LogViewer", () => {
           sources={[]} onLevelChange={onLevelChange} onSourceChange={onSourceChange}
           onSearchChange={onSearchChange} />
       );
-      expect(screen.getByText("暂无匹配日志")).toBeInTheDocument();
+      expect(screen.getAllByText("暂无匹配日志")[0]).toBeInTheDocument();
     });
   });
 });

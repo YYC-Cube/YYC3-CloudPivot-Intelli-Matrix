@@ -5,7 +5,7 @@
  * Supports JSON, CSV (Excel), and printable HTML (PDF via print dialog)
  */
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback } from "react";
 import { usePersistedList } from "./usePersistedState";
 
 // ============================================================
@@ -14,17 +14,11 @@ import { usePersistedList } from "./usePersistedState";
 
 import type {
   ExportReportType, ExportFormat, TimeRange,
-  PerformanceSnapshot, SecuritySnapshot,
+  ReportMetric, PerformanceSnapshot, SecuritySnapshot,
   ReportData, ReportHistoryEntry,
 } from "../types";
 
 // RF-011: Re-export 已移除
-
-// ============================================================
-// Module-level constants (computed once at module load)
-// ============================================================
-
-const INITIAL_TIMESTAMP = Date.now();
 
 // ============================================================
 // Mock Data Generator
@@ -143,7 +137,7 @@ function exportCSV(data: ReportData) {
 
 function exportPrintable(data: ReportData) {
   const win = window.open("", "_blank");
-  if (!win) {return;}
+  if (!win) return;
 
   const html = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -229,18 +223,15 @@ export function useReportExporter() {
   const [timeRange, setTimeRange] = useState<TimeRange>("24h");
   const [isGenerating, setIsGenerating] = useState(false);
   const [report, setReport] = useState<ReportData | null>(null);
-
-  const initialReports = useMemo(() => [
-    { id: "rpt-prev-1", type: "performance" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000, range: "24h" },
-    { id: "rpt-prev-2", type: "security" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000 * 2, range: "7d" },
-    { id: "rpt-prev-3", type: "comprehensive" as ExportReportType, time: INITIAL_TIMESTAMP - 86400000 * 3, range: "24h" },
-  ], []);
-
   const {
     items: recentReports,
     prepend: prependReport,
     loaded: reportsLoaded,
-  } = usePersistedList<ReportHistoryEntry>("reports", initialReports);
+  } = usePersistedList<ReportHistoryEntry>("reports", [
+    { id: "rpt-prev-1", type: "performance", time: Date.now() - 86400000, range: "24h" },
+    { id: "rpt-prev-2", type: "security", time: Date.now() - 86400000 * 2, range: "7d" },
+    { id: "rpt-prev-3", type: "comprehensive", time: Date.now() - 86400000 * 3, range: "24h" },
+  ]);
 
   const generateReport = useCallback(() => {
     setIsGenerating(true);
@@ -255,10 +246,10 @@ export function useReportExporter() {
   }, [reportType, timeRange, prependReport]);
 
   const exportReport = useCallback((format: ExportFormat) => {
-    if (!report) {return;}
-    if (format === "json") {exportJSON(report);}
-    else if (format === "csv") {exportCSV(report);}
-    else if (format === "print") {exportPrintable(report);}
+    if (!report) return;
+    if (format === "json") exportJSON(report);
+    else if (format === "csv") exportCSV(report);
+    else if (format === "print") exportPrintable(report);
   }, [report]);
 
   return {

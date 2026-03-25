@@ -24,7 +24,7 @@ export function FamilyPageHeader({
   iconColor = "#00d4ff",
   title,
   subtitle,
-  backPath = "/ai-family",
+  backPath = "/ai-family-home",
   backLabel = "返回家园",
   actions,
 }: FamilyPageHeaderProps) {

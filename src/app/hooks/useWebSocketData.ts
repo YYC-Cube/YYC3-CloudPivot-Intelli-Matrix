@@ -19,7 +19,7 @@
  * React Components
  */
 
-import { useState, useLayoutEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 // ============================================================
 // 类型定义 — 从全局类型中心导入
@@ -133,11 +133,11 @@ export function useWebSocketData(): WebSocketDataState {
     setLastSyncTime(new Date().toLocaleString("zh-CN", { hour12: false }));
   }, []);
 
-  // ----- lifecycle -----
-  useLayoutEffect(() => {
-    // Try WebSocket first, fallback to simulation
+  // ----- WebSocket connection -----
+  const connectWS = useCallback(() => {
     const wsUrl = getAPIConfig().wsEndpoint;
-    
+    setConnectionState("connecting");
+
     try {
       const ws = new WebSocket(wsUrl);
       wsRef.current = ws;
@@ -197,6 +197,7 @@ export function useWebSocketData(): WebSocketDataState {
         // schedule reconnect
         reconnectTimerRef.current = setTimeout(() => {
           setReconnectCount((c) => c + 1);
+          connectWS();
         }, RECONNECT_DELAY_MS);
       };
 
@@ -205,13 +206,17 @@ export function useWebSocketData(): WebSocketDataState {
       };
     } catch {
       // WebSocket constructor error — fallback to simulation
-      setTimeout(() => {
-        setConnectionState("simulated");
-      }, 0);
+      setConnectionState("simulated");
       if (!simulateTimerRef.current) {
         simulateTimerRef.current = setInterval(runSimulation, SIMULATE_INTERVAL_MS);
       }
     }
+  }, [runSimulation]);
+
+  // ----- lifecycle -----
+  useEffect(() => {
+    // Try WebSocket first, fallback to simulation
+    connectWS();
 
     // Start simulation immediately as fallback (will be stopped if WS connects)
     simulateTimerRef.current = setInterval(runSimulation, SIMULATE_INTERVAL_MS);
@@ -230,7 +235,7 @@ export function useWebSocketData(): WebSocketDataState {
         reconnectTimerRef.current = null;
       }
     };
-  }, [runSimulation]);
+  }, [connectWS, runSimulation]);
 
   // ----- public API -----
   const manualReconnect = useCallback(() => {
@@ -242,77 +247,8 @@ export function useWebSocketData(): WebSocketDataState {
       reconnectTimerRef.current = null;
     }
     setConnectionState("reconnecting");
-    
-    const wsUrl = getAPIConfig().wsEndpoint;
-    try {
-      const ws = new WebSocket(wsUrl);
-      wsRef.current = ws;
-
-      ws.onopen = () => {
-        setConnectionState("connected");
-        setReconnectCount(0);
-        if (simulateTimerRef.current) {
-          clearInterval(simulateTimerRef.current);
-          simulateTimerRef.current = null;
-        }
-      };
-
-      ws.onmessage = (event) => {
-        try {
-          const msg: WSMessage = JSON.parse(event.data);
-          switch (msg.type) {
-            case "qps_update":
-              setLiveQPS(msg.payload.qps);
-              setQpsTrend(msg.payload.trend);
-              break;
-            case "latency_update":
-              setLiveLatency(msg.payload.latency);
-              setLatencyTrend(msg.payload.trend);
-              break;
-            case "node_status":
-              setNodes(msg.payload);
-              break;
-            case "alert":
-              setAlerts((prev) => [msg.payload, ...prev].slice(0, 100));
-              break;
-            case "throughput_history":
-              setThroughputHistory(msg.payload.slice(-MAX_THROUGHPUT_HISTORY));
-              break;
-            case "system_stats":
-              setActiveNodes(msg.payload.activeNodes);
-              setGpuUtil(msg.payload.gpuUtil);
-              setTokenThroughput(msg.payload.tokenThroughput);
-              break;
-            case "heartbeat_ack":
-              break;
-          }
-          setLastSyncTime(new Date().toLocaleString("zh-CN", { hour12: false }));
-        } catch {
-          // parse error — ignore
-        }
-      };
-
-      ws.onclose = () => {
-        wsRef.current = null;
-        setConnectionState("simulated");
-        if (!simulateTimerRef.current) {
-          simulateTimerRef.current = setInterval(runSimulation, SIMULATE_INTERVAL_MS);
-        }
-        reconnectTimerRef.current = setTimeout(() => {
-          setReconnectCount((c) => c + 1);
-        }, RECONNECT_DELAY_MS);
-      };
-
-      ws.onerror = () => {
-        ws.close();
-      };
-    } catch {
-      setConnectionState("simulated");
-      if (!simulateTimerRef.current) {
-        simulateTimerRef.current = setInterval(runSimulation, SIMULATE_INTERVAL_MS);
-      }
-    }
-  }, [runSimulation]);
+    connectWS();
+  }, [connectWS]);
 
   const clearAlerts = useCallback(() => {
     setAlerts([]);

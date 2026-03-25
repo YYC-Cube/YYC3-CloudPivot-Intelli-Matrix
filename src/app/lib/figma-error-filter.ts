@@ -35,16 +35,16 @@ export function isFigmaPlatformError(
   const st = (stack || "").toLowerCase();
 
   // 1) 错误名 / 类名匹配
-  if (
-    n.includes("iframemessage") ||
-    n.includes("iframemessageaborterror") ||
-    n.includes("aborterror")
-  ) {
+  // First check for specific IframeMessage* errors
+  if (n.includes("iframemessage")) {
+    return true;
+  }
+
+  // Then check for aborterror (requires message/port context)
+  if (n.includes("aborterror")) {
     // IframeMessageAbortError extends AbortError in Figma's runtime
     // Also match bare "AbortError" when combined with message-port content
-    if (n.includes("aborterror") && !m.includes("message") && !m.includes("port")) {
-      // bare AbortError without message-port context → not necessarily Figma
-    } else {
+    if (m.includes("message") || m.includes("port") || st.includes("port")) {
       return true;
     }
   }

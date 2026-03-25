@@ -49,7 +49,7 @@ async function apiFallback<T>(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body ?? {}),
     });
-    if (!res.ok) {return { ok: false, error: `HTTP ${res.status}` };}
+    if (!res.ok) return { ok: false, error: `HTTP ${res.status}` };
     return { ok: true, data: await res.json() };
   } catch (err: any) {
     return { ok: false, error: err?.message ?? "网络不可达" };
@@ -69,11 +69,10 @@ export function getExtension(name: string): string {
   return dot > 0 ? name.slice(dot + 1).toLowerCase() : "";
 }
 
-export function formatSize(bytes: number | undefined): string {
-  if (bytes === undefined || bytes === null) {return "0 B";}
-  if (bytes < 1024) {return `${bytes} B`;}
-  if (bytes < 1048576) {return `${(bytes / 1024).toFixed(1)} KB`;}
-  if (bytes < 1073741824) {return `${(bytes / 1048576).toFixed(1)} MB`;}
+export function formatSize(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1048576) return `${(bytes / 1024).toFixed(1)} KB`;
+  if (bytes < 1073741824) return `${(bytes / 1048576).toFixed(1)} MB`;
   return `${(bytes / 1073741824).toFixed(2)} GB`;
 }
 
@@ -168,7 +167,7 @@ async function readDirectory(
 
   // 目录在前, 文件在后, 字母排序
   entries.sort((a, b) => {
-    if (a.kind !== b.kind) {return a.kind === "directory" ? -1 : 1;}
+    if (a.kind !== b.kind) return a.kind === "directory" ? -1 : 1;
     return a.name.localeCompare(b.name);
   });
 
@@ -185,11 +184,11 @@ async function searchInDirectory(
   depth = 0,
   maxDepth = 6
 ): Promise<void> {
-  if (results.length >= maxResults || depth > maxDepth) {return;}
+  if (results.length >= maxResults || depth > maxDepth) return;
   const lq = query.toLowerCase();
 
   for await (const [name, handle] of (dirHandle as any).entries()) {
-    if (results.length >= maxResults) {break;}
+    if (results.length >= maxResults) break;
 
     const path = `${parentPath}/${name}`;
 
@@ -277,7 +276,7 @@ export function useHostFileSystem() {
 
   // ── 获取当前目录 handle ──
   const getCurrentDirHandle = useCallback(async (): Promise<FileSystemDirectoryHandle | null> => {
-    if (!rootRef.current) {return null;}
+    if (!rootRef.current) return null;
     let handle = rootRef.current;
     for (const seg of currentPath) {
       try {
@@ -292,7 +291,7 @@ export function useHostFileSystem() {
   // ── 刷新当前目录 ──
   const refreshCurrentDir = useCallback(async () => {
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
     const basePath = currentPath.length > 0
       ? `${rootRef.current!.name}/${currentPath.join("/")}`
       : rootRef.current!.name;
@@ -342,7 +341,7 @@ export function useHostFileSystem() {
 
   // ── 导航到子目录 ──
   const navigateToDir = useCallback(async (entry: HostFileEntry) => {
-    if (entry.kind !== "directory" || !entry.handle) {return;}
+    if (entry.kind !== "directory" || !entry.handle) return;
     setLoading(true);
     try {
       const dirHandle = entry.handle as FileSystemDirectoryHandle;
@@ -361,7 +360,7 @@ export function useHostFileSystem() {
 
   // ── 返回上级 ──
   const navigateUp = useCallback(async () => {
-    if (!rootRef.current || currentPath.length === 0) {return;}
+    if (!rootRef.current || currentPath.length === 0) return;
     setLoading(true);
     try {
       let handle = rootRef.current;
@@ -387,7 +386,7 @@ export function useHostFileSystem() {
 
   // ── 导航到面包屑指定层级 ──
   const navigateToBreadcrumb = useCallback(async (index: number) => {
-    if (!rootRef.current) {return;}
+    if (!rootRef.current) return;
     if (index === 0) {
       // 回到根目录
       setLoading(true);
@@ -427,7 +426,7 @@ export function useHostFileSystem() {
 
   // ── 读取文件内容 ──
   const readFile = useCallback(async (entry: HostFileEntry) => {
-    if (entry.kind !== "file" || !entry.handle) {return;}
+    if (entry.kind !== "file" || !entry.handle) return;
     setSelectedEntry(entry);
     setImagePreviewUrl(null);
     saveRecentFile(entry);
@@ -471,7 +470,7 @@ export function useHostFileSystem() {
 
   // ── 保存文件 (带版本快照) ──
   const saveFile = useCallback(async () => {
-    if (!selectedEntry?.handle || editingContent === null) {return;}
+    if (!selectedEntry?.handle || editingContent === null) return;
     try {
       const fileHandle = selectedEntry.handle as FileSystemFileHandle;
 
@@ -518,7 +517,7 @@ export function useHostFileSystem() {
   // ── 创建文件 ──
   const createFile = useCallback(async (name: string, content = "") => {
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
     try {
       const newHandle = await dirHandle.getFileHandle(name, { create: true });
       if (content) {
@@ -536,7 +535,7 @@ export function useHostFileSystem() {
   // ── 创建目录 ──
   const createDirectory = useCallback(async (name: string) => {
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
     try {
       await dirHandle.getDirectoryHandle(name, { create: true });
       await refreshCurrentDir();
@@ -549,7 +548,7 @@ export function useHostFileSystem() {
   // ── 删除文件/目录 ──
   const deleteEntry = useCallback(async (entry: HostFileEntry) => {
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
     try {
       await dirHandle.removeEntry(entry.name, { recursive: entry.kind === "directory" });
       setEntries((prev) => prev.filter((e) => e.id !== entry.id));
@@ -566,9 +565,9 @@ export function useHostFileSystem() {
 
   // ── 重命名 ──
   const renameEntry = useCallback(async (entry: HostFileEntry, newName: string) => {
-    if (!entry.handle) {return;}
+    if (!entry.handle) return;
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
 
     try {
       if (entry.kind === "file") {
@@ -593,7 +592,7 @@ export function useHostFileSystem() {
 
   // ── 下载文件 ──
   const downloadFile = useCallback(async (entry: HostFileEntry) => {
-    if (entry.kind !== "file" || !entry.handle) {return;}
+    if (entry.kind !== "file" || !entry.handle) return;
     try {
       const file = await (entry.handle as FileSystemFileHandle).getFile();
       const url = URL.createObjectURL(file);
@@ -611,7 +610,7 @@ export function useHostFileSystem() {
   // ── 上传文件 ──
   const uploadFiles = useCallback(async (files: FileList | File[]) => {
     const dirHandle = await getCurrentDirHandle();
-    if (!dirHandle) {return;}
+    if (!dirHandle) return;
     try {
       let count = 0;
       for (const file of Array.from(files)) {
@@ -676,7 +675,7 @@ export function useHostFileSystem() {
   // ── 清理图片预览 URL ──
   useEffect(() => {
     return () => {
-      if (imagePreviewUrl) {URL.revokeObjectURL(imagePreviewUrl);}
+      if (imagePreviewUrl) URL.revokeObjectURL(imagePreviewUrl);
     };
   }, [imagePreviewUrl]);
 

@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * usePWAManager.test.tsx
- * ========================
+ * ==============
  * usePWAManager Hook - PWA 缓存管理测试
  *
  * 覆盖范围:
@@ -14,8 +15,7 @@
  * - pwaState 概览
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { usePWAManager } from "../hooks/usePWAManager";
 

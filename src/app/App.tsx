@@ -1,17 +1,6 @@
-/**
- * @file: App.tsx
- * @description: App.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
 import React, { useState, useEffect, useCallback } from "react";
 import { RouterProvider } from "react-router";
-import { router } from "./routes.tsx";
+import { router } from "./routes";
 import { Login } from "./components/Login";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { installGlobalErrorListeners } from "./lib/error-handler";

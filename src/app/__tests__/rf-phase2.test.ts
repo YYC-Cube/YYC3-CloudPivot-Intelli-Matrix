@@ -12,6 +12,7 @@
 
 // @vitest-environment jsdom
 import { describe, it, expect } from "vitest";
+import React from "react";
 import type {
   BaseSeverity, AlertLevel, ErrorSeverity, FollowUpSeverity,
   AlertSeverity, DiagnosticPattern, StoreName, APIEndpoints,

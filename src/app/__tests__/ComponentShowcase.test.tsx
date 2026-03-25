@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * ComponentShowcase.test.tsx
- * ===========================
+ * ===============
  * ComponentShowcase 组件测试
  *
  * 覆盖范围:
@@ -11,8 +12,8 @@
  * - 筛选功能
  */
 
-import React from "react";
 import { describe, it, expect, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import {
   ComponentShowcase,
@@ -22,11 +23,15 @@ import {
 } from "../components/design-system/ComponentShowcase";
 
 describe("ComponentShowcase", () => {
-  afterEach(() => {
-    cleanup();
-  });
 
+afterEach(() => {
+  cleanup();
+});
   describe("数据完整性", () => {
+
+afterEach(() => {
+  cleanup();
+});
     it("应有 5 种状态定义", () => {
       expect(STATUS_DEFINITIONS.length).toBe(5);
     });
@@ -68,6 +73,10 @@ describe("ComponentShowcase", () => {
   });
 
   describe("渲染", () => {
+
+afterEach(() => {
+  cleanup();
+});
     it("应渲染主容器", () => {
       render(<ComponentShowcase />);
       expect(screen.getByTestId("component-showcase")).toBeInTheDocument();
@@ -107,6 +116,10 @@ describe("ComponentShowcase", () => {
   });
 
   describe("筛选", () => {
+
+afterEach(() => {
+  cleanup();
+});
     it("筛选 atom 应只显示原子组件", () => {
       render(<ComponentShowcase />);
       fireEvent.click(screen.getByTestId("showcase-tab-components"));

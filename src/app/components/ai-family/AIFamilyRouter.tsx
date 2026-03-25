@@ -94,18 +94,10 @@ class LazyErrorBoundary extends React.Component<
 
 // ═══ URL → subpage key 解析 ═══
 
-function resolveSubpage(pathname: string, hash: string, paramSubpage?: string): string {
+function resolveSubpage(pathname: string, paramSubpage?: string): string {
   if (paramSubpage && VALID_KEYS.includes(paramSubpage)) {return paramSubpage;}
-  
-  // HashRouter: 从 hash 中提取路径
-  const hashPath = hash.replace(/^#\/?/, '');
-  const hashMatch = hashPath.match(/ai-family\/(\w+)/);
-  if (hashMatch && VALID_KEYS.includes(hashMatch[1])) {return hashMatch[1];}
-  
-  // 也尝试从 pathname 匹配（非 HashRouter 模式）
-  const pathMatch = pathname.match(/\/ai-family\/(\w+)/);
-  if (pathMatch && VALID_KEYS.includes(pathMatch[1])) {return pathMatch[1];}
-  
+  const match = pathname.match(/\/ai-family-(\w+)/);
+  if (match && VALID_KEYS.includes(match[1])) {return match[1];}
   return "home";
 }
 
@@ -124,16 +116,7 @@ function getLazyComponent(key: string): React.LazyExoticComponent<React.Componen
 export function AIFamilyRouter() {
   const { subpage } = useParams<{ subpage: string }>();
   const location = useLocation();
-  const key = resolveSubpage(location.pathname, location.hash, subpage);
-  
-  console.log('[AIFamilyRouter] Debug:', {
-    pathname: location.pathname,
-    hash: location.hash,
-    subpage,
-    resolvedKey: key,
-    isValid: VALID_KEYS.includes(key),
-  });
-  
+  const key = resolveSubpage(location.pathname, subpage);
   const LazyComponent = getLazyComponent(key);
 
   return (

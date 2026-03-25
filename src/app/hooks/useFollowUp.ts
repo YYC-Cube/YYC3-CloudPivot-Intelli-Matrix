@@ -154,8 +154,8 @@ export function useFollowUp() {
 
   // Filtered items
   const filteredItems = items.filter((item) => {
-    if (filterSeverity !== "all" && item.severity !== filterSeverity) {return false;}
-    if (filterStatus !== "all" && item.status !== filterStatus) {return false;}
+    if (filterSeverity !== "all" && item.severity !== filterSeverity) return false;
+    if (filterStatus !== "all" && item.status !== filterStatus) return false;
     return true;
   });
 

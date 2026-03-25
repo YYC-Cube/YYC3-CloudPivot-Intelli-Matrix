@@ -1,6 +1,6 @@
 /**
  * supabaseClient.test.ts
- * =======================
+ * ============
  * YYC³ 认证模块 - 单元测试
  *
  * 覆盖范围:
@@ -12,6 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
 import { supabase } from "../lib/supabaseClient";
 
 // Mock localStorage

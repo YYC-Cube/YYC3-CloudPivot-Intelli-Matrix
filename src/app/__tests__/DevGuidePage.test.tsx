@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * DevGuidePage.test.tsx
- * =======================
+ * ============
  * DevGuidePage 组件 - 开发实施指南测试
  *
  * 覆盖范围:
@@ -10,8 +11,8 @@
  * - 数据完整性
  */
 
-import React from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { DevGuidePage } from "../components/DevGuidePage";
 import { ViewContext } from "../lib/view-context";
@@ -64,59 +65,59 @@ function renderPage() {
 }
 
 describe("DevGuidePage", () => {
-  afterEach(() => {
-    cleanup();
-  });
 
+afterEach(() => {
+  cleanup();
+});
   it("应渲染页面标题", () => {
     renderPage();
-    expect(screen.getByText("开发实施指南")).toBeInTheDocument();
+    expect(screen.getAllByText("开发实施指南")[0]).toBeInTheDocument();
   });
 
   it("应有主容器", () => {
     renderPage();
-    expect(screen.getByTestId("dev-guide-page")).toBeInTheDocument();
+    expect(screen.getAllByTestId("dev-guide-page")[0]).toBeInTheDocument();
   });
 
   it("应有 4 个标签", () => {
     renderPage();
-    expect(screen.getByTestId("devguide-tab-tech")).toBeInTheDocument();
-    expect(screen.getByTestId("devguide-tab-priority")).toBeInTheDocument();
-    expect(screen.getByTestId("devguide-tab-arch")).toBeInTheDocument();
-    expect(screen.getByTestId("devguide-tab-storage")).toBeInTheDocument();
+    expect(screen.getAllByTestId("devguide-tab-tech")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("devguide-tab-priority")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("devguide-tab-arch")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("devguide-tab-storage")[0]).toBeInTheDocument();
   });
 
   it("切换到开发优先级", () => {
     renderPage();
-    fireEvent.click(screen.getByTestId("devguide-tab-priority"));
-    expect(screen.getByTestId("devguide-priority")).toBeInTheDocument();
-    expect(screen.getByTestId("phase-1")).toBeInTheDocument();
-    expect(screen.getByTestId("phase-2")).toBeInTheDocument();
-    expect(screen.getByTestId("phase-3")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("devguide-tab-priority")[0]);
+    expect(screen.getAllByTestId("devguide-priority")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("phase-1")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("phase-2")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("phase-3")[0]).toBeInTheDocument();
   });
 
   it("切换到架构概览", () => {
     renderPage();
-    fireEvent.click(screen.getByTestId("devguide-tab-arch"));
-    expect(screen.getByTestId("devguide-arch")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("devguide-tab-arch")[0]);
+    expect(screen.getAllByTestId("devguide-arch")[0]).toBeInTheDocument();
   });
 
   it("切换到存储策略", () => {
     renderPage();
-    fireEvent.click(screen.getByTestId("devguide-tab-storage"));
-    expect(screen.getByTestId("devguide-storage")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("devguide-tab-storage")[0]);
+    expect(screen.getAllByTestId("devguide-storage")[0]).toBeInTheDocument();
   });
 
   it("技术选型应列出 8 项", () => {
     renderPage();
-    expect(screen.getByTestId("tech-list")).toBeInTheDocument();
+    expect(screen.getAllByTestId("tech-list")[0]).toBeInTheDocument();
   });
 
   it("Phase 1 应有 3 个任务项", () => {
     renderPage();
-    fireEvent.click(screen.getByTestId("devguide-tab-priority"));
-    expect(screen.getByTestId("priority-item-1")).toBeInTheDocument();
-    expect(screen.getByTestId("priority-item-2")).toBeInTheDocument();
-    expect(screen.getByTestId("priority-item-3")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("devguide-tab-priority")[0]);
+    expect(screen.getAllByTestId("priority-item-1")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("priority-item-2")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("priority-item-3")[0]).toBeInTheDocument();
   });
 });

@@ -25,6 +25,7 @@ import { FadeIn } from "./FadeIn";
 import {
   FAMILY_MEMBERS, SAMPLE_MESSAGES, AI_RESPONSES, hexToRgb,
   type FamilyMember, type FamilyMessage,
+  DEEP_BG,
 } from "./shared";
 
 // ═══ localStorage 持久化 ═══
@@ -37,7 +38,7 @@ function loadMessages(): FamilyMessage[] {
     const raw = localStorage.getItem(COMM_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {return parsed;}
     }
   } catch { /* noop */ }
   // First load → seed with sample data and persist
@@ -70,8 +71,8 @@ function formatDateGroup(dateStr: string): string {
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (date.toDateString() === today.toDateString()) return "今天";
-  if (date.toDateString() === yesterday.toDateString()) return "昨天";
+  if (date.toDateString() === today.toDateString()) {return "今天";}
+  if (date.toDateString() === yesterday.toDateString()) {return "昨天";}
   return date.toLocaleDateString("zh-CN", { month: "long", day: "numeric", weekday: "short" });
 }
 
@@ -137,7 +138,7 @@ function MemberStatusBar({ selectedMember, onSelect }: {
 function MessageBubble({ msg, onDelete }: { msg: FamilyMessage; onDelete?: (id: string) => void }) {
   const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
   const to = msg.to === "all" ? null : FAMILY_MEMBERS.find(m => m.id === msg.to);
-  if (!from) return null;
+  if (!from) {return null;}
   const rgb = hexToRgb(from.color);
   const typeConfig = MSG_TYPE_CONFIG[msg.type] || MSG_TYPE_CONFIG.text;
   const TypeIcon = typeConfig.icon;
@@ -233,11 +234,11 @@ export function FamilyCommCenter() {
 
   // Filter & search messages
   const filteredMessages = useMemo(() => {
-    let result = messages.filter(msg => {
+    const result = messages.filter(msg => {
       if (filterMember !== "all") {
-        if (msg.from !== filterMember && msg.to !== filterMember && msg.to !== "all") return false;
+        if (msg.from !== filterMember && msg.to !== filterMember && msg.to !== "all") {return false;}
       }
-      if (filterType !== "all" && msg.type !== filterType) return false;
+      if (filterType !== "all" && msg.type !== filterType) {return false;}
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
@@ -245,7 +246,7 @@ export function FamilyCommCenter() {
           !msg.content.toLowerCase().includes(q) &&
           !(from?.shortName.toLowerCase().includes(q)) &&
           !(from?.name.toLowerCase().includes(q))
-        ) return false;
+        ) {return false;}
       }
       return true;
     });
@@ -282,7 +283,7 @@ export function FamilyCommCenter() {
 
   // Send message
   const handleSend = useCallback(() => {
-    if (!inputText.trim()) return;
+    if (!inputText.trim()) {return;}
     const newMsg: FamilyMessage = {
       id: `msg-${Date.now()}`,
       from: sendAs,
@@ -366,7 +367,7 @@ export function FamilyCommCenter() {
   }, []);
 
   return (
-    <div className="min-h-screen p-4 md:p-6 space-y-4" style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}>
+    <div className="min-h-full pb-8 p-4 md:p-6 space-y-4" style={{ background: DEEP_BG }}>
       <div className="max-w-4xl mx-auto flex flex-col" style={{ height: "calc(100vh - 120px)" }}>
         {/* Header */}
         <FadeIn>

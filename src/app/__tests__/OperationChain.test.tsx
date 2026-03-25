@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * OperationChain.test.tsx
- * ========================
+ * ==============
  * OperationChain 组件 - 时间线渲染测试
  *
  * 覆盖范围:
@@ -10,8 +11,8 @@
  * - compact 模式
  */
 
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { OperationChain } from "../components/OperationChain";
 import type { ChainEvent } from "../types";
@@ -28,60 +29,47 @@ describe("OperationChain", () => {
     cleanup();
   });
 
-  // ----------------------------------------------------------
-  // 空数据
-  // ----------------------------------------------------------
-
   describe("空数据", () => {
     it("无事件时应渲染空提示", () => {
       render(<OperationChain events={[]} />);
-      expect(screen.getByText("暂无操作链路数据")).toBeInTheDocument();
+      expect(screen.getAllByText("暂无操作链路数据")[0]).toBeInTheDocument();
     });
   });
-
-  // ----------------------------------------------------------
-  // 事件渲染
-  // ----------------------------------------------------------
 
   describe("事件渲染", () => {
     it("应渲染所有事件的时间戳", () => {
       render(<OperationChain events={mockEvents} />);
-      expect(screen.getByText("10:23:45")).toBeInTheDocument();
-      expect(screen.getByText("10:24:12")).toBeInTheDocument();
-      expect(screen.getByText("10:24:15")).toBeInTheDocument();
-      expect(screen.getByText("10:24:30")).toBeInTheDocument();
+      expect(screen.getAllByText("10:23:45")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("10:24:12")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("10:24:15")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("10:24:30")[0]).toBeInTheDocument();
     });
 
     it("应渲染所有事件的标签", () => {
       render(<OperationChain events={mockEvents} />);
-      expect(screen.getByText("模型加载 LLaMA-70B")).toBeInTheDocument();
-      expect(screen.getByText("推理任务启动")).toBeInTheDocument();
-      expect(screen.getByText("延迟异常告警")).toBeInTheDocument();
-      expect(screen.getByText("系统自动降频")).toBeInTheDocument();
+      expect(screen.getAllByText("模型加载 LLaMA-70B")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("推理任务启动")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("延迟异常告警")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("系统自动降频")[0]).toBeInTheDocument();
     });
 
     it("应渲染所有事件的详情", () => {
       render(<OperationChain events={mockEvents} />);
-      expect(screen.getByText("节点: GPU-A100-03")).toBeInTheDocument();
-      expect(screen.getByText("任务: #12847")).toBeInTheDocument();
+      expect(screen.getAllByText("节点: GPU-A100-03")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("任务: #12847")[0]).toBeInTheDocument();
     });
 
     it("应渲染正确数量的事件", () => {
       const { container } = render(<OperationChain events={mockEvents} />);
-      // Each event has a time stamp element
       const timestamps = container.querySelectorAll("[style*=\"font-family\"]");
       expect(timestamps.length).toBeGreaterThanOrEqual(4);
     });
   });
 
-  // ----------------------------------------------------------
-  // 当前事件标记
-  // ----------------------------------------------------------
-
   describe("当前事件标记", () => {
     it("当前事件应显示「当前」标签", () => {
       render(<OperationChain events={mockEvents} />);
-      expect(screen.getByText("当前")).toBeInTheDocument();
+      expect(screen.getAllByText("当前")[0]).toBeInTheDocument();
     });
 
     it("非当前事件不应有额外标记", () => {
@@ -91,15 +79,11 @@ describe("OperationChain", () => {
     });
   });
 
-  // ----------------------------------------------------------
-  // Compact 模式
-  // ----------------------------------------------------------
-
   describe("compact 模式", () => {
     it("compact 模式应正常渲染", () => {
       render(<OperationChain events={mockEvents} compact />);
-      expect(screen.getByText("模型加载 LLaMA-70B")).toBeInTheDocument();
-      expect(screen.getByText("当前")).toBeInTheDocument();
+      expect(screen.getAllByText("模型加载 LLaMA-70B")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("当前")[0]).toBeInTheDocument();
     });
   });
 });

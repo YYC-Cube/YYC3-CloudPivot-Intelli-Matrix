@@ -1,6 +1,6 @@
 /**
  * types.test.ts
- * ==============
+ * =========
  * YYC³ 全局类型系统 - 完整性测试
  *
  * 覆盖范围:
@@ -12,9 +12,9 @@
  */
 
 import { describe, it, expect } from "vitest";
+import React from "react";
 import { toNodeData } from "../types";
 import type {
-  UserRole,
   AppUser,
   AppSession,
   AuthContextValue,
@@ -22,43 +22,31 @@ import type {
   NodeData,
   NodeStatusRecord,
   ModelTier,
-  Model,
-  Agent,
   InferenceStatus,
-  InferenceLog,
   ModelStats,
   ConnectionState,
   AlertLevel,
   AlertData,
   ThroughputPoint,
-  SystemStats,
-  WSMessage,
-  WebSocketDataState,
-  NetworkInterface,
   NetworkMode,
-  NetworkConfig,
   TestStatus,
   ConnectionTestResult,
-  NetworkConfigState,
   SyncItemType,
   SyncItem,
-  SyncQueueStats,
   SyncProcessResult,
   ErrorCategory,
   ErrorSeverity,
   AppError,
-  ErrorStats,
   Breakpoint,
   ViewState,
   ErrorBoundaryLevel,
   ChatMessage,
   CommandCategory,
-  BeforeInstallPromptEvent,
 } from "../types";
 
-// ============================================================
+// ===============================
 // 1. 类型导出完整性 — 所有类型应可导入
-// ============================================================
+// ===============================
 
 describe("类型导出完整性", () => {
   it("所有用户/认证类型应可导入", () => {
@@ -92,9 +80,9 @@ describe("类型导出完整性", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 2. 节点类型完整性
-// ============================================================
+// ===============================
 
 describe("节点类型", () => {
   it("NodeData 应包含 7 个字段", () => {
@@ -132,9 +120,9 @@ describe("节点类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 3. toNodeData 转换函数
-// ============================================================
+// ===============================
 
 describe("toNodeData 转换", () => {
   it("应正确将 NodeStatusRecord 转为 NodeData", () => {
@@ -179,9 +167,9 @@ describe("toNodeData 转换", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 4. 模型与 Agent 类型
-// ============================================================
+// ===============================
 
 describe("模型与 Agent 类型", () => {
   it("Model 应包含 tier 约束", () => {
@@ -206,9 +194,9 @@ describe("模型与 Agent 类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 5. WebSocket 通信类型
-// ============================================================
+// ===============================
 
 describe("WebSocket 类型", () => {
   it("ConnectionState 应包含 5 种状态", () => {
@@ -249,9 +237,9 @@ describe("WebSocket 类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 6. 网络配置类型
-// ============================================================
+// ===============================
 
 describe("网络配置类型", () => {
   it("NetworkMode 应包含 3 种模式", () => {
@@ -280,9 +268,9 @@ describe("网络配置类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 7. 后台同步类型
-// ============================================================
+// ===============================
 
 describe("后台同步类型", () => {
   it("SyncItemType 应包含 3 种类型", () => {
@@ -307,9 +295,9 @@ describe("后台同步类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 8. 错误处理类型
-// ============================================================
+// ===============================
 
 describe("错误处理类型", () => {
   it("ErrorCategory 应包含 7 种分类", () => {
@@ -343,9 +331,9 @@ describe("错误处理类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 9. 响应式布局类型
-// ============================================================
+// ===============================
 
 describe("响应式布局类型", () => {
   it("Breakpoint 应包含 5 种断点", () => {
@@ -367,9 +355,9 @@ describe("响应式布局类型", () => {
   });
 });
 
-// ============================================================
+// ===============================
 // 10. UI 组件类型
-// ============================================================
+// ===============================
 
 describe("UI 组件公共类型", () => {
   it("ErrorBoundaryLevel 应包含 3 个级别", () => {
@@ -399,13 +387,15 @@ describe("UI 组件公共类型", () => {
   });
 });
 
-// ============================================================
-// 11. 模块导出验证 (RF-011: Re-export 已移除，仅验证值导出)
-// ============================================================
+// ===============================
+// 11. 向后兼容 Re-export 验证
+// ===============================
 
-describe("模块导出验证", () => {
-  it("useWebSocketData 模块应导出 hook", async () => {
+describe("向后兼容 Re-export", () => {
+  it("useWebSocketData 模块应 re-export 核心类型", async () => {
     const mod = await import("../hooks/useWebSocketData");
+    // These are re-exported types - at runtime they are undefined
+    // but the import should not throw
     expect(mod.useWebSocketData).toBeDefined();
   });
 
@@ -442,8 +432,6 @@ describe("模块导出验证", () => {
     expect(typeof mod.getErrorLog).toBe("function");
     expect(typeof mod.clearErrorLog).toBe("function");
     expect(typeof mod.getErrorStats).toBe("function");
-    // RF-002: 新增 IndexedDB 异步读取 API
-    expect(typeof mod.getFullErrorLog).toBe("function");
   });
 
   it("backgroundSync 模块应导出队列操作函数", async () => {

@@ -34,6 +34,51 @@ export function useOfflineMode() {
   const [pendingSync, setPendingSync] = useState(false);
   const snapshotTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // 定期保存 dashboard_state (每 30 秒)
+  useEffect(() => {
+    const saveSnapshot = () => {
+      saveDashboardState({
+        savedAt: Date.now(),
+        locale: localStorage.getItem(LOCALSTORAGE_KEYS.locale) ?? "zh-CN",
+        networkConfig: localStorage.getItem(LOCALSTORAGE_KEYS.networkConfig),
+        modelsCount: (() => {
+          try {
+            const raw = localStorage.getItem(LOCALSTORAGE_KEYS.configuredModels);
+            return raw ? JSON.parse(raw).length : 0;
+          } catch { return 0; }
+        })(),
+      });
+    };
+
+    // 首次保存
+    saveSnapshot();
+    snapshotTimer.current = setInterval(saveSnapshot, 30_000);
+
+    return () => {
+      if (snapshotTimer.current) clearInterval(snapshotTimer.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      syncOfflineData();
+    };
+
+    const handleOffline = () => {
+      setIsOnline(false);
+      saveOfflineSnapshot();
+    };
+
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
+
   const saveOfflineSnapshot = useCallback(() => {
     try {
       const state = localStorage.getItem(LOCALSTORAGE_KEYS.dashboardState);
@@ -67,51 +112,6 @@ export function useOfflineMode() {
       setPendingSync(false);
     }
   }, []);
-
-  // 定期保存 dashboard_state (每 30 秒)
-  useEffect(() => {
-    const saveSnapshot = () => {
-      saveDashboardState({
-        savedAt: Date.now(),
-        locale: localStorage.getItem(LOCALSTORAGE_KEYS.locale) ?? "zh-CN",
-        networkConfig: localStorage.getItem(LOCALSTORAGE_KEYS.networkConfig),
-        modelsCount: (() => {
-          try {
-            const raw = localStorage.getItem(LOCALSTORAGE_KEYS.configuredModels);
-            return raw ? JSON.parse(raw).length : 0;
-          } catch { return 0; }
-        })(),
-      });
-    };
-
-    // 首次保存
-    saveSnapshot();
-    snapshotTimer.current = setInterval(saveSnapshot, 30_000);
-
-    return () => {
-      if (snapshotTimer.current) {clearInterval(snapshotTimer.current);}
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleOnline = () => {
-      setIsOnline(true);
-      syncOfflineData();
-    };
-
-    const handleOffline = () => {
-      setIsOnline(false);
-      saveOfflineSnapshot();
-    };
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, [saveOfflineSnapshot, syncOfflineData]);
 
   const getOfflineSnapshotTime = useCallback((): Date | null => {
     const time = localStorage.getItem(LOCALSTORAGE_KEYS.offlineTime);

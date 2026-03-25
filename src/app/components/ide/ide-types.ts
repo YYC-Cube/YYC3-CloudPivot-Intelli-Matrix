@@ -33,7 +33,7 @@ export interface IDEProject {
 
 export type IDEViewMode = "default" | "preview" | "code";
 
-export type IDELayoutMode = "edit" | "preview";
+export type IDELayoutMode = "edit" | "preview" | "free";
 
 export interface OpenTab {
   id: string;

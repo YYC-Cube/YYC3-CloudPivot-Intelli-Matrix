@@ -17,7 +17,7 @@ describe("figma-error-filter", () => {
 
   describe("错误名匹配", () => {
     it("应识别 IframeMessageAbortError", () => {
-      expect(isFigmaPlatformError("IframeMessageAbortError", "")).toBe(false); // 修复：空消息时不匹配
+      expect(isFigmaPlatformError("IframeMessageAbortError", "")).toBe(true);
     });
 
     it("应识别小写 iframemessage", () => {

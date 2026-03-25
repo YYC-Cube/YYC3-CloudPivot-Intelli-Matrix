@@ -1,6 +1,6 @@
 /**
  * integration.test.ts
- * ====================
+ * ============
  * YYC³ 集成测试
  *
  * 覆盖范围:
@@ -14,13 +14,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-
-// RF-002: Mock IndexedDB 操作（error-handler 现在导入 yyc3-storage）
-vi.mock("../lib/yyc3-storage", () => ({
-  idbPut: vi.fn().mockResolvedValue(undefined),
-  idbGetAll: vi.fn().mockResolvedValue([]),
-  idbClear: vi.fn().mockResolvedValue(undefined),
-}));
+import React from "react";
 
 // Mock localStorage
 const localStorageMock = (() => {

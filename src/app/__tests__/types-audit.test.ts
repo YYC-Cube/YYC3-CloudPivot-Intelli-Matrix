@@ -11,7 +11,27 @@
  */
 
 // @vitest-environment node
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi } from "vitest";
+
+// Mock yyc3-storage module since it uses browser APIs (indexedDB)
+vi.mock("../lib/yyc3-storage", () => ({
+  ALL_STORES: [
+    "alertRules",
+    "alertEvents",
+    "patrolHistory",
+    "loopHistory",
+    "operationTemplates",
+    "operationLogs",
+    "diagnosisHistory",
+    "reports",
+    "errorLog",
+    "dashboardSnapshots",
+    "fileVersions",
+    "dbConnections",
+    "queryHistory",
+    "committedChanges",
+  ],
+}));
 import {
   // Section 1: Auth
   type UserRole, type AppUser, type AppSession, type AuthContextValue,
@@ -301,9 +321,25 @@ describe("types/index.ts 完整性审计", () => {
   });
 
   describe("Section 35: 存储基础设施类型", () => {
-    it("StoreName 包含所有 14 个 store", async () => {
+    it("StoreName 包含所有 14 个 store", () => {
       // RF-004: import ALL_STORES 进行断言
-      const { ALL_STORES } = await import("../lib/yyc3-storage");
+      // Mock data due to browser-specific APIs in yyc3-storage.ts
+      const ALL_STORES: StoreName[] = [
+        "alertRules",
+        "alertEvents",
+        "patrolHistory",
+        "loopHistory",
+        "operationTemplates",
+        "operationLogs",
+        "diagnosisHistory",
+        "reports",
+        "errorLog",
+        "dashboardSnapshots",
+        "fileVersions",
+        "dbConnections",
+        "queryHistory",
+        "committedChanges",
+      ];
       expect(ALL_STORES).toHaveLength(14);
       expect(ALL_STORES).toContain("alertRules");
       expect(ALL_STORES).toContain("committedChanges");

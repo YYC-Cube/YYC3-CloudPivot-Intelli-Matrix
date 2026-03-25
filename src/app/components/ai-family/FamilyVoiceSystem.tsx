@@ -24,6 +24,7 @@ import {
   FAMILY_MEMBERS, hexToRgb, getHourlyCare,
   DEFAULT_VOICE_PROFILES, AI_RESPONSES,
   type FamilyMember, type VoiceProfile,
+  DEEP_BG,
 } from "./shared";
 
 // ═══ localStorage ═══
@@ -68,7 +69,7 @@ function saveConversations(convs: VoiceConversation[]) {
 // ═══ TTS 引擎 ═══
 
 function speak(text: string, profile: VoiceProfile, onEnd?: () => void) {
-  if (!("speechSynthesis" in window)) return;
+  if (!("speechSynthesis" in window)) {return;}
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.pitch = profile.pitch;
@@ -77,13 +78,13 @@ function speak(text: string, profile: VoiceProfile, onEnd?: () => void) {
   u.lang = profile.lang;
   const voices = window.speechSynthesis.getVoices();
   const match = voices.find(v => v.lang.startsWith("zh")) || voices[0];
-  if (match) u.voice = match;
-  if (onEnd) u.onend = onEnd;
+  if (match) {u.voice = match;}
+  if (onEnd) {u.onend = onEnd;}
   window.speechSynthesis.speak(u);
 }
 
 function stopSpeaking() {
-  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if ("speechSynthesis" in window) {window.speechSynthesis.cancel();}
 }
 
 // ═══ 子组件：单个家人语音卡片 ═══
@@ -225,7 +226,7 @@ function VoiceCard({
           <button
             onClick={() => {
               const def = DEFAULT_VOICE_PROFILES.find(p => p.memberId === member.id);
-              if (def) onUpdateProfile({ pitch: def.pitch, rate: def.rate, volume: def.volume });
+              if (def) {onUpdateProfile({ pitch: def.pitch, rate: def.rate, volume: def.volume });}
             }}
             className="flex items-center gap-1 text-white/30 hover:text-white/50 transition-colors"
             style={{ fontSize: "0.6rem" }}
@@ -312,7 +313,7 @@ function VoiceConversationPanel({
   }, []);
 
   const startListening = useCallback(() => {
-    if (!recognitionRef.current) return;
+    if (!recognitionRef.current) {return;}
     setTranscript("");
     setInterimTranscript("");
     setIsListening(true);
@@ -324,13 +325,13 @@ function VoiceConversationPanel({
   }, []);
 
   const stopListening = useCallback(() => {
-    if (!recognitionRef.current) return;
+    if (!recognitionRef.current) {return;}
     try { recognitionRef.current.stop(); } catch { /* noop */ }
     setIsListening(false);
   }, []);
 
   const handleRespond = useCallback((userText: string) => {
-    if (!userText.trim()) return;
+    if (!userText.trim()) {return;}
     setIsResponding(true);
 
     // Pick a random AI response
@@ -572,7 +573,7 @@ export function FamilyVoiceSystem() {
   );
 
   return (
-    <div className="min-h-screen p-4 md:p-6 space-y-6" style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}>
+    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <FadeIn>

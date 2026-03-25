@@ -65,7 +65,7 @@ export function useKeyboardShortcuts(config: ShortcutConfig = {}) {
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
-      if (!enabled) {return;}
+      if (!enabled) return;
 
       // Ctrl+` (backtick) — 集成终端切换（允许在任何焦点状态下生效）
       if (e.ctrlKey && e.key === "`") {
@@ -135,7 +135,7 @@ export function useKeyboardShortcuts(config: ShortcutConfig = {}) {
   );
 
   useEffect(() => {
-    if (!enabled) {return;}
+    if (!enabled) return;
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [handleKeyDown, enabled]);

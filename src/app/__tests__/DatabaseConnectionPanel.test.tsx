@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * DatabaseConnectionPanel.test.tsx
  * ==================================
@@ -11,8 +12,8 @@
  * - 导出/导入按钮
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import React from "react";
 
 // Mock CodeMirror
@@ -123,6 +124,11 @@ describe("DatabaseConnectionPanel", () => {
     cleanup();
   });
 
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the header", () => {
     render(<DatabaseConnectionPanel />);
     expect(screen.getByText("数据库连接管理")).toBeInTheDocument();
@@ -142,9 +148,9 @@ describe("DatabaseConnectionPanel", () => {
 
   it("should render 导出/导入/重置 buttons", () => {
     render(<DatabaseConnectionPanel />);
-    expect(screen.getByTestId("db-export-btn")).toBeInTheDocument();
-    expect(screen.getByTestId("db-import-btn")).toBeInTheDocument();
-    expect(screen.getByTestId("db-reset-btn")).toBeInTheDocument();
+    expect(screen.getByText("导出")).toBeInTheDocument();
+    expect(screen.getByText("导入")).toBeInTheDocument();
+    expect(screen.getAllByText("重置")[0]).toBeInTheDocument();
   });
 
   it("should render 新建连接 button", () => {

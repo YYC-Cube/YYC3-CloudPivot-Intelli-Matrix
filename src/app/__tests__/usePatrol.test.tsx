@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * usePatrol.test.tsx
- * ==================
+ * =========
  * usePatrol Hook - 巡查模式状态管理测试 (jsdom 环境)
  *
  * 覆盖范围:
@@ -12,8 +13,7 @@
  * - 历史记录追加
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { usePatrol } from "../hooks/usePatrol";
 

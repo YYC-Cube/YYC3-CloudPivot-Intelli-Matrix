@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * useFollowUp.test.tsx
- * =====================
+ * ============
  * useFollowUp Hook - 状态管理测试 (jsdom 环境)
  *
  * 覆盖范围:
@@ -12,8 +13,7 @@
  * - 统计数据计算
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useFollowUp } from "../hooks/useFollowUp";
 

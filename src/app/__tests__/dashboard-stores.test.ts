@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
 
 // Mock localStorage
 const store: Record<string, string> = {};
@@ -18,7 +19,7 @@ const localStorageMock = {
   getItem: vi.fn((key: string) => store[key] ?? null),
   setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
   removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
+  clear: vi.fn(() => { for (const k of Object.keys(store)) delete store[k]; }),
   get length() { return Object.keys(store).length; },
   key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
 };

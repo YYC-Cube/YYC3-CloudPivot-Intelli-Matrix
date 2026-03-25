@@ -30,6 +30,11 @@ export function useNetworkConfig() {
     detecting: false,
   });
 
+  // 启动时自动检测
+  useEffect(() => {
+    detectNetwork();
+  }, []);
+
   /** 刷新网络检测 */
   const detectNetwork = useCallback(async () => {
     setState((prev) => ({ ...prev, detecting: true }));
@@ -48,11 +53,6 @@ export function useNetworkConfig() {
       setState((prev) => ({ ...prev, detecting: false }));
     }
   }, []);
-
-  // 启动时自动检测
-  useEffect(() => {
-    setTimeout(() => detectNetwork(), 0);
-  }, [detectNetwork]);
 
   /** 更新配置字段 */
   const updateConfig = useCallback(

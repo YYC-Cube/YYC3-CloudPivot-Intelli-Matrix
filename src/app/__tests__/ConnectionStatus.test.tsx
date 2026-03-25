@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * ConnectionStatus.test.tsx
- * ==========================
+ * ===============
  * ConnectionStatus 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -11,8 +12,8 @@
  * - 重连次数显示
  */
 
-import React from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ConnectionStatus } from "../components/ConnectionStatus";
 import type { ConnectionState } from "../types";
@@ -24,15 +25,19 @@ const defaultProps = {
 };
 
 describe("ConnectionStatus", () => {
-  afterEach(() => {
-    cleanup();
-  });
 
+afterEach(() => {
+  cleanup();
+});
   // ----------------------------------------------------------
   // 5 种连接状态
   // ----------------------------------------------------------
 
   describe("连接状态渲染", () => {
+
+afterEach(() => {
+  cleanup();
+});
     const stateLabels: Record<ConnectionState, string> = {
       connected: "实时连接",
       connecting: "连接中...",
@@ -59,17 +64,21 @@ describe("ConnectionStatus", () => {
   // ----------------------------------------------------------
 
   describe("compact 模式", () => {
+
+afterEach(() => {
+  cleanup();
+});
     it("compact=true 时应渲染为 button", () => {
       render(
         <ConnectionStatus state="connected" compact {...defaultProps} />
       );
-      const btn = screen.getByRole("button");
+      const btn = screen.getAllByRole("button")[0];
       expect(btn).toBeInTheDocument();
       expect(btn.textContent).toContain("实时连接");
     });
 
     it("compact 模式点击应触发 onReconnect", () => {
-      const handleReconnect = vi.fn();
+      const handleReconnect = vi.fn() as any;
       render(
         <ConnectionStatus
           state="connected"
@@ -78,7 +87,7 @@ describe("ConnectionStatus", () => {
           onReconnect={handleReconnect}
         />
       );
-      fireEvent.click(screen.getByRole("button"));
+      fireEvent.click(screen.getAllByRole("button")[0]);
       expect(handleReconnect).toHaveBeenCalledTimes(1);
     });
 
@@ -92,7 +101,7 @@ describe("ConnectionStatus", () => {
           compact
         />
       );
-      expect(screen.getByText("(3/10)")).toBeInTheDocument();
+      expect(screen.getAllByText("(3/10)")[0]).toBeInTheDocument();
     });
   });
 
@@ -101,18 +110,22 @@ describe("ConnectionStatus", () => {
   // ----------------------------------------------------------
 
   describe("完整模式", () => {
+
+afterEach(() => {
+  cleanup();
+});
     it("应显示最后同步时间", () => {
       render(
         <ConnectionStatus state="connected" {...defaultProps} />
       );
-      expect(screen.getByText("14:30:00")).toBeInTheDocument();
+      expect(screen.getAllByText("14:30:00")[0]).toBeInTheDocument();
     });
 
     it("disconnected 时应显示重连按钮", () => {
       render(
         <ConnectionStatus state="disconnected" {...defaultProps} />
       );
-      const reconnectBtn = screen.getByTestId("manual-reconnect-btn");
+      const reconnectBtn = screen.getByTitle("手动重连");
       expect(reconnectBtn).toBeInTheDocument();
     });
 
@@ -120,7 +133,7 @@ describe("ConnectionStatus", () => {
       render(
         <ConnectionStatus state="simulated" {...defaultProps} />
       );
-      const reconnectBtn = screen.getByTestId("manual-reconnect-btn");
+      const reconnectBtn = screen.getByTitle("手动重连");
       expect(reconnectBtn).toBeInTheDocument();
     });
 
@@ -128,11 +141,11 @@ describe("ConnectionStatus", () => {
       render(
         <ConnectionStatus state="connected" {...defaultProps} />
       );
-      expect(screen.queryByTestId("manual-reconnect-btn")).not.toBeInTheDocument();
+      expect(screen.queryByTitle("手动重连")).not.toBeInTheDocument();
     });
 
     it("重连按钮点击应触发 onReconnect", () => {
-      const handleReconnect = vi.fn();
+      const handleReconnect = vi.fn() as any;
       render(
         <ConnectionStatus
           state="disconnected"
@@ -140,7 +153,7 @@ describe("ConnectionStatus", () => {
           onReconnect={handleReconnect}
         />
       );
-      fireEvent.click(screen.getByTestId("manual-reconnect-btn"));
+      fireEvent.click(screen.getByTitle("手动重连"));
       expect(handleReconnect).toHaveBeenCalledTimes(1);
     });
   });

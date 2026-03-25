@@ -230,7 +230,6 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
     remove: removeRule,
     setAll: setAllRules,
     loaded: rulesLoaded,
-    prepend: prependRule,
   } = usePersistedList<AlertRule>("alertRules", MOCK_RULES);
 
   const {
@@ -250,9 +249,9 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
 
   // ── WebSocket live alert evaluation ──
   useEffect(() => {
-    if (!opts.liveNodes || opts.liveNodes.length === 0) {return;}
+    if (!opts.liveNodes || opts.liveNodes.length === 0) return;
     const now = Date.now();
-    if (now - lastPushRef.current < 10000) {return;}
+    if (now - lastPushRef.current < 10000) return;
     lastPushRef.current = now;
 
     const enabledRules = rulesRef.current.filter((r) => r.enabled);
@@ -263,14 +262,14 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
       for (const rule of enabledRules) {
         for (const th of rule.thresholds) {
           for (const node of opts.liveNodes!) {
-            if (!rule.targets.includes(node.id)) {continue;}
+            if (!rule.targets.includes(node.id)) continue;
 
             let value: number | null = null;
-            if (th.metric === "gpu") {value = node.gpu;}
-            else if (th.metric === "memory") {value = node.mem;}
-            else if (th.metric === "latency" && opts.liveLatency != null) {value = opts.liveLatency;}
+            if (th.metric === "gpu") value = node.gpu;
+            else if (th.metric === "memory") value = node.mem;
+            else if (th.metric === "latency" && opts.liveLatency != null) value = opts.liveLatency;
 
-            if (value === null) {continue;}
+            if (value === null) continue;
 
             const triggered =
               (th.condition === "gt" && value > th.value) ||
@@ -280,7 +279,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
               (th.condition === "eq" && value === th.value) ||
               (th.condition === "neq" && value !== th.value);
 
-            if (!triggered) {continue;}
+            if (!triggered) continue;
 
             // Deduplication check
             const cooldownMs = rule.deduplication.enabled
@@ -294,7 +293,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
                 !e.resolved &&
                 now - e.timestamp < cooldownMs
             );
-            if (hasDuplicate) {continue;}
+            if (hasDuplicate) continue;
 
             newEvts.push({
               id: `evt-ws-${now}-${node.id}-${th.metric}`,
@@ -315,7 +314,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
         }
       }
 
-      if (newEvts.length === 0) {return prevEvents;}
+      if (newEvts.length === 0) return prevEvents;
       return [...newEvts, ...prevEvents].slice(0, 50);
     });
   }, [opts.liveNodes, opts.liveLatency, setEvents]);
@@ -329,7 +328,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
 
   const deleteRule = useCallback((ruleId: string) => {
     removeRule(ruleId);
-    if (selectedRule?.id === ruleId) {setSelectedRule(null);}
+    if (selectedRule?.id === ruleId) setSelectedRule(null);
   }, [selectedRule, removeRule]);
 
   const acknowledgeEvent = useCallback((eventId: string) => {
@@ -354,9 +353,9 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
       lastTriggered: null,
       triggerCount: 0,
     };
-    prependRule(newRule);
+    upsertRule(newRule);
     setIsCreating(false);
-  }, [prependRule]);
+  }, [upsertRule]);
 
   /** Update an existing rule (edit mode) */
   const updateRule = useCallback((ruleId: string, updates: Partial<Omit<AlertRule, "id" | "createdAt" | "lastTriggered" | "triggerCount">>) => {

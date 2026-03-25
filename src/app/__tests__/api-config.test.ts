@@ -12,8 +12,21 @@
  *  - ENDPOINT_META 完整性
  */
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 
 // 动态 import 以确保每次重新加载模块
 async function loadModule() {

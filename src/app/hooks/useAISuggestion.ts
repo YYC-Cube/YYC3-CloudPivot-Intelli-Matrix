@@ -179,7 +179,7 @@ export function useAISuggestion() {
 
   // 整体健康度
   const overallHealth = useMemo(() => {
-    if (patterns.length === 0) {return 100;}
+    if (patterns.length === 0) return 100;
     const severityWeight: Record<PatternSeverity, number> = {
       low: 2, medium: 5, high: 10, critical: 20,
     };
@@ -229,7 +229,7 @@ export function useAISuggestion() {
   // 应用推荐
   const applyRecommendation = useCallback(async (recId: string) => {
     const rec = recommendations.find((r) => r.id === recId);
-    if (!rec) {return;}
+    if (!rec) return;
 
     toast.info(`正在执行: ${rec.action}`);
     await new Promise((r) => setTimeout(r, 1200 + Math.random() * 1000));

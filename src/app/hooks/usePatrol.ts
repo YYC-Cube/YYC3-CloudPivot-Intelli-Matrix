@@ -24,6 +24,7 @@ import type {
 // ============================================================
 
 function generateChecks(): PatrolCheckItem[] {
+  const categories = ["节点健康", "存储", "网络", "GPU", "内存", "安全"];
   const checks: PatrolCheckItem[] = [];
 
   const templates: Array<{
@@ -200,21 +201,21 @@ export function usePatrol() {
 
   const {
     items: history,
-    setItems: _setHistory,
+    setItems: setHistory,
     prepend: prependHistory,
   } = usePersistedList<PatrolResult>(
     "patrolHistory",
     generateInitialHistory()
   );
 
-  const [schedule, setSchedule] = useState<PatrolSchedule>(() => ({
+  const [schedule, setSchedule] = useState<PatrolSchedule>({
     enabled: true,
     interval: 15,
     lastRun: null,
     nextRun: Date.now() + 15 * 60 * 1000,
-  }));
+  });
 
-  const autoTimerRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
+  const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // ── runPatrol ──────────────────────────────────────────────
 
@@ -263,7 +264,7 @@ export function usePatrol() {
 
       if (!enabled && autoTimerRef.current) {
         clearInterval(autoTimerRef.current);
-        autoTimerRef.current = undefined;
+        autoTimerRef.current = null;
       }
 
       toast.info(enabled ? "自动巡查已开启" : "自动巡查已关闭");
@@ -305,7 +306,7 @@ export function usePatrol() {
     return () => {
       if (autoTimerRef.current) {
         clearInterval(autoTimerRef.current);
-        autoTimerRef.current = undefined;
+        autoTimerRef.current = null;
       }
     };
   }, [schedule.enabled, schedule.interval, runPatrol]);

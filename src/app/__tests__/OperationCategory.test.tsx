@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * OperationCategory.test.tsx
- * ===========================
+ * ===============
  * OperationCategory 组件 - 操作分类标签页测试
  *
  * 覆盖范围:
@@ -9,17 +10,18 @@
  * - 激活态样式
  */
 
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { OperationCategory } from "../components/OperationCategory";
 import { CATEGORY_META } from "../hooks/useOperationCenter";
 
 describe("OperationCategory", () => {
-  let onChange: Mock;
+  let onChange: any;
 
   beforeEach(() => {
-    onChange = vi.fn();
+    cleanup();
+    onChange = vi.fn() as any;
   });
 
   afterEach(() => {
@@ -28,44 +30,44 @@ describe("OperationCategory", () => {
 
   it("应渲染「全部」按钮", () => {
     render(<OperationCategory categories={CATEGORY_META} active="all" onChange={onChange} />);
-    expect(screen.getByTestId("category-all")).toBeInTheDocument();
+    expect(screen.getAllByText("全部")[0]).toBeInTheDocument();
   });
 
   it("应渲染 5 个分类按钮", () => {
     render(<OperationCategory categories={CATEGORY_META} active="all" onChange={onChange} />);
-    expect(screen.getByText("节点操作")).toBeInTheDocument();
-    expect(screen.getByText("模型操作")).toBeInTheDocument();
-    expect(screen.getByText("任务操作")).toBeInTheDocument();
-    expect(screen.getByText("系统操作")).toBeInTheDocument();
-    expect(screen.getByText("自定义")).toBeInTheDocument();
+    expect(screen.getAllByText("节点操作")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("模型操作")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("任务操作")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("系统操作")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("自定义")[0]).toBeInTheDocument();
   });
 
   it("点击分类应触发 onChange", () => {
     render(<OperationCategory categories={CATEGORY_META} active="all" onChange={onChange} />);
-    fireEvent.click(screen.getByTestId("category-node"));
+    fireEvent.click(screen.getAllByTestId("category-node")[0]);
     expect(onChange).toHaveBeenCalledWith("node");
   });
 
   it("点击全部应触发 onChange('all')", () => {
     render(<OperationCategory categories={CATEGORY_META} active="node" onChange={onChange} />);
-    fireEvent.click(screen.getByTestId("category-all"));
+    fireEvent.click(screen.getAllByTestId("category-all")[0]);
     expect(onChange).toHaveBeenCalledWith("all");
   });
 
   it("激活分类按钮应有对应颜色样式", () => {
     render(<OperationCategory categories={CATEGORY_META} active="node" onChange={onChange} />);
-    const btn = screen.getByTestId("category-node");
+    const btn = screen.getAllByTestId("category-node")[0];
     expect(btn.style.color).toBe("rgb(0, 212, 255)"); // #00d4ff
   });
 
   it("非激活分类按钮应有默认透明样式", () => {
     render(<OperationCategory categories={CATEGORY_META} active="node" onChange={onChange} />);
-    const btn = screen.getByTestId("category-model");
+    const btn = screen.getAllByTestId("category-model")[0];
     expect(btn.className).toContain("text-[rgba(0,212,255,0.4)]");
   });
 
   it("应有 data-testid", () => {
     render(<OperationCategory categories={CATEGORY_META} active="all" onChange={onChange} />);
-    expect(screen.getByTestId("operation-category")).toBeInTheDocument();
+    expect(screen.getAllByTestId("operation-category")[0]).toBeInTheDocument();
   });
 });

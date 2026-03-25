@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * DataEditorPanel.test.tsx
  * =========================
@@ -10,7 +11,7 @@
  * - 搜索框
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import React from "react";
 
@@ -129,10 +130,15 @@ describe("DataEditorPanel", () => {
     cleanup();
   });
 
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("should render the panel with header", async () => {
     render(<DataEditorPanel />);
     await waitFor(() => {
-      expect(screen.getByText("数据管理")).toBeInTheDocument();
+      expect(screen.getAllByText("数据管理")[0]).toBeInTheDocument();
     });
   });
 

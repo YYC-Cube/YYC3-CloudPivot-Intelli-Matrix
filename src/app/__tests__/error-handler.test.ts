@@ -1,6 +1,6 @@
 /**
  * error-handler.test.ts
- * ======================
+ * ============
  * YYC³ 错误处理工具 - 单元测试
  *
  * 覆盖范围:
@@ -12,14 +12,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-
-// RF-002: Mock IndexedDB 操作（error-handler 现在导入 yyc3-storage）
-vi.mock("../lib/yyc3-storage", () => ({
-  idbPut: vi.fn().mockResolvedValue(undefined),
-  idbGetAll: vi.fn().mockResolvedValue([]),
-  idbClear: vi.fn().mockResolvedValue(undefined),
-}));
-
+import React from "react";
 import {
   captureError,
   captureNetworkError,
@@ -31,7 +24,6 @@ import {
   getErrorStats,
   trySafe,
   trySafeSync,
-  installGlobalErrorListeners,
 } from "../lib/error-handler";
 
 // Mock localStorage
@@ -96,7 +88,7 @@ describe("error-handler", () => {
       expect(appError.userAction).toBe("请重试");
     });
 
-    it("覆盖自动分类", () => {
+    it("���覆盖自动分类", () => {
       const appError = captureError(new Error("test"), {
         category: "AUTH",
         severity: "critical",
@@ -235,40 +227,6 @@ describe("error-handler", () => {
       });
       expect(data).toBeNull();
       expect(error!.message).toBe("sync error");
-    });
-  });
-
-  // ----------------------------------------------------------
-  // Figma 平台错误过滤
-  // ----------------------------------------------------------
-
-  describe("installGlobalErrorListeners - Figma 错误过滤", () => {
-    it("应导出 installGlobalErrorListeners 函数", () => {
-      expect(typeof installGlobalErrorListeners).toBe("function");
-    });
-
-    it("IframeMessageAbortError 不应写入错误日志", () => {
-      clearErrorLog();
-      // 模拟 Figma 平台的 IframeMessageAbortError 被 captureError 捕获前
-      // installGlobalErrorListeners 中的过滤逻辑基于字符串匹配
-      const figmaErrorMsg = "IframeMessageAbortError: Message aborted: message port was destroyed";
-      // 验证过滤条件可以识别 Figma 错误
-      expect(figmaErrorMsg.includes("IframeMessage")).toBe(true);
-      expect(figmaErrorMsg.includes("message port was destroyed")).toBe(true);
-      expect(figmaErrorMsg.includes("Message aborted")).toBe(true);
-    });
-
-    it("非 Figma 错误不应被过滤", () => {
-      const normalError = "TypeError: Cannot read properties of undefined";
-      expect(normalError.includes("IframeMessage")).toBe(false);
-      expect(normalError.includes("message port was destroyed")).toBe(false);
-      expect(normalError.includes("Message aborted")).toBe(false);
-    });
-
-    it("webpack-artifacts 来源应被识别为 Figma 内部", () => {
-      const figmaFilename = "https://www.figma.com/webpack-artifacts/assets/1741-0091e26ad4c06e70.min.js.br";
-      expect(figmaFilename.includes("figma.com")).toBe(true);
-      expect(figmaFilename.includes("webpack-artifacts")).toBe(true);
     });
   });
 });

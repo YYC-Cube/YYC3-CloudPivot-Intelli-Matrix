@@ -7,7 +7,7 @@
 import React from "react";
 import {
   Maximize2, Eye, Code2, Search, MoreHorizontal,
-  PanelRightClose, Columns3,
+  PanelRightClose, Columns3, LayoutTemplate,
 } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
 import type { IDEViewMode, IDELayoutMode } from "./ide-types";
@@ -34,6 +34,7 @@ export function IDEViewSwitcher({
   const layoutButtons: { mode: IDELayoutMode; icon: React.ElementType; label: string; desc: string }[] = [
     { mode: "edit", icon: PanelRightClose, label: t("ide.editMode"), desc: t("ide.editModeDesc") },
     { mode: "preview", icon: Columns3, label: t("ide.previewMode"), desc: t("ide.previewModeDesc") },
+    { mode: "free", icon: LayoutTemplate, label: t("ide.freeMode"), desc: t("ide.freeModeDesc") },
   ];
 
   return (

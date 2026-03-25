@@ -124,7 +124,7 @@ export function Layout() {
 
               {/* Page content */}
               <div className={`flex-1 overflow-auto ${
-                ["/ai-family"].includes(location.pathname)
+                location.pathname.startsWith("/ai-family")
                   ? ""
                   : view.isMobile ? "px-3 pt-2 pb-[72px]" : view.isTablet ? "px-4 pt-3 pb-[72px]" : "p-4"
               }`}>

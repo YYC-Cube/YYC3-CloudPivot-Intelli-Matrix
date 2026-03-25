@@ -1,6 +1,6 @@
 /**
  * i18n-loop-devguide.test.ts
- * ============================
+ * ===============
  * 语言包新增 key 验证: loop + devGuide
  *
  * 覆盖范围:
@@ -11,15 +11,16 @@
  */
 
 import { describe, it, expect } from "vitest";
+import React from "react";
 import zhCN from "../i18n/zh-CN";
 import enUS from "../i18n/en-US";
 
-function getNestedKeys(obj: Record<string, any>, prefix = ""): string[] {
+function getNestedKeys(obj: Record<string, unknown>, prefix = ""): string[] {
   const keys: string[] = [];
   for (const k of Object.keys(obj)) {
     const path = prefix ? `${prefix}.${k}` : k;
     if (typeof obj[k] === "object" && obj[k] !== null) {
-      keys.push(...getNestedKeys(obj[k], path));
+      keys.push(...getNestedKeys(obj[k] as Record<string, unknown>, path));
     } else {
       keys.push(path);
     }
@@ -75,8 +76,8 @@ describe("i18n loop + devGuide key 验证", () => {
   });
 
   describe("zh-CN / en-US key 一致性", () => {
-    const zhKeys = getNestedKeys(zhCN as Record<string, any>);
-    const enKeys = getNestedKeys(enUS as Record<string, any>);
+    const zhKeys = getNestedKeys(zhCN as Record<string, unknown>);
+    const enKeys = getNestedKeys(enUS as Record<string, unknown>);
 
     it("zh-CN key 数量应等于 en-US", () => {
       expect(zhKeys.length).toBe(enKeys.length);

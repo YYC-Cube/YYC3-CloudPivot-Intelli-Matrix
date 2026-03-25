@@ -106,7 +106,7 @@ export function getErrorStats(): ErrorStats {
   for (const err of log) {
     byCategory[err.category] = (byCategory[err.category] || 0) + 1;
     bySeverity[err.severity] = (bySeverity[err.severity] || 0) + 1;
-    if (!err.resolved) {unresolvedCount++;}
+    if (!err.resolved) unresolvedCount++;
   }
 
   return {
@@ -146,17 +146,17 @@ function categorizeError(error: unknown): { category: ErrorCategory; severity: E
 
 /** 提取错误信息 */
 function extractMessage(error: unknown): string {
-  if (error instanceof Error) {return error.message;}
-  if (typeof error === "string") {return error;}
+  if (error instanceof Error) return error.message;
+  if (typeof error === "string") return error;
   if (error && typeof error === "object" && "message" in error) {
-    return String((error as Record<string, unknown>).message);
+    return String((error as any).message);
   }
   return "未知错误";
 }
 
 /** 提取堆栈信息 */
 function extractStack(error: unknown): string | undefined {
-  if (error instanceof Error) {return error.stack;}
+  if (error instanceof Error) return error.stack;
   return undefined;
 }
 
@@ -236,7 +236,7 @@ export function captureNetworkError(
  */
 export function captureWSError(
   error: unknown,
-  _detail?: string
+  detail?: string
 ): AppError {
   return captureError(error, {
     category: "NETWORK",
@@ -321,7 +321,7 @@ let globalListenerInstalled = false;
  *         App.tsx capture-phase 已做第一层拦截，此处为防御性二次检查
  */
 export function installGlobalErrorListeners(): void {
-  if (globalListenerInstalled) {return;}
+  if (globalListenerInstalled) return;
   globalListenerInstalled = true;
 
   // 全局运行时错误

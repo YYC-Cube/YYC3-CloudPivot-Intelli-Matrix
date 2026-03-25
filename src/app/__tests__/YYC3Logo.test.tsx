@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * YYC3Logo.test.tsx
  * ==================
@@ -10,7 +11,7 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 
@@ -50,9 +51,14 @@ import { YYC3Logo } from "../components/YYC3Logo";
 // ============================================================
 
 describe("YYC3Logo", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   afterEach(() => {
     cleanup();
   });
+
 
   describe("基础渲染", () => {
     it("应渲染 img 标签 (PNG)", () => {
@@ -64,8 +70,9 @@ describe("YYC3Logo", () => {
 
     it("应设置正确的 alt 文本", () => {
       render(<YYC3Logo />);
-      const img = screen.getByAltText("YYC³ Logo");
-      expect(img).toBeInTheDocument();
+      const imgs = screen.getAllByAltText("YYC³ Logo");
+      expect(imgs.length).toBeGreaterThan(0);
+      expect(imgs[0]).toBeInTheDocument();
     });
 
     it("应默认显示状态指示点", () => {
@@ -168,8 +175,9 @@ describe("YYC3Logo", () => {
 
     it("img 应有 alt 属性", () => {
       render(<YYC3Logo />);
-      const img = screen.getAllByTestId("yyc3-logo-img")[0];
-      expect(img).toHaveAttribute("alt", "YYC³ Logo");
+      const imgs = screen.getAllByTestId("yyc3-logo-img");
+      expect(imgs.length).toBeGreaterThan(0);
+      expect(imgs[0]).toHaveAttribute("alt", "YYC³ Logo");
     });
   });
 });

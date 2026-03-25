@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * CodeEditor.test.tsx
  * ====================
@@ -9,7 +10,7 @@
  * - SQLEditor 渲染
  */
 
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach , beforeEach} from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import React from "react";
 
@@ -45,9 +46,14 @@ vi.mock("@codemirror/state", () => ({}));
 import { CodeEditor, SQLEditor, getLanguageLabel } from "../components/CodeEditor";
 
 describe("getLanguageLabel", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   afterEach(() => {
     cleanup();
   });
+
 
   it("should return JavaScript for .js", () => {
     expect(getLanguageLabel("app.js")).toBe("JavaScript");
@@ -131,7 +137,7 @@ describe("CodeEditor", () => {
         filename="test.ts"
       />
     );
-    const cm = screen.getByTestId("codemirror-mock");
+    const cm = screen.getAllByTestId("codemirror-mock")[0];
     expect(cm).toBeInTheDocument();
     expect(cm).toHaveAttribute("data-value", "const x = 1;");
   });
@@ -145,7 +151,7 @@ describe("CodeEditor", () => {
         readOnly
       />
     );
-    const cm = screen.getByTestId("codemirror-mock");
+    const cm = screen.getAllByTestId("codemirror-mock")[0];
     expect(cm).toHaveAttribute("data-readonly", "true");
   });
 });
@@ -173,7 +179,7 @@ describe("SQLEditor", () => {
         onChange={() => {}}
       />
     );
-    const cm = screen.getByTestId("codemirror-mock");
+    const cm = screen.getAllByTestId("codemirror-mock")[0];
     expect(cm).toHaveAttribute("data-value", "SELECT * FROM nodes;");
   });
 });

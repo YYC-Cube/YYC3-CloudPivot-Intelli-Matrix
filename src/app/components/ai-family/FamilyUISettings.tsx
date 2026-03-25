@@ -26,7 +26,7 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { useNavigate } from "react-router";
-import { FAMILY_MEMBERS, hexToRgb } from "./shared";
+import { FAMILY_MEMBERS, hexToRgb, DEEP_BG } from "./shared";
 
 // ═══ Settings Types ═══
 
@@ -95,19 +95,19 @@ interface LinkStatus {
 }
 
 const ECOSYSTEM_LINKS: LinkNode[] = [
-  { id: "home", name: "家园首页", icon: Heart, color: "#FF69B4", path: "/ai-family", description: "家人状态 · 动态 · 空间入口" },
-  { id: "center", name: "Family中心", icon: Sparkles, color: "#FF69B4", path: "/ai-family/settings", description: "全景规划 · 信任公约" },
-  { id: "chat", name: "家人对话", icon: MessageCircle, color: "#00BFFF", path: "/ai-family/chat", description: "多轮对话 · 群聊" },
-  { id: "phone", name: "家人热线", icon: Phone, color: "#00FF88", path: "/ai-family/phone", description: "电话交互 · 来电/去电" },
-  { id: "fun", name: "文娱中心", icon: Gamepad2, color: "#FFD700", path: "/ai-family/fun", description: "棋牌对弈 · 才艺展示" },
-  { id: "activities", name: "全家活动", icon: Trophy, color: "#FF7043", path: "/ai-family/activities", description: "比赛 · 播报 · 勋章", storageKey: "yyc3-family-activities" },
-  { id: "learn", name: "学习成长", icon: BookOpen, color: "#00d4ff", path: "/ai-family/learn", description: "AI 导师 · 陪伴式学习" },
-  { id: "music", name: "音乐空间", icon: Music, color: "#BF00FF", path: "/ai-family/music", description: "音乐推荐 · 行业资讯" },
-  { id: "growth", name: "成长轨迹", icon: TrendingUp, color: "#FF7043", path: "/ai-family/growth", description: "成长记忆 · 里程碑" },
-  { id: "models", name: "模型控制", icon: Server, color: "#06b6d4", path: "/ai-family/models", storageKey: "yyc3-family-model-assignments", description: "大模型绑定 · API Key · 连接测试" },
-  { id: "voice", name: "语音系统", icon: Volume2, color: "#a855f7", path: "/ai-family/voice", storageKey: "yyc3-family-voice-profiles", description: "TTS/STT · 语音对话 · 音色配置" },
-  { id: "data", name: "数据中心", icon: Database, color: "#10b981", path: "/ai-family/data", description: "统一数据全景 · 统计 · 导出" },
-  { id: "comm", name: "通信中心", icon: Radio, color: "#3b82f6", path: "/ai-family/comm", storageKey: "yyc3-family-comm-messages", description: "内部通信 · 消息持久化" },
+  { id: "home", name: "家园首页", icon: Heart, color: "#FF69B4", path: "/ai-family-home", description: "家人状态 · 动态 · 空间入口" },
+  { id: "center", name: "Family 中心", icon: Sparkles, color: "#FF69B4", path: "/ai-family-center", description: "全景规划 · 信任公约" },
+  { id: "chat", name: "家人对话", icon: MessageCircle, color: "#00BFFF", path: "/ai-family-chat", description: "多轮对话 · 群聊" },
+  { id: "phone", name: "家人热线", icon: Phone, color: "#00FF88", path: "/ai-family-phone", description: "电话交互 · 来电/去电" },
+  { id: "fun", name: "文娱中心", icon: Gamepad2, color: "#FFD700", path: "/ai-family-fun", description: "棋牌对弈 · 才艺展示" },
+  { id: "activities", name: "全家活动", icon: Trophy, color: "#FF7043", path: "/ai-family-activities", description: "比赛 · 播报 · 勋章", storageKey: "yyc3-family-activities" },
+  { id: "learn", name: "学习成长", icon: BookOpen, color: "#00d4ff", path: "/ai-family-learn", description: "AI 导师 · 陪伴式学习" },
+  { id: "music", name: "音乐空间", icon: Music, color: "#BF00FF", path: "/ai-family-music", description: "音乐推荐 · 行业资讯" },
+  { id: "growth", name: "成长轨迹", icon: TrendingUp, color: "#FF7043", path: "/ai-family-growth", description: "成长记忆 · 里程碑" },
+  { id: "models", name: "模型控制", icon: Server, color: "#06b6d4", path: "/ai-family-models", storageKey: "yyc3-family-model-assignments", description: "大模型绑定 · API Key · 连接测试" },
+  { id: "voice", name: "语音系统", icon: Volume2, color: "#a855f7", path: "/ai-family-voice", storageKey: "yyc3-family-voice-profiles", description: "TTS/STT · 语音对话 · 音色配置" },
+  { id: "data", name: "数据中心", icon: Database, color: "#10b981", path: "/ai-family-data", description: "统一数据全景 · 统计 · 导出" },
+  { id: "comm", name: "通信中心", icon: Radio, color: "#3b82f6", path: "/ai-family-comm", storageKey: "yyc3-family-comm-messages", description: "内部通信 · 消息持久化" },
 ];
 
 // ═══ 子组件：配置分组 ═══
@@ -406,7 +406,7 @@ export function FamilyUISettings() {
     for (const key of ALL_STORAGE_KEYS) {
       try {
         const raw = localStorage.getItem(key);
-        if (raw) allData[key] = JSON.parse(raw);
+        if (raw) {allData[key] = JSON.parse(raw);}
       } catch { /* noop */ }
     }
     const blob = new Blob([JSON.stringify({
@@ -431,7 +431,7 @@ export function FamilyUISettings() {
     input.accept = ".json";
     input.onchange = (e: any) => {
       const file = e.target.files[0];
-      if (!file) return;
+      if (!file) {return;}
       const reader = new FileReader();
       reader.onload = (ev) => {
         try {
@@ -473,7 +473,7 @@ export function FamilyUISettings() {
   const testedCount = okCount + warnCount + errorCount;
 
   return (
-    <div className="min-h-screen p-4 md:p-6 space-y-6" style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}>
+    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>

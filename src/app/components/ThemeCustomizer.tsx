@@ -118,6 +118,41 @@ export function ThemeCustomizer() {
     reader.readAsDataURL(file);
   }, []);
 
+  // ── Save theme ──
+  const handleSaveTheme = useCallback(() => {
+    const themeData = {
+      colors,
+      typography,
+      shadow,
+      branding,
+      radius,
+      activePreset,
+      lightness,
+    };
+    localStorage.setItem('yyc3_custom_theme', JSON.stringify(themeData));
+    alert('主题已保存！');
+  }, [colors, typography, shadow, branding, radius, activePreset, lightness]);
+
+  // ── Load saved theme ──
+  React.useEffect(() => {
+    const savedTheme = localStorage.getItem('yyc3_custom_theme');
+    if (savedTheme) {
+      try {
+        const parsed = JSON.parse(savedTheme);
+        if (parsed.colors) {setColors(parsed.colors);}
+        if (parsed.typography) {setTypography(parsed.typography);}
+        if (parsed.shadow) {setShadow(parsed.shadow);}
+        if (parsed.branding) {setBranding(parsed.branding);}
+        if (parsed.radius !== undefined) {setRadius(parsed.radius);}
+        if (parsed.activePreset) {setActivePreset(parsed.activePreset);}
+        if (parsed.lightness !== undefined) {setLightness(parsed.lightness);}
+        if (parsed.branding?.backgroundUrl) {setBgPreview(parsed.branding.backgroundUrl);}
+      } catch (e) {
+        console.error('Failed to load saved theme:', e);
+      }
+    }
+  }, []);
+
   // ── Lightness-based theme adjustment ──
   const adjustedPrimary = (() => {
     const oklch = hexToOklch(colors.primary);
@@ -160,6 +195,7 @@ export function ThemeCustomizer() {
             重置
           </button>
           <button
+            onClick={handleSaveTheme}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.25)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.2)] transition-all"
             style={{ fontSize: "0.72rem" }}
           >

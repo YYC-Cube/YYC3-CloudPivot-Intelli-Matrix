@@ -69,19 +69,17 @@ export function FamilyHome() {
 
   // 家园空间入口（包含 Family 中心）
   const quickEntries = [
-    { label: "Family 中心", icon: HandHeart, path: "/ai-family-center", color: "#FF69B4", desc: "全景规划·信任公约" },
-    { label: "家人热线", icon: Phone, path: "/ai-family-phone", color: "#00FF88", desc: "打个电话聊聊" },
-    { label: "文娱中心", icon: Gamepad2, path: "/ai-family-fun", color: "#FFD700", desc: "棋牌对弈·才艺" },
-    { label: "全家活动", icon: Trophy, path: "/ai-family-activities", color: "#FF7043", desc: "比赛·播报·勋章" },
-    { label: "家人对话", icon: MessageCircle, path: "/ai-family-chat", color: "#00BFFF", desc: "私信或群聊" },
-    { label: "学习成长", icon: BookOpen, path: "/ai-family-learn", color: "#00d4ff", desc: "AI导师陪伴式学习" },
-    { label: "音乐空间", icon: Music, path: "/ai-family-music", color: "#BF00FF", desc: "音乐与行业资讯" },
-    { label: "成长轨迹", icon: TrendingUp, path: "/ai-family-growth", color: "#FF7043", desc: "记录每一步成长" },
-    { label: "模型控制", icon: Server, path: "/ai-family-models", color: "#06b6d4", desc: "大模型生命力引擎" },
-    { label: "语音系统", icon: Volume2, path: "/ai-family-voice", color: "#a855f7", desc: "家人专属声音" },
-    { label: "数据中心", icon: Database, path: "/ai-family-data", color: "#10b981", desc: "统一数据全景" },
-    { label: "通信中心", icon: Radio, path: "/ai-family-comm", color: "#3b82f6", desc: "内部通信枢纽" },
-    { label: "生态控制", icon: Settings2, path: "/ai-family-settings", color: "#f59e0b", desc: "UI偏好·链路测通" },
+    { label: "家人热线", icon: Phone, path: "/phone", color: "#00FF88", desc: "打个电话聊聊" },
+    { label: "家人对话", icon: MessageCircle, path: "/chat", color: "#00BFFF", desc: "私信或群聊" },
+    { label: "学习成长", icon: BookOpen, path: "/learn", color: "#00d4ff", desc: "AI导师陪伴式学习" },
+    { label: "音乐空间", icon: Music, path: "/music", color: "#BF00FF", desc: "音乐与行业资讯" },
+    { label: "成长轨迹", icon: TrendingUp, path: "/growth", color: "#FF7043", desc: "记录每一步成长" },
+    { label: "模型控制", icon: Server, path: "/models", color: "#06b6d4", desc: "大模型生命力引擎" },
+    { label: "语音系统", icon: Volume2, path: "/voice", color: "#a855f7", desc: "家人专属声音" },
+    { label: "全家活动", icon: Trophy, path: "/activities", color: "#FF7043", desc: "比赛·播报·勋章" },
+    { label: "通信中心", icon: Radio, path: "/comm", color: "#3b82f6", desc: "内部通信枢纽" },
+    { label: "数据中心", icon: Database, path: "/data", color: "#10b981", desc: "统一数据全景" },
+    { label: "生态控制", icon: Settings2, path: "/settings", color: "#f59e0b", desc: "UI偏好·链路测通" },
   ];
 
   return (
@@ -143,7 +141,7 @@ export function FamilyHome() {
                 <FadeIn key={m.id} delay={0.1 + i * 0.05}>
                   <GlassCard
                     className="p-3 text-center cursor-pointer group hover:scale-[1.03] transition-transform"
-                    onClick={() => nav("/ai-family/chat")}
+                    onClick={() => nav("/ai-family-chat")}
                   >
                     <div
                       className="w-10 h-10 rounded-full mx-auto mb-2 flex items-center justify-center relative"

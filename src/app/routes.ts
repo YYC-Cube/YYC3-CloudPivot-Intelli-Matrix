@@ -11,7 +11,7 @@
  * 恢复代码分割: 部署到独立 Vite/Node 环境后，可还原为 React.lazy 版本。
  */
 
-import { createBrowserRouter } from "react-router";
+import { createHashRouter } from "react-router";
 import { Layout } from "./components/Layout";
 import { DataMonitoring } from "./components/DataMonitoring";
 import { FollowUpPanel } from "./components/FollowUpPanel";
@@ -43,6 +43,7 @@ import { EnvConfigEditor } from "./components/EnvConfigEditor";
 import { DatabaseConnectionPanel } from "./components/DatabaseConnectionPanel";
 import { ArchitectureAudit } from "./components/ArchitectureAudit";
 import { AIFamilyPage } from "./components/AIFamilyPage";
+import { AIFamilyRouter } from "./components/ai-family/AIFamilyRouter";
 import { ServiceConnectionTest } from "./components/ServiceConnectionTest";
 import { NotFound } from "./components/NotFound";
 
@@ -50,7 +51,7 @@ import { NotFound } from "./components/NotFound";
 //  路由表
 // ────────────────────────────────────────────
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: "/",
     Component: Layout,
@@ -85,6 +86,20 @@ export const router = createBrowserRouter([
       { path: "db-connections", Component: DatabaseConnectionPanel },
       { path: "architecture", Component: ArchitectureAudit },
       { path: "ai-family", Component: AIFamilyPage },
+      { path: "ai-family/:subpage", Component: AIFamilyRouter },
+      { path: "ai-family/chat", Component: AIFamilyRouter },
+      { path: "ai-family/phone", Component: AIFamilyRouter },
+      { path: "ai-family/music", Component: AIFamilyRouter },
+      { path: "ai-family/growth", Component: AIFamilyRouter },
+      { path: "ai-family/learn", Component: AIFamilyRouter },
+      { path: "ai-family/share", Component: AIFamilyRouter },
+      { path: "ai-family/fun", Component: AIFamilyRouter },
+      { path: "ai-family/activities", Component: AIFamilyRouter },
+      { path: "ai-family/models", Component: AIFamilyRouter },
+      { path: "ai-family/voice", Component: AIFamilyRouter },
+      { path: "ai-family/data", Component: AIFamilyRouter },
+      { path: "ai-family/comm", Component: AIFamilyRouter },
+      { path: "ai-family/settings", Component: AIFamilyRouter },
       { path: "connection-test", Component: ServiceConnectionTest },
       { path: "*", Component: NotFound },
     ],

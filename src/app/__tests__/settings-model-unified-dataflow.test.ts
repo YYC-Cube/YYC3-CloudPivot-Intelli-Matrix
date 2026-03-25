@@ -9,7 +9,20 @@
  * 3. 设置页 = 全局数据源，多组件共享
  */
 
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+
 import { describe, it, expect, beforeEach } from "vitest";
+import React from "react";
 import { createLocalStore } from "../lib/create-local-store";
 import type { SettingsValues } from "../hooks/useSettingsStore";
 

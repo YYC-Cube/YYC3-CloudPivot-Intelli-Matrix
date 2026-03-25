@@ -218,7 +218,7 @@ const MOCK_TABLES: DBTable[] = [
 // Mock table data generator
 function mockTableData(tableName: string, limit = 20): Record<string, unknown>[] {
   const table = MOCK_TABLES.find(t => t.name === tableName);
-  if (!table) {return [];}
+  if (!table) return [];
 
   if (tableName === "core.models") {
     return [
@@ -254,13 +254,13 @@ function mockTableData(tableName: string, limit = 20): Record<string, unknown>[]
   return Array.from({ length: Math.min(limit, table.rowCount) }, (_, i) => {
     const row: Record<string, unknown> = {};
     for (const col of table.columns) {
-      if (col.isPrimaryKey) {row[col.name] = `row-${i + 1}`;}
-      else if (col.dataType.includes("varchar")) {row[col.name] = `value_${i}`;}
-      else if (col.dataType === "integer") {row[col.name] = Math.floor(Math.random() * 100);}
-      else if (col.dataType === "boolean") {row[col.name] = Math.random() > 0.3;}
-      else if (col.dataType.includes("timestamp")) {row[col.name] = new Date(Date.now() - i * 86400000).toISOString();}
-      else if (col.dataType === "jsonb") {row[col.name] = JSON.stringify({ key: `val_${i}` });}
-      else {row[col.name] = `data_${i}`;}
+      if (col.isPrimaryKey) row[col.name] = `row-${i + 1}`;
+      else if (col.dataType.includes("varchar")) row[col.name] = `value_${i}`;
+      else if (col.dataType === "integer") row[col.name] = Math.floor(Math.random() * 100);
+      else if (col.dataType === "boolean") row[col.name] = Math.random() > 0.3;
+      else if (col.dataType.includes("timestamp")) row[col.name] = new Date(Date.now() - i * 86400000).toISOString();
+      else if (col.dataType === "jsonb") row[col.name] = JSON.stringify({ key: `val_${i}` });
+      else row[col.name] = `data_${i}`;
     }
     return row;
   });
@@ -328,12 +328,12 @@ function mockQueryResult(sql: string): QueryResult {
 // ============================================================
 
 function encodePassword(pw: string): string {
-  if (!pw) {return "";}
+  if (!pw) return "";
   try { return btoa(pw); } catch { return pw; }
 }
 
 function decodePassword(encoded: string): string {
-  if (!encoded) {return "";}
+  if (!encoded) return "";
   try { return atob(encoded); } catch { return encoded; }
 }
 
@@ -359,7 +359,7 @@ export function useLocalDatabase() {
 
   // ── IndexedDB 持久化: 加载 ──
   useEffect(() => {
-    if (initializedRef.current) {return;}
+    if (initializedRef.current) return;
     initializedRef.current = true;
 
     // 加载连接 (解码密码)
@@ -463,7 +463,7 @@ export function useLocalDatabase() {
   // ── 测试连接 ──
   const testConnection = useCallback(async (id: string) => {
     const conn = connections.find(c => c.id === id);
-    if (!conn) {return false;}
+    if (!conn) return false;
 
     setTesting(id);
 
@@ -514,7 +514,7 @@ export function useLocalDatabase() {
     setConnections(prev => {
       const updated = prev.map(c => c.id === id ? { ...c, ...updates } : c);
       const conn = updated.find(c => c.id === id);
-      if (conn) {persistConnection(conn);}
+      if (conn) persistConnection(conn);
       return updated;
     });
   }, [persistConnection]);
@@ -539,7 +539,7 @@ export function useLocalDatabase() {
     );
 
     const conn = connections.find(c => c.id === id);
-    if (!conn) {return;}
+    if (!conn) return;
 
     // 尝试真实 API
     const res = await dbAPI("connect", {
@@ -593,7 +593,7 @@ export function useLocalDatabase() {
 
   // ── 加载表数据 ──
   const loadTableData = useCallback(async (tableName: string, limit = 20) => {
-    if (!activeConnectionId) {return;}
+    if (!activeConnectionId) return;
     setTableDataLoading(true);
 
     // 尝试真实 API
@@ -618,7 +618,7 @@ export function useLocalDatabase() {
   // ── 执行查询 ──
   const executeQuery = useCallback(async (sql?: string) => {
     const query = sql ?? sqlInput;
-    if (!query.trim()) {return;}
+    if (!query.trim()) return;
     if (!activeConnectionId) {
       toast.error("请先连接数据库");
       return;
@@ -683,7 +683,7 @@ export function useLocalDatabase() {
   // ── 创建备份 ──
   const createBackup = useCallback(async (connectionId: string) => {
     const conn = connections.find(c => c.id === connectionId);
-    if (!conn) {return;}
+    if (!conn) return;
 
     toast.info(`正在备份 ${conn.name}...`);
 
@@ -713,7 +713,7 @@ export function useLocalDatabase() {
   // ── 恢复备份 ──
   const restoreBackup = useCallback(async (backupId: string) => {
     const backup = backups.find(b => b.id === backupId);
-    if (!backup) {return;}
+    if (!backup) return;
 
     toast.info(`正在恢复 ${backup.fileName}...`);
 

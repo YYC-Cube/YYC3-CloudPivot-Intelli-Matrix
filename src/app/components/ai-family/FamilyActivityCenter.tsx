@@ -70,7 +70,7 @@ function MemberAvatarRow({ ids, max = 6 }: { ids: string[]; max?: number }) {
     <div className="flex items-center gap-1.5">
       {shown.map(mid => {
         const m = getMember(mid);
-        if (!m) return null;
+        if (!m) {return null;}
         const Icon = m.icon;
         return (
           <div
@@ -205,7 +205,7 @@ function ScoreboardTab() {
         <div className="grid grid-cols-3 gap-3 mb-6">
           {podiumOrder.map(rank => {
             const m = sorted[rank];
-            if (!m) return null;
+            if (!m) {return null;}
             const Icon = m.icon;
             const isFirst = rank === 0;
             return (
@@ -372,7 +372,7 @@ function ActivitiesTab() {
         <div className="space-y-4">
           {filtered.map((act, i) => {
             const meta = ACTIVITY_META[act.type];
-            if (!meta) return null;
+            if (!meta) {return null;}
             const isOpen = expandedId === act.id;
             const MetaIcon = meta.icon;
 
@@ -444,7 +444,7 @@ function ActivitiesTab() {
                                 .sort(([, a], [, b]) => b - a)
                                 .map(([mid, score], idx) => {
                                   const p = getMember(mid);
-                                  if (!p) return null;
+                                  if (!p) {return null;}
                                   return (
                                     <div
                                       key={mid}
@@ -684,7 +684,7 @@ function MemoriesTab() {
 
         {memories.map((memory, i) => {
           const m = getMember(memory.memberId);
-          if (!m) return null;
+          if (!m) {return null;}
           const Icon = m.icon;
           const typeInfo = MEMORY_TYPE_LABELS[memory.type] || MEMORY_TYPE_LABELS.diary;
 

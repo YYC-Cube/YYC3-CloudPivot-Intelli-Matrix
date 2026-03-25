@@ -21,6 +21,7 @@ import {
   FAMILY_MEMBERS, MEMBERS_MAP, hexToRgb,
   DEFAULT_MODEL_ASSIGNMENTS, DEFAULT_VOICE_PROFILES,
   type FamilyMember, type MemberModelAssignment, type VoiceProfile,
+  DEEP_BG,
 } from "./shared";
 
 // ═══ Provider 定义（自包含） ═══
@@ -142,7 +143,7 @@ const DIAG_STEPS: DiagStep[] = [
     label: "API Key 检查",
     check: (a, keys) => {
       const isLocal = a.providerId === "ollama";
-      if (isLocal) return { ok: true, detail: "本地模型无需 API Key" };
+      if (isLocal) {return { ok: true, detail: "本地模型无需 API Key" };}
       const hasKey = !!keys[a.providerId];
       return hasKey
         ? { ok: true, detail: `${a.providerId} API Key 已配置 (${keys[a.providerId].slice(0, 6)}...)` }
@@ -523,7 +524,7 @@ export function FamilyModelSettings() {
 
       if (result.detail.includes("ms")) {
         const match = result.detail.match(/\((\d+)ms\)/);
-        if (match) totalLatency = parseInt(match[1]);
+        if (match) {totalLatency = parseInt(match[1]);}
       }
     }
 
@@ -542,7 +543,7 @@ export function FamilyModelSettings() {
   }, [assignments, apiKeys]);
 
   const handleSpeak = useCallback((member: FamilyMember, profile: VoiceProfile) => {
-    if (!("speechSynthesis" in window)) return;
+    if (!("speechSynthesis" in window)) {return;}
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(member.greeting);
     utterance.pitch = profile.pitch;
@@ -552,7 +553,7 @@ export function FamilyModelSettings() {
     // Try to find a matching voice
     const voices = window.speechSynthesis.getVoices();
     const zhVoice = voices.find(v => v.lang.startsWith("zh"));
-    if (zhVoice) utterance.voice = zhVoice;
+    if (zhVoice) {utterance.voice = zhVoice;}
     window.speechSynthesis.speak(utterance);
   }, []);
 
@@ -571,7 +572,7 @@ export function FamilyModelSettings() {
 
   // Filter members
   const filteredMembers = useMemo(() => {
-    if (!searchQuery) return FAMILY_MEMBERS;
+    if (!searchQuery) {return FAMILY_MEMBERS;}
     const q = searchQuery.toLowerCase();
     return FAMILY_MEMBERS.filter(m =>
       m.name.toLowerCase().includes(q) ||
@@ -585,7 +586,7 @@ export function FamilyModelSettings() {
   const testedCount = Object.values(diagnostics).filter(d => d.status === "success").length;
 
   return (
-    <div className="min-h-screen p-4 md:p-6 space-y-6" style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}>
+    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>

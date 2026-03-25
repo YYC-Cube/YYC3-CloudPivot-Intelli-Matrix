@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * FollowUpDrawer.test.tsx
- * ========================
+ * ==============
  * FollowUpDrawer 组件 - 侧边抽屉详情面板测试
  *
  * 覆盖范围:
@@ -11,8 +12,8 @@
  * - null item 不渲染
  */
 
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import { FollowUpDrawer } from "../components/FollowUpDrawer";
 import type { FollowUpItem } from "../types";
@@ -39,14 +40,11 @@ const mockItem: FollowUpItem = {
 };
 
 describe("FollowUpDrawer", () => {
-  let onClose: Mock;
-  let _onQuickFix: Mock;
-  let _onMarkResolved: Mock;
+  let onClose: any;
 
   beforeEach(() => {
-    onClose = vi.fn();
-    _onQuickFix = vi.fn();
-    _onMarkResolved = vi.fn();
+    cleanup();
+    onClose = vi.fn() as any;
   });
 
   afterEach(() => {
@@ -75,49 +73,50 @@ describe("FollowUpDrawer", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByText("GPU-A100-03 推理延迟异常")).toBeInTheDocument();
+      expect(screen.getAllByText("GPU-A100-03 推理延迟异常")[0]).toBeInTheDocument();
     });
 
     it("应渲染严重级别标签", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByTestId("followup-severity-label")).toBeInTheDocument();
+      expect(screen.getAllByText("严重")[0]).toBeInTheDocument();
     });
 
     it("应渲染状态标签", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByTestId("followup-status-label")).toBeInTheDocument();
+      expect(screen.getAllByText("活跃")[0]).toBeInTheDocument();
     });
 
     it("应渲染告警 ID", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getAllByText("#AL-0032")[0]).toBeInTheDocument();
+      const elements = screen.getAllByText("#AL-0032");
+      expect(elements[0]).toBeInTheDocument();
     });
 
-    it("应渲染指标", () => {
+    it("应渲染指标值", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByTestId("followup-metric")).toBeInTheDocument();
+      expect(screen.getAllByText("2,450ms > 2,000ms")[0]).toBeInTheDocument();
     });
 
     it("应渲染来源", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByText("GPU-A100-03")).toBeInTheDocument();
+      expect(screen.getAllByText("GPU-A100-03")[0]).toBeInTheDocument();
     });
 
     it("应渲染负责人", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByText("admin")).toBeInTheDocument();
+      expect(screen.getAllByText("admin")[0]).toBeInTheDocument();
     });
   });
 
@@ -130,47 +129,47 @@ describe("FollowUpDrawer", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByTestId("followup-tab-detail")).toBeInTheDocument();
-      expect(screen.getByTestId("followup-tab-chain")).toBeInTheDocument();
-      expect(screen.getByTestId("followup-tab-metrics")).toBeInTheDocument();
-      expect(screen.getByTestId("followup-tab-ai")).toBeInTheDocument();
+      expect(screen.getAllByText("详情")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("链路 (2)")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("指标")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("AI 建议")[0]).toBeInTheDocument();
     });
 
     it("默认应在详情 tab", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByText("快速操作")).toBeInTheDocument();
+      expect(screen.getAllByText("快速操作")[0]).toBeInTheDocument();
     });
 
     it("切换到链路 tab 应显示完整操作链路", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      fireEvent.click(screen.getByText("链路 (2)"));
-      expect(screen.getByText(/完整操作链路/)).toBeInTheDocument();
+      fireEvent.click(screen.getAllByText("链路 (2)")[0]);
+      expect(screen.getAllByText(/完整操作链路/)[0]).toBeInTheDocument();
     });
 
     it("切换到指标 tab 应显示关联指标", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      fireEvent.click(screen.getByTestId("followup-tab-metrics"));
-      expect(screen.getByText(/关联指标/)).toBeInTheDocument();
-      expect(screen.getByText("GPU 利用率")).toBeInTheDocument();
+      fireEvent.click(screen.getAllByText("指标")[0]);
+      expect(screen.getAllByText(/关联指标/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText("GPU 利用率")[0]).toBeInTheDocument();
     });
 
     it("切换到 AI 建议 tab 应加载建议", async () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      fireEvent.click(screen.getByTestId("followup-tab-ai"));
+      fireEvent.click(screen.getAllByText("AI 建议")[0]);
       // Should show loading first
-      expect(screen.getByText("AI 智能建议")).toBeInTheDocument();
+      expect(screen.getAllByText("AI 智能建议")[0]).toBeInTheDocument();
       // Wait for suggestions to load
       await waitFor(
         () => {
-          expect(screen.getByText("推荐操作")).toBeInTheDocument();
+          expect(screen.getAllByText("推荐操作")[0]).toBeInTheDocument();
         },
         { timeout: 3000 }
       );
@@ -236,7 +235,7 @@ describe("FollowUpDrawer", () => {
       render(
         <FollowUpDrawer item={mockItem} isOpen={true} onClose={onClose} />
       );
-      expect(screen.getByText(/Follow-up System v1.0/)).toBeInTheDocument();
+      expect(screen.getAllByText(/Follow-up System v1.0/)[0]).toBeInTheDocument();
     });
   });
 });

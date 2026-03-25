@@ -17,10 +17,10 @@ import type { Breakpoint, ViewState } from "../types";
 // RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
 function getBreakpoint(width: number): Breakpoint {
-  if (width < 768) {return "sm";}
-  if (width < 1024) {return "md";}
-  if (width < 1280) {return "lg";}
-  if (width < 1536) {return "xl";}
+  if (width < 768) return "sm";
+  if (width < 1024) return "md";
+  if (width < 1280) return "lg";
+  if (width < 1536) return "xl";
   return "2xl";
 }
 

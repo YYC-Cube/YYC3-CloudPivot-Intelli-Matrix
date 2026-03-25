@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * ErrorBoundary.test.tsx
- * =======================
+ * ============
  * ErrorBoundary 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -12,8 +13,8 @@
  * - onError 回调触发
  */
 
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 
@@ -30,7 +31,7 @@ vi.mock("../lib/error-handler", () => ({
 }));
 
 // 抛出错误的组件
-function ThrowingComponent({ message = "Test crash" }: { message?: string }): never {
+function ThrowingComponent({ message = "Test crash" }: { message?: string }): React.ReactNode {
   throw new Error(message);
 }
 
@@ -44,11 +45,11 @@ beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
-describe("ErrorBoundary", () => {
-  afterEach(() => {
-    cleanup();
-  });
+afterEach(() => {
+  cleanup();
+});
 
+describe("ErrorBoundary", () => {
   // ----------------------------------------------------------
   // 正常渲染
   // ----------------------------------------------------------
@@ -226,7 +227,7 @@ describe("ErrorBoundary", () => {
 
   describe("onError 回调", () => {
     it("错误发生时应调用 onError", () => {
-      const handleError = vi.fn();
+      const handleError = vi.fn() as any;
       render(
         <ErrorBoundary onError={handleError}>
           <ThrowingComponent message="callback test" />

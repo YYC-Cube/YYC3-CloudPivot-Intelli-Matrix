@@ -1,12 +1,12 @@
 ---
-@file: YYC3-CP-IM-代码标头规范标准.md
-@description: YYC³-CP-IM 全局代码标头规范标准文档
-@author: YanYuCloudCube Team
-@version: v2.0.0
-@created: 2026-03-05
-@updated: 2026-03-05
-@status: published
-@tags: [代码规范],[标头规范],[开发标准]
+file: YYC3-CP-IM-代码标头规范标准.md
+description: YYC³-CP-IM 全局代码标头规范标准文档
+author: YanYuCloudCube Team
+version: v2.0.0
+created: 2026-03-05
+updated: 2026-03-05
+status: published
+tags: [代码规范],[标头规范],[开发标准]
 ---
 
 > ***YanYuCloudCube***
@@ -40,25 +40,25 @@ YYC³ CloudPivot Intelli-Matrix 代码标头规范标准定义了项目中所有
 
 ```typescript
 /**
- * @file: 文件名.tsx
- * @description: 文件描述
- * @author: 作者名称
- * @version: 版本号
- * @created: 创建日期
- * @updated: 更新日期
- * @status: 状态
- * @tags: [标签1],[标签2],[标签3]
+ * file: 文件名.tsx
+ * description: 文件描述
+ * author: 作者名称
+ * version: 版本号
+ * created: 创建日期
+ * updated: 更新日期
+ * status: 状态
+ * tags: [标签1],[标签2],[标签3]
  *
- * @copyright: YanYuCloudCube Team
- * @license: MIT
+ * copyright: YanYuCloudCube Team
+ * license: MIT
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @dependencies: 依赖列表
- * @exports: 导出内容
- * @notes: 注意事项
+ * dependencies: 依赖列表
+ * exports: 导出内容
+ * notes: 注意事项
  */
 ```
 
@@ -66,21 +66,21 @@ YYC³ CloudPivot Intelli-Matrix 代码标头规范标准定义了项目中所有
 
 | 字段 | 必填 | 说明 | 示例 |
 |------|------|------|------|
-| @file | ✅ | 文件名（包含扩展名） | @file: useI18n.ts |
-| @description | ✅ | 文件描述（一句话概括） | @description: 国际化 Hook · 支持中文/English 动态切换 |
-| @author | ✅ | 作者名称 | @author: YanYuCloudCube Team |
-| @version | ✅ | 版本号（遵循语义化版本） | @version: v1.0.0 |
-| @created | ✅ | 创建日期（YYYY-MM-DD） | @created: 2026-03-05 |
-| @updated | ✅ | 更新日期（YYYY-MM-DD） | @updated: 2026-03-05 |
-| @status | ✅ | 文件状态 | @status: active |
-| @tags | ✅ | 标签列表 | @tags: [hook],[i18n],[locale] |
-| @copyright | ❌ | 版权信息 | @copyright: YanYuCloudCube Team |
-| @license | ❌ | 许可证 | @license: MIT |
-| @brief | ❌ | 简要说明 | @brief: 提供国际化功能 |
-| @details | ❌ | 详细说明 | @details: 支持中英文动态切换 |
-| @dependencies | ❌ | 依赖列表 | @dependencies: React, Context API |
-| @exports | ❌ | 导出内容 | @exports: useI18n, I18nProvider |
-| @notes | ❌ | 注意事项 | @notes: 需要在 App 根组件包裹 |
+| file | ✅ | 文件名（包含扩展名） | file: useI18n.ts |
+| description | ✅ | 文件描述（一句话概括） | description: 国际化 Hook · 支持中文/English 动态切换 |
+| author | ✅ | 作者名称 | author: YanYuCloudCube Team |
+| version | ✅ | 版本号（遵循语义化版本） | version: v1.0.0 |
+| created | ✅ | 创建日期（YYYY-MM-DD） | created: 2026-03-05 |
+| updated | ✅ | 更新日期（YYYY-MM-DD） | updated: 2026-03-05 |
+| status | ✅ | 文件状态 | status: active |
+| tags | ✅ | 标签列表 | tags: [hook],[i18n],[locale] |
+| copyright | ❌ | 版权信息 | copyright: YanYuCloudCube Team |
+| license | ❌ | 许可证 | license: MIT |
+| brief | ❌ | 简要说明 | brief: 提供国际化功能 |
+| details | ❌ | 详细说明 | details: 支持中英文动态切换 |
+| dependencies | ❌ | 依赖列表 | dependencies: React, Context API |
+| exports | ❌ | 导出内容 | exports: useI18n, I18nProvider |
+| notes | ❌ | 注意事项 | notes: 需要在 App 根组件包裹 |
 
 #### 1.3 状态值
 
@@ -116,29 +116,29 @@ YYC³ CloudPivot Intelli-Matrix 代码标头规范标准定义了项目中所有
 
 ```typescript
 /**
- * @file: useI18n.ts
- * @description: 国际化 Hook · 支持中文/English 动态切换
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-02-26
- * @updated: 2026-03-05
- * @status: active
- * @tags: [hook],[i18n],[locale]
+ * file: useI18n.ts
+ * description: 国际化 Hook · 支持中文/English 动态切换
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-02-26
+ * updated: 2026-03-05
+ * status: active
+ * tags: [hook],[i18n],[locale]
  *
- * @copyright: YanYuCloudCube Team
- * @license: MIT
+ * copyright: YanYuCloudCube Team
+ * license: MIT
  *
- * @brief: 提供国际化功能，支持中英文动态切换
+ * brief: 提供国际化功能，支持中英文动态切换
  *
- * @details:
+ * details:
  * - localStorage 持久化语言偏好
  * - React Context 全局共享
  * - 动态切换无需刷新
  * - t() 函数支持嵌套 key 和模板变量
  *
- * @dependencies: React, Context API
- * @exports: useI18n, I18nProvider, I18nContext
- * @notes: 需要在 App 根组件包裹 I18nProvider
+ * dependencies: React, Context API
+ * exports: useI18n, I18nProvider, I18nContext
+ * notes: 需要在 App 根组件包裹 I18nProvider
  */
 
 import { useState, useCallback, useMemo, createContext, useContext } from "react";
@@ -155,21 +155,21 @@ import type { Locale, LocaleInfo } from "../types";
 
 ```css
 /**
- * @file: 文件名.css
- * @description: 文件描述
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-05
- * @updated: 2026-03-05
- * @status: active
- * @tags: [style],[theme],[global]
+ * file: 文件名.css
+ * description: 文件描述
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-03-05
+ * updated: 2026-03-05
+ * status: active
+ * tags: [style],[theme],[global]
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @dependencies: 依赖列表
- * @notes: 注意事项
+ * dependencies: 依赖列表
+ * notes: 注意事项
  */
 ```
 
@@ -177,25 +177,25 @@ import type { Locale, LocaleInfo } from "../types";
 
 ```css
 /**
- * @file: index.css
- * @description: 全局样式文件 · 包含基础样式、主题变量和重置样式
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-02-26
- * @updated: 2026-03-05
- * @status: active
- * @tags: [style],[theme],[global]
+ * file: index.css
+ * description: 全局样式文件 · 包含基础样式、主题变量和重置样式
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-02-26
+ * updated: 2026-03-05
+ * status: active
+ * tags: [style],[theme],[global]
  *
- * @brief: 全局样式定义
+ * brief: 全局样式定义
  *
- * @details:
+ * details:
  * - 基础样式重置
  * - 主题变量定义（深蓝 + 青色赛博朋克主题）
  * - 全局字体设置
  * - 工具类定义
  *
- * @dependencies: TailwindCSS, 自定义主题
- * @notes: 在 main.tsx 中引入
+ * dependencies: TailwindCSS, 自定义主题
+ * notes: 在 main.tsx 中引入
  */
 
 /* ... 样式实现 */
@@ -207,21 +207,21 @@ import type { Locale, LocaleInfo } from "../types";
 
 ```typescript
 /**
- * @file: 文件名.ts
- * @description: 文件描述
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-05
- * @updated: 2026-03-05
- * @status: active
- * @tags: [config],[build],[vite]
+ * file: 文件名.ts
+ * description: 文件描述
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-03-05
+ * updated: 2026-03-05
+ * status: active
+ * tags: [config],[build],[vite]
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @dependencies: 依赖列表
- * @notes: 注意事项
+ * dependencies: 依赖列表
+ * notes: 注意事项
  */
 ```
 
@@ -229,32 +229,32 @@ import type { Locale, LocaleInfo } from "../types";
 
 ```typescript
 /**
- * @file: vite.config.ts
- * @description: Vite 配置文件 · 包含构建、插件、别名等配置
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-02-26
- * @updated: 2026-03-05
- * @status: active
- * @tags: [config],[build],[vite]
+ * file: vite.config.ts
+ * description: Vite 配置文件 · 包含构建、插件、别名等配置
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-02-26
+ * updated: 2026-03-05
+ * status: active
+ * tags: [config],[build],[vite]
  *
- * @brief: Vite 构建配置
+ * brief: Vite 构建配置
  *
- * @details:
+ * details:
  * - 基础路径配置（./ 用于 Electron 兼容）
  * - 插件配置（React + TailwindCSS）
- * - 路径别名（@/* → ./src/*）
+ * - 路径别名（/* → ./src/*）
  * - 开发服务器配置（端口 3218）
  * - 构建优化（代码分割、压缩）
  *
- * @dependencies: Vite, React, TailwindCSS
- * @notes: 修改配置后需要重启开发服务器
+ * dependencies: Vite, React, TailwindCSS
+ * notes: 修改配置后需要重启开发服务器
  */
 
 import { defineConfig } from 'vite'
 import path from 'path'
-import tailwindcss from '@tailwindcss/vite'
-import react from '@vitejs/plugin-react'
+import tailwindcss from 'tailwindcss/vite'
+import react from 'vitejs/plugin-react'
 
 // ... 配置实现
 ```
@@ -265,22 +265,22 @@ import react from '@vitejs/plugin-react'
 
 ```typescript
 /**
- * @file: 文件名.test.ts
- * @description: 测试文件描述
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-05
- * @updated: 2026-03-05
- * @status: active
- * @tags: [test],[unit],[integration]
+ * file: 文件名.test.ts
+ * description: 测试文件描述
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-03-05
+ * updated: 2026-03-05
+ * status: active
+ * tags: [test],[unit],[integration]
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @test-target: 测试目标
- * @coverage: 覆盖率
- * @notes: 注意事项
+ * test-target: 测试目标
+ * coverage: 覆盖率
+ * notes: 注意事项
  */
 ```
 
@@ -288,31 +288,31 @@ import react from '@vitejs/plugin-react'
 
 ```typescript
 /**
- * @file: useI18n.test.ts
- * @description: useI18n Hook 单元测试
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-05
- * @updated: 2026-03-05
- * @status: active
- * @tags: [test],[unit],[hook]
+ * file: useI18n.test.ts
+ * description: useI18n Hook 单元测试
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-03-05
+ * updated: 2026-03-05
+ * status: active
+ * tags: [test],[unit],[hook]
  *
- * @brief: 测试 useI18n Hook 的功能
+ * brief: 测试 useI18n Hook 的功能
  *
- * @details:
+ * details:
  * - 测试语言切换功能
  * - 测试翻译函数 t()
  * - 测试嵌套 key 支持
  * - 测试模板变量支持
  *
- * @test-target: src/app/hooks/useI18n.ts
- * @coverage: 90%+
- * @notes: 使用 Vitest + React Testing Library
+ * test-target: src/app/hooks/useI18n.ts
+ * coverage: 90%+
+ * notes: 使用 Vitest + React Testing Library
  */
 
-// @vitest-environment jsdom
+// vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
+import { render, screen, cleanup } from "testing-library/react";
 
 // ... 测试实现
 ```
@@ -323,21 +323,21 @@ import { render, screen, cleanup } from "@testing-library/react";
 
 ```javascript
 /**
- * @file: 文件名.js
- * @description: 文件描述
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-05
- * @updated: 2026-03-05
- * @status: active
- * @tags: [electron],[main-process],[ipc]
+ * file: 文件名.js
+ * description: 文件描述
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-03-05
+ * updated: 2026-03-05
+ * status: active
+ * tags: [electron],[main-process],[ipc]
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @dependencies: 依赖列表
- * @notes: 注意事项
+ * dependencies: 依赖列表
+ * notes: 注意事项
  */
 ```
 
@@ -345,26 +345,26 @@ import { render, screen, cleanup } from "@testing-library/react";
 
 ```javascript
 /**
- * @file: main.js
- * @description: Electron 主进程入口文件 · 创建窗口、托盘和 IPC 通信
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-02-26
- * @updated: 2026-03-05
- * @status: active
- * @tags: [electron],[main-process],[ipc]
+ * file: main.js
+ * description: Electron 主进程入口文件 · 创建窗口、托盘和 IPC 通信
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: 2026-02-26
+ * updated: 2026-03-05
+ * status: active
+ * tags: [electron],[main-process],[ipc]
  *
- * @brief: Electron 主进程配置
+ * brief: Electron 主进程配置
  *
- * @details:
+ * details:
  * - 创建 BrowserWindow（1400x900，最小 1200x700）
  * - 系统托盘集成
  * - IPC 通信（preload 脚本）
  * - 自动更新（electron-updater）
  * - 安全配置（contextIsolation, nodeIntegration: false）
  *
- * @dependencies: Electron, electron-updater
- * @notes: 需要配合 preload.js 使用
+ * dependencies: Electron, electron-updater
+ * notes: 需要配合 preload.js 使用
  */
 
 const { app, BrowserWindow, Tray, Menu, nativeImage, dialog } = require('electron');
@@ -382,32 +382,32 @@ const path = require('path');
 #### 1.1 创建新文件时
 
 1. **复制标头模板**：从本规范中复制对应文件类型的标头模板
-2. **填写必填字段**：填写所有必填字段（@file, @description, @author, @version, @created, @updated, @status, @tags）
-3. **填写可选字段**：根据需要填写可选字段（@brief, @details, @dependencies, @exports, @notes）
-4. **更新日期**：每次修改文件时更新 @updated 字段
-5. **更新版本**：重大修改时更新 @version 字段（遵循语义化版本）
+2. **填写必填字段**：填写所有必填字段（file, description, author, version, created, updated, status, tags）
+3. **填写可选字段**：根据需要填写可选字段（brief, details, dependencies, exports, notes）
+4. **更新日期**：每次修改文件时更新 updated 字段
+5. **更新版本**：重大修改时更新 version 字段（遵循语义化版本）
 
 #### 1.2 标头模板
 
 **TypeScript/JavaScript 文件模板**：
 ```typescript
 /**
- * @file: 文件名.tsx
- * @description: 文件描述
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: YYYY-MM-DD
- * @updated: YYYY-MM-DD
- * @status: active
- * @tags: [标签1],[标签2],[标签3]
+ * file: 文件名.tsx
+ * description: 文件描述
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: YYYY-MM-DD
+ * updated: YYYY-MM-DD
+ * status: active
+ * tags: [标签1],[标签2],[标签3]
  *
- * @brief: 简要说明
+ * brief: 简要说明
  *
- * @details: 详细说明
+ * details: 详细说明
  *
- * @dependencies: 依赖列表
- * @exports: 导出内容
- * @notes: 注意事项
+ * dependencies: 依赖列表
+ * exports: 导出内容
+ * notes: 注意事项
  */
 ```
 
@@ -417,9 +417,9 @@ const path = require('path');
 
 1. **添加标头**：如果文件没有标头，添加完整的标头
 2. **更新标头**：如果文件有标头但不规范，更新为规范格式
-3. **更新日期**：每次修改文件时更新 @updated 字段
-4. **更新版本**：重大修改时更新 @version 字段
-5. **更新状态**：如果文件状态发生变化，更新 @status 字段
+3. **更新日期**：每次修改文件时更新 updated 字段
+4. **更新版本**：重大修改时更新 version 字段
+5. **更新状态**：如果文件状态发生变化，更新 status 字段
 
 #### 2.2 批量更新策略
 
@@ -432,10 +432,10 @@ const path = require('path');
 
 #### 3.1 日常维护
 
-- **更新日期**：每次修改文件时更新 @updated 字段
-- **更新版本**：重大修改时更新 @version 字段
-- **更新状态**：文件状态发生变化时更新 @status 字段
-- **更新标签**：文件功能变化时更新 @tags 字段
+- **更新日期**：每次修改文件时更新 updated 字段
+- **更新版本**：重大修改时更新 version 字段
+- **更新状态**：文件状态发生变化时更新 status 字段
+- **更新标签**：文件功能变化时更新 tags 字段
 
 #### 3.2 定期审查
 
@@ -455,7 +455,7 @@ const path = require('path');
 const fs = require('fs');
 const path = require('path');
 
-const REQUIRED_FIELDS = ['@file', '@description', '@author', '@version', '@created', '@updated', '@status', '@tags'];
+const REQUIRED_FIELDS = ['file', 'description', 'author', 'version', 'created', 'updated', 'status', 'tags'];
 
 function checkFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf-8');
@@ -527,16 +527,16 @@ module.exports = {
       [
         '*',
         {
-          pattern: ' @file: .+\\n @description: .+\\n @author: .+\\n @version: .+\\n @created: .+\\n @updated: .+\\n @status: .+\\n @tags: .+',
+          pattern: ' file: .+\\n description: .+\\n author: .+\\n version: .+\\n created: .+\\n updated: .+\\n status: .+\\n tags: .+',
           template: `/**
- * @file: FILENAME
- * @description: DESCRIPTION
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: YYYY-MM-DD
- * @updated: YYYY-MM-DD
- * @status: active
- * @tags: [TAG1],[TAG2],[TAG3]
+ * file: FILENAME
+ * description: DESCRIPTION
+ * author: YanYuCloudCube Team
+ * version: v1.0.0
+ * created: YYYY-MM-DD
+ * updated: YYYY-MM-DD
+ * status: active
+ * tags: [TAG1],[TAG2],[TAG3]
  */`,
         },
       ],
@@ -583,12 +583,12 @@ exit 0
 
 ### 2. 标头内容建议
 
-- **@description**：一句话概括文件用途，不超过 50 字
-- **@brief**：简要说明文件功能，不超过 100 字
-- **@details**：详细说明文件功能、特性和注意事项
-- **@dependencies**：列出主要依赖，便于理解代码关系
-- **@exports**：列出主要导出内容，便于快速了解文件接口
-- **@notes**：列出重要注意事项，避免使用错误
+- **description**：一句话概括文件用途，不超过 50 字
+- **brief**：简要说明文件功能，不超过 100 字
+- **details**：详细说明文件功能、特性和注意事项
+- **dependencies**：列出主要依赖，便于理解代码关系
+- **exports**：列出主要导出内容，便于快速了解文件接口
+- **notes**：列出重要注意事项，避免使用错误
 
 ### 3. 标头版本管理
 

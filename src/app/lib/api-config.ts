@@ -105,7 +105,7 @@ export function onAPIConfigChange(fn: ConfigListener): () => void {
     ch.addEventListener("message", handler);
     return () => {
       const idx = _listeners.indexOf(fn);
-      if (idx >= 0) {_listeners.splice(idx, 1);}
+      if (idx >= 0) _listeners.splice(idx, 1);
       ch.removeEventListener("message", handler);
       // RF-009: 不再 close() — 由 broadcast-channel 工厂统一管理生命周期
     };
@@ -113,7 +113,7 @@ export function onAPIConfigChange(fn: ConfigListener): () => void {
 
   return () => {
     const idx = _listeners.indexOf(fn);
-    if (idx >= 0) {_listeners.splice(idx, 1);}
+    if (idx >= 0) _listeners.splice(idx, 1);
   };
 }
 

@@ -10,6 +10,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import React from "react";
 import { isFigmaPlatformError } from "../lib/figma-error-filter";
 
 // Mock yyc3-storage to avoid IndexedDB in test

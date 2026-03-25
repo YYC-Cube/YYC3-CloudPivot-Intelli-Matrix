@@ -16,6 +16,7 @@ import type {
   StageResult,
   LoopRun,
   DataFlowEdge,
+  DataFlowNodeType,
   StageMeta,
   DataFlowNode,
 } from "../types";
@@ -226,7 +227,7 @@ export function useServiceLoop() {
 
   // 当前阶段索引
   const currentStageIndex = useMemo(() => {
-    if (!currentRun) {return -1;}
+    if (!currentRun) return -1;
     return ALL_STAGES.indexOf(currentRun.currentStage);
   }, [currentRun]);
 
@@ -302,7 +303,7 @@ export function useServiceLoop() {
   // 执行完整闭环
   const startLoop = useCallback(
     async (trigger: "manual" | "auto" | "alert" = "manual") => {
-      if (isRunning) {return;}
+      if (isRunning) return;
 
       abortRef.current = false;
       setIsRunning(true);
@@ -338,8 +339,8 @@ export function useServiceLoop() {
         toast.success("✅ 闭环流程完成", {
           description: `总耗时 ${((run.completedAt! - run.startedAt) / 1000).toFixed(1)}s`,
         });
-      } catch (err: unknown) {
-        if (err instanceof Error && err.message === "ABORTED") {
+      } catch (err: any) {
+        if (err.message === "ABORTED") {
           run = { ...run, overallStatus: "error", completedAt: Date.now() };
           setCurrentRun(run);
           toast.info("闭环流程已中止");

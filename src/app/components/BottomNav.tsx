@@ -28,6 +28,8 @@ import {
   Package,
   Gauge,
   ServerCog,
+  UserCircle2,
+  MessageCircle, Share, Music, TrendingUp, Phone, Gamepad2, Mic, MessageSquare,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useI18n } from "../hooks/useI18n";
@@ -73,6 +75,26 @@ const MORE_CATEGORIES: MoreCategory[] = [
       { key: "nav.aiDecision",     path: "/ai",           icon: Sparkles },
       { key: "modelProvider.title", path: "/models",       icon: Cpu },
       { key: "nav.aiDiagnostics",  path: "/ai-diagnosis", icon: BrainCircuit },
+    ],
+  },
+  {
+    labelKey: "nav.catAIFamily", icon: UserCircle2,
+    items: [
+      { key: "nav.aiFamily",  path: "/ai-family",  icon: UserCircle2 },
+      { key: "nav.aiFamilyHome",  path: "/ai-family/home",  icon: MessageCircle },
+      { key: "nav.aiFamilyChat",  path: "/ai-family/chat",  icon: MessageCircle },
+      { key: "nav.aiFamilyShare",  path: "/ai-family/share",  icon: Share },
+      { key: "nav.aiFamilyLearn",  path: "/ai-family/learn",  icon: BookOpen },
+      { key: "nav.aiFamilyMusic",  path: "/ai-family/music",  icon: Music },
+      { key: "nav.aiFamilyGrowth",  path: "/ai-family/growth",  icon: TrendingUp },
+      { key: "nav.aiFamilyPhone",  path: "/ai-family/phone",  icon: Phone },
+      { key: "nav.aiFamilyFun",  path: "/ai-family/fun",  icon: Gamepad2 },
+      { key: "nav.aiFamilyActivities",  path: "/ai-family/activities",  icon: Activity },
+      { key: "nav.aiFamilyModels",  path: "/ai-family/models",  icon: Cpu },
+      { key: "nav.aiFamilyVoice",  path: "/ai-family/voice",  icon: Mic },
+      { key: "nav.aiFamilyData",  path: "/ai-family/data",  icon: Database },
+      { key: "nav.aiFamilyComm",  path: "/ai-family/comm",  icon: MessageSquare },
+      { key: "nav.aiFamilySettings",  path: "/ai-family/settings",  icon: Settings },
     ],
   },
   {

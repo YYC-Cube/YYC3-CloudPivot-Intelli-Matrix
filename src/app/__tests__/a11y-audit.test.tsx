@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * a11y-audit.test.tsx
  * ====================
@@ -11,7 +12,7 @@
  */
 
 import React from "react";
-import { describe, it, expect, vi, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach , beforeEach} from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 
@@ -28,9 +29,14 @@ vi.mock("react-router", () => ({
 import { GlassCard } from "../components/GlassCard";
 
 describe("GlassCard a11y", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   afterEach(() => {
     cleanup();
   });
+
 
   it("应通过 axe-core 检测", async () => {
     const { container } = render(
@@ -77,10 +83,6 @@ vi.mock("../hooks/useI18n", () => ({
 }));
 
 describe("LanguageSwitcher a11y", () => {
-  afterEach(() => {
-    cleanup();
-  });
-
   it("应通过 axe-core 检测", async () => {
     const { container } = render(<LanguageSwitcher />);
     const results = await axe(container);
@@ -95,10 +97,6 @@ describe("LanguageSwitcher a11y", () => {
 import { ConnectionStatus } from "../components/ConnectionStatus";
 
 describe("ConnectionStatus a11y", () => {
-  afterEach(() => {
-    cleanup();
-  });
-
   it("connected 状态应通过 a11y 检测", async () => {
     const { container } = render(
       <ConnectionStatus

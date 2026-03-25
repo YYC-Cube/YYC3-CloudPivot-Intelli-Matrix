@@ -8,6 +8,7 @@
  *  - CRUD 操作 (idbPut/idbGet/idbGetAll/idbDelete/idbClear/idbCount)
  *  - 批量写入 (idbPutMany)
  *  - exportAllData / importAllData
+import React from "react";
  *  - getStorageStats
  *  - localStorage Key 注册表
  *  - clearAllLocalStorage / clearAllStorage
@@ -15,7 +16,19 @@
  */
 
 // @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
 // IndexedDB 在 jsdom 中不完全可用，测试静态结构和降级行为
 import {
@@ -42,17 +55,12 @@ describe("yyc3-storage", () => {
     localStorage.clear();
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
   // ──────────────────────────────────────
   //  StoreName 完整性
   // ──────────────────────────────────────
 
   describe("StoreName 注册完整性", () => {
     it("所有 14 个 store 名称类型可用", () => {
-      // RF-004: 现在直接引用 ALL_STORES 常量，不再重复声明
       expect(ALL_STORES.length).toBe(14);
     });
 

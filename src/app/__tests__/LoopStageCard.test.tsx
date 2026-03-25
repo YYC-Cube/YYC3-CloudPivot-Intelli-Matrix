@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * LoopStageCard.test.tsx
- * ========================
+ * ==============
  * LoopStageCard 组件 - 闭环阶段卡片测试
  *
  * 覆盖范围:
@@ -10,12 +11,11 @@
  * - 连接线
  */
 
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import React from "react";
-import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { LoopStageCard } from "../components/LoopStageCard";
-import type { StageResult } from "../types";
-import type { StageMeta } from "../types";
+import type { StageResult, StageMeta } from "../types";
 
 const mockMeta: StageMeta = {
   key: "monitor",
@@ -43,22 +43,22 @@ describe("LoopStageCard", () => {
 
     it("应渲染阶段标签", () => {
       render(<LoopStageCard meta={mockMeta} result={idleResult} index={0} isActive={false} />);
-      expect(screen.getByText("监测层")).toBeInTheDocument();
+      expect(screen.getAllByText("监测层")[0]).toBeInTheDocument();
     });
 
     it("应显示待执行状态", () => {
       render(<LoopStageCard meta={mockMeta} result={idleResult} index={0} isActive={false} />);
-      expect(screen.getByText("待执行")).toBeInTheDocument();
+      expect(screen.getAllByText("待执行")[0]).toBeInTheDocument();
     });
 
     it("应渲染描述", () => {
       render(<LoopStageCard meta={mockMeta} result={idleResult} index={0} isActive={false} />);
-      expect(screen.getByText("实时数据采集 · 指标监控 · 异常检测")).toBeInTheDocument();
+      expect(screen.getAllByText("实时数据采集 · 指标监控 · 异常检测")[0]).toBeInTheDocument();
     });
 
     it("应有 data-testid", () => {
       render(<LoopStageCard meta={mockMeta} result={idleResult} index={0} isActive={false} />);
-      expect(screen.getByTestId("loop-stage-monitor")).toBeInTheDocument();
+      expect(screen.getAllByTestId("loop-stage-monitor")[0]).toBeInTheDocument();
     });
   });
 
@@ -75,7 +75,7 @@ describe("LoopStageCard", () => {
 
     it("应显示执行中状态", () => {
       render(<LoopStageCard meta={mockMeta} result={runningResult} index={0} isActive={true} />);
-      expect(screen.getByText("执行中")).toBeInTheDocument();
+      expect(screen.getAllByText("执行中")[0]).toBeInTheDocument();
     });
   });
 
@@ -93,43 +93,46 @@ describe("LoopStageCard", () => {
 
     it("应显示已完成状态", () => {
       render(<LoopStageCard meta={mockMeta} result={completedResult} index={0} isActive={false} />);
-      expect(screen.getByText("已完成")).toBeInTheDocument();
+      expect(screen.getAllByText("已完成")[0]).toBeInTheDocument();
     });
 
     it("应渲染 summary", () => {
       render(<LoopStageCard meta={mockMeta} result={completedResult} index={0} isActive={false} />);
-      expect(screen.getByText("采集 13 个节点数据")).toBeInTheDocument();
+      expect(screen.getAllByText("采集 13 个节点数据")[0]).toBeInTheDocument();
     });
 
     it("应渲染 details", () => {
       render(<LoopStageCard meta={mockMeta} result={completedResult} index={0} isActive={false} />);
-      expect(screen.getByText("GPU-A100-03 推理延迟异常")).toBeInTheDocument();
+      expect(screen.getAllByText("GPU-A100-03 推理延迟异常")[0]).toBeInTheDocument();
     });
 
     it("应渲染 metrics", () => {
       render(<LoopStageCard meta={mockMeta} result={completedResult} index={0} isActive={false} />);
-      expect(screen.getByText("nodes_scanned: 13")).toBeInTheDocument();
-      expect(screen.getByText("anomalies: 2")).toBeInTheDocument();
+      expect(screen.getAllByText("nodes_scanned: 13")[0]).toBeInTheDocument();
+      expect(screen.getAllByText("anomalies: 2")[0]).toBeInTheDocument();
     });
 
     it("应渲染耗时", () => {
       render(<LoopStageCard meta={mockMeta} result={completedResult} index={0} isActive={false} />);
-      expect(screen.getByText("1.5s")).toBeInTheDocument();
+      expect(screen.getAllByText("1.5s")[0]).toBeInTheDocument();
     });
   });
 
   describe("连接线", () => {
     const idleResult: StageResult = {
-      stage: "monitor", status: "idle",
-      startedAt: null, completedAt: null, duration: null,
-      summary: "", details: [],
+      stage: "monitor",
+      status: "idle",
+      startedAt: null,
+      completedAt: null,
+      duration: null,
+      summary: "",
+      details: [],
     };
 
     it("showConnector=true 应渲染连接线", () => {
       const { container } = render(
         <LoopStageCard meta={mockMeta} result={idleResult} index={0} isActive={false} showConnector />
       );
-      // 连接线是 w-0.5 的 div
       const connector = container.querySelector(".w-0\\.5");
       expect(connector).toBeTruthy();
     });

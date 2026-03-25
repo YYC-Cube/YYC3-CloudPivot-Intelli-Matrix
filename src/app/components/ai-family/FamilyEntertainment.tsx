@@ -29,21 +29,21 @@ function createBoard(): Stone[][] {
 }
 
 function checkWin(board: Stone[][], row: number, col: number, stone: Stone): boolean {
-  if (!stone) return false;
+  if (!stone) {return false;}
   const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
   for (const [dr, dc] of dirs) {
     let count = 1;
     for (let d = 1; d < 5; d++) {
       const r = row + dr * d, c = col + dc * d;
-      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) count++;
-      else break;
+      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) {count++;}
+      else {break;}
     }
     for (let d = 1; d < 5; d++) {
       const r = row - dr * d, c = col - dc * d;
-      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) count++;
-      else break;
+      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) {count++;}
+      else {break;}
     }
-    if (count >= 5) return true;
+    if (count >= 5) {return true;}
   }
   return false;
 }
@@ -68,7 +68,7 @@ export function FamilyEntertainment() {
       const empty: [number, number][] = [];
       for (let r = 0; r < BOARD_SIZE; r++) {
         for (let c = 0; c < BOARD_SIZE; c++) {
-          if (!currentBoard[r][c]) empty.push([r, c]);
+          if (!currentBoard[r][c]) {empty.push([r, c]);}
         }
       }
       if (empty.length === 0) { setAiThinking(false); return; }
@@ -104,7 +104,7 @@ export function FamilyEntertainment() {
   }, [opponent]);
 
   const handlePlace = useCallback((row: number, col: number) => {
-    if (board[row][col] || winner || currentPlayer !== "black" || aiThinking) return;
+    if (board[row][col] || winner || currentPlayer !== "black" || aiThinking) {return;}
     const newBoard = board.map(r => [...r]);
     newBoard[row][col] = "black";
     setBoard(newBoard);

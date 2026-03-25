@@ -21,16 +21,16 @@ export async function registerBackgroundSync(tag = "sync-data") {
     !("serviceWorker" in navigator) ||
     !("SyncManager" in window)
   ) {
-    console.info("[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步");
+    console.log("[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步");
     return false;
   }
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    await (registration as unknown as { sync: { register: (tag: string) => Promise<void> } }).sync.register(tag);
+    await (registration as any).sync.register(tag);
     return true;
   } catch {
-    console.info("[BackgroundSync] 注册失败");
+    console.log("[BackgroundSync] 注册失败");
     return false;
   }
 }
@@ -70,7 +70,7 @@ function saveSyncQueue(queue: SyncItem[]) {
 /** 处理同步队列（恢复在线时调用） */
 export async function processSyncQueue(): Promise<SyncProcessResult> {
   const queue = getSyncQueue();
-  if (queue.length === 0) {return { success: 0, failed: 0 };}
+  if (queue.length === 0) return { success: 0, failed: 0 };
 
   let success = 0;
   let failed = 0;

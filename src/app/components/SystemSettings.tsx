@@ -650,6 +650,10 @@ export function SystemSettings() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <EditableField label="系统名称" value={values.systemName} onChange={v => updateValue("systemName", v)} description="系统显示标题" />
                 <EditableField label="集群 ID" value={values.clusterId} onChange={v => updateValue("clusterId", v)} description="全局唯一集群标识" mono />
+                <EditableField label="品牌名称" value={values.brandName || "YanYuCloudCube"} onChange={v => updateValue("brandName", v)} description="品牌标识" />
+                <EditableField label="品牌标语1" value={values.brandSlogan1 || "言启象限 | 语枢未来"} onChange={v => updateValue("brandSlogan1", v)} description="Words Initiate Quadrants; Language Pivots the Future" />
+                <EditableField label="品牌标语2" value={values.brandSlogan2 || "言启千行代码 | 语枢万物智能"} onChange={v => updateValue("brandSlogan2", v)} description="Words Spark Thousand Lines of Code; Language Hinges All Things' Intelligence" />
+                <EditableField label="品牌标语3" value={values.brandSlogan3 || "万象归元于云枢 | 深栈智启新纪元"} onChange={v => updateValue("brandSlogan3", v)} description="All Things Converge in Cloud Pivot; Deep Stacks Ignite a New Era of Intelligence" />
                 <div className="p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
                   <div className="flex items-center gap-2 mb-1">
                     <Clock className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />

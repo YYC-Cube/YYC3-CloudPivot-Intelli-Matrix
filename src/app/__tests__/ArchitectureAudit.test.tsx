@@ -16,7 +16,7 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
@@ -35,11 +35,16 @@ vi.mock("../components/GlassCard", () => ({
 import { ArchitectureAudit } from "../components/ArchitectureAudit";
 
 describe("ArchitectureAudit", () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   afterEach(() => {
     cleanup();
   });
+
+
+  beforeEach(() => vi.clearAllMocks());
 
   describe("页面基础渲染", () => {
     it("应渲染页面标题", () => {
@@ -50,11 +55,11 @@ describe("ArchitectureAudit", () => {
     it("应渲染 6 个 Tab 按钮", () => {
       render(<ArchitectureAudit />);
       expect(screen.getByText("架构概览")).toBeInTheDocument();
-      expect(screen.getAllByText(/路由 \(/)[0]).toBeInTheDocument();
-      expect(screen.getAllByText(/数据层 \(/)[0]).toBeInTheDocument();
-      expect(screen.getAllByText(/测试 \(/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText(/路由/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText(/数据层/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText(/测试/)[0]).toBeInTheDocument();
       expect(screen.getByText("功能清单")).toBeInTheDocument();
-      expect(screen.getAllByText(/缺口 \(/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText(/缺口/)[0]).toBeInTheDocument();
     });
   });
 
@@ -69,8 +74,8 @@ describe("ArchitectureAudit", () => {
     it("应渲染架构层级图", () => {
       render(<ArchitectureAudit />);
       expect(screen.getByText("架构层级")).toBeInTheDocument();
-      expect(screen.getByText(/表示层/)).toBeInTheDocument();
-      expect(screen.getByText(/状态层/)).toBeInTheDocument();
+      expect(screen.getAllByText(/表示层/)[0]).toBeInTheDocument();
+      expect(screen.getAllByText(/状态层/)[0]).toBeInTheDocument();
       expect(screen.getByText(/数据层.*Data/)).toBeInTheDocument();
     });
 
@@ -90,7 +95,7 @@ describe("ArchitectureAudit", () => {
   describe("路由 Tab", () => {
     it("应切换到路由 Tab 并渲染路由表格", () => {
       render(<ArchitectureAudit />);
-      fireEvent.click(screen.getByText(/路由 \(/));
+      fireEvent.click(screen.getAllByText(/路由/)[0]);
       expect(screen.getByText(/路由页面清单/)).toBeInTheDocument();
       expect(screen.getByText("DataMonitoring")).toBeInTheDocument();
       expect(screen.getByText("UserManagement")).toBeInTheDocument();
@@ -100,7 +105,7 @@ describe("ArchitectureAudit", () => {
   describe("数据层 Tab", () => {
     it("应切换到数据层 Tab 并渲染 Store 表格", () => {
       render(<ArchitectureAudit />);
-      fireEvent.click(screen.getAllByText(/数据层 \(/)[0]);
+      fireEvent.click(screen.getAllByText(/数据层/)[0]);
       expect(screen.getByText(/localStorage CRUD Stores/)).toBeInTheDocument();
       expect(screen.getByText("yyc3_nodes")).toBeInTheDocument();
       expect(screen.getByText("yyc3_users")).toBeInTheDocument();
@@ -108,7 +113,7 @@ describe("ArchitectureAudit", () => {
 
     it("应渲染 createLocalStore API 列表", () => {
       render(<ArchitectureAudit />);
-      fireEvent.click(screen.getAllByText(/数据层 \(/)[0]);
+      fireEvent.click(screen.getAllByText(/数据层/)[0]);
       expect(screen.getByText("createLocalStore API")).toBeInTheDocument();
       expect(screen.getByText("getAll(): T[]")).toBeInTheDocument();
     });
@@ -117,7 +122,7 @@ describe("ArchitectureAudit", () => {
   describe("测试 Tab", () => {
     it("应切换到测试 Tab 并渲染测试矩阵", () => {
       render(<ArchitectureAudit />);
-      fireEvent.click(screen.getByText(/测试 \(/));
+      fireEvent.click(screen.getAllByText(/测试/)[0]);
       expect(screen.getByText("测试文件矩阵")).toBeInTheDocument();
       expect(screen.getByText("覆盖率配置 (vitest.config.ts)")).toBeInTheDocument();
     });
@@ -137,7 +142,7 @@ describe("ArchitectureAudit", () => {
   describe("缺口 Tab", () => {
     it("应切换到缺口 Tab 并渲染已知缺口", () => {
       render(<ArchitectureAudit />);
-      fireEvent.click(screen.getByText(/缺口 \(/));
+      fireEvent.click(screen.getAllByText(/缺口/)[0]);
       expect(screen.getByText("GAP-001")).toBeInTheDocument();
       expect(screen.getByText("测试未运行验证")).toBeInTheDocument();
     });

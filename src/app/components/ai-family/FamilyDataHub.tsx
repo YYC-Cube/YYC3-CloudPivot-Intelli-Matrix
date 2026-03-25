@@ -23,6 +23,7 @@ import {
   FAMILY_MEMBERS, FAMILY_ACTIVITIES, SAMPLE_MEMORIES, SAMPLE_MESSAGES,
   MEMBER_MEDALS, MEDALS, getFamilyDataSummary, hexToRgb,
   type FamilyMember,
+  DEEP_BG,
 } from "./shared";
 
 // ═══ Activity type config ═══
@@ -149,7 +150,7 @@ function ActivityTimeline() {
                   <div className="flex items-center gap-1 mt-2 flex-wrap">
                     {act.participants.slice(0, 6).map(pid => {
                       const m = FAMILY_MEMBERS.find(fm => fm.id === pid);
-                      if (!m) return null;
+                      if (!m) {return null;}
                       const rgb = hexToRgb(m.color);
                       return (
                         <div
@@ -211,7 +212,7 @@ function RecentMessages() {
       <div className="space-y-2">
         {msgs.map(msg => {
           const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
-          if (!from) return null;
+          if (!from) {return null;}
           const Icon = typeIcons[msg.type] || MessageCircle;
           const color = typeColors[msg.type] || "#3b82f6";
           const rgb = hexToRgb(from.color);
@@ -268,7 +269,7 @@ export function FamilyDataHub() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-6 space-y-6" style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}>
+    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>

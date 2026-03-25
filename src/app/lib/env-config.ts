@@ -133,17 +133,17 @@ function loadEnvOverrides(): Partial<EnvConfig> {
     // 1. 从 Vite 环境变量读取 (VITE_YYC3_ 前缀)
     const metaEnv = (import.meta as unknown as Record<string, unknown>).env as Record<string, string> | undefined;
     if (metaEnv) {
-      if (metaEnv.VITE_YYC3_SYSTEM_NAME)     {overrides.SYSTEM_NAME = metaEnv.VITE_YYC3_SYSTEM_NAME;}
-      if (metaEnv.VITE_YYC3_SYSTEM_VERSION)   {overrides.SYSTEM_VERSION = metaEnv.VITE_YYC3_SYSTEM_VERSION;}
-      if (metaEnv.VITE_YYC3_API_BASE_URL)     {overrides.API_BASE_URL = metaEnv.VITE_YYC3_API_BASE_URL;}
-      if (metaEnv.VITE_YYC3_WS_ENDPOINT)      {overrides.WS_ENDPOINT = metaEnv.VITE_YYC3_WS_ENDPOINT;}
-      if (metaEnv.VITE_YYC3_OLLAMA_BASE_URL)  {overrides.OLLAMA_BASE_URL = metaEnv.VITE_YYC3_OLLAMA_BASE_URL;}
-      if (metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH) {overrides.OLLAMA_PROXY_PATH = metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH;}
-      if (metaEnv.VITE_YYC3_CLUSTER_ID)       {overrides.CLUSTER_ID = metaEnv.VITE_YYC3_CLUSTER_ID;}
-      if (metaEnv.VITE_YYC3_STORAGE_PREFIX)    {overrides.STORAGE_PREFIX = metaEnv.VITE_YYC3_STORAGE_PREFIX;}
-      if (metaEnv.VITE_YYC3_ENABLE_MOCK)       {overrides.ENABLE_MOCK_MODE = metaEnv.VITE_YYC3_ENABLE_MOCK === "true";}
-      if (metaEnv.VITE_YYC3_ENABLE_DEBUG)      {overrides.ENABLE_DEBUG = metaEnv.VITE_YYC3_ENABLE_DEBUG === "true";}
-      if (metaEnv.MODE)                        {overrides.NODE_ENV = metaEnv.MODE;}
+      if (metaEnv.VITE_YYC3_SYSTEM_NAME)     overrides.SYSTEM_NAME = metaEnv.VITE_YYC3_SYSTEM_NAME;
+      if (metaEnv.VITE_YYC3_SYSTEM_VERSION)   overrides.SYSTEM_VERSION = metaEnv.VITE_YYC3_SYSTEM_VERSION;
+      if (metaEnv.VITE_YYC3_API_BASE_URL)     overrides.API_BASE_URL = metaEnv.VITE_YYC3_API_BASE_URL;
+      if (metaEnv.VITE_YYC3_WS_ENDPOINT)      overrides.WS_ENDPOINT = metaEnv.VITE_YYC3_WS_ENDPOINT;
+      if (metaEnv.VITE_YYC3_OLLAMA_BASE_URL)  overrides.OLLAMA_BASE_URL = metaEnv.VITE_YYC3_OLLAMA_BASE_URL;
+      if (metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH) overrides.OLLAMA_PROXY_PATH = metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH;
+      if (metaEnv.VITE_YYC3_CLUSTER_ID)       overrides.CLUSTER_ID = metaEnv.VITE_YYC3_CLUSTER_ID;
+      if (metaEnv.VITE_YYC3_STORAGE_PREFIX)    overrides.STORAGE_PREFIX = metaEnv.VITE_YYC3_STORAGE_PREFIX;
+      if (metaEnv.VITE_YYC3_ENABLE_MOCK)       overrides.ENABLE_MOCK_MODE = metaEnv.VITE_YYC3_ENABLE_MOCK === "true";
+      if (metaEnv.VITE_YYC3_ENABLE_DEBUG)      overrides.ENABLE_DEBUG = metaEnv.VITE_YYC3_ENABLE_DEBUG === "true";
+      if (metaEnv.MODE)                        overrides.NODE_ENV = metaEnv.MODE;
     }
   } catch { /* Vite env not available */ }
 
@@ -153,7 +153,7 @@ function loadEnvOverrides(): Partial<EnvConfig> {
 function loadStoredConfig(): Partial<EnvConfig> {
   try {
     const raw = localStorage.getItem(ENV_STORAGE_KEY);
-    if (raw) {return JSON.parse(raw);}
+    if (raw) return JSON.parse(raw);
   } catch { /* ignore */ }
   return {};
 }
@@ -177,19 +177,19 @@ function buildConfig(): EnvConfig {
 
 /** 获取环境变量 (类型安全) */
 export function env<K extends keyof EnvConfig>(key: K): EnvConfig[K] {
-  if (!_envConfig) {_envConfig = buildConfig();}
+  if (!_envConfig) _envConfig = buildConfig();
   return _envConfig[key];
 }
 
 /** 获取全部环境配置 */
 export function getEnvConfig(): Readonly<EnvConfig> {
-  if (!_envConfig) {_envConfig = buildConfig();}
+  if (!_envConfig) _envConfig = buildConfig();
   return { ..._envConfig };
 }
 
 /** 更新环境配置 (持久化到 localStorage) */
 export function setEnvConfig(updates: Partial<EnvConfig>): EnvConfig {
-  if (!_envConfig) {_envConfig = buildConfig();}
+  if (!_envConfig) _envConfig = buildConfig();
   _envConfig = { ..._envConfig, ...updates };
   try {
     localStorage.setItem(ENV_STORAGE_KEY, JSON.stringify(_envConfig));

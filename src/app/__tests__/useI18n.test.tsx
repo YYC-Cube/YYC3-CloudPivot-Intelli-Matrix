@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * useI18n.test.tsx
- * ==================
+ * =========
  * useI18n Hook + i18n 语言包测试
  *
  * 覆盖范围:
@@ -13,8 +14,8 @@
  * - 语言列表
  */
 
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useI18nProvider, SUPPORTED_LOCALES } from "../hooks/useI18n";
 

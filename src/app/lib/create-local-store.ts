@@ -47,7 +47,7 @@ export function createLocalStore<T extends { id: string }>(
   let _cache: T[] | null = null;
 
   function load(): T[] {
-    if (_cache) {return _cache;}
+    if (_cache) return _cache;
     try {
       const raw = localStorage.getItem(storageKey);
       if (raw) {
@@ -62,10 +62,14 @@ export function createLocalStore<T extends { id: string }>(
   }
 
   function save(): void {
-    if (!_cache) {return;}
+    if (!_cache) return;
     try {
       localStorage.setItem(storageKey, JSON.stringify(_cache));
     } catch { /* ignore */ }
+  }
+
+  function invalidate(): void {
+    _cache = null;
   }
 
   return {
@@ -88,7 +92,7 @@ export function createLocalStore<T extends { id: string }>(
     update: (id, updates) => {
       const data = load();
       const idx = data.findIndex((item) => item.id === id);
-      if (idx < 0) {return null;}
+      if (idx < 0) return null;
       data[idx] = { ...data[idx], ...updates };
       _cache = data;
       save();
@@ -98,7 +102,7 @@ export function createLocalStore<T extends { id: string }>(
     remove: (id) => {
       const data = load();
       const idx = data.findIndex((item) => item.id === id);
-      if (idx < 0) {return false;}
+      if (idx < 0) return false;
       data.splice(idx, 1);
       _cache = data;
       save();
@@ -130,7 +134,7 @@ export function createLocalStore<T extends { id: string }>(
       try {
         const parsed = JSON.parse(json);
         const items = Array.isArray(parsed) ? parsed : parsed.data;
-        if (!Array.isArray(items)) {return false;}
+        if (!Array.isArray(items)) return false;
         _cache = items;
         save();
         return true;

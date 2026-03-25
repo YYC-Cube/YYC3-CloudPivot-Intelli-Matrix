@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * useLocalFileSystem.test.tsx
- * ============================
+ * ===============
  * useLocalFileSystem Hook - 本地文件系统状态管理测试
  *
  * 覆盖范围:
@@ -13,8 +14,7 @@
  * - 格式化工具
  */
 
-import React from "react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useLocalFileSystem } from "../hooks/useLocalFileSystem";
 
@@ -241,16 +241,13 @@ describe("useLocalFileSystem", () => {
 
     it("isGenerating 在生成过程中应为 true", async () => {
       const { result } = renderHook(() => useLocalFileSystem());
-      let wasGenerating = false;
 
       const promise = act(async () => {
         const p = result.current.generateReport({
           type: "performance", format: "json", dateRange: "today",
           includeCharts: false, includeRawData: false,
         });
-        // Check immediately after call
-        wasGenerating = result.current.isGenerating;
-        await p;
+        return p;
       });
 
       await promise;

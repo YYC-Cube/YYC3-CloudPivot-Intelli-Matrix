@@ -18,6 +18,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
 
 // ─── Mock localStorage (Node 环境) ───────────────────
 const store: Record<string, string> = {};
@@ -25,7 +26,7 @@ const localStorageMock = {
   getItem: vi.fn((key: string) => store[key] ?? null),
   setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
   removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
+  clear: vi.fn(() => { for (const k of Object.keys(store)) delete store[k]; }),
   get length() { return Object.keys(store).length; },
   key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
 };
@@ -357,7 +358,7 @@ describe("E2E: 错误处理工具链", () => {
     const { isFigmaPlatformError } = await import("../lib/figma-error-filter");
 
     // 应被拦截
-    expect(isFigmaPlatformError("IframeMessageAbortError", "", "", "")).toBe(false); // 修复：空消息时不匹配
+    expect(isFigmaPlatformError("IframeMessageAbortError", "", "", "")).toBe(true);
     expect(isFigmaPlatformError("", "message aborted", "", "")).toBe(true);
     expect(isFigmaPlatformError("", "", "figma.com/plugin", "")).toBe(true);
 

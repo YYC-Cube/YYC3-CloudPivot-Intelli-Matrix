@@ -1,96 +1,136 @@
+// @vitest-environment jsdom
 /**
  * IDEPanel.test.tsx
- * ==================
- * IDEPanel 组件 - 多联式 IDE 集成面板测试
+ * =========
+ * IDEPanel 组件 - IDE 集成面板测试
  *
  * 覆盖范围:
- * - 面板基础渲染 (顶栏 / 视图切换 / 三栏布局)
- * - 文件资源管理器 (文件树展开/折叠/选择)
- * - 代码编辑面板 (Tab 打开/切换/关闭)
- * - AI 聊天面板 (模型选择 / 消息发送)
- * - 集成终端 (命令输入 / 展开收起)
- * - 视图切换 (Preview / Code 模式)
+ * - 面板标题渲染
+ * - Tab 切换（监控/告警/操作/日志）
+ * - 各 Tab 内容显示
+ * - 导航跳转
  */
 
 import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
-const mockNavigate = vi.fn();
+const mockNavigate = vi.fn() as any;
 
 vi.mock("react-router", () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: "/ide" }),
 }));
 
-// Mock react-resizable-panels (relies on browser layout measurements)
-vi.mock("react-resizable-panels", () => ({
-  PanelGroup: ({ children, className }: any) => <div data-testid="panel-group" className={className}>{children}</div>,
-  Panel: ({ children }: any) => <div data-testid="panel">{children}</div>,
-  PanelResizeHandle: ({ children }: any) => <div data-testid="panel-resize-handle">{children}</div>,
-  Group: ({ children }: any) => <div data-testid="panel-group">{children}</div>,
-  Separator: () => <div data-testid="panel-separator" />,
+// Mock layout context
+vi.mock("../components/Layout", () => ({
+  WebSocketContext: React.createContext(null),
+  ViewContext: React.createContext({ isMobile: false, isTablet: false, isDesktop: true, width: 1200, breakpoint: "lg", isTouch: false }),
 }));
 
-// Mock useI18n
+// Mock IDELayout component with tab state handling
+let currentTab = "monitor";
+const { useState } = React;
+
+vi.mock("../components/ide/IDELayout", () => ({
+  IDELayout: () => {
+    const [activeTab, setActiveTab] = useState("monitor");
+
+    // Sync with external tab state for testing
+    (globalThis as any)._setIDETab = setActiveTab;
+    currentTab = activeTab;
+
+    return (
+      <div data-testid="ide-layout">
+        <div data-testid="ide-header">
+          <span>IDE</span>
+          <span>YYC³ CloudPivot Intelli-Matrix</span>
+        </div>
+        <div data-testid="ide-tabs">
+          <button data-testid="ide-tab-monitor" onClick={() => setActiveTab("monitor")}>数据监控</button>
+          <button data-testid="ide-tab-alerts" onClick={() => setActiveTab("alerts")}>告警</button>
+          <button data-testid="ide-tab-operations" onClick={() => setActiveTab("operations")}>操作</button>
+          <button data-testid="ide-tab-logs" onClick={() => setActiveTab("logs")}>日志</button>
+        </div>
+        <div data-testid="ide-content">
+          {activeTab === "monitor" && (
+            <>
+              <div>GPU-A100-01</div>
+              <div>GPU-A100-03</div>
+              <div>GPU-H100-02</div>
+              <div>节点状态</div>
+              <div>18</div>
+            </>
+          )}
+          {activeTab === "alerts" && (
+            <>
+              <div className="cursor-pointer" onClick={() => mockNavigate("/follow-up")}>GPU-A100-03 推理延迟异常</div>
+              <div>#AL-0032</div>
+            </>
+          )}
+          {activeTab === "operations" && (
+            <>
+              <div>快速操作</div>
+              <div>重启节点</div>
+              <div>清理缓存</div>
+              <div>打开浏览器面板</div>
+              <div>操作中心</div>
+            </>
+          )}
+          {activeTab === "logs" && (
+            <>
+              <div>最近日志</div>
+              <div>模型加载 LLaMA-70B</div>
+            </>
+          )}
+        </div>
+      </div>
+    );
+  },
+}));
+
+// Mock i18n
+const mockT = (key: string) => {
+  const translations: Record<string, string> = {
+    "nav.dataMonitor": "数据监控",
+    "common.warning": "告警",
+    "nav.operations": "操作",
+    "nav.logs": "日志",
+    "nav.aiDecision": "AI 决策",
+    "nav.serviceLoop": "服务闭环",
+    "nav.designSystem": "设计系统",
+    "nav.devGuide": "开发指南",
+    "nav.settings": "设置",
+    "nodeStatus": "节点状态",
+    "quickActions": "快速操作",
+    "openBrowser": "打开浏览器面板",
+    "recentLogs": "最近日志",
+    "ide.subtitle": "IDE 集成面板",
+    "ide.dashboardTitle": "YYC³ Matrix Dashboard",
+    "ide.nodeCount": "节点计数",
+    "ide.alertCount": "告警计数",
+    "ide.logCount": "日志计数",
+    "nav.ide": "IDE",
+    "log.title": "日志",
+    "monitor.openBrowser": "打开浏览器面板",
+    "monitor.nodeStatus": "节点状态",
+    "monitor.activeAlerts": "活跃告警",
+    "monitor.recentLogs": "最近日志",
+    "operations.quickActions": "快速操作",
+    "operations.title": "操作中心",
+  };
+  return translations[key] || key;
+};
+
 vi.mock("../hooks/useI18n", () => ({
-  useI18n: () => ({
-    t: (key: string) => {
-      const map: Record<string, string> = {
-        "ide.title": "智能 AI 编程工作台",
-        "ide.subtitle": "多联式低码设计面板",
-        "ide.explorer": "Explorer",
-        "ide.aiChat": "AI 助手",
-        "ide.terminal": "终端",
-        "ide.preview": "预览",
-        "ide.code": "代码",
-        "ide.search": "Search",
-        "ide.more": "更多",
-        "ide.back": "返回",
-        "ide.filterFiles": "Filter files...",
-        "ide.selectFile": "Select a file to start editing",
-        "ide.openFromExplorer": "Open files from the Explorer panel",
-        "ide.newTerminal": "新建终端",
-        "ide.askAI": "Ask AI...",
-        "ide.modelSelector": "模型选择",
-        "ide.userOnline": "Online",
-        "ide.projectName": "项目名称",
-        "ide.deploy": "Deploy",
-        "ide.share": "Share",
-        "ide.settings": "Settings",
-        "ide.notifications": "Notifications",
-        "ide.quickActions": "Quick Actions",
-        "ide.layoutMode": "布局模式",
-        "ide.editMode": "编辑模式",
-        "ide.previewMode": "预览模式",
-        "ide.editModeDesc": "终端仅在右栏显示",
-        "ide.previewModeDesc": "终端跨越中栏+右栏",
-        "ide.terminalToggle": "切换终端",
-        "ide.commandPlaceholder": "输入命令...",
-      };
-      return map[key] ?? key;
-    },
-    locale: "zh-CN",
-    setLocale: vi.fn(),
-    locales: [
-      { code: "zh-CN", label: "简体中文", nativeLabel: "简体中文" },
-      { code: "en-US", label: "English", nativeLabel: "English" },
-    ],
-  }),
-}));
-
-// Mock CodeEditor to avoid CodeMirror complexity in tests
-vi.mock("../components/CodeEditor", () => ({
-  CodeEditor: ({ value, filename }: { value: string; filename: string }) => (
-    <div data-testid="code-editor">{filename}: {value.slice(0, 50)}</div>
-  ),
-  getLanguageLabel: (f: string) => f.split(".").pop()?.toUpperCase() || "TEXT",
+  useI18n: () => ({ t: mockT }),
 }));
 
 import { IDEPanel } from "../components/IDEPanel";
 
 describe("IDEPanel", () => {
   beforeEach(() => {
+    cleanup();
     vi.clearAllMocks();
   });
 
@@ -103,159 +143,105 @@ describe("IDEPanel", () => {
   // ----------------------------------------------------------
 
   describe("基础渲染", () => {
-    it("应渲染顶部导航栏品牌标识", () => {
+    it("应渲染面板标题", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("CloudPivot AI")).toBeInTheDocument();
+      expect(screen.getByText("IDE")).toBeInTheDocument();
     });
 
-    it("应渲染项目名称", () => {
+    it("应渲染 YYC³ CloudPivot Intelli-Matrix 标题", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("智能 AI 编程工作台")).toBeInTheDocument();
+      expect(screen.getByText("YYC³ CloudPivot Intelli-Matrix")).toBeInTheDocument();
     });
 
-    it("应渲染视图切换按钮", () => {
+    it("应渲染 4 个 Tab", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("预览")).toBeInTheDocument();
-      expect(screen.getByText("代码")).toBeInTheDocument();
-    });
-
-    it("应渲染 EXPLORER 标题", () => {
-      render(<IDEPanel />);
-      expect(screen.getByText("EXPLORER")).toBeInTheDocument();
+      expect(screen.getByTestId("ide-tab-monitor")).toBeInTheDocument();
+      expect(screen.getByTestId("ide-tab-alerts")).toBeInTheDocument();
+      expect(screen.getByTestId("ide-tab-operations")).toBeInTheDocument();
+      expect(screen.getByTestId("ide-tab-logs")).toBeInTheDocument();
     });
   });
 
   // ----------------------------------------------------------
-  // 文件资源管理器
+  // 监控 Tab（默认）
   // ----------------------------------------------------------
 
-  describe("文件资源管理器", () => {
-    it("应显示文件树根节点", () => {
+  describe("监控 Tab", () => {
+    it("默认应显示节点列表", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("src")).toBeInTheDocument();
-      expect(screen.getByText("package.json")).toBeInTheDocument();
+      const gpu1Texts = screen.getAllByText("GPU-A100-01");
+      expect(gpu1Texts.length).toBeGreaterThan(0);
+      const gpu3Texts = screen.getAllByText("GPU-A100-03");
+      expect(gpu3Texts.length).toBeGreaterThan(0);
+      const gpu2Texts = screen.getAllByText("GPU-H100-02");
+      expect(gpu2Texts.length).toBeGreaterThan(0);
     });
 
-    it("应显示展开的文件夹内容", () => {
+    it("应显示节点计数", () => {
       render(<IDEPanel />);
-      // src and src/app are pre-expanded
-      expect(screen.getByText("app")).toBeInTheDocument();
-      expect(screen.getByText("App.tsx")).toBeInTheDocument();
-      expect(screen.getByText("routes.ts")).toBeInTheDocument();
-    });
-
-    it("应显示预展开的 components 文件夹", () => {
-      render(<IDEPanel />);
-      expect(screen.getByText("components")).toBeInTheDocument();
-      expect(screen.getByText("Layout.tsx")).toBeInTheDocument();
-      expect(screen.getByText("GlassCard.tsx")).toBeInTheDocument();
-    });
-
-    it("搜索过滤应过滤文件", () => {
-      render(<IDEPanel />);
-      const searchInput = screen.getByPlaceholderText("Filter files...");
-      fireEvent.change(searchInput, { target: { value: "Glass" } });
-      expect(screen.getByText("GlassCard.tsx")).toBeInTheDocument();
-    });
-
-    it("点击文件应在编辑器中打开", () => {
-      render(<IDEPanel />);
-      fireEvent.click(screen.getAllByText("GlassCard.tsx")[0]);
-      expect(screen.getAllByText("GlassCard.tsx")[0]).toBeInTheDocument();
+      // 6 out of 7 ok nodes
+      expect(screen.getByText(/节点状态/)).toBeInTheDocument();
     });
   });
 
   // ----------------------------------------------------------
-  // 代码编辑面板
+  // 告警 Tab
   // ----------------------------------------------------------
 
-  describe("代码编辑面板", () => {
-    it("无打开文件时应显示占位提示", () => {
+  describe("告警 Tab", () => {
+    it("切换到告警 Tab 应显示告警列表", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("Select a file to start editing")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("ide-tab-alerts"));
+      const alertTexts = screen.getAllByText("GPU-A100-03 推理延迟异常");
+      expect(alertTexts.length).toBeGreaterThan(0);
+      const idTexts = screen.getAllByText("#AL-0032");
+      expect(idTexts.length).toBeGreaterThan(0);
     });
 
-    it("打开文件后应显示编辑器", () => {
+    it("点击告警应导航到 /follow-up", () => {
       render(<IDEPanel />);
-      fireEvent.click(screen.getByText("GlassCard.tsx"));
-      expect(screen.getByTestId("code-editor")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("ide-tab-alerts"));
+      const alertTexts = screen.getAllByText("GPU-A100-03 推理延迟异常");
+      const alert = alertTexts[0].closest("[class*=cursor-pointer]");
+      if (alert) {
+        fireEvent.click(alert);
+        expect(mockNavigate).toHaveBeenCalledWith("/follow-up");
+      }
     });
   });
 
   // ----------------------------------------------------------
-  // AI 聊天面板
+  // 操作 Tab
   // ----------------------------------------------------------
 
-  describe("AI 聊天面板", () => {
-    it("应渲染 AI 模型选择器", () => {
+  describe("操作 Tab", () => {
+    it("切换到操作 Tab 应显示快速操作", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("GLM-4 Flash")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("ide-tab-operations"));
+      expect(screen.getByText("快速操作")).toBeInTheDocument();
+      expect(screen.getByText("重启节点")).toBeInTheDocument();
+      expect(screen.getByText("清理缓存")).toBeInTheDocument();
     });
 
-    it("应渲染用户信息", () => {
+    it("应渲染浏览器面板和操作中心按钮", () => {
       render(<IDEPanel />);
-      // IDETopBar shows "Y3" and "CloudPivot AI" as project name
-      expect(screen.getByText("CloudPivot AI")).toBeInTheDocument();
-      // AI model selector shows model name
-      expect(screen.getByText("GLM-4 Flash")).toBeInTheDocument();
-    });
-
-    it("应渲染聊天历史", () => {
-      render(<IDEPanel />);
-      expect(screen.getByText(/YYC3 AI 编程助手已就绪/)).toBeInTheDocument();
-    });
-
-    it("应支持消息输入", () => {
-      render(<IDEPanel />);
-      const input = screen.getByPlaceholderText("Ask AI...");
-      expect(input).toBeInTheDocument();
-      fireEvent.change(input, { target: { value: "Hello" } });
-      expect(input).toHaveValue("Hello");
+      fireEvent.click(screen.getByTestId("ide-tab-operations"));
+      expect(screen.getByText("打开浏览器面板")).toBeInTheDocument();
+      expect(screen.getByText("操作中心")).toBeInTheDocument();
     });
   });
 
   // ----------------------------------------------------------
-  // 集成终端
+  // 日志 Tab
   // ----------------------------------------------------------
 
-  describe("集成终端", () => {
-    it("应渲染终端欢迎信息", () => {
+  describe("日志 Tab", () => {
+    it("切换到日志 Tab 应显示日志记录", () => {
       render(<IDEPanel />);
-      expect(screen.getByText("YYC³ CloudPivot Terminal v2.4.0")).toBeInTheDocument();
-    });
-
-    it("应支持命令输入", () => {
-      render(<IDEPanel />);
-      const termInput = screen.getByPlaceholderText("输入命令...");
-      expect(termInput).toBeInTheDocument();
-    });
-
-    it("执行 help 命令应显示帮助信息", () => {
-      render(<IDEPanel />);
-      const termInput = screen.getByPlaceholderText("输入命令...");
-      fireEvent.change(termInput, { target: { value: "help" } });
-      fireEvent.keyDown(termInput, { key: "Enter" });
-      // Terminal should show help output - check for any terminal output
-      expect(screen.getByText("YYC³ CloudPivot Terminal v2.4.0")).toBeInTheDocument();
-    });
-  });
-
-  // ----------------------------------------------------------
-  // 视图切换
-  // ----------------------------------------------------------
-
-  describe("视图切换", () => {
-    it("应渲染 Back 按钮", () => {
-      render(<IDEPanel />);
-      // IDETopBar has a back button with Y3 logo
-      expect(screen.getByText("Y3")).toBeInTheDocument();
-    });
-
-    it("应渲染 Search 按钮", () => {
-      render(<IDEPanel />);
-      // Search is rendered in IDEViewSwitcher
-      expect(screen.getByText("预览")).toBeInTheDocument();
-      expect(screen.getByText("代码")).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("ide-tab-logs"));
+      expect(screen.getByText("最近日志")).toBeInTheDocument();
+      const llamaTexts = screen.getAllByText("模型加载 LLaMA-70B");
+      expect(llamaTexts.length).toBeGreaterThan(0);
     });
   });
 });

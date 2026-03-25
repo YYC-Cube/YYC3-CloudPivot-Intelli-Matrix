@@ -7,24 +7,32 @@
  * - 订阅管理
  */
 
-import { useState, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import type { AlertLevel } from "../types";
 
 export function usePushNotifications() {
-  const isSupported = "Notification" in window;
   const [permission, setPermission] =
-    useState<NotificationPermission>(isSupported ? Notification.permission : "denied");
+    useState<NotificationPermission>("default");
+  const [supported, setSupported] = useState(false);
+
+  useEffect(() => {
+    const isSupported = "Notification" in window;
+    setSupported(isSupported);
+    if (isSupported) {
+      setPermission(Notification.permission);
+    }
+  }, []);
 
   const requestPermission = useCallback(async () => {
-    if (!isSupported) {return "denied" as NotificationPermission;}
+    if (!supported) return "denied" as NotificationPermission;
     const result = await Notification.requestPermission();
     setPermission(result);
     return result;
-  }, [isSupported]);
+  }, [supported]);
 
   const showNotification = useCallback(
     (title: string, options: NotificationOptions = {}) => {
-      if (permission !== "granted") {return null;}
+      if (permission !== "granted") return null;
 
       try {
         return new Notification(title, {
@@ -66,7 +74,7 @@ export function usePushNotifications() {
 
   return {
     permission,
-    supported: isSupported,
+    supported,
     requestPermission,
     showNotification,
     sendAlert,

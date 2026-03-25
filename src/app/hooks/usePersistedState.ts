@@ -36,10 +36,10 @@ export function usePersistedList<T extends { id: string }>(
   const [items, setItems] = useState<T[]>(initialData);
   const [loaded, setLoaded] = useState(false);
   const storeRef = useRef(store);
+  storeRef.current = store;
 
   // 初始化: 从 IndexedDB 加载
   useEffect(() => {
-    storeRef.current = store;
     let cancelled = false;
     idbGetAll<T>(store).then((data) => {
       if (!cancelled) {

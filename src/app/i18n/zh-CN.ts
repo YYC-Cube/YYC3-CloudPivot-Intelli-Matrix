@@ -428,8 +428,8 @@ const zhCN = {
     backupCronDesc: "默认每天凌晨 2:00",
     dataCompression: "数据压缩",
     dataCompressionDesc: "启用传输和存储压缩",
-    performance: "性能",
-    envConfig: "环境配置",
+    performance: "性能监控",
+    envConfig: "环境变量",
   },
 
   // ======== 操作审计 ========
@@ -885,7 +885,7 @@ const zhCN = {
   // ======== AI 辅助诊断 ========
   aiDiag: {
     title: "AI 辅助诊断",
-    subtitle: "模式别 · 异常分析 · 自动解决方案 · 预测性维护",
+    subtitle: "模式识别 · 异常分析 · 自动解决方案 · 预测性维护",
     startDiagnosis: "启动诊断",
     analyzing: "AI 正在分析...",
     analyzingHint: "正在扫描历史数据、识别异常模式、生成解决方案",

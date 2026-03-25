@@ -46,17 +46,17 @@ export function FamilyPhone() {
   const [dialInput, setDialInput] = useState("");
   const [activeTab, setActiveTab] = useState<"contacts" | "dial" | "logs">("contacts");
   const [chatMessages, setChatMessages] = useState<string[]>([]);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // 通话计时
   useEffect(() => {
     if (callState === "connected") {
       timerRef.current = setInterval(() => setCallDuration(d => d + 1), 1000);
     } else {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (callState === "idle") setCallDuration(0);
+      if (timerRef.current) {clearInterval(timerRef.current);}
+      if (callState === "idle") {setCallDuration(0);}
     }
-    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+    return () => { if (timerRef.current) {clearInterval(timerRef.current);} };
   }, [callState]);
 
   const formatDuration = (secs: number) => {
@@ -96,7 +96,7 @@ export function FamilyPhone() {
 
   // 通话中家人会说话
   useEffect(() => {
-    if (callState !== "connected" || !callingMember) return;
+    if (callState !== "connected" || !callingMember) {return;}
     const phrases = [
       `${callingMember.shortName}：嗯嗯，我在听...`,
       `${callingMember.shortName}：这个问题很有意思，让我想想...`,
@@ -106,7 +106,7 @@ export function FamilyPhone() {
     ];
     const t = setInterval(() => {
       setChatMessages(prev => {
-        if (prev.length >= 6) return prev;
+        if (prev.length >= 6) {return prev;}
         return [...prev, phrases[Math.min(prev.length, phrases.length - 1)]];
       });
     }, 5000 + Math.random() * 3000);
@@ -257,8 +257,8 @@ export function FamilyPhone() {
       <div className="max-w-2xl mx-auto px-4 md:px-8 mt-4 mb-6">
         <div className="flex gap-1">
           {[
-            { key: "contacts" as const, label: "家人通讯", icon: User },
-            { key: "dial" as const, label: "电话拨号", icon: Phone },
+            { key: "contacts" as const, label: "家人通讯录", icon: User },
+            { key: "dial" as const, label: "拨号", icon: Phone },
             { key: "logs" as const, label: "通话记录", icon: Clock },
           ].map(tab => (
             <button
@@ -332,7 +332,7 @@ export function FamilyPhone() {
                   className="bg-transparent text-center text-[#e0f0ff] outline-none w-full font-mono"
                   style={{ fontSize: "1.5rem", letterSpacing: "3px" }}
                   placeholder="YYC3-100X"
-                  onKeyDown={e => { if (e.key === "Enter") dialNumber(); }}
+                  onKeyDown={e => { if (e.key === "Enter") {dialNumber();} }}
                 />
                 <div className="h-px mt-3" style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent)" }} />
               </div>
@@ -378,7 +378,7 @@ export function FamilyPhone() {
           <div className="space-y-2">
             {MOCK_CALL_LOGS.map((log, i) => {
               const m = FAMILY_MEMBERS.find(f => f.id === log.memberId);
-              if (!m) return null;
+              if (!m) {return null;}
               const Icon = m.icon;
               return (
                 <FadeIn key={log.id} delay={i * 0.04}>

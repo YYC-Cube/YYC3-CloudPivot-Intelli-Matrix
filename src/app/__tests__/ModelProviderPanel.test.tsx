@@ -1,18 +1,57 @@
+// @vitest-environment jsdom
 /**
  * ModelProviderPanel.test.tsx
- * ============================
+ * ===============
  * 模型提供商面板测试
  */
 
-import React from "react";
+// Mock env-config before ollama-url
+vi.mock("../lib/env-config", () => ({
+  env: (key: string) => {
+    const defaults: Record<string, string> = {
+      OLLAMA_BASE_URL: "http://localhost:11434",
+      OLLAMA_PROXY_PATH: "/api/v1/llm/ollama",
+    };
+    return defaults[key] || "";
+  },
+}));
+
+// Mock ollama-url to avoid window is not defined error
+vi.mock("../lib/ollama-url", () => ({
+  isLocalDeployment: () => false,
+  shouldUseProxy: () => false,
+  getOllamaChatUrl: () => "http://localhost:11434/api/chat",
+  getOllamaTagsUrl: () => "http://localhost:11434/api/tags",
+  getOllamaUrl: () => "http://localhost:11434/api",
+  getOllamaEndpointInfo: () => ({
+    mode: "direct",
+    chatUrl: "http://localhost:11434/api/chat",
+    tagsUrl: "http://localhost:11434/api/tags",
+    proxyPath: "/api/v1/llm/ollama",
+    directBase: "http://localhost:11434",
+  }),
+}));
+
+// Mock localStorage
+const localStorageMock = (() => {
+  let store: Record<string, string> = {};
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+})();
+Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { ModelProviderPanel } from "../components/ModelProviderPanel";
 import { ViewContext } from "../lib/view-context";
 import { I18nContext } from "../hooks/useI18n";
 import zhCN from "../i18n/zh-CN";
-import "./setup";
 
 function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
@@ -62,6 +101,7 @@ function renderPanel() {
 
 describe("ModelProviderPanel", () => {
   beforeEach(() => {
+    cleanup();
     localStorage.clear();
   });
 
@@ -71,83 +111,83 @@ describe("ModelProviderPanel", () => {
 
   it("应渲染页面标题", () => {
     renderPanel();
-    expect(screen.getByText("模型管理")).toBeInTheDocument();
+    expect(screen.getAllByText("模型管理")[0]).toBeInTheDocument();
   });
 
   it("应有主容器", () => {
     renderPanel();
-    expect(screen.getByTestId("model-provider-panel")).toBeInTheDocument();
+    expect(screen.getAllByTestId("model-provider-panel")[0]).toBeInTheDocument();
   });
 
   it("应有添加模型按钮", () => {
     renderPanel();
-    expect(screen.getByTestId("open-add-model")).toBeInTheDocument();
+    expect(screen.getAllByTestId("open-add-model")[0]).toBeInTheDocument();
   });
 
   it("点击添加模型应打开模态框", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    expect(screen.getByTestId("add-model-modal")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    expect(screen.getAllByTestId("add-model-modal")[0]).toBeInTheDocument();
   });
 
   it("模态框应有服务商选择", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    expect(screen.getByTestId("provider-select")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    expect(screen.getAllByTestId("provider-select")[0]).toBeInTheDocument();
   });
 
   it("点击服务商选择应展开下拉", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    fireEvent.click(screen.getByTestId("provider-select"));
-    expect(screen.getByTestId("provider-dropdown")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-select")[0]);
+    expect(screen.getAllByTestId("provider-dropdown")[0]).toBeInTheDocument();
   });
 
   it("下拉应包含 9 个提供商选项", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    fireEvent.click(screen.getByTestId("provider-select"));
-    expect(screen.getByTestId("provider-option-zhipu")).toBeInTheDocument();
-    expect(screen.getByTestId("provider-option-openai")).toBeInTheDocument();
-    expect(screen.getByTestId("provider-option-ollama")).toBeInTheDocument();
-    expect(screen.getByTestId("provider-option-deepseek")).toBeInTheDocument();
-    expect(screen.getByTestId("provider-option-kimi-cn")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-select")[0]);
+    expect(screen.getAllByTestId("provider-option-zhipu")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("provider-option-openai")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("provider-option-ollama")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("provider-option-deepseek")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("provider-option-kimi-cn")[0]).toBeInTheDocument();
   });
 
   it("选择提供商后应显示模型选择", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    fireEvent.click(screen.getByTestId("provider-select"));
-    fireEvent.click(screen.getByTestId("provider-option-openai"));
-    expect(screen.getByTestId("model-select")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-select")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-option-openai")[0]);
+    expect(screen.getAllByTestId("model-select")[0]).toBeInTheDocument();
   });
 
   it("选择非 Ollama 提供商应显示 API 密钥输入", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    fireEvent.click(screen.getByTestId("provider-select"));
-    fireEvent.click(screen.getByTestId("provider-option-openai"));
-    expect(screen.getByTestId("api-key-input")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-select")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-option-openai")[0]);
+    expect(screen.getAllByTestId("api-key-input")[0]).toBeInTheDocument();
   });
 
   it("选择 Ollama 应显示端点输入", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    fireEvent.click(screen.getByTestId("provider-select"));
-    fireEvent.click(screen.getByTestId("provider-option-ollama"));
-    expect(screen.getByTestId("ollama-url-input")).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-select")[0]);
+    fireEvent.click(screen.getAllByTestId("provider-option-ollama")[0]);
+    expect(screen.getAllByTestId("ollama-url-input")[0]).toBeInTheDocument();
   });
 
   it("关闭按钮应关闭模态框", () => {
     renderPanel();
-    fireEvent.click(screen.getByTestId("open-add-model"));
-    expect(screen.getByTestId("add-model-modal")).toBeInTheDocument();
-    fireEvent.click(screen.getByTestId("close-modal"));
+    fireEvent.click(screen.getAllByTestId("open-add-model")[0]);
+    expect(screen.getAllByTestId("add-model-modal")[0]).toBeInTheDocument();
+    fireEvent.click(screen.getAllByTestId("close-modal")[0]);
     expect(screen.queryByTestId("add-model-modal")).not.toBeInTheDocument();
   });
 
   it("应有 Ollama 刷新按钮", () => {
     renderPanel();
-    expect(screen.getByTestId("refresh-ollama-models")).toBeInTheDocument();
+    expect(screen.getAllByTestId("refresh-ollama-models")[0]).toBeInTheDocument();
   });
 });

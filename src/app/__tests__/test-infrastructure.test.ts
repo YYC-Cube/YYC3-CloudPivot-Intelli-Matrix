@@ -7,6 +7,7 @@
  * - localStorage mock 正常工作
  * - 模块热重载 (vi.resetModules) 正常
  * - 异步 import 正常
+import React from "react";
  * - 类型导入正常
  * - JSON 序列化/反序列化正常
  * - 时间 mock 正常
@@ -20,7 +21,7 @@ const localStorageMock = {
   getItem: vi.fn((key: string) => store[key] ?? null),
   setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
   removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
+  clear: vi.fn(() => { for (const k of Object.keys(store)) delete store[k]; }),
   get length() { return Object.keys(store).length; },
   key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
 };

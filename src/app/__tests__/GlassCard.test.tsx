@@ -1,6 +1,7 @@
+// @vitest-environment jsdom
 /**
  * GlassCard.test.tsx
- * ===================
+ * ===========
  * GlassCard 组件 - 渲染测试
  *
  * 覆盖范围:
@@ -11,8 +12,8 @@
  * - cursor-pointer 条件样式
  */
 
-import React from "react";
 import { describe, it, expect, vi, afterEach } from "vitest";
+import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { GlassCard } from "../components/GlassCard";
 
@@ -20,7 +21,6 @@ describe("GlassCard", () => {
   afterEach(() => {
     cleanup();
   });
-
   it("应正确渲染子元素", () => {
     render(
       <GlassCard>
@@ -62,7 +62,7 @@ describe("GlassCard", () => {
   });
 
   it("有 onClick 时应可点击且包含 cursor-pointer", () => {
-    const handleClick = vi.fn();
+    const handleClick = vi.fn() as any;
     const { container } = render(
       <GlassCard onClick={handleClick}>Clickable</GlassCard>
     );
