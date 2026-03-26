@@ -11,7 +11,7 @@
  * 恢复代码分割: 部署到独立 Vite/Node 环境后，可还原为 React.lazy 版本。
  */
 
-import { createHashRouter } from "react-router";
+import { createHashRouter } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { DataMonitoring } from "./components/DataMonitoring";
 import { FollowUpPanel } from "./components/FollowUpPanel";

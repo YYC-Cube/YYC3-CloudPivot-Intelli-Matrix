@@ -23,7 +23,7 @@ import {
   Zap,
   MessageCircle, Share, Music, TrendingUp, Phone, Gamepad2, Mic, Database as DataIcon, MessageSquare, Settings as UISettings,
 } from "lucide-react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useI18n } from "../hooks/useI18n";
 import { YYC3Logo } from "./YYC3Logo";
 

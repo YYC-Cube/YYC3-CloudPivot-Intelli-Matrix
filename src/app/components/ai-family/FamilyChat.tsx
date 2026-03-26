@@ -13,7 +13,7 @@ import {
   Sparkles, Search,
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { FAMILY_MEMBERS, AI_RESPONSES, hexToRgb, getMember, DEEP_BG } from "./shared";
 
 // ═══ Types ═══

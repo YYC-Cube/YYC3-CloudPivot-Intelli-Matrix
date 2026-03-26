@@ -14,7 +14,7 @@ import {
   Cpu, Smartphone, HardDrive, Database, GitBranch, BrainCircuit,
   Package, Gauge, ServerCog,
 } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { SHORTCUT_LIST } from "../hooks/useKeyboardShortcuts";
 import { useI18n } from "../hooks/useI18n";
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { RouterProvider } from "react-router";
+import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import { Login } from "./components/Login";
 import { ErrorBoundary } from "./components/ErrorBoundary";

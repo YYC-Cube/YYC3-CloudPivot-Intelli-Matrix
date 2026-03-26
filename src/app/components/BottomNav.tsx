@@ -14,7 +14,7 @@
  */
 
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Activity, BarChart3, AlertTriangle, Radar,
   Wrench, RefreshCcw, FolderOpen, Settings,

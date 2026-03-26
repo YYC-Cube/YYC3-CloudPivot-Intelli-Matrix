@@ -26,7 +26,7 @@ import {
   UserCircle2,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate, useLocation } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ConnectionStatus } from "./ConnectionStatus";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { YYC3Logo } from "./YYC3Logo";

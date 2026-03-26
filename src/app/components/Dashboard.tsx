@@ -28,7 +28,7 @@ import { WebSocketContext, ViewContext } from "../lib/view-context";
 import { useI18n } from "../hooks/useI18n";
 import type { NodeData } from "../types";
 import { useSwipeable } from "react-swipeable";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { modelPerfStore, modelDistStore, radarStore, recentOpsStore } from "../stores/dashboard-stores";
 
 // ============================================================

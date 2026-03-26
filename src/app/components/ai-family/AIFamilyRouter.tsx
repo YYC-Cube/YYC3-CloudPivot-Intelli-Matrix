@@ -8,7 +8,7 @@
  */
 
 import React, { Suspense, useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router";
+import { useParams, useLocation } from "react-router-dom";
 
 // ═══ Lazy 加载（减少初始 bundle 大小）═══
 // 沙箱可能阻止 dynamic import，需要 fallback

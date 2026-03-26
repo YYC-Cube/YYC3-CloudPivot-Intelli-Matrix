@@ -33,7 +33,7 @@ import {
   Navigation,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useTerminal } from "../hooks/useTerminal";
 import { ViewContext } from "../lib/view-context";
 import { AuthContext } from "../lib/authContext";

@@ -7,7 +7,7 @@
 
 import React from "react";
 import { ChevronLeft } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 interface FamilyPageHeaderProps {
   icon: React.ElementType;

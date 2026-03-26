@@ -8,7 +8,7 @@
 import React from "react";
 import { render, screen, fireEvent, act, cleanup, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter } from "react-router-dom";
 import { SecurityMonitor } from "../components/SecurityMonitor";
 import { I18nContext } from "../hooks/useI18n";
 import type { I18nContextValue } from "../types";
@@ -19,14 +19,14 @@ function getNestedValue(obj: Record<string, any>, path: string): string {
   const keys = path.split(".");
   let result: any = obj;
   for (const k of keys) {
-    if (result === null || result === undefined || typeof result !== "object") {return path;}
+    if (result === null || result === undefined || typeof result !== "object") { return path; }
     result = result[k];
   }
   return typeof result === "string" ? result : path;
 }
 
 function interpolate(template: string, vars?: Record<string, string | number>): string {
-  if (!vars) {return template;}
+  if (!vars) { return template; }
   return template.replace(/\{(\w+)\}/g, (_, key) =>
     vars[key] !== null && vars[key] !== undefined ? String(vars[key]) : `{${key}}`
   );
@@ -36,7 +36,7 @@ function interpolate(template: string, vars?: Record<string, string | number>): 
 function createI18nValue(): I18nContextValue {
   return {
     locale: "zh-CN",
-    setLocale: () => {},
+    setLocale: () => { },
     t: (key: string, vars?: Record<string, string | number>) => {
       const raw = getNestedValue(zhCN as Record<string, any>, key);
       return vars ? interpolate(raw, vars) : raw;

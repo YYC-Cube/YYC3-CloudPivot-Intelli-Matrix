@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { FAMILY_MEMBERS, hexToRgb, DEEP_BG } from "./shared";
 
 // ═══ Settings Types ═══

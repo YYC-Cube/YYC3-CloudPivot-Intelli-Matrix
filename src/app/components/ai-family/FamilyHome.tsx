@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { FAMILY_MEMBERS, DEEP_BG, getGreeting, hexToRgb } from "./shared";
 
 // ═══ 图标映射（家园空间） ═══

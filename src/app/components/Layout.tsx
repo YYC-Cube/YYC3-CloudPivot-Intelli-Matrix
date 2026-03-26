@@ -10,7 +10,7 @@
  */
 
 import React, { useState, useContext, Suspense } from "react";
-import { Outlet, useLocation } from "react-router";
+import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { TopBar } from "./TopBar";
 import { Sidebar } from "./Sidebar";
