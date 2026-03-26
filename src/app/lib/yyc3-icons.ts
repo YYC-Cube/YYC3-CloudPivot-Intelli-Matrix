@@ -6,10 +6,10 @@ import type { ReactEventHandler } from "react";
  * YYC³ 图标资源中心化配置 — 与 GitHub 仓库 100% 对齐
  *
  * 仓库: https://github.com/YYC-Cube/Cloudpivotintellimatrix
- * 路径: public/yyc3-badge-icons/
+ * 路径: public/yyc3-icons/
  *
  * GitHub 仓库实际目录结构 (5 平台, 32 PNG):
- *   public/yyc3-badge-icons/
+ *   public/yyc3-icons/
  *   ├── Android/                     (6 files)
  *   │   ├── Play Store.png           512×512   160KB
  *   │   ├── hdpi.png                  72×72    6.7KB
@@ -67,13 +67,13 @@ import type { ReactEventHandler } from "react";
 // ============================================================
 
 const GH_BASE =
-  "https://raw.githubusercontent.com/YYC-Cube/Cloudpivotintellimatrix/main/public/yyc3-badge-icons";
+  "https://raw.githubusercontent.com/YYC-Cube/Cloudpivotintellimatrix/main/public/yyc3-icons";
 
 // ============================================================
 //  本地路径基础 URL (public/ 目录下)
 // ============================================================
 
-const LOCAL_BASE = "/yyc3-badge-icons";
+const LOCAL_BASE = "/yyc3-icons";
 
 // ============================================================
 //  路径解析器
@@ -100,80 +100,80 @@ export const icons = {
   // ═══════════════════════════════════════════════════════════
   //  Android/ (6 files)
   // ═══════════════════════════════════════════════════════════
-  androidMdpi:       localPath("Android/mdpi.png"),           //  48×48
-  androidHdpi:       localPath("Android/hdpi.png"),           //  72×72
-  androidXhdpi:      localPath("Android/xhdpi.png"),          //  96×96
-  androidXxhdpi:     localPath("Android/xxhdpi.png"),         // 144×144
-  androidXxxhdpi:    localPath("Android/xxxhdpi.png"),        // 192×192
-  androidPlayStore:  localPath("Android/Play Store.png"),     // 512×512
+  androidMdpi: localPath("Android/mdpi.png"),           //  48×48
+  androidHdpi: localPath("Android/hdpi.png"),           //  72×72
+  androidXhdpi: localPath("Android/xhdpi.png"),          //  96×96
+  androidXxhdpi: localPath("Android/xxhdpi.png"),         // 144×144
+  androidXxxhdpi: localPath("Android/xxxhdpi.png"),        // 192×192
+  androidPlayStore: localPath("Android/Play Store.png"),     // 512×512
 
   // ═══════════════════════════════════════════════════════════
   //  Web App/ (5 files) — favicon / PWA / apple-touch
   // ═══════════════════════════════════════════════════════════
-  favicon16:         localPath("Web App/favicon-16.png"),         //  16×16
-  favicon32:         localPath("Web App/favicon-32.png"),         //  32×32
-  webAppChrome192:   localPath("Web App/android-chrome-192.png"), // 192×192
-  webAppChrome512:   localPath("Web App/android-chrome-512.png"), // 512×512
-  webAppAppleTouch:  localPath("Web App/apple-touch-icon.png"),   // 180×180
+  favicon16: localPath("Web App/favicon-16.png"),         //  16×16
+  favicon32: localPath("Web App/favicon-32.png"),         //  32×32
+  webAppChrome192: localPath("Web App/android-chrome-192.png"), // 192×192
+  webAppChrome512: localPath("Web App/android-chrome-512.png"), // 512×512
+  webAppAppleTouch: localPath("Web App/apple-touch-icon.png"),   // 180×180
 
   // ═══════════════════════════════════════════════════════════
   //  iOS/ (14 files)
   // ═══════════════════════════════════════════════════════════
-  iosAppStore:              localPath("iOS/App Store.png"),             // 1024×1024
-  iosiPadApp:               localPath("iOS/iPad App.png"),             //   76×76
-  iosiPadNotification:      localPath("iOS/iPad Notification.png"),    //   20×20
-  iosiPadProApp2x:          localPath("iOS/iPad Pro App 2x.png"),     //  167×167
-  iosiPadSettings:          localPath("iOS/iPad Settings.png"),        //   29×29
-  iosiPadSpotlight:         localPath("iOS/iPad Spotlight.png"),       //   40×40
-  iosiPhoneApp2x:           localPath("iOS/iPhone App 2x.png"),       //  120×120
-  iosiPhoneApp3x:           localPath("iOS/iPhone App 3x.png"),       //  180×180
-  iosiPhoneNotification2x:  localPath("iOS/iPhone Notification 2x.png"), // 40×40
-  iosiPhoneNotification3x:  localPath("iOS/iPhone Notification 3x.png"), // 60×60
-  iosiPhoneSettings2x:      localPath("iOS/iPhone Settings 2x.png"),  //   58×58
-  iosiPhoneSettings3x:      localPath("iOS/iPhone Settings 3x.png"),  //   87×87
-  iosiPhoneSpotlight2x:     localPath("iOS/iPhone Spotlight 2x.png"), //   80×80
-  iosiPhoneSpotlight3x:     localPath("iOS/iPhone Spotlight 3x.png"), //  120×120
+  iosAppStore: localPath("iOS/App Store.png"),             // 1024×1024
+  iosiPadApp: localPath("iOS/iPad App.png"),             //   76×76
+  iosiPadNotification: localPath("iOS/iPad Notification.png"),    //   20×20
+  iosiPadProApp2x: localPath("iOS/iPad Pro App 2x.png"),     //  167×167
+  iosiPadSettings: localPath("iOS/iPad Settings.png"),        //   29×29
+  iosiPadSpotlight: localPath("iOS/iPad Spotlight.png"),       //   40×40
+  iosiPhoneApp2x: localPath("iOS/iPhone App 2x.png"),       //  120×120
+  iosiPhoneApp3x: localPath("iOS/iPhone App 3x.png"),       //  180×180
+  iosiPhoneNotification2x: localPath("iOS/iPhone Notification 2x.png"), // 40×40
+  iosiPhoneNotification3x: localPath("iOS/iPhone Notification 3x.png"), // 60×60
+  iosiPhoneSettings2x: localPath("iOS/iPhone Settings 2x.png"),  //   58×58
+  iosiPhoneSettings3x: localPath("iOS/iPhone Settings 3x.png"),  //   87×87
+  iosiPhoneSpotlight2x: localPath("iOS/iPhone Spotlight 2x.png"), //   80×80
+  iosiPhoneSpotlight3x: localPath("iOS/iPhone Spotlight 3x.png"), //  120×120
 
   // ═══════════════════════════════════════════════════════════
   //  macOS/ (7 files)
   // ═══════════════════════════════════════════════════════════
-  macOS16:    localPath("macOS/16.png"),     //   16×16
-  macOS32:    localPath("macOS/32.png"),     //   32×32
-  macOS64:    localPath("macOS/64.png"),     //   64×64
-  macOS128:   localPath("macOS/128.png"),    //  128×128
-  macOS256:   localPath("macOS/256.png"),    //  256×256
-  macOS512:   localPath("macOS/512.png"),    //  512×512
-  macOS1024:  localPath("macOS/1024.png"),   // 1024×1024
+  macOS16: localPath("macOS/16.png"),     //   16×16
+  macOS32: localPath("macOS/32.png"),     //   32×32
+  macOS64: localPath("macOS/64.png"),     //   64×64
+  macOS128: localPath("macOS/128.png"),    //  128×128
+  macOS256: localPath("macOS/256.png"),    //  256×256
+  macOS512: localPath("macOS/512.png"),    //  512×512
+  macOS1024: localPath("macOS/1024.png"),   // 1024×1024
 
   // ═══════════════════════════════════════════════════════════
   //  watchOS/ (4 files)
   // ═══════════════════════════════════════════════════════════
-  watchOSAppStore:    localPath("watchOS/App Store.png"),     // 1024×1024
-  watchOSHome:        localPath("watchOS/Home Screen.png"),   //   80×80
+  watchOSAppStore: localPath("watchOS/App Store.png"),     // 1024×1024
+  watchOSHome: localPath("watchOS/Home Screen.png"),   //   80×80
   watchOSNotification: localPath("watchOS/Notification.png"), //   48×48
-  watchOSShortLook:   localPath("watchOS/Short Look.png"),    //  172×172
+  watchOSShortLook: localPath("watchOS/Short Look.png"),    //  172×172
 
   // ═══════════════════════════════════════════════════════════
   //  语义化别名 (向后兼容 + 语义化快捷引用)
   // ═══════════════════════════════════════════════════════════
   /** 通用 Logo (最大尺寸 PNG) */
-  logo:         localPath("Web App/android-chrome-512.png"),
+  logo: localPath("Web App/android-chrome-512.png"),
   /** PWA 192x192 */
-  pwa192:       localPath("Web App/android-chrome-192.png"),
+  pwa192: localPath("Web App/android-chrome-192.png"),
   /** PWA 512x512 */
-  pwa512:       localPath("Web App/android-chrome-512.png"),
+  pwa512: localPath("Web App/android-chrome-512.png"),
   /** Apple Touch Icon */
   iosAppleTouch: localPath("Web App/apple-touch-icon.png"),
   /** iOS App Store 1024x1024 */
-  ios1024:      localPath("iOS/App Store.png"),
+  ios1024: localPath("iOS/App Store.png"),
   /** Android Play Store 512x512 */
-  playstore:    localPath("Android/Play Store.png"),
+  playstore: localPath("Android/Play Store.png"),
   /** 通用小尺寸 Logo */
-  logo72:       localPath("Android/hdpi.png"),
+  logo72: localPath("Android/hdpi.png"),
   /** 通用中尺寸 Logo */
-  logo192:      localPath("Web App/android-chrome-192.png"),
+  logo192: localPath("Web App/android-chrome-192.png"),
   /** 通用大尺寸 Logo */
-  logo512:      localPath("Web App/android-chrome-512.png"),
+  logo512: localPath("Web App/android-chrome-512.png"),
 } as const;
 
 // ============================================================
@@ -183,61 +183,61 @@ export const icons = {
 
 export const iconsCDN = {
   // Android
-  androidMdpi:       cdnPath("Android/mdpi.png"),
-  androidHdpi:       cdnPath("Android/hdpi.png"),
-  androidXhdpi:      cdnPath("Android/xhdpi.png"),
-  androidXxhdpi:     cdnPath("Android/xxhdpi.png"),
-  androidXxxhdpi:    cdnPath("Android/xxxhdpi.png"),
-  androidPlayStore:  cdnPath("Android/Play Store.png"),
+  androidMdpi: cdnPath("Android/mdpi.png"),
+  androidHdpi: cdnPath("Android/hdpi.png"),
+  androidXhdpi: cdnPath("Android/xhdpi.png"),
+  androidXxhdpi: cdnPath("Android/xxhdpi.png"),
+  androidXxxhdpi: cdnPath("Android/xxxhdpi.png"),
+  androidPlayStore: cdnPath("Android/Play Store.png"),
 
   // Web App
-  favicon16:         cdnPath("Web App/favicon-16.png"),
-  favicon32:         cdnPath("Web App/favicon-32.png"),
-  webAppChrome192:   cdnPath("Web App/android-chrome-192.png"),
-  webAppChrome512:   cdnPath("Web App/android-chrome-512.png"),
-  webAppAppleTouch:  cdnPath("Web App/apple-touch-icon.png"),
+  favicon16: cdnPath("Web App/favicon-16.png"),
+  favicon32: cdnPath("Web App/favicon-32.png"),
+  webAppChrome192: cdnPath("Web App/android-chrome-192.png"),
+  webAppChrome512: cdnPath("Web App/android-chrome-512.png"),
+  webAppAppleTouch: cdnPath("Web App/apple-touch-icon.png"),
 
   // iOS
-  iosAppStore:              cdnPath("iOS/App Store.png"),
-  iosiPadApp:               cdnPath("iOS/iPad App.png"),
-  iosiPadNotification:      cdnPath("iOS/iPad Notification.png"),
-  iosiPadProApp2x:          cdnPath("iOS/iPad Pro App 2x.png"),
-  iosiPadSettings:          cdnPath("iOS/iPad Settings.png"),
-  iosiPadSpotlight:         cdnPath("iOS/iPad Spotlight.png"),
-  iosiPhoneApp2x:           cdnPath("iOS/iPhone App 2x.png"),
-  iosiPhoneApp3x:           cdnPath("iOS/iPhone App 3x.png"),
-  iosiPhoneNotification2x:  cdnPath("iOS/iPhone Notification 2x.png"),
-  iosiPhoneNotification3x:  cdnPath("iOS/iPhone Notification 3x.png"),
-  iosiPhoneSettings2x:      cdnPath("iOS/iPhone Settings 2x.png"),
-  iosiPhoneSettings3x:      cdnPath("iOS/iPhone Settings 3x.png"),
-  iosiPhoneSpotlight2x:     cdnPath("iOS/iPhone Spotlight 2x.png"),
-  iosiPhoneSpotlight3x:     cdnPath("iOS/iPhone Spotlight 3x.png"),
+  iosAppStore: cdnPath("iOS/App Store.png"),
+  iosiPadApp: cdnPath("iOS/iPad App.png"),
+  iosiPadNotification: cdnPath("iOS/iPad Notification.png"),
+  iosiPadProApp2x: cdnPath("iOS/iPad Pro App 2x.png"),
+  iosiPadSettings: cdnPath("iOS/iPad Settings.png"),
+  iosiPadSpotlight: cdnPath("iOS/iPad Spotlight.png"),
+  iosiPhoneApp2x: cdnPath("iOS/iPhone App 2x.png"),
+  iosiPhoneApp3x: cdnPath("iOS/iPhone App 3x.png"),
+  iosiPhoneNotification2x: cdnPath("iOS/iPhone Notification 2x.png"),
+  iosiPhoneNotification3x: cdnPath("iOS/iPhone Notification 3x.png"),
+  iosiPhoneSettings2x: cdnPath("iOS/iPhone Settings 2x.png"),
+  iosiPhoneSettings3x: cdnPath("iOS/iPhone Settings 3x.png"),
+  iosiPhoneSpotlight2x: cdnPath("iOS/iPhone Spotlight 2x.png"),
+  iosiPhoneSpotlight3x: cdnPath("iOS/iPhone Spotlight 3x.png"),
 
   // macOS
-  macOS16:    cdnPath("macOS/16.png"),
-  macOS32:    cdnPath("macOS/32.png"),
-  macOS64:    cdnPath("macOS/64.png"),
-  macOS128:   cdnPath("macOS/128.png"),
-  macOS256:   cdnPath("macOS/256.png"),
-  macOS512:   cdnPath("macOS/512.png"),
-  macOS1024:  cdnPath("macOS/1024.png"),
+  macOS16: cdnPath("macOS/16.png"),
+  macOS32: cdnPath("macOS/32.png"),
+  macOS64: cdnPath("macOS/64.png"),
+  macOS128: cdnPath("macOS/128.png"),
+  macOS256: cdnPath("macOS/256.png"),
+  macOS512: cdnPath("macOS/512.png"),
+  macOS1024: cdnPath("macOS/1024.png"),
 
   // watchOS
-  watchOSAppStore:    cdnPath("watchOS/App Store.png"),
-  watchOSHome:        cdnPath("watchOS/Home Screen.png"),
+  watchOSAppStore: cdnPath("watchOS/App Store.png"),
+  watchOSHome: cdnPath("watchOS/Home Screen.png"),
   watchOSNotification: cdnPath("watchOS/Notification.png"),
-  watchOSShortLook:   cdnPath("watchOS/Short Look.png"),
+  watchOSShortLook: cdnPath("watchOS/Short Look.png"),
 
   // 别名
-  logo:         cdnPath("Web App/android-chrome-512.png"),
-  pwa192:       cdnPath("Web App/android-chrome-192.png"),
-  pwa512:       cdnPath("Web App/android-chrome-512.png"),
+  logo: cdnPath("Web App/android-chrome-512.png"),
+  pwa192: cdnPath("Web App/android-chrome-192.png"),
+  pwa512: cdnPath("Web App/android-chrome-512.png"),
   iosAppleTouch: cdnPath("Web App/apple-touch-icon.png"),
-  ios1024:      cdnPath("iOS/App Store.png"),
-  playstore:    cdnPath("Android/Play Store.png"),
-  logo72:       cdnPath("Android/hdpi.png"),
-  logo192:      cdnPath("Web App/android-chrome-192.png"),
-  logo512:      cdnPath("Web App/android-chrome-512.png"),
+  ios1024: cdnPath("iOS/App Store.png"),
+  playstore: cdnPath("Android/Play Store.png"),
+  logo72: cdnPath("Android/hdpi.png"),
+  logo192: cdnPath("Web App/android-chrome-192.png"),
+  logo512: cdnPath("Web App/android-chrome-512.png"),
 } as const;
 
 // ============================================================
@@ -272,20 +272,20 @@ export function handleIconError(
 // ============================================================
 
 export const pwaManifestIcons = [
-  { src: "yyc3-badge-icons/Web App/favicon-16.png",          sizes: "16x16",     type: "image/png" },
-  { src: "yyc3-badge-icons/Web App/favicon-32.png",          sizes: "32x32",     type: "image/png" },
-  { src: "yyc3-badge-icons/Web App/apple-touch-icon.png",    sizes: "180x180",   type: "image/png" },
-  { src: "yyc3-badge-icons/Web App/android-chrome-192.png",  sizes: "192x192",   type: "image/png", purpose: "any maskable" },
-  { src: "yyc3-badge-icons/Web App/android-chrome-512.png",  sizes: "512x512",   type: "image/png", purpose: "any maskable" },
-  { src: "yyc3-badge-icons/macOS/64.png",                    sizes: "64x64",     type: "image/png" },
-  { src: "yyc3-badge-icons/macOS/128.png",                   sizes: "128x128",   type: "image/png" },
-  { src: "yyc3-badge-icons/macOS/256.png",                   sizes: "256x256",   type: "image/png" },
-  { src: "yyc3-badge-icons/macOS/512.png",                   sizes: "512x512",   type: "image/png" },
-  { src: "yyc3-badge-icons/Android/mdpi.png",                sizes: "48x48",     type: "image/png" },
-  { src: "yyc3-badge-icons/Android/hdpi.png",                sizes: "72x72",     type: "image/png" },
-  { src: "yyc3-badge-icons/Android/xhdpi.png",               sizes: "96x96",     type: "image/png" },
-  { src: "yyc3-badge-icons/Android/xxhdpi.png",              sizes: "144x144",   type: "image/png" },
-  { src: "yyc3-badge-icons/Android/xxxhdpi.png",             sizes: "192x192",   type: "image/png" },
+  { src: "yyc3-icons/Web App/favicon-16.png", sizes: "16x16", type: "image/png" },
+  { src: "yyc3-icons/Web App/favicon-32.png", sizes: "32x32", type: "image/png" },
+  { src: "yyc3-icons/Web App/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+  { src: "yyc3-icons/Web App/android-chrome-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" },
+  { src: "yyc3-icons/Web App/android-chrome-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+  { src: "yyc3-icons/macOS/64.png", sizes: "64x64", type: "image/png" },
+  { src: "yyc3-icons/macOS/128.png", sizes: "128x128", type: "image/png" },
+  { src: "yyc3-icons/macOS/256.png", sizes: "256x256", type: "image/png" },
+  { src: "yyc3-icons/macOS/512.png", sizes: "512x512", type: "image/png" },
+  { src: "yyc3-icons/Android/mdpi.png", sizes: "48x48", type: "image/png" },
+  { src: "yyc3-icons/Android/hdpi.png", sizes: "72x72", type: "image/png" },
+  { src: "yyc3-icons/Android/xhdpi.png", sizes: "96x96", type: "image/png" },
+  { src: "yyc3-icons/Android/xxhdpi.png", sizes: "144x144", type: "image/png" },
+  { src: "yyc3-icons/Android/xxxhdpi.png", sizes: "192x192", type: "image/png" },
 ];
 
 // ============================================================
