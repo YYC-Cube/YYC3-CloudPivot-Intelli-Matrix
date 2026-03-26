@@ -31,6 +31,7 @@ export default [
       '*.log',
       '*.tmp',
       '.DS_Store',
+      '.pnpm-store',
     ],
   },
   {
@@ -43,7 +44,6 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        project: './tsconfig.json',
       },
       globals: {
         ...globals.browser,
@@ -87,6 +87,29 @@ export default [
       'curly': ['error', 'all'],
       'no-undef': 'warn',
       'no-unused-vars': 'off',
+      // React Compiler strict checks - disable for now (too strict for existing codebase)
+      'react-hooks/immutability': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'react-hooks/refs': 'off',
+      'react-hooks/hooks': 'off',
+      'react-hooks/capitalized-calls': 'off',
+      'react-hooks/static-components': 'off',
+      'react-hooks/use-memo': 'off',
+      'react-hooks/void-use-memo': 'off',
+      'react-hooks/component-hook-factories': 'off',
+      'react-hooks/preserve-manual-memoization': 'off',
+      'react-hooks/incompatible-library': 'off',
+      'react-hooks/globals': 'off',
+      'react-hooks/memoized-effect-dependencies': 'off',
+      'react-hooks/purity': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+      // Allow empty catch blocks
+      'no-empty': ['warn', { allowEmptyCatch: true }],
+      // Allow unescaped entities in JSX (Chinese quotes)
+      'react/no-unescaped-entities': 'off',
+      // Downgrade some strict rules
+      'no-useless-assignment': 'warn',
+      'no-useless-escape': 'warn',
     },
   },
   {

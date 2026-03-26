@@ -267,7 +267,7 @@ export function useAlertRules(opts: AlertRulesOptions = {}) {
             let value: number | null = null;
             if (th.metric === "gpu") {value = node.gpu;}
             else if (th.metric === "memory") {value = node.mem;}
-            else if (th.metric === "latency" && opts.liveLatency != null) {value = opts.liveLatency;}
+            else if (th.metric === "latency" && opts.liveLatency !== null && opts.liveLatency !== undefined) {value = opts.liveLatency;}
 
             if (value === null) {continue;}
 
