@@ -24,7 +24,7 @@ import {
   Group,
   Separator,
 } from "react-resizable-panels";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
 import { IDETopBar } from "./IDETopBar";
 import { IDEViewSwitcher } from "./IDEViewSwitcher";
@@ -63,8 +63,8 @@ export function IDELayout() {
   const [layoutMode, setLayoutMode] = useState<IDELayoutMode>(() => {
     try {
       const stored = localStorage.getItem(LAYOUT_MODE_STORAGE_KEY);
-      if (stored === "edit" || stored === "preview" || stored === "free") {return stored;}
-    } catch {}
+      if (stored === "edit" || stored === "preview" || stored === "free") { return stored; }
+    } catch { }
     return "preview";
   });
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
@@ -77,7 +77,7 @@ export function IDELayout() {
   useEffect(() => {
     try {
       localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, layoutMode);
-    } catch {}
+    } catch { }
   }, [layoutMode]);
 
   const handleBack = useCallback(() => {
@@ -86,9 +86,9 @@ export function IDELayout() {
 
   const handleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => {});
+      document.exitFullscreen().catch(() => { });
     } else {
-      document.documentElement.requestFullscreen().catch(() => {});
+      document.documentElement.requestFullscreen().catch(() => { });
     }
   }, []);
 
@@ -166,8 +166,8 @@ export function IDELayout() {
       if ((e.ctrlKey || e.metaKey) && e.key === "3") {
         e.preventDefault();
         setLayoutMode((m) => {
-          if (m === "edit") {return "preview";}
-          if (m === "preview") {return "free";}
+          if (m === "edit") { return "preview"; }
+          if (m === "preview") { return "free"; }
           return "edit";
         });
       }
@@ -403,8 +403,8 @@ export function IDELayout() {
           background: layoutMode === "edit"
             ? "linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.05) 50%, transparent 100%)"
             : layoutMode === "preview"
-            ? "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)"
-            : "linear-gradient(90deg, transparent 0%, rgba(255,193,7,0.05) 50%, transparent 100%)",
+              ? "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)"
+              : "linear-gradient(90deg, transparent 0%, rgba(255,193,7,0.05) 50%, transparent 100%)",
           borderBottom: "1px solid rgba(0,180,255,0.05)",
         }}
       >
