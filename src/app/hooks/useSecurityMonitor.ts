@@ -9,24 +9,32 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import type {
   SecurityTab,
-  ScanStatus,
   RiskLevel,
-  VitalRating,
   CSPResult,
   CookieResult,
   SensitiveDataResult,
-  ResourceEntry,
   PerformanceResult,
   MemoryResult,
   WebVital,
   DeviceInfo,
   NetworkInfo,
-  BrowserFeature,
   BrowserInfo,
-  StorageUsage,
   DataManagementState,
   SecurityMonitorState,
 } from "../types";
+
+declare global {
+  interface Navigator {
+    deviceMemory?: number;
+    connection?: {
+      type?: string;
+      downlink?: number;
+      rtt?: number;
+      effectiveType?: string;
+      saveData?: boolean;
+    };
+  }
+}
 
 // RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
 
@@ -139,7 +147,7 @@ function mockVitals(): WebVital[] {
 function mockDevice(): DeviceInfo {
   return {
     cpuCores: typeof navigator !== "undefined" ? navigator.hardwareConcurrency || 8 : 8,
-    memory: typeof navigator !== "undefined" ? (navigator as any).deviceMemory || null : null,
+    memory: typeof navigator !== "undefined" ? navigator.deviceMemory || null : null,
     screen: typeof window !== "undefined" ? `${window.screen.width}x${window.screen.height}` : "1920x1080",
     pixelRatio: typeof window !== "undefined" ? window.devicePixelRatio || 1 : 2,
     touchSupport: typeof window !== "undefined" ? "ontouchstart" in window : false,
@@ -150,7 +158,7 @@ function mockDevice(): DeviceInfo {
 }
 
 function mockNetwork(): NetworkInfo {
-  const conn = typeof navigator !== "undefined" ? (navigator as any).connection : null;
+  const conn = typeof navigator !== "undefined" ? navigator.connection : null;
   return {
     type: conn?.type || "wifi",
     downlink: conn?.downlink || 100,
@@ -276,9 +284,9 @@ export function useSecurityMonitor() {
 
   const cleanupData = useCallback((type: "expired" | "cache" | "privacy") => {
     setState((prev) => {
-      if (!prev.dataManagement) {return prev;}
+      if (!prev.dataManagement) { return prev; }
       const dm = { ...prev.dataManagement };
-      if (type === "expired") {dm.expiredItems = 0;}
+      if (type === "expired") { dm.expiredItems = 0; }
       if (type === "cache") { dm.cacheSize = 0; dm.storage = { ...dm.storage, cacheAPI: 0 }; }
       if (type === "privacy") {
         dm.storage = { ...dm.storage, sessionStorage: 0 };
@@ -301,7 +309,7 @@ export function useSecurityMonitor() {
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      if (scanTimer.current) {clearTimeout(scanTimer.current);}
+      if (scanTimer.current) { clearTimeout(scanTimer.current); }
     };
   }, []);
 

@@ -23,14 +23,14 @@ export interface FamilyMember {
   enTitle: string;
   quote: string;
   role: string;
-  phone: string;           // 家人专属号码
-  personality: string;     // 性格特质
+  phone: string | null;           // 家人专属号码
+  personality: string | null;     // 性格特质
   hobbies: string[];       // 兴趣爱好
   expertise: string[];     // 专业技能
-  greeting: string;        // 接听电话时的问候语
-  careMessage: string;     // 整点关爱播报
+  greeting: string | null;        // 接听电话时的问候语
+  careMessage: string | null;     // 整点关爱播报
   responsibilities: string[];
-  coreAbility: string;
+  coreAbility: string | null;
   color: string;
   icon: React.ElementType;
   status: "online" | "speaking" | "idle";
@@ -196,7 +196,7 @@ export function getHourlyCare(): { member: FamilyMember; message: string } {
   const h = new Date().getHours();
   const idx = h % FAMILY_MEMBERS.length;
   const m = FAMILY_MEMBERS[idx];
-  return { member: m, message: m.careMessage };
+  return { member: m, message: m.careMessage || "" };
 }
 
 // ═══ 勋章体系 ═══

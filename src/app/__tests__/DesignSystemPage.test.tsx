@@ -10,8 +10,7 @@
  * - 区域切换
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { DesignSystemPage } from "../components/design-system/DesignSystemPage";
 import { ViewContext } from "../lib/view-context";

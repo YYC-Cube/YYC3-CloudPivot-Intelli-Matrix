@@ -217,7 +217,6 @@ export function TopBar({
           <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => navigate("/")}>
             {!isDesktop && <YYC3Logo size="xs" showStatus={false} glow={false} />}
             <span
-              data-testid="brand-name"
               className="text-[#00d4ff] tracking-[0.15em]"
               style={{ fontFamily: "'Orbitron', sans-serif", fontSize: isDesktop ? "0.88rem" : "0.82rem" }}
             >
@@ -246,7 +245,6 @@ export function TopBar({
               <Search className="absolute left-2.5 w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />
               <input
                 type="text"
-                data-testid="search-input"
                 placeholder={t("palette.placeholder")}
                 className={`
                   w-full pl-8 pr-8 rounded-lg
@@ -312,7 +310,6 @@ export function TopBar({
             >
               <Bell className="w-4 h-4 text-[rgba(0,212,255,0.45)]" />
               <span
-                data-testid="notification-badge"
                 className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-[#ff3366] flex items-center justify-center shadow-[0_0_6px_rgba(255,51,102,0.4)]"
                 style={{ fontSize: "0.45rem", color: "white" }}
               >
@@ -382,14 +379,13 @@ export function TopBar({
           {/* User Avatar (桌面下拉菜单) */}
           <div className="relative" ref={userMenuRef}>
             <button
-              data-testid="user-avatar-btn"
               onClick={() => { setUserMenuOpen(!userMenuOpen); setNotifOpen(false); }}
               className={`flex items-center gap-1.5 rounded-lg transition-all min-h-[36px] px-1.5 ${
                 userMenuOpen ? "bg-[rgba(0,212,255,0.06)]" : "hover:bg-[rgba(0,212,255,0.04)]"
               }`}
             >
               <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[#00d4ff] to-[#7b2ff7] flex items-center justify-center">
-                <span data-testid="user-initials" className="text-white" style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "0.5rem" }}>{initials}</span>
+                <span className="text-white" style={{ fontFamily: "'Orbitron', sans-serif", fontSize: "0.5rem" }}>{initials}</span>
               </div>
               {!isMobile && (
                 <ChevronDown className={`w-3 h-3 text-[rgba(0,212,255,0.3)] transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`} />
@@ -506,7 +502,6 @@ export function TopBar({
                   <Search className="absolute left-3 w-4 h-4 text-[rgba(0,212,255,0.35)]" />
                   <input
                     type="text"
-                    data-testid="mobile-search-input"
                     placeholder={t("palette.placeholder")}
                     className="w-full pl-10 pr-4 rounded-xl bg-[rgba(0,40,80,0.25)] border border-[rgba(0,180,255,0.08)] text-[#e0f0ff] placeholder-[rgba(0,212,255,0.2)] focus:outline-none focus:border-[rgba(0,212,255,0.25)]"
                     style={{ height: 40, fontSize: "0.8rem" }}

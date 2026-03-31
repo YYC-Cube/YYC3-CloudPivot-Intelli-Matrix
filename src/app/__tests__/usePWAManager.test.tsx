@@ -20,7 +20,7 @@ import { renderHook, act, cleanup } from "@testing-library/react";
 import { usePWAManager } from "../hooks/usePWAManager";
 
 vi.mock("sonner", () => ({
-  toast: { success: vi.fn(), info: vi.fn(), error: vi.fn() },
+  toast: { success: vi.fn(), info: vi.fn(), error: vi.fn(), warning: vi.fn() },
 }));
 
 describe("usePWAManager", () => {

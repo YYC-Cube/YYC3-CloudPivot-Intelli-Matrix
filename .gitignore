@@ -39,7 +39,6 @@ ehthumbs.db
 Thumbs.db
 
 # IDE
-.vscode/
 .idea/
 *.swp
 *.swo
@@ -124,6 +123,7 @@ out
 
 # pnpm
 .pnpm-debug.log*
+.pnpm-store/
 
 # Backup files
 *.bak

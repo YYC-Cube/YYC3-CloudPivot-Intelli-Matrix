@@ -12,21 +12,14 @@ import {
   CheckSquare, Square,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
-import { toast } from "sonner";
 import type { Model, NodeStatusRecord, Agent, NodeStatusType } from "../types";
-
-const toastStyle = {
-  background: "rgba(8, 25, 55, 0.95)",
-  border: "1px solid rgba(0, 255, 136, 0.3)",
-  color: "#e0f0ff",
-};
 
 // ── 排序工具 ──
 function sortItems<T>(items: T[], field: string, dir: "asc" | "desc"): T[] {
   if (!field) {return items;}
   return [...items].sort((a, b) => {
-    const va = (a as any)[field];
-    const vb = (b as any)[field];
+    const va = (a as Record<string, unknown>)[field];
+    const vb = (b as Record<string, unknown>)[field];
     if (typeof va === "number" && typeof vb === "number") {return dir === "asc" ? va - vb : vb - va;}
     const sa = String(va ?? "").toLowerCase();
     const sb = String(vb ?? "").toLowerCase();
@@ -71,7 +64,7 @@ function RowCheck({ checked, onChange }: { checked: boolean; onChange: () => voi
 // ── 批量工具栏 ──
 function BatchBar({ count, onDelete, onClear }: { count: number; onDelete: () => void; onClear: () => void }) {
   const [confirm, setConfirm] = useState(false);
-  if (count === 0) {return null;}
+  if (count === 0) { return null; }
   return (
     <div className="flex items-center gap-3 px-3 py-2 mb-2 rounded-xl bg-[rgba(255,51,102,0.06)] border border-[rgba(255,51,102,0.15)]" style={{ fontSize: "0.72rem" }}>
       <span className="text-[rgba(0,212,255,0.5)]">已选 <span className="text-[#00d4ff]">{count}</span> 项</span>
@@ -133,7 +126,7 @@ export function ModelTable({ models, editingId, editDraft, errors, onStartEdit, 
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const toggleSort = useCallback((f: string) => {
-    if (sortField === f) {setSortDir((d) => d === "asc" ? "desc" : "asc");}
+    if (sortField === f) { setSortDir((d) => d === "asc" ? "desc" : "asc"); }
     else { setSortField(f); setSortDir("asc"); }
   }, [sortField]);
 
@@ -226,7 +219,7 @@ export function NodeTable({ nodes, editingId, editDraft, onStartEdit, onSave, on
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const toggleSort = useCallback((f: string) => {
-    if (sortField === f) {setSortDir((d) => d === "asc" ? "desc" : "asc");}
+    if (sortField === f) { setSortDir((d) => d === "asc" ? "desc" : "asc"); }
     else { setSortField(f); setSortDir("asc"); }
   }, [sortField]);
 
@@ -316,7 +309,7 @@ export function AgentTable({ agents, editingId, editDraft, onStartEdit, onSave, 
   const [sortDir, setSortDir] = useState<"asc" | "desc">("asc");
 
   const toggleSort = useCallback((f: string) => {
-    if (sortField === f) {setSortDir((d) => d === "asc" ? "desc" : "asc");}
+    if (sortField === f) { setSortDir((d) => d === "asc" ? "desc" : "asc"); }
     else { setSortField(f); setSortDir("asc"); }
   }, [sortField]);
 

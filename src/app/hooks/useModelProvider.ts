@@ -309,7 +309,7 @@ export function useModelProvider() {
       }
 
       return models;
-    } catch (err: any) {
+    } catch (err: unknown) {
       // Mock fallback for development
       const mockModels: OllamaModel[] = [
         {
@@ -362,7 +362,7 @@ export function useModelProvider() {
         },
       ];
       setOllamaModels(mockModels);
-      setOllamaError(`连接失败 (Mock 模式): ${err.message}`);
+      setOllamaError(`连接失败 (Mock 模式): ${err instanceof Error ? err.message : String(err)}`);
 
       // Mock 模式也同步
       setProviders((prev) =>
@@ -382,7 +382,7 @@ export function useModelProvider() {
   // ========== 初始化时自动获取 Ollama 模型 ==========
   useEffect(() => {
     fetchOllamaModels();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   // ========== 合并可用模型列表（供 AI 浮窗等消费） ==========

@@ -11,7 +11,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import React from "react";
 
 // Mock IndexedDB 操作（yyc3-storage）
 vi.mock("../lib/yyc3-storage", () => ({
@@ -22,19 +21,6 @@ vi.mock("../lib/yyc3-storage", () => ({
 
 import { idbPut, idbGetAll, idbClear } from "../lib/yyc3-storage";
 
-// Mock localStorage
-const localStorageMock = (() => {
-  let store: Record<string, string> = {};
-  return {
-    getItem: vi.fn((key: string) => store[key] || null),
-    setItem: vi.fn((key: string, value: string) => { store[key] = value; }),
-    removeItem: vi.fn((key: string) => { delete store[key]; }),
-    clear: vi.fn(() => { store = {}; }),
-  };
-})();
-
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
-
 import {
   captureError,
   getErrorLog,
@@ -42,9 +28,19 @@ import {
   getFullErrorLog,
 } from "../lib/error-handler";
 
+function createLocalStorageMock() {
+  let store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] || null),
+    setItem: vi.fn((key: string, value: string) => { store[key] = value; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { store = {}; }),
+  };
+}
+
 describe("RF-002: 错误日志 localStorage + IndexedDB 双写", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -84,7 +80,7 @@ describe("RF-002: 错误日志 localStorage + IndexedDB 双写", () => {
     it("应清除 localStorage", () => {
       captureError(new Error("to be cleared"), { silent: true });
       clearErrorLog();
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith("yyc3_error_log");
+      expect(localStorage.removeItem).toHaveBeenCalledWith("yyc3_error_log");
       expect(getErrorLog()).toEqual([]);
     });
 

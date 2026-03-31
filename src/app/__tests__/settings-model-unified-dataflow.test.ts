@@ -9,8 +9,9 @@
  * 3. 设置页 = 全局数据源，多组件共享
  */
 
-// Mock localStorage
-const localStorageMock = (() => {
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] || null,
@@ -18,11 +19,7 @@ const localStorageMock = (() => {
     removeItem: (key: string) => { delete store[key]; },
     clear: () => { store = {}; },
   };
-})();
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
-
-import { describe, it, expect, beforeEach } from "vitest";
-import React from "react";
+}
 import { createLocalStore } from "../lib/create-local-store";
 import type { SettingsValues } from "../hooks/useSettingsStore";
 
@@ -45,6 +42,7 @@ describe("createLocalStore — 通用 CRUD 工厂", () => {
   let store: ReturnType<typeof createLocalStore<TestItem>>;
 
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     localStorage.clear();
     store = createLocalStore<TestItem>("test_store", DEFAULTS, "t");
   });
@@ -112,6 +110,7 @@ describe("createLocalStore — 通用 CRUD 工厂", () => {
 
 describe("dashboard-stores — 节点 Store", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     localStorage.clear();
   });
 
@@ -207,6 +206,7 @@ describe("dashboard-stores — 节点 Store", () => {
 
 describe("dashboard-stores — 所有 Store CRUD 接口完整性", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     localStorage.clear();
   });
 
@@ -241,6 +241,7 @@ describe("dashboard-stores — 所有 Store CRUD 接口完整性", () => {
 
 describe("env-config — 环境变量可编辑", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     localStorage.clear();
   });
 
@@ -248,7 +249,7 @@ describe("env-config — 环境变量可编辑", () => {
     const { env, resetEnvConfig } = await import("../lib/env-config");
     resetEnvConfig();
 
-    expect(env("OLLAMA_BASE_URL")).toBe("http://localhost:11434");
+    expect(env("OLLAMA_BASE_URL")).toBe("http://host.docker.internal:11435");
     expect(env("DEFAULT_AI_MODEL")).toBe("gpt-4o");
     expect(env("DEFAULT_AI_TEMPERATURE")).toBe(0.7);
   });
@@ -340,6 +341,7 @@ describe("useSettingsStore — 类型完整性", () => {
 
 describe("杜绝硬编码 — 重置验证", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     localStorage.clear();
   });
 

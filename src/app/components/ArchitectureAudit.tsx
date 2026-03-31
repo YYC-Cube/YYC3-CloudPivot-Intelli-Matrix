@@ -19,7 +19,7 @@ import {
   BarChart3, Layers, Database, Route, FileCode2,
   CheckCircle2, AlertTriangle, XCircle, Shield,
   ChevronDown, ChevronRight, GitBranch, Package,
-  TestTube2, Cpu, Globe, Palette, Eye,
+  TestTube2, Cpu, Globe, Eye,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
@@ -339,7 +339,7 @@ function StatCard({ icon: Icon, label, value, sub }: { icon: React.ElementType; 
 /* ── 主组件 ────────────────────────────────────────── */
 
 export function ArchitectureAudit() {
-  const { t } = useI18n();
+  const { t: _t } = useI18n();
   const [activeTab, setActiveTab] = useState<"overview" | "routes" | "stores" | "tests" | "checklist" | "gaps">("overview");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
@@ -395,11 +395,10 @@ export function ArchitectureAudit() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-              activeTab === tab.key
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${activeTab === tab.key
                 ? "bg-[rgba(0,212,255,0.15)] text-[#00d4ff] border border-[rgba(0,212,255,0.3)]"
                 : "text-[rgba(180,200,220,0.6)] hover:text-[rgba(180,200,220,0.9)] hover:bg-[rgba(255,255,255,0.03)]"
-            }`}
+              }`}
             style={{ fontSize: "0.78rem" }}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -573,10 +572,10 @@ export function ArchitectureAudit() {
               {["getAll(): T[]", "getById(id): T | undefined", "add(item): T", "update(id, partial): T | null",
                 "remove(id): boolean", "removeBatch(ids): number", "reset(): T[]",
                 "exportData(): string", "importData(json): boolean", "count(): number"].map(m => (
-                <div key={m} className="flex items-center gap-2">
-                  <span className="text-[#00d4ff]">+</span> {m}
-                </div>
-              ))}
+                  <div key={m} className="flex items-center gap-2">
+                    <span className="text-[#00d4ff]">+</span> {m}
+                  </div>
+                ))}
             </div>
           </GlassCard>
         </div>
@@ -613,13 +612,12 @@ export function ArchitectureAudit() {
                     <tr key={tf.file} className="border-b border-[rgba(0,180,255,0.05)]">
                       <td className="py-1.5 pr-3 text-[rgba(224,232,240,0.8)] font-mono">{tf.file}</td>
                       <td className="py-1.5 pr-3">
-                        <span className={`px-1.5 py-0.5 rounded ${
-                          tf.type === "unit" ? "bg-blue-500/10 text-blue-300" :
-                          tf.type === "component" ? "bg-emerald-500/10 text-emerald-300" :
-                          tf.type === "integration" ? "bg-purple-500/10 text-purple-300" :
-                          tf.type === "a11y" ? "bg-amber-500/10 text-amber-300" :
-                          "bg-red-500/10 text-red-300"
-                        }`} style={{ fontSize: "0.65rem" }}>
+                        <span className={`px-1.5 py-0.5 rounded ${tf.type === "unit" ? "bg-blue-500/10 text-blue-300" :
+                            tf.type === "component" ? "bg-emerald-500/10 text-emerald-300" :
+                              tf.type === "integration" ? "bg-purple-500/10 text-purple-300" :
+                                tf.type === "a11y" ? "bg-amber-500/10 text-amber-300" :
+                                  "bg-red-500/10 text-red-300"
+                          }`} style={{ fontSize: "0.65rem" }}>
                           {tf.type}
                         </span>
                       </td>
@@ -707,11 +705,10 @@ export function ArchitectureAudit() {
           {KNOWN_GAPS.map(gap => (
             <GlassCard key={gap.id} className="p-4">
               <div className="flex items-start gap-3">
-                <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${
-                  gap.severity === "critical" ? "text-red-400" :
-                  gap.severity === "high" ? "text-orange-400" :
-                  gap.severity === "medium" ? "text-amber-400" : "text-blue-400"
-                }`} />
+                <AlertTriangle className={`w-4 h-4 shrink-0 mt-0.5 ${gap.severity === "critical" ? "text-red-400" :
+                    gap.severity === "high" ? "text-orange-400" :
+                      gap.severity === "medium" ? "text-amber-400" : "text-blue-400"
+                  }`} />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-[rgba(0,212,255,0.6)] font-mono" style={{ fontSize: "0.68rem" }}>{gap.id}</span>

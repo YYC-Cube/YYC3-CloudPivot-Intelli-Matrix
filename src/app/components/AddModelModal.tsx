@@ -10,7 +10,7 @@
  * - 添加模型按钮
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { X, ChevronDown, ChevronUp, Loader2, Server, Key, Cpu, RefreshCw } from "lucide-react";
 import { useI18n } from "../hooks/useI18n";
 import type { ModelProviderId, ModelProviderDef, OllamaModel } from "../types";
@@ -74,9 +74,7 @@ export function AddModelModal({
 
   // When provider changes, reset model and fetch Ollama if needed
   useEffect(() => {
-    setTimeout(() => {
-      setSelectedModel("");
-    }, 0);
+    setSelectedModel("");
     if (selectedProviderId === "ollama") {
       onFetchOllama(ollamaUrl);
     }

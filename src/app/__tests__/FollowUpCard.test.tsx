@@ -13,13 +13,12 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { FollowUpCard } from "../components/FollowUpCard";
 import type { FollowUpItem } from "../types";
 
 // Mock react-router (needed by sub-components)
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => vi.fn(),
 }));
 
@@ -128,10 +127,9 @@ describe("FollowUpCard", () => {
       const expandBtn = buttons.find(
         (b) => b.querySelector("svg") && !b.textContent?.trim()
       );
-      if (expandBtn) {
-        fireEvent.click(expandBtn);
-        expect(screen.getByText("操作链路")).toBeInTheDocument();
-      }
+      expect(expandBtn).toBeTruthy();
+      fireEvent.click(expandBtn!);
+      expect(screen.getByText("操作链路")).toBeInTheDocument();
     });
   });
 
@@ -147,10 +145,9 @@ describe("FollowUpCard", () => {
       const buttons = screen.getAllByRole("button");
       // The ExternalLink button is one of the first buttons
       const drawerBtn = buttons.find((b) => b.getAttribute("title") === "打开详情面板");
-      if (drawerBtn) {
-        fireEvent.click(drawerBtn);
-        expect(onOpenDrawer).toHaveBeenCalledWith(mockItem);
-      }
+      expect(drawerBtn).toBeTruthy();
+      fireEvent.click(drawerBtn!);
+      expect(onOpenDrawer).toHaveBeenCalledWith(mockItem);
     });
   });
 

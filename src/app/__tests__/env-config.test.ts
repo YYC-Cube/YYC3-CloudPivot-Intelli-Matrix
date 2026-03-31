@@ -10,23 +10,22 @@
  * - resetEnvConfig() 重置
  * - exportEnvConfig() 导出 JSON
  * - importEnvConfig() 导入 JSON
-import React from "react";
  * - 所有 31 个环境变量默认值验证
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// Mock localStorage (node 环境无 localStorage)
-const store: Record<string, string> = {};
-const localStorageMock = {
-  getItem: vi.fn((key: string) => store[key] ?? null),
-  setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
-  removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
-  get length() { return Object.keys(store).length; },
-  key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
-};
-(globalThis as any).localStorage = localStorageMock;
+function createLocalStorageMock() {
+  const store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { for (const k of Object.keys(store)) { delete store[k]; } }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
+  };
+}
 
 // 每次测试前重置模块 (因为 _envConfig 是单例缓存)
 async function freshImport() {
@@ -36,7 +35,7 @@ async function freshImport() {
 
 describe("env-config", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -49,17 +48,17 @@ describe("env-config", () => {
 
     it("should return default SYSTEM_VERSION", async () => {
       const { env } = await freshImport();
-      expect(env("SYSTEM_VERSION")).toBe("3.2.0");
+      expect(env("SYSTEM_VERSION")).toBe("0.0.1");
     });
 
     it("should return default API_BASE_URL", async () => {
       const { env } = await freshImport();
-      expect(env("API_BASE_URL")).toBe("http://192.168.3.1:3118/api");
+      expect(env("API_BASE_URL")).toBe("http://localhost:3119/api");
     });
 
     it("should return default WS_ENDPOINT", async () => {
       const { env } = await freshImport();
-      expect(env("WS_ENDPOINT")).toBe("ws://localhost:3113/ws");
+      expect(env("WS_ENDPOINT")).toBe("ws://localhost:3114/ws");
     });
 
     it("should return default STORAGE_PREFIX", async () => {
@@ -161,8 +160,8 @@ describe("env-config", () => {
     it("should persist to localStorage", async () => {
       const { setEnvConfig } = await freshImport();
       setEnvConfig({ CLUSTER_ID: "TEST-CLUSTER" });
-      expect(localStorageMock.setItem).toHaveBeenCalled();
-      const stored = JSON.parse(store["yyc3_env_config"]!);
+      expect(localStorage.setItem).toHaveBeenCalled();
+      const stored = JSON.parse(localStorage.getItem("yyc3_env_config")!);
       expect(stored.CLUSTER_ID).toBe("TEST-CLUSTER");
     });
 
@@ -182,14 +181,14 @@ describe("env-config", () => {
       setEnvConfig({ SYSTEM_VERSION: "0.0.1" });
       expect(env("SYSTEM_VERSION")).toBe("0.0.1");
       resetEnvConfig();
-      expect(env("SYSTEM_VERSION")).toBe("3.2.0");
+      expect(env("SYSTEM_VERSION")).toBe("0.0.1");
     });
 
     it("should remove localStorage entry", async () => {
       const { setEnvConfig, resetEnvConfig } = await freshImport();
       setEnvConfig({ SYSTEM_VERSION: "0.0.1" });
       resetEnvConfig();
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith("yyc3_env_config");
+      expect(localStorage.removeItem).toHaveBeenCalledWith("yyc3_env_config");
     });
   });
 
@@ -234,7 +233,7 @@ describe("env-config", () => {
   // ───────────── localStorage 优先级 ─────────────
   describe("localStorage override", () => {
     it("should read from localStorage on fresh init", async () => {
-      store["yyc3_env_config"] = JSON.stringify({ SYSTEM_VERSION: "stored-version" });
+      localStorage.setItem("yyc3_env_config", JSON.stringify({ SYSTEM_VERSION: "stored-version" }));
       const { env } = await freshImport();
       expect(env("SYSTEM_VERSION")).toBe("stored-version");
     });

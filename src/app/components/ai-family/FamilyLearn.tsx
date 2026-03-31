@@ -6,7 +6,7 @@
  * 重构: 使用 shared.ts + FadeIn + FamilyPageHeader
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BookOpen, GraduationCap, Award, Target,
   Zap, Play, CheckCircle2, Lock, Sparkles,
@@ -15,7 +15,6 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { DEEP_BG } from "./shared";
 
 const SKILL_TREE = [
   {
@@ -81,7 +80,7 @@ export function FamilyLearn() {
   const earnedBadges = ACHIEVEMENTS.filter(a => a.earned).length;
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <FamilyPageHeader
         icon={GraduationCap}
         iconColor="#00FF88"

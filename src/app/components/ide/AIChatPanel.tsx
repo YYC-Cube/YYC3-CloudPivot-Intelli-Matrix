@@ -5,25 +5,39 @@
  * 快捷操作 + 聊天历史 + 输入框（模型选择已移至顶部导航栏）
  */
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  Bot, User, Send, Image as ImageIcon,
-  FileCode, Link, Figma, Clipboard, Plus,
-  Sparkles, Code2, Bug, Zap, TestTube, RefreshCw,
-  Lightbulb, Wand2, Copy, Check,
+  Bot,
+  Bug,
+  Check,
+  Clipboard,
+  Copy,
+  Figma,
+  FileCode,
+  Image as ImageIcon,
+  Lightbulb,
+  Link,
+  Plus,
+  RefreshCw,
+  Send,
+  Sparkles,
+  TestTube,
+  User,
+  Wand2,
+  Zap
 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
 import { MOCK_CHAT_HISTORY } from "./ide-mock-data";
 import type { ChatMessage } from "./ide-types";
 
-// AI Quick Actions for code assistance
-const AI_QUICK_ACTIONS = [
-  { id: "explain", icon: Lightbulb, label: "Explain", color: "#ffaa00", prompt: "请解释这段代码的功能和逻辑" },
-  { id: "fix", icon: Bug, label: "Fix Bug", color: "#ff3366", prompt: "请找出并修复这段代码中的 bug" },
-  { id: "optimize", icon: Zap, label: "Optimize", color: "#00ff88", prompt: "请优化这段代码的性能" },
-  { id: "test", icon: TestTube, label: "Test", color: "#c792ea", prompt: "请为这段代码生成单元测试" },
-  { id: "refactor", icon: RefreshCw, label: "Refactor", color: "#00d4ff", prompt: "请重构这段代码，改善可读性" },
-  { id: "generate", icon: Wand2, label: "Generate", color: "#7b61ff", prompt: "请根据描述生成代码" },
+// AI Quick Actions for code assistance (i18n keys resolved at render time)
+const AI_QUICK_ACTION_KEYS = [
+  { id: "explain", icon: Lightbulb, label: "Explain", color: "#ffaa00", promptKey: "ide.aiExplain" },
+  { id: "fix", icon: Bug, label: "Fix Bug", color: "#ff3366", promptKey: "ide.aiFix" },
+  { id: "optimize", icon: Zap, label: "Optimize", color: "#00ff88", promptKey: "ide.aiOptimize" },
+  { id: "test", icon: TestTube, label: "Test", color: "#c792ea", promptKey: "ide.aiTest" },
+  { id: "refactor", icon: RefreshCw, label: "Refactor", color: "#00d4ff", promptKey: "ide.aiRefactor" },
+  { id: "generate", icon: Wand2, label: "Generate", color: "#7b61ff", promptKey: "ide.aiGenerate" },
 ];
 
 // Mock AI response generator
@@ -46,16 +60,6 @@ function generateMockResponse(prompt: string): string {
   return "收到！正在分析你的需求...\n\n基于当前项目上下文，我建议使用 `GlassCard` 组件配合 `recharts` 来实现数据可视化。需要我生成完整代码吗？";
 }
 
-let messageIdCounter = 0;
-const generateMessageId = (suffix: string = ""): string => {
-  messageIdCounter += 1;
-  return `msg-${messageIdCounter}${suffix}`;
-};
-
-const getCurrentTimestamp = (): string => {
-  return new Date().toLocaleTimeString("zh-CN", { hour12: false });
-};
-
 export function AIChatPanel() {
   const { t } = useI18n();
   const [messages, setMessages] = useState<ChatMessage[]>(MOCK_CHAT_HISTORY);
@@ -74,10 +78,10 @@ export function AIChatPanel() {
     if (!text) {return;}
 
     const userMsg: ChatMessage = {
-      id: generateMessageId(),
+      id: `msg-${Date.now()}`,
       role: "user",
       content: text,
-      timestamp: getCurrentTimestamp(),
+      timestamp: new Date().toLocaleTimeString("zh-CN", { hour12: false }),
     };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
@@ -86,19 +90,19 @@ export function AIChatPanel() {
     // Simulate AI response with context-aware mock
     setTimeout(() => {
       const aiMsg: ChatMessage = {
-        id: generateMessageId("-ai"),
+        id: `msg-${Date.now()}-ai`,
         role: "assistant",
         content: generateMockResponse(text),
-        timestamp: getCurrentTimestamp(),
+        timestamp: new Date().toLocaleTimeString("zh-CN", { hour12: false }),
       };
       setMessages((prev) => [...prev, aiMsg]);
       setIsTyping(false);
     }, 800 + Math.random() * 1200);
   };
 
-  const handleQuickAction = useCallback((action: typeof AI_QUICK_ACTIONS[0]) => {
-    handleSend(action.prompt);
-  }, [handleSend]);
+  const handleQuickAction = (action: typeof AI_QUICK_ACTION_KEYS[0]) => {
+    handleSend(t(action.promptKey));
+  };
 
   const handleCopyMessage = (id: string, content: string) => {
     navigator.clipboard?.writeText(content).catch(() => {});
@@ -126,14 +130,15 @@ export function AIChatPanel() {
         }}
       >
         <div className="flex items-center gap-1">
-          {AI_QUICK_ACTIONS.map((action) => {
+          {AI_QUICK_ACTION_KEYS.map((action) => {
             const Icon = action.icon;
+            const prompt = t(action.promptKey);
             return (
               <button
                 key={action.id}
                 onClick={() => handleQuickAction(action)}
                 className="flex items-center gap-1 px-2 py-1 rounded-md bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.08)] hover:border-[rgba(0,212,255,0.25)] hover:bg-[rgba(0,40,80,0.4)] transition-all shrink-0"
-                title={action.prompt}
+                title={prompt}
               >
                 <Icon className="w-3 h-3" style={{ color: action.color }} />
                 <span className="text-[#c0dcf0]" style={{ fontSize: "0.58rem" }}>{action.label}</span>
@@ -185,7 +190,7 @@ export function AIChatPanel() {
                   <button
                     onClick={() => handleCopyMessage(msg.id, msg.content)}
                     className="opacity-0 group-hover:opacity-100 p-0.5 rounded text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] transition-all"
-                    title="Copy"
+                    title={t("ide.copyTooltip")}
                   >
                     {copiedId === msg.id ? (
                       <Check className="w-3 h-3 text-[#00ff88]" />

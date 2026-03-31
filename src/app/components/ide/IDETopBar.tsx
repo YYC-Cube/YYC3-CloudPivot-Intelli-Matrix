@@ -5,12 +5,13 @@
  * Logo + 项目标题 + AI 模型选择器 + 公共图标区 + 用户信息
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   FolderOpen, Bell, Settings, Github, Share2, Rocket,
   Zap, ChevronDown, Bot, Circle,
 } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
+import { YYC3Logo } from "../YYC3Logo";
 import { AI_MODELS } from "./ide-mock-data";
 
 interface IDETopBarProps {
@@ -18,22 +19,23 @@ interface IDETopBarProps {
   onBack: () => void;
   selectedModel: string;
   onModelChange: (modelId: string) => void;
+  onToggleExplorer?: () => void;
+  onToggleNotifications?: () => void;
+  onOpenSettings?: () => void;
+  onOpenRepo?: () => void;
+  onShare?: () => void;
+  onDeploy?: () => void;
 }
 
-export function IDETopBar({ projectName, onBack, selectedModel, onModelChange }: IDETopBarProps) {
+export function IDETopBar({
+  projectName, onBack, selectedModel, onModelChange,
+  onToggleExplorer, onToggleNotifications, onOpenSettings,
+  onOpenRepo, onShare, onDeploy
+}: IDETopBarProps) {
   const { t } = useI18n();
   const [showModelSelect, setShowModelSelect] = useState(false);
 
   const currentModel = AI_MODELS.find((m) => m.id === selectedModel) ?? AI_MODELS[0];
-
-  const ACTION_ICONS = [
-    { icon: FolderOpen, label: t("ide.explorer"), color: "#00d4ff" },
-    { icon: Bell, label: t("ide.notifications"), color: "#00d4ff" },
-    { icon: Settings, label: t("ide.settings"), color: "#00d4ff" },
-    { icon: Github, label: "GitHub", color: "#00d4ff" },
-    { icon: Share2, label: t("ide.share"), color: "#00d4ff" },
-    { icon: Rocket, label: t("ide.deploy"), color: "#00ff88" },
-  ];
 
   return (
     <div
@@ -47,13 +49,9 @@ export function IDETopBar({ projectName, onBack, selectedModel, onModelChange }:
       <div className="flex items-center gap-2 min-w-0">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-[rgba(0,212,255,0.08)] transition-all"
+          className="flex items-center gap-1.5 px-1 py-1 rounded-md hover:bg-[rgba(0,212,255,0.08)] transition-all"
         >
-          <div className="w-5 h-5 rounded bg-gradient-to-br from-[#00d4ff] to-[#0066ff] flex items-center justify-center">
-            <span style={{ fontSize: "0.55rem", color: "#fff", fontFamily: "'JetBrains Mono', monospace" }}>
-              Y3
-            </span>
-          </div>
+          <YYC3Logo size="xs" showStatus={false} glow={false} />
           <span className="text-[#e0f0ff] truncate" style={{ fontSize: "0.75rem" }}>
             CloudPivot AI
           </span>
@@ -148,17 +146,25 @@ export function IDETopBar({ projectName, onBack, selectedModel, onModelChange }:
 
       {/* Right: Action Icons + User */}
       <div className="flex items-center gap-0.5">
-        {ACTION_ICONS.map((item) => {
+        {[
+          { icon: FolderOpen, label: t("ide.explorer"), onClick: onToggleExplorer },
+          { icon: Bell, label: t("ide.notifications"), onClick: onToggleNotifications },
+          { icon: Settings, label: t("ide.settings"), onClick: onOpenSettings },
+          { icon: Github, label: "GitHub", onClick: onOpenRepo },
+          { icon: Share2, label: t("ide.share"), onClick: onShare },
+          { icon: Rocket, label: t("ide.deploy"), onClick: onDeploy, color: "#00ff88" },
+        ].map((item) => {
           const Icon = item.icon;
           return (
             <button
               key={item.label}
+              onClick={item.onClick}
               className="p-1.5 rounded-md hover:bg-[rgba(0,212,255,0.08)] transition-all group"
               title={item.label}
             >
               <Icon
                 className="w-3.5 h-3.5 transition-colors"
-                style={{ color: "rgba(0,212,255,0.4)" }}
+                style={{ color: item.color || "rgba(0,212,255,0.4)" }}
               />
             </button>
           );

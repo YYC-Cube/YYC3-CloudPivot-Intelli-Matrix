@@ -7,7 +7,6 @@
  * - localStorage mock 正常工作
  * - 模块热重载 (vi.resetModules) 正常
  * - 异步 import 正常
-import React from "react";
  * - 类型导入正常
  * - JSON 序列化/反序列化正常
  * - 时间 mock 正常

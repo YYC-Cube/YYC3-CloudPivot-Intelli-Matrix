@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * OperationAudit.test.tsx
  * ========================
@@ -19,9 +20,7 @@
  * - 追踪链路/导出报告按钮
  */
 
-// @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
-import React from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
@@ -62,12 +61,6 @@ describe("OperationAudit", () => {
   });
 
   afterEach(() => {
-    cleanup();
-  });
-
-
-  beforeEach(() => {
-    vi.clearAllMocks();
     cleanup();
   });
 
@@ -256,10 +249,9 @@ describe("OperationAudit", () => {
       expect(screen.getByText("audit.detailTitle")).toBeInTheDocument();
       // Close button
       const closeBtn = screen.getByText("audit.detailTitle").parentElement?.querySelector("button");
-      if (closeBtn) {
-        fireEvent.click(closeBtn);
-        expect(screen.queryByText("audit.detailTitle")).not.toBeInTheDocument();
-      }
+      expect(closeBtn).toBeTruthy();
+      fireEvent.click(closeBtn!);
+      expect(screen.queryByText("audit.detailTitle")).not.toBeInTheDocument();
     });
 
     it("点击遮罩应关闭 Modal", () => {
@@ -267,10 +259,9 @@ describe("OperationAudit", () => {
       const row = screen.getByText("AUD-20260222-0001").closest("tr")!;
       fireEvent.click(row);
       const modalOuter = screen.getByText("audit.detailTitle").closest(".fixed");
-      if (modalOuter) {
-        fireEvent.click(modalOuter);
-        expect(screen.queryByText("audit.detailTitle")).not.toBeInTheDocument();
-      }
+      expect(modalOuter).toBeTruthy();
+      fireEvent.click(modalOuter!);
+      expect(screen.queryByText("audit.detailTitle")).not.toBeInTheDocument();
     });
 
     it("不同状态日志 Modal 应显示对应状态文本", () => {

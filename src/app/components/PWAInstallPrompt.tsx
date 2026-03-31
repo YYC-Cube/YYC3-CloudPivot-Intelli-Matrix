@@ -7,7 +7,7 @@
  * - 赛博朋克风格
  */
 
-import React from "react";
+
 import { Download, X } from "lucide-react";
 import { useInstallPrompt } from "../hooks/useInstallPrompt";
 import { YYC3Logo } from "./YYC3Logo";

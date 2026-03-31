@@ -13,7 +13,7 @@
 
 import React, { useState, useCallback, useEffect, useContext } from "react";
 import {
-  Cpu, Server, Bot, Plus, Trash2, Save, RotateCcw,
+  Cpu, Server, Bot, Plus, Trash2, RotateCcw,
   Edit3, Check, X, AlertTriangle, ChevronDown, ChevronUp,
   Package, RefreshCw, Search, Activity, BarChart3, Zap,
   Radar, PieChart, ScrollText,
@@ -30,11 +30,12 @@ import {
 import { useValidation, validateRange, validateModelName } from "../hooks/useValidation";
 import { ViewContext } from "../lib/view-context";
 import { toast } from "sonner";
-import type { Model, NodeStatusRecord, Agent, NodeStatusType } from "../types";
+import type { Model, NodeStatusRecord, Agent, NodeStatusType, LogLevel } from "../types";
+
+type OpStatus = "success" | "running" | "pending" | "warning" | "error";
 import {
   nodeStore, modelPerfStore, recentOpsStore,
   radarStore, modelDistStore, logStore,
-  type ModelPerfEntry, type RecentOpEntry,
   type RadarEntry, type ModelDistEntry, type StoredLogEntry,
 } from "../stores/dashboard-stores";
 
@@ -87,11 +88,10 @@ function CellInput({ value, onChange, type = "text", error, placeholder, mono, w
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className={`w-full px-2 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border text-[#e0f0ff] focus:outline-none transition-all ${
-          error
-            ? "border-[rgba(255,51,102,0.5)] focus:border-[rgba(255,51,102,0.7)]"
-            : "border-[rgba(0,180,255,0.15)] focus:border-[rgba(0,212,255,0.4)]"
-        } ${mono ? "font-mono" : ""}`}
+        className={`w-full px-2 py-1.5 rounded-lg bg-[rgba(0,40,80,0.4)] border text-[#e0f0ff] focus:outline-none transition-all ${error
+          ? "border-[rgba(255,51,102,0.5)] focus:border-[rgba(255,51,102,0.7)]"
+          : "border-[rgba(0,180,255,0.15)] focus:border-[rgba(0,212,255,0.4)]"
+          } ${mono ? "font-mono" : ""}`}
         style={{ fontSize: "0.72rem" }}
       />
       {error && (
@@ -125,25 +125,6 @@ function StatusSelect({ value, onChange }: { value: string; onChange: (v: string
 }
 
 // ============================================================
-// 子组件: 排序图标
-// ============================================================
-
-interface SortIconProps {
-  field: string;
-  sortKey: string;
-  sortAsc: boolean;
-  onSort: (field: string) => void;
-}
-
-function SortIcon({ field, sortKey, sortAsc, onSort }: SortIconProps) {
-  return (
-    <span className="inline-block ml-0.5 cursor-pointer" onClick={() => onSort(field)}>
-      {sortKey === field ? (sortAsc ? <ChevronUp className="w-3 h-3 inline text-[#00d4ff]" /> : <ChevronDown className="w-3 h-3 inline text-[#00d4ff]" />) : <ChevronDown className="w-3 h-3 inline text-[rgba(0,212,255,0.15)]" />}
-    </span>
-  );
-}
-
-// ============================================================
 // Main Component
 // ============================================================
 
@@ -173,7 +154,7 @@ export function DataEditorPanel() {
   const toggleSelect = useCallback((id: string) => {
     setSelectedIds((prev) => {
       const next = new Set(prev);
-      if (next.has(id)) {next.delete(id);} else {next.add(id);}
+      if (next.has(id)) { next.delete(id); } else { next.add(id); }
       return next;
     });
   }, []);
@@ -186,44 +167,44 @@ export function DataEditorPanel() {
   }, []);
 
   const handleSort = useCallback((key: string) => {
-    if (sortKey === key) {setSortAsc((p) => !p);}
+    if (sortKey === key) { setSortAsc((p) => !p); }
     else { setSortKey(key); setSortAsc(true); }
   }, [sortKey]);
 
   function sortItems<T>(items: T[], key: string, asc: boolean): T[] {
-    if (!key) {return items;}
+    if (!key) { return items; }
     return [...items].sort((a, b) => {
       const va = (a as Record<string, unknown>)[key];
       const vb = (b as Record<string, unknown>)[key];
-      if (typeof va === "number" && typeof vb === "number") {return asc ? va - vb : vb - va;}
+      if (typeof va === "number" && typeof vb === "number") { return asc ? va - vb : vb - va; }
       return asc ? String(va ?? "").localeCompare(String(vb ?? "")) : String(vb ?? "").localeCompare(String(va ?? ""));
     });
   }
+
+  const SortIcon = ({ field }: { field: string }) => (
+    <span className="inline-block ml-0.5 cursor-pointer" onClick={() => handleSort(field)}>
+      {sortKey === field ? (sortAsc ? <ChevronUp className="w-3 h-3 inline text-[#00d4ff]" /> : <ChevronDown className="w-3 h-3 inline text-[#00d4ff]" />) : <ChevronDown className="w-3 h-3 inline text-[rgba(0,212,255,0.15)]" />}
+    </span>
+  );
 
   // Validation
   const { errors, validateField, clearAll, clearError } = useValidation();
 
   // ═══ 加载数据 ═══
   const loadData = useCallback(async () => {
-    setTimeout(() => {
-      setLoading(true);
-    }, 0);
+    setLoading(true);
     const [mRes, nRes, aRes] = await Promise.all([
       getActiveModels(),
       getNodesStatus(),
       getAllAgents(),
     ]);
-    setTimeout(() => {
-      setModels(mRes.data);
-      setNodes(nRes.data);
-      setAgents(aRes.data);
-      setLoading(false);
-    }, 0);
+    setModels(mRes.data);
+    setNodes(nRes.data);
+    setAgents(aRes.data);
+    setLoading(false);
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { loadData(); }, [loadData]);
 
   // ═══ 搜索过滤 ═══
   const q = searchQuery.toLowerCase();
@@ -252,7 +233,7 @@ export function DataEditorPanel() {
 
   // ═══ 模型 CRUD ═══
   const saveModel = useCallback(() => {
-    if (!editingId) {return;}
+    if (!editingId) { return; }
     // 校验
     const nameErr = validateModelName(editDraft.name || "");
     const latErr = validateRange(editDraft.avg_latency_ms || "0", 0, 99999);
@@ -274,7 +255,7 @@ export function DataEditorPanel() {
   }, [editingId, editDraft, loadData, cancelEdit, validateField]);
 
   const addNewModel = useCallback(() => {
-    if (!addDraft.name?.trim()) {return;}
+    if (!addDraft.name?.trim()) { return; }
     addDbModel({
       name: addDraft.name.trim(),
       provider: addDraft.provider || "Custom",
@@ -297,7 +278,7 @@ export function DataEditorPanel() {
 
   // ═══ 节点 CRUD ═══
   const saveNode = useCallback(() => {
-    if (!editingId) {return;}
+    if (!editingId) { return; }
     updateDbNode(editingId, {
       hostname: editDraft.hostname,
       gpu_util: parseInt(editDraft.gpu_util) || 0,
@@ -313,7 +294,7 @@ export function DataEditorPanel() {
   }, [editingId, editDraft, loadData, cancelEdit]);
 
   const addNewNode = useCallback(() => {
-    if (!addDraft.hostname?.trim()) {return;}
+    if (!addDraft.hostname?.trim()) { return; }
     addDbNode({
       hostname: addDraft.hostname.trim(),
       gpu_util: parseInt(addDraft.gpu_util) || 0,
@@ -337,7 +318,7 @@ export function DataEditorPanel() {
 
   // ═══ Agent CRUD ═══
   const saveAgent = useCallback(() => {
-    if (!editingId) {return;}
+    if (!editingId) { return; }
     updateDbAgent(editingId, {
       name: editDraft.name,
       name_cn: editDraft.name_cn,
@@ -351,7 +332,7 @@ export function DataEditorPanel() {
   }, [editingId, editDraft, loadData, cancelEdit]);
 
   const addNewAgent = useCallback(() => {
-    if (!addDraft.name?.trim()) {return;}
+    if (!addDraft.name?.trim()) { return; }
     addDbAgent({
       name: addDraft.name.trim(),
       name_cn: addDraft.name_cn || addDraft.name.trim(),
@@ -383,10 +364,10 @@ export function DataEditorPanel() {
   // ═══ 批量删除 ═══
   const handleBatchDelete = useCallback(() => {
     const ids = Array.from(selectedIds);
-    if (ids.length === 0) {return;}
-    if (activeTab === "models") {ids.forEach((id) => deleteDbModel(id));}
-    else if (activeTab === "nodes") {ids.forEach((id) => deleteDbNode(id));}
-    else if (activeTab === "agents") {ids.forEach((id) => deleteDbAgent(id));}
+    if (ids.length === 0) { return; }
+    if (activeTab === "models") { ids.forEach((id) => deleteDbModel(id)); }
+    else if (activeTab === "nodes") { ids.forEach((id) => deleteDbNode(id)); }
+    else if (activeTab === "agents") { ids.forEach((id) => deleteDbAgent(id)); }
     loadData();
     setSelectedIds(new Set());
     toast.success(`已批量删除 ${ids.length} 项`, { style: toastStyle });
@@ -456,23 +437,22 @@ export function DataEditorPanel() {
           const active = activeTab === tab.key;
           const count = tab.key === "models" ? models.length
             : tab.key === "nodes" ? nodes.length
-            : tab.key === "agents" ? agents.length
-            : tab.key === "liveNodes" ? nodeStore.count()
-            : tab.key === "modelPerf" ? modelPerfStore.count()
-            : tab.key === "recentOps" ? recentOpsStore.count()
-            : tab.key === "radarData" ? radarStore.count()
-            : tab.key === "modelDist" ? modelDistStore.count()
-            : tab.key === "logsData" ? logStore.count()
-            : 0;
+              : tab.key === "agents" ? agents.length
+                : tab.key === "liveNodes" ? nodeStore.count()
+                  : tab.key === "modelPerf" ? modelPerfStore.count()
+                    : tab.key === "recentOps" ? recentOpsStore.count()
+                      : tab.key === "radarData" ? radarStore.count()
+                        : tab.key === "modelDist" ? modelDistStore.count()
+                          : tab.key === "logsData" ? logStore.count()
+                            : 0;
           return (
             <button
               key={tab.key}
               onClick={() => { setActiveTab(tab.key); cancelEdit(); setShowAddForm(false); setSearchQuery(""); setSelectedIds(new Set()); setSortKey(""); }}
-              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl whitespace-nowrap transition-all ${
-                active
-                  ? "bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff]"
-                  : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] hover:bg-[rgba(0,100,150,0.08)] border border-transparent"
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl whitespace-nowrap transition-all ${active
+                ? "bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff]"
+                : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] hover:bg-[rgba(0,100,150,0.08)] border border-transparent"
+                }`}
               style={{ fontSize: "0.78rem" }}
             >
               <span style={{ color: active ? tab.color : undefined }}>{tab.icon}</span>
@@ -553,11 +533,11 @@ export function DataEditorPanel() {
                 <th className="px-1 py-2 w-8">
                   <input type="checkbox" checked={filteredModels.length > 0 && filteredModels.every((m) => selectedIds.has(m.id))} onChange={() => toggleSelectAll(filteredModels.map((m) => m.id))} className="accent-[#00d4ff]" />
                 </th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name")}>名称<SortIcon field="name" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("provider")}>提供商<SortIcon field="provider" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("tier")}>层级<SortIcon field="tier" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("avg_latency_ms")}>延迟(ms)<SortIcon field="avg_latency_ms" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("throughput")}>吞吐量<SortIcon field="throughput" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name")}>名称<SortIcon field="name" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("provider")}>提供商<SortIcon field="provider" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("tier")}>层级<SortIcon field="tier" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("avg_latency_ms")}>延迟(ms)<SortIcon field="avg_latency_ms" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("throughput")}>吞吐量<SortIcon field="throughput" /></th>
                 <th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
               </tr>
             </thead>
@@ -675,13 +655,13 @@ export function DataEditorPanel() {
                 <th className="px-1 py-2 w-8">
                   <input type="checkbox" checked={filteredNodes.length > 0 && filteredNodes.every((n) => selectedIds.has(n.id))} onChange={() => toggleSelectAll(filteredNodes.map((n) => n.id))} className="accent-[#00d4ff]" />
                 </th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("hostname")}>主机名<SortIcon field="hostname" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("gpu_util")}>GPU%<SortIcon field="gpu_util" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("mem_util")}>内存%<SortIcon field="mem_util" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("temp_celsius")}>温度<SortIcon field="temp_celsius" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("hostname")}>主机名<SortIcon field="hostname" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("gpu_util")}>GPU%<SortIcon field="gpu_util" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("mem_util")}>内存%<SortIcon field="mem_util" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("temp_celsius")}>温度<SortIcon field="temp_celsius" /></th>
                 <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>部署模型</th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("active_tasks")}>任务<SortIcon field="active_tasks" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("status")}>状态<SortIcon field="status" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("active_tasks")}>任务<SortIcon field="active_tasks" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("status")}>状态<SortIcon field="status" /></th>
                 <th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
               </tr>
             </thead>
@@ -784,11 +764,11 @@ export function DataEditorPanel() {
                 <th className="px-1 py-2 w-8">
                   <input type="checkbox" checked={filteredAgents.length > 0 && filteredAgents.every((a) => selectedIds.has(a.id))} onChange={() => toggleSelectAll(filteredAgents.map((a) => a.id))} className="accent-[#00d4ff]" />
                 </th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name")}>名称<SortIcon field="name" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name_cn")}>中文名<SortIcon field="name_cn" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("role")}>角色<SortIcon field="role" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name")}>名称<SortIcon field="name" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("name_cn")}>中文名<SortIcon field="name_cn" /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("role")}>角色<SortIcon field="role" /></th>
                 <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>描述</th>
-                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("is_active")}>状态<SortIcon field="is_active" sortKey={sortKey} sortAsc={sortAsc} onSort={handleSort} /></th>
+                <th className="px-2 py-2 cursor-pointer" style={{ fontSize: "0.65rem" }} onClick={() => handleSort("is_active")}>状态<SortIcon field="is_active" /></th>
                 <th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
               </tr>
             </thead>
@@ -892,8 +872,8 @@ function LiveNodesTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
   const q = searchQuery.toLowerCase();
   const items = nodeStore.getAll().filter((n) => n.id.toLowerCase().includes(q) || n.model.toLowerCase().includes(q));
   const sc = (s: string) => s === "active" ? "#00ff88" : s === "warning" ? "#ffaa00" : "#ff3366";
-  const save = () => { if (!editingId) {return;} nodeStore.update(editingId, { status: editDraft.status as any, gpu: parseInt(editDraft.gpu) || 0, mem: parseInt(editDraft.mem) || 0, temp: parseInt(editDraft.temp) || 0, model: editDraft.model || "", tasks: parseInt(editDraft.tasks) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("实时节点已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.id?.trim()) {return;} nodeStore.add({ id: addDraft.id.trim(), status: (addDraft.status as any) || "active", gpu: parseInt(addDraft.gpu) || 0, mem: parseInt(addDraft.mem) || 0, temp: parseInt(addDraft.temp) || 40, model: addDraft.model || "", tasks: parseInt(addDraft.tasks) || 0 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("实时节点已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } nodeStore.update(editingId, { status: editDraft.status as NodeStatusType, gpu: parseInt(editDraft.gpu) || 0, mem: parseInt(editDraft.mem) || 0, temp: parseInt(editDraft.temp) || 0, model: editDraft.model || "", tasks: parseInt(editDraft.tasks) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("实时节点已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.id?.trim()) { return; } nodeStore.add({ id: addDraft.id.trim(), status: (addDraft.status as NodeStatusType) || "active", gpu: parseInt(addDraft.gpu) || 0, mem: parseInt(addDraft.mem) || 0, temp: parseInt(addDraft.temp) || 40, model: addDraft.model || "", tasks: parseInt(addDraft.tasks) || 0 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("实时节点已添加", { style: toastStyle }); };
   const del = (id: string) => { nodeStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   return (
     <GlassCard className="p-4 overflow-x-auto">
@@ -925,17 +905,19 @@ function LiveNodesTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>节点ID</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>GPU%</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>MEM%</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>温度</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>模型</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>任务</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>状态</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((n) => { const isE = editingId === n.id; const c = sc(n.status); return (
-            <tr key={n.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2 font-mono text-[#e0f0ff]">{n.id}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.gpu || ""} onChange={(v) => setEditDraft((p) => ({ ...p, gpu: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.gpu}%</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.mem || ""} onChange={(v) => setEditDraft((p) => ({ ...p, mem: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.mem}%</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.temp || ""} onChange={(v) => setEditDraft((p) => ({ ...p, temp: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.temp}°C</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.model || ""} onChange={(v) => setEditDraft((p) => ({ ...p, model: v }))} /> : <span className="text-[rgba(0,212,255,0.5)]">{n.model || "-"}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.tasks || ""} onChange={(v) => setEditDraft((p) => ({ ...p, tasks: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.tasks}</span>}</td>
-              <td className="px-2 py-2">{isE ? <StatusSelect value={editDraft.status || "active"} onChange={(v) => setEditDraft((p) => ({ ...p, status: v }))} /> : <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full" style={{ backgroundColor: c }} /><span style={{ color: c, fontSize: "0.65rem" }}>{n.status}</span></span>}</td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(n.id, { status: n.status, gpu: String(n.gpu), mem: String(n.mem), temp: String(n.temp), model: n.model, tasks: String(n.tasks) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(n.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((n) => {
+            const isE = editingId === n.id; const c = sc(n.status); return (
+              <tr key={n.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2 font-mono text-[#e0f0ff]">{n.id}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.gpu || ""} onChange={(v) => setEditDraft((p) => ({ ...p, gpu: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.gpu}%</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.mem || ""} onChange={(v) => setEditDraft((p) => ({ ...p, mem: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.mem}%</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.temp || ""} onChange={(v) => setEditDraft((p) => ({ ...p, temp: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.temp}°C</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.model || ""} onChange={(v) => setEditDraft((p) => ({ ...p, model: v }))} /> : <span className="text-[rgba(0,212,255,0.5)]">{n.model || "-"}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.tasks || ""} onChange={(v) => setEditDraft((p) => ({ ...p, tasks: v }))} type="number" /> : <span className="font-mono text-[rgba(224,240,255,0.7)]">{n.tasks}</span>}</td>
+                <td className="px-2 py-2">{isE ? <StatusSelect value={editDraft.status || "active"} onChange={(v) => setEditDraft((p) => ({ ...p, status: v }))} /> : <span className="flex items-center gap-1"><div className="w-2 h-2 rounded-full" style={{ backgroundColor: c }} /><span style={{ color: c, fontSize: "0.65rem" }}>{n.status}</span></span>}</td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(n.id, { status: n.status, gpu: String(n.gpu), mem: String(n.mem), temp: String(n.temp), model: n.model, tasks: String(n.tasks) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(n.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无数据</p>}
@@ -948,8 +930,8 @@ function ModelPerfTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
   const [, forceUpdate] = useState(0);
   const q = searchQuery.toLowerCase();
   const items = modelPerfStore.getAll().filter((m) => m.model.toLowerCase().includes(q));
-  const save = () => { if (!editingId) {return;} modelPerfStore.update(editingId, { model: editDraft.model, accuracy: parseFloat(editDraft.accuracy) || 0, speed: parseInt(editDraft.speed) || 0, memory: parseInt(editDraft.memory) || 0, cost: parseInt(editDraft.cost) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.model?.trim()) {return;} modelPerfStore.add({ model: addDraft.model.trim(), accuracy: parseFloat(addDraft.accuracy) || 90, speed: parseInt(addDraft.speed) || 80, memory: parseInt(addDraft.memory) || 70, cost: parseInt(addDraft.cost) || 60 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } modelPerfStore.update(editingId, { model: editDraft.model, accuracy: parseFloat(editDraft.accuracy) || 0, speed: parseInt(editDraft.speed) || 0, memory: parseInt(editDraft.memory) || 0, cost: parseInt(editDraft.cost) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.model?.trim()) { return; } modelPerfStore.add({ model: addDraft.model.trim(), accuracy: parseFloat(addDraft.accuracy) || 90, speed: parseInt(addDraft.speed) || 80, memory: parseInt(addDraft.memory) || 70, cost: parseInt(addDraft.cost) || 60 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
   const del = (id: string) => { modelPerfStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   return (
     <GlassCard className="p-4 overflow-x-auto">
@@ -977,15 +959,17 @@ function ModelPerfTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>模型</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>准确率</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>速度</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>内存</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>成本</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((m) => { const isE = editingId === m.id; return (
-            <tr key={m.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.model || ""} onChange={(v) => setEditDraft((p) => ({ ...p, model: v }))} /> : <span className="text-[#e0f0ff]">{m.model}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.accuracy || ""} onChange={(v) => setEditDraft((p) => ({ ...p, accuracy: v }))} type="number" /> : <span className="font-mono text-[#00d4ff]">{m.accuracy}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.speed || ""} onChange={(v) => setEditDraft((p) => ({ ...p, speed: v }))} type="number" /> : <span className="font-mono text-[#00ff88]">{m.speed}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.memory || ""} onChange={(v) => setEditDraft((p) => ({ ...p, memory: v }))} type="number" /> : <span className="font-mono text-[#aa55ff]">{m.memory}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.cost || ""} onChange={(v) => setEditDraft((p) => ({ ...p, cost: v }))} type="number" /> : <span className="font-mono text-[#ffaa00]">{m.cost}</span>}</td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(m.id, { model: m.model, accuracy: String(m.accuracy), speed: String(m.speed), memory: String(m.memory), cost: String(m.cost) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(m.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((m) => {
+            const isE = editingId === m.id; return (
+              <tr key={m.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.model || ""} onChange={(v) => setEditDraft((p) => ({ ...p, model: v }))} /> : <span className="text-[#e0f0ff]">{m.model}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.accuracy || ""} onChange={(v) => setEditDraft((p) => ({ ...p, accuracy: v }))} type="number" /> : <span className="font-mono text-[#00d4ff]">{m.accuracy}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.speed || ""} onChange={(v) => setEditDraft((p) => ({ ...p, speed: v }))} type="number" /> : <span className="font-mono text-[#00ff88]">{m.speed}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.memory || ""} onChange={(v) => setEditDraft((p) => ({ ...p, memory: v }))} type="number" /> : <span className="font-mono text-[#aa55ff]">{m.memory}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.cost || ""} onChange={(v) => setEditDraft((p) => ({ ...p, cost: v }))} type="number" /> : <span className="font-mono text-[#ffaa00]">{m.cost}</span>}</td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(m.id, { model: m.model, accuracy: String(m.accuracy), speed: String(m.speed), memory: String(m.memory), cost: String(m.cost) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(m.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无数据</p>}
@@ -999,8 +983,8 @@ function RecentOpsTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
   const q = searchQuery.toLowerCase();
   const items = recentOpsStore.getAll().filter((o) => o.action.toLowerCase().includes(q) || o.target.toLowerCase().includes(q));
   const osc: Record<string, string> = { success: "#00ff88", running: "#00d4ff", pending: "#aa55ff", warning: "#ffdd00", error: "#ff3366" };
-  const save = () => { if (!editingId) {return;} recentOpsStore.update(editingId, { action: editDraft.action, target: editDraft.target, user: editDraft.user, time: editDraft.time, status: editDraft.status as any }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.action?.trim()) {return;} recentOpsStore.add({ action: addDraft.action.trim(), target: addDraft.target || "", user: addDraft.user || "admin", time: new Date().toLocaleTimeString("zh-CN", { hour12: false }), status: (addDraft.status as any) || "success" }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } recentOpsStore.update(editingId, { action: editDraft.action, target: editDraft.target, user: editDraft.user, time: editDraft.time, status: editDraft.status as OpStatus }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.action?.trim()) { return; } recentOpsStore.add({ action: addDraft.action.trim(), target: addDraft.target || "", user: addDraft.user || "admin", time: new Date().toLocaleTimeString("zh-CN", { hour12: false }), status: (addDraft.status as OpStatus) || "success" }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
   const del = (id: string) => { recentOpsStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   return (
     <GlassCard className="p-4 overflow-x-auto">
@@ -1029,15 +1013,17 @@ function RecentOpsTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>操作</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>目标</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>用户</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>时间</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>状态</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((o) => { const isE = editingId === o.id; const c = osc[o.status] || "#e0f0ff"; return (
-            <tr key={o.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.action || ""} onChange={(v) => setEditDraft((p) => ({ ...p, action: v }))} /> : <span className="text-[#e0f0ff]">{o.action}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.target || ""} onChange={(v) => setEditDraft((p) => ({ ...p, target: v }))} /> : <span className="text-[rgba(0,212,255,0.5)] truncate max-w-[200px] block">{o.target}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.user || ""} onChange={(v) => setEditDraft((p) => ({ ...p, user: v }))} /> : <span className="text-[rgba(224,240,255,0.6)]">{o.user}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.time || ""} onChange={(v) => setEditDraft((p) => ({ ...p, time: v }))} /> : <span className="font-mono text-[rgba(224,240,255,0.5)]">{o.time}</span>}</td>
-              <td className="px-2 py-2">{isE ? (<select value={editDraft.status || "success"} onChange={(e) => setEditDraft((p) => ({ ...p, status: e.target.value }))} className="px-2 py-1 rounded bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff]" style={{ fontSize: "0.72rem" }}>{OP_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}</select>) : (<span className="px-1.5 py-0.5 rounded" style={{ backgroundColor: `${c}15`, color: c, fontSize: "0.6rem" }}>{o.status}</span>)}</td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(o.id, { action: o.action, target: o.target, user: o.user, time: o.time, status: o.status })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(o.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((o) => {
+            const isE = editingId === o.id; const c = osc[o.status] || "#e0f0ff"; return (
+              <tr key={o.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.action || ""} onChange={(v) => setEditDraft((p) => ({ ...p, action: v }))} /> : <span className="text-[#e0f0ff]">{o.action}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.target || ""} onChange={(v) => setEditDraft((p) => ({ ...p, target: v }))} /> : <span className="text-[rgba(0,212,255,0.5)] truncate max-w-[200px] block">{o.target}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.user || ""} onChange={(v) => setEditDraft((p) => ({ ...p, user: v }))} /> : <span className="text-[rgba(224,240,255,0.6)]">{o.user}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.time || ""} onChange={(v) => setEditDraft((p) => ({ ...p, time: v }))} /> : <span className="font-mono text-[rgba(224,240,255,0.5)]">{o.time}</span>}</td>
+                <td className="px-2 py-2">{isE ? (<select value={editDraft.status || "success"} onChange={(e) => setEditDraft((p) => ({ ...p, status: e.target.value }))} className="px-2 py-1 rounded bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff]" style={{ fontSize: "0.72rem" }}>{OP_STATUSES.map((s) => <option key={s} value={s}>{s}</option>)}</select>) : (<span className="px-1.5 py-0.5 rounded" style={{ backgroundColor: `${c}15`, color: c, fontSize: "0.6rem" }}>{o.status}</span>)}</td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(o.id, { action: o.action, target: o.target, user: o.user, time: o.time, status: o.status })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(o.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无操作记录</p>}
@@ -1050,8 +1036,8 @@ function RadarDataTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
   const [, forceUpdate] = useState(0);
   const q = searchQuery.toLowerCase();
   const items = radarStore.getAll().filter((r: RadarEntry) => r.metric.toLowerCase().includes(q));
-  const save = () => { if (!editingId) {return;} radarStore.update(editingId, { metric: editDraft.metric, A: parseInt(editDraft.A) || 0, B: parseInt(editDraft.B) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.metric?.trim()) {return;} radarStore.add({ metric: addDraft.metric.trim(), A: parseInt(addDraft.A) || 80, B: parseInt(addDraft.B) || 75 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } radarStore.update(editingId, { metric: editDraft.metric, A: parseInt(editDraft.A) || 0, B: parseInt(editDraft.B) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.metric?.trim()) { return; } radarStore.add({ metric: addDraft.metric.trim(), A: parseInt(addDraft.A) || 80, B: parseInt(addDraft.B) || 75 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
   const del = (id: string) => { radarStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   return (
     <GlassCard className="p-4 overflow-x-auto">
@@ -1077,14 +1063,16 @@ function RadarDataTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>指标</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>方案 A</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>方案 B</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>差值</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((r: RadarEntry) => { const isE = editingId === r.id; const diff = r.A - r.B; const diffColor = diff > 0 ? "#00ff88" : diff < 0 ? "#ff3366" : "rgba(224,240,255,0.5)"; return (
-            <tr key={r.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.metric || ""} onChange={(v) => setEditDraft((p) => ({ ...p, metric: v }))} mono /> : <span className="text-[#e0f0ff] font-mono">{r.metric}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.A || ""} onChange={(v) => setEditDraft((p) => ({ ...p, A: v }))} type="number" /> : <span className="font-mono text-[#00d4ff]">{r.A}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.B || ""} onChange={(v) => setEditDraft((p) => ({ ...p, B: v }))} type="number" /> : <span className="font-mono text-[#cc66ff]">{r.B}</span>}</td>
-              <td className="px-2 py-2"><span className="font-mono" style={{ color: diffColor }}>{diff > 0 ? "+" : ""}{diff}</span></td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(r.id, { metric: r.metric, A: String(r.A), B: String(r.B) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(r.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((r: RadarEntry) => {
+            const isE = editingId === r.id; const diff = r.A - r.B; const diffColor = diff > 0 ? "#00ff88" : diff < 0 ? "#ff3366" : "rgba(224,240,255,0.5)"; return (
+              <tr key={r.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.metric || ""} onChange={(v) => setEditDraft((p) => ({ ...p, metric: v }))} mono /> : <span className="text-[#e0f0ff] font-mono">{r.metric}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.A || ""} onChange={(v) => setEditDraft((p) => ({ ...p, A: v }))} type="number" /> : <span className="font-mono text-[#00d4ff]">{r.A}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.B || ""} onChange={(v) => setEditDraft((p) => ({ ...p, B: v }))} type="number" /> : <span className="font-mono text-[#cc66ff]">{r.B}</span>}</td>
+                <td className="px-2 py-2"><span className="font-mono" style={{ color: diffColor }}>{diff > 0 ? "+" : ""}{diff}</span></td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(r.id, { metric: r.metric, A: String(r.A), B: String(r.B) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(r.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无雷达数据</p>}
@@ -1098,8 +1086,8 @@ function ModelDistTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
   const q = searchQuery.toLowerCase();
   const items = modelDistStore.getAll().filter((m: ModelDistEntry) => m.name.toLowerCase().includes(q));
   const total = items.reduce((s: number, m: ModelDistEntry) => s + m.value, 0);
-  const save = () => { if (!editingId) {return;} modelDistStore.update(editingId, { name: editDraft.name, value: parseInt(editDraft.value) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.name?.trim()) {return;} modelDistStore.add({ name: addDraft.name.trim(), value: parseInt(addDraft.value) || 10 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } modelDistStore.update(editingId, { name: editDraft.name, value: parseInt(editDraft.value) || 0 }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.name?.trim()) { return; } modelDistStore.add({ name: addDraft.name.trim(), value: parseInt(addDraft.value) || 10 }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
   const del = (id: string) => { modelDistStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   const distColors = ["#00d4ff", "#00ff88", "#cc66ff", "#ffaa00", "#ff3366", "#ff8844", "#7b8cff"];
   return (
@@ -1128,18 +1116,20 @@ function ModelDistTab({ isMobile, searchQuery, editingId, editDraft, showAddForm
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>模型</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>数值</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>占比</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>分布条</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((m: ModelDistEntry, idx: number) => { const isE = editingId === m.id; const pct = total > 0 ? ((m.value / total) * 100).toFixed(1) : "0"; const barColor = distColors[idx % distColors.length]; return (
-            <tr key={m.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.name || ""} onChange={(v) => setEditDraft((p) => ({ ...p, name: v }))} /> : <span className="text-[#e0f0ff]">{m.name}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.value || ""} onChange={(v) => setEditDraft((p) => ({ ...p, value: v }))} type="number" /> : <span className="font-mono text-[#cc66ff]">{m.value}</span>}</td>
-              <td className="px-2 py-2"><span className="font-mono text-[rgba(224,240,255,0.6)]">{pct}%</span></td>
-              <td className="px-2 py-2">
-                <div className="w-full h-2 rounded-full bg-[rgba(0,40,80,0.3)] overflow-hidden">
-                  <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: barColor, boxShadow: `0 0 6px ${barColor}40` }} />
-                </div>
-              </td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(m.id, { name: m.name, value: String(m.value) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(m.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((m: ModelDistEntry, idx: number) => {
+            const isE = editingId === m.id; const pct = total > 0 ? ((m.value / total) * 100).toFixed(1) : "0"; const barColor = distColors[idx % distColors.length]; return (
+              <tr key={m.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.name || ""} onChange={(v) => setEditDraft((p) => ({ ...p, name: v }))} /> : <span className="text-[#e0f0ff]">{m.name}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.value || ""} onChange={(v) => setEditDraft((p) => ({ ...p, value: v }))} type="number" /> : <span className="font-mono text-[#cc66ff]">{m.value}</span>}</td>
+                <td className="px-2 py-2"><span className="font-mono text-[rgba(224,240,255,0.6)]">{pct}%</span></td>
+                <td className="px-2 py-2">
+                  <div className="w-full h-2 rounded-full bg-[rgba(0,40,80,0.3)] overflow-hidden">
+                    <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, backgroundColor: barColor, boxShadow: `0 0 6px ${barColor}40` }} />
+                  </div>
+                </td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(m.id, { name: m.name, value: String(m.value) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(m.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无分布数据</p>}
@@ -1153,8 +1143,8 @@ function LogsDataTab({ isMobile, searchQuery, editingId, editDraft, showAddForm,
   const q = searchQuery.toLowerCase();
   const items = logStore.getAll().filter((l: StoredLogEntry) => l.message.toLowerCase().includes(q) || l.source.toLowerCase().includes(q) || l.level.toLowerCase().includes(q));
   const levelColors: Record<string, string> = { debug: "#7b8cff", info: "#00d4ff", warn: "#ffaa00", error: "#ff3366", fatal: "#ff0044" };
-  const save = () => { if (!editingId) {return;} logStore.update(editingId, { level: editDraft.level as any, source: editDraft.source, message: editDraft.message, timestamp: parseInt(editDraft.timestamp) || Date.now() }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
-  const add = () => { if (!addDraft.message?.trim()) {return;} logStore.add({ timestamp: Date.now(), level: (addDraft.level as any) || "info", source: addDraft.source || "system", message: addDraft.message.trim() }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
+  const save = () => { if (!editingId) { return; } logStore.update(editingId, { level: editDraft.level as LogLevel, source: editDraft.source, message: editDraft.message, timestamp: parseInt(editDraft.timestamp) || Date.now() }); cancelEdit(); forceUpdate((n) => n + 1); toast.success("已更新", { style: toastStyle }); };
+  const add = () => { if (!addDraft.message?.trim()) { return; } logStore.add({ timestamp: Date.now(), level: (addDraft.level as LogLevel) || "info", source: addDraft.source || "system", message: addDraft.message.trim() }); setShowAddForm(false); setAddDraft({}); forceUpdate((n) => n + 1); toast.success("已添加", { style: toastStyle }); };
   const del = (id: string) => { logStore.remove(id); forceUpdate((n) => n + 1); toast.success("已删除", { style: toastStyle }); };
   const fmtTime = (ts: number) => new Date(ts).toLocaleString("zh-CN", { hour12: false });
   return (
@@ -1186,20 +1176,22 @@ function LogsDataTab({ isMobile, searchQuery, editingId, editDraft, showAddForm,
           <th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>级别</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>来源</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>消息</th><th className="px-2 py-2" style={{ fontSize: "0.65rem" }}>时间</th><th className="px-2 py-2 text-right" style={{ fontSize: "0.65rem" }}>操作</th>
         </tr></thead>
         <tbody>
-          {items.map((l: StoredLogEntry) => { const isE = editingId === l.id; const lc = levelColors[l.level] || "#e0f0ff"; return (
-            <tr key={l.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
-              <td className="px-2 py-2">{isE ? (
-                <select value={editDraft.level || "info"} onChange={(e) => setEditDraft((p) => ({ ...p, level: e.target.value }))} className="px-2 py-1 rounded bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff]" style={{ fontSize: "0.72rem" }}>
-                  {LOG_LEVELS.map((lv) => <option key={lv} value={lv}>{lv.toUpperCase()}</option>)}
-                </select>
-              ) : (
-                <span className="px-1.5 py-0.5 rounded" style={{ backgroundColor: `${lc}15`, color: lc, fontSize: "0.6rem" }}>{l.level.toUpperCase()}</span>
-              )}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.source || ""} onChange={(v) => setEditDraft((p) => ({ ...p, source: v }))} mono /> : <span className="font-mono text-[rgba(0,212,255,0.5)]">{l.source}</span>}</td>
-              <td className="px-2 py-2">{isE ? <CellInput value={editDraft.message || ""} onChange={(v) => setEditDraft((p) => ({ ...p, message: v }))} /> : <span className="text-[rgba(224,240,255,0.7)] max-w-[300px] truncate block">{l.message}</span>}</td>
-              <td className="px-2 py-2"><span className="font-mono text-[rgba(224,240,255,0.4)]" style={{ fontSize: "0.6rem" }}>{fmtTime(l.timestamp)}</span></td>
-              <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(l.id, { level: l.level, source: l.source, message: l.message, timestamp: String(l.timestamp) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(l.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
-            </tr>); })}
+          {items.map((l: StoredLogEntry) => {
+            const isE = editingId === l.id; const lc = levelColors[l.level] || "#e0f0ff"; return (
+              <tr key={l.id} className="border-t border-[rgba(0,180,255,0.04)] hover:bg-[rgba(0,40,80,0.08)]">
+                <td className="px-2 py-2">{isE ? (
+                  <select value={editDraft.level || "info"} onChange={(e) => setEditDraft((p) => ({ ...p, level: e.target.value }))} className="px-2 py-1 rounded bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)] text-[#e0f0ff]" style={{ fontSize: "0.72rem" }}>
+                    {LOG_LEVELS.map((lv) => <option key={lv} value={lv}>{lv.toUpperCase()}</option>)}
+                  </select>
+                ) : (
+                  <span className="px-1.5 py-0.5 rounded" style={{ backgroundColor: `${lc}15`, color: lc, fontSize: "0.6rem" }}>{l.level.toUpperCase()}</span>
+                )}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.source || ""} onChange={(v) => setEditDraft((p) => ({ ...p, source: v }))} mono /> : <span className="font-mono text-[rgba(0,212,255,0.5)]">{l.source}</span>}</td>
+                <td className="px-2 py-2">{isE ? <CellInput value={editDraft.message || ""} onChange={(v) => setEditDraft((p) => ({ ...p, message: v }))} /> : <span className="text-[rgba(224,240,255,0.7)] max-w-[300px] truncate block">{l.message}</span>}</td>
+                <td className="px-2 py-2"><span className="font-mono text-[rgba(224,240,255,0.4)]" style={{ fontSize: "0.6rem" }}>{fmtTime(l.timestamp)}</span></td>
+                <td className="px-2 py-2 text-right">{isE ? (<div className="flex gap-1 justify-end"><button onClick={save} className="p-1 rounded hover:bg-[rgba(0,255,136,0.1)]"><Check className="w-3.5 h-3.5 text-[#00ff88]" /></button><button onClick={cancelEdit} className="p-1 rounded hover:bg-[rgba(255,51,102,0.1)]"><X className="w-3.5 h-3.5 text-[#ff3366]" /></button></div>) : (<div className="flex gap-1 justify-end"><button onClick={() => startEdit(l.id, { level: l.level, source: l.source, message: l.message, timestamp: String(l.timestamp) })} className="p-1 rounded hover:bg-[rgba(0,180,255,0.08)]"><Edit3 className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" /></button><button onClick={() => del(l.id)} className="p-1 rounded hover:bg-[rgba(255,51,102,0.08)]"><Trash2 className="w-3.5 h-3.5 text-[rgba(255,51,102,0.4)]" /></button></div>)}</td>
+              </tr>);
+          })}
         </tbody>
       </table>
       {items.length === 0 && <p className="text-center py-6 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.75rem" }}>暂无日志数据</p>}
