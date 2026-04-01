@@ -79,9 +79,9 @@ const NAV_CATEGORIES: NavCategory[] = [
     icon: Brain,
     children: [
       { key: "nav.aiDecision", path: "/ai", icon: Sparkles },
-      { key: "modelProvider.title", path: "/models", icon: Cpu },
-      { key: "nav.aiDiagnostics", path: "/ai-diagnosis", icon: BrainCircuit },
-      { key: "ollama.title", path: "/ollama", icon: Cpu },
+      { key: "modelProvider.title", path: "/model-provider", icon: Cpu },
+      { key: "nav.aiDiagnostics", path: "/ai-diagnostics", icon: BrainCircuit },
+      { key: "ollama.title", path: "/ollama-config", icon: Cpu },
     ],
   },
   AI_FAMILY_NAV,

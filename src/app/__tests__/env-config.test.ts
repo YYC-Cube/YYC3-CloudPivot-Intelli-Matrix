@@ -43,7 +43,7 @@ describe("env-config", () => {
   describe("defaults", () => {
     it("should return default SYSTEM_NAME", async () => {
       const { env } = await freshImport();
-      expect(env("SYSTEM_NAME")).toBe("YYC\u00B3 CloudPivot Intelli-Matrix");
+      expect(env("SYSTEM_NAME")).toBe("YYC\u00B3 言启象限 · 语枢智云");
     });
 
     it("should return default SYSTEM_VERSION", async () => {
@@ -53,12 +53,12 @@ describe("env-config", () => {
 
     it("should return default API_BASE_URL", async () => {
       const { env } = await freshImport();
-      expect(env("API_BASE_URL")).toBe("http://localhost:3119/api");
+      expect(env("API_BASE_URL")).toBe("http://localhost:3118/api");
     });
 
     it("should return default WS_ENDPOINT", async () => {
       const { env } = await freshImport();
-      expect(env("WS_ENDPOINT")).toBe("ws://localhost:3114/ws");
+      expect(env("WS_ENDPOINT")).toBe("ws://localhost:3113/ws");
     });
 
     it("should return default STORAGE_PREFIX", async () => {

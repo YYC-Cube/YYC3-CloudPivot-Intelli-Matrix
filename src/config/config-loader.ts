@@ -233,7 +233,7 @@ export class ConfigLoader {
    */
   private static loadAppConfig() {
     const config = {
-      APP_NAME: EnvParser.getString(ENV_KEYS.APP.APP_NAME, 'YYC³ CloudPivot Intelli-Matrix'),
+      APP_NAME: EnvParser.getString(ENV_KEYS.APP.APP_NAME, 'YYC³ 言启象限 · 语枢智云'),
       APP_VERSION: EnvParser.getString(ENV_KEYS.APP.APP_VERSION, '0.0.1'),
       APP_URL: EnvParser.getString(ENV_KEYS.APP.APP_URL, 'http://localhost:3118'),
       DEFAULT_THEME: EnvParser.getString(ENV_KEYS.APP.DEFAULT_THEME, 'cyberpunk'),
