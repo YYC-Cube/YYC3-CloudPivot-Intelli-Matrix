@@ -10,6 +10,10 @@
 import { useState, useEffect, useCallback } from "react";
 import type { BeforeInstallPromptEvent } from "../types";
 
+interface ExtendedNavigator extends Navigator {
+  standalone?: boolean;
+}
+
 export function useInstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] =
     useState<BeforeInstallPromptEvent | null>(null);
@@ -27,7 +31,7 @@ export function useInstallPrompt() {
     // 检查是否已安装（standalone 模式）
     const isStandalone =
       window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone === true;
+      (window.navigator as ExtendedNavigator).standalone === true;
     setIsInstalled(isStandalone);
 
     // 监听安装状态变更

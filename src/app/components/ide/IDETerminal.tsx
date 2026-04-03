@@ -5,10 +5,14 @@
  * 多 Tab + 命令行交互 + 输出展示 + Git/NPM/系统命令
  */
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  Terminal, Plus, X, ChevronUp, ChevronDown, Maximize2, Minimize2,
+  ChevronDown,
+  ChevronUp,
+  Plus,
+  Terminal,
+  X
 } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
 
 interface TerminalLine {

@@ -1,3 +1,4 @@
+import React from "react";
 // @vitest-environment jsdom
 /**
  * DataEditorPanel.test.tsx
@@ -13,11 +14,10 @@
 
 import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
-import React from "react";
 
 // Mock sonner
 vi.mock("sonner", () => ({
-  toast: { success: vi.fn(), error: vi.fn(), info: vi.fn() },
+  toast: { success: vi.fn(), error: vi.fn(), info: vi.fn(), warning: vi.fn() },
 }));
 
 // Mock ViewContext

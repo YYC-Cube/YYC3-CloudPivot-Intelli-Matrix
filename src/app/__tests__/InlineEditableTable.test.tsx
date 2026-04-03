@@ -16,7 +16,6 @@
  */
 
 // @vitest-environment jsdom
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach, type Mock } from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import {

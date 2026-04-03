@@ -9,7 +9,6 @@ import React, { useState, useCallback } from "react";
 import {
   X, Plus, Trash2, AlertTriangle, ShieldAlert, Info,
 } from "lucide-react";
-import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
 import type {
   AlertSeverity, AlertMetric, AlertCondition,
@@ -136,7 +135,7 @@ export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRul
     setThresholds((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateThreshold = useCallback((index: number, field: keyof AlertThreshold, value: any) => {
+  const updateThreshold = useCallback((index: number, field: keyof AlertThreshold, value: string | number) => {
     setThresholds((prev) =>
       prev.map((th, i) => (i === index ? { ...th, [field]: value } : th))
     );
@@ -145,7 +144,7 @@ export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRul
   // Escalation management
   const addEscalation = useCallback(() => {
     setEscalation((prev) => {
-      if (prev.length >= 3) {return prev;}
+      if (prev.length >= 3) { return prev; }
       const nextLevel = (prev.length + 1) as EscalationLevel;
       return [...prev, { level: nextLevel, delayMinutes: nextLevel * 10, notifyChannels: ["dashboard"] }];
     });
@@ -155,7 +154,7 @@ export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRul
     setEscalation((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
-  const updateEscalation = useCallback((index: number, field: string, value: any) => {
+  const updateEscalation = useCallback((index: number, field: keyof EscalationPolicy, value: string | number | string[] | undefined) => {
     setEscalation((prev) =>
       prev.map((esc, i) => (i === index ? { ...esc, [field]: value } : esc))
     );
@@ -164,7 +163,7 @@ export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRul
   const toggleChannel = useCallback((escIndex: number, channel: string) => {
     setEscalation((prev) =>
       prev.map((esc, i) => {
-        if (i !== escIndex) {return esc;}
+        if (i !== escIndex) { return esc; }
         const channels = esc.notifyChannels.includes(channel)
           ? esc.notifyChannels.filter((c: string) => c !== channel)
           : [...esc.notifyChannels, channel];
@@ -222,7 +221,7 @@ export function CreateRuleModal({ open, onClose, onSubmit, editRule }: CreateRul
     }
   }, [name, severity, thresholds, aggEnabled, aggWindow, aggMaxGroup, dedupEnabled, dedupCooldown, escalation, selectedNodes, onSubmit, t, editRule]);
 
-  if (!open) {return null;}
+  if (!open) { return null; }
 
   const inputStyle: React.CSSProperties = {
     fontSize: "0.75rem",

@@ -7,7 +7,7 @@
 import React from "react";
 import {
   Search, Radio, CheckCircle, XCircle, Loader2, Clock,
-  Server, Brain, ListTodo, Settings, Puzzle, Filter,
+  Server, Brain, ListTodo, Settings, Puzzle,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { CATEGORY_META } from "../hooks/useOperationCenter";
@@ -42,7 +42,7 @@ interface OperationLogStreamProps {
 }
 
 export function OperationLogStream({
-  logs, filter, onFilterChange, searchQuery, onSearchChange, isMobile = false,
+  logs, filter, onFilterChange, searchQuery, onSearchChange, isMobile: _isMobile = false,
 }: OperationLogStreamProps) {
   return (
     <GlassCard className="p-4" data-testid="operation-log-stream">
@@ -132,7 +132,7 @@ export function OperationLogStream({
                 </span>
 
                 {/* Duration */}
-                {entry.duration !== null && (
+                {entry.duration !== null && entry.duration !== undefined && (
                   <span className="text-[rgba(0,212,255,0.2)] shrink-0 hidden md:inline" style={{ fontSize: "0.58rem" }}>
                     {entry.duration}ms
                   </span>

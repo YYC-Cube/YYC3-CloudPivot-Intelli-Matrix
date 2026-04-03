@@ -19,7 +19,7 @@ import { renderHook, act, cleanup } from "@testing-library/react";
 import { useLocalFileSystem } from "../hooks/useLocalFileSystem";
 
 vi.mock("sonner", () => ({
-  toast: { success: vi.fn(), info: vi.fn(), error: vi.fn() },
+  toast: { success: vi.fn(), info: vi.fn(), error: vi.fn(), warning: vi.fn() },
 }));
 
 describe("useLocalFileSystem", () => {

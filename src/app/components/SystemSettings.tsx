@@ -9,14 +9,14 @@
  * @tags: [tag1],[tag2],[tag3]
  */
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   Settings, Server, Database, Shield, Bell, Cpu,
   ChevronRight, Save, RotateCcw, Check,
   Monitor, Network, Zap, Key, Layers, Wifi,
-  Globe, GitBranch, Terminal, Code, FileJson,
-  Download, Upload, Trash2, Plus, Edit2, Copy, Eye, EyeOff,
-  RefreshCw, HardDrive, Clock, AlertTriangle, Sliders,
+  Globe, Terminal, Code,
+  Download, Upload, Trash2, Plus, Edit2, Eye, EyeOff,
+  RefreshCw, Clock, AlertTriangle, Sliders,
   Plug, Repeat, Timer, X,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
@@ -31,6 +31,7 @@ import {
 } from "../lib/api-config";
 import { useModelProvider } from "../hooks/useModelProvider";
 import { useSettingsStore } from "../hooks/useSettingsStore";
+import type { SettingsToggles, SettingsValues } from "../hooks/useSettingsStore";
 import { deployedModelStore, type DeployedModel } from "../stores/dashboard-stores";
 
 // ============================================================
@@ -65,17 +66,15 @@ function Toggle({ enabled, onChange }: ToggleProps) {
   return (
     <button
       onClick={() => onChange(!enabled)}
-      className={`relative w-11 h-6 rounded-full transition-all duration-300 ${
-        enabled
-          ? "bg-[rgba(0,212,255,0.3)] border border-[rgba(0,212,255,0.5)]"
-          : "bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)]"
-      }`}
+      className={`relative w-11 h-6 rounded-full transition-all duration-300 ${enabled
+        ? "bg-[rgba(0,212,255,0.3)] border border-[rgba(0,212,255,0.5)]"
+        : "bg-[rgba(0,40,80,0.4)] border border-[rgba(0,180,255,0.15)]"
+        }`}
     >
-      <div className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${
-        enabled
-          ? "left-[22px] bg-[#00d4ff] shadow-[0_0_10px_rgba(0,212,255,0.5)]"
-          : "left-0.5 bg-[rgba(0,180,255,0.3)]"
-      }`} />
+      <div className={`absolute top-0.5 w-5 h-5 rounded-full transition-all duration-300 ${enabled
+        ? "left-[22px] bg-[#00d4ff] shadow-[0_0_10px_rgba(0,212,255,0.5)]"
+        : "left-0.5 bg-[rgba(0,180,255,0.3)]"
+        }`} />
     </button>
   );
 }
@@ -178,7 +177,7 @@ function APIEndpointConfig() {
   // Group ENDPOINT_META by group
   const groups = ENDPOINT_META.reduce<Record<string, typeof ENDPOINT_META>>((acc, meta) => {
     const g = meta.group;
-    if (!acc[g]) {acc[g] = [];}
+    if (!acc[g]) { acc[g] = []; }
     acc[g].push(meta);
     return acc;
   }, {});
@@ -261,11 +260,10 @@ function APIEndpointConfig() {
                             <button
                               key={n}
                               onClick={() => updateField(meta.key, n)}
-                              className={`w-6 h-6 rounded-md flex items-center justify-center transition-all ${
-                                numVal === n
-                                  ? "bg-[rgba(0,212,255,0.2)] border border-[rgba(0,212,255,0.5)] text-[#00d4ff]"
-                                  : "bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
-                              }`}
+                              className={`w-6 h-6 rounded-md flex items-center justify-center transition-all ${numVal === n
+                                ? "bg-[rgba(0,212,255,0.2)] border border-[rgba(0,212,255,0.5)] text-[#00d4ff]"
+                                : "bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
+                                }`}
                               style={{ fontSize: "0.65rem" }}
                             >
                               {n}
@@ -362,7 +360,7 @@ const MODEL_STATUS_LABELS: Record<DeployedModel["status"], string> = {
   deployed: "已部署", deploying: "部署中", standby: "待命", error: "异常",
 };
 
-function ModelManagementSection({ settings, toggleSetting }: { settings: any; toggleSetting: (key: string) => void }) {
+function ModelManagementSection({ settings, toggleSetting }: { settings: SettingsToggles; toggleSetting: (key: keyof SettingsToggles) => void }) {
   const [models, setModels] = useState<DeployedModel[]>(deployedModelStore.getAll());
   const [editModel, setEditModel] = useState<DeployedModel | null>(null);
   const [isAdding, setIsAdding] = useState(false);
@@ -509,12 +507,11 @@ function ModelManagementSection({ settings, toggleSetting }: { settings: any; to
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className={`px-2 py-0.5 rounded ${
-                model.status === "deployed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
+              <span className={`px-2 py-0.5 rounded ${model.status === "deployed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
                 model.status === "deploying" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
-                model.status === "error" ? "bg-[rgba(255,51,102,0.1)] text-[#ff3366]" :
-                "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]"
-              }`} style={{ fontSize: "0.65rem" }}>
+                  model.status === "error" ? "bg-[rgba(255,51,102,0.1)] text-[#ff3366]" :
+                    "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]"
+                }`} style={{ fontSize: "0.65rem" }}>
                 {MODEL_STATUS_LABELS[model.status]}
               </span>
               {editConfirm === model.id ? (
@@ -561,7 +558,7 @@ function ModelManagementSection({ settings, toggleSetting }: { settings: any; to
           <p className="text-[#c0dcf0]" style={{ fontSize: "0.82rem" }}>推理缓存 (KV-Cache)</p>
           <p className="text-[rgba(0,212,255,0.35)]" style={{ fontSize: "0.68rem" }}>启用 KV-Cache 加速推理</p>
         </div>
-        <Toggle enabled={(settings as any).cacheEnabled} onChange={() => toggleSetting("cacheEnabled" as any)} />
+        <Toggle enabled={settings.cacheEnabled} onChange={() => toggleSetting("cacheEnabled")} />
       </div>
     </div>
   );
@@ -583,13 +580,13 @@ export function SystemSettings() {
   const settingsStore = useSettingsStore();
   const { settings, values, toggleSetting: storeToggle, updateValue: storeUpdate, resetSettings, exportSettings } = settingsStore;
 
-  const updateValue = (key: string, val: string) => {
-    storeUpdate(key as any, val);
+  const updateValue = (key: keyof SettingsValues, val: string) => {
+    storeUpdate(key, val);
     setHasChanges(true);
   };
 
-  const toggleSetting = (key: string) => {
-    storeToggle(key as any);
+  const toggleSetting = (key: keyof SettingsToggles) => {
+    storeToggle(key);
     setHasChanges(true);
   };
 
@@ -650,10 +647,6 @@ export function SystemSettings() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <EditableField label="系统名称" value={values.systemName} onChange={v => updateValue("systemName", v)} description="系统显示标题" />
                 <EditableField label="集群 ID" value={values.clusterId} onChange={v => updateValue("clusterId", v)} description="全局唯一集群标识" mono />
-                <EditableField label="品牌名称" value={values.brandName || "YanYuCloudCube"} onChange={v => updateValue("brandName", v)} description="品牌标识" />
-                <EditableField label="品牌标语1" value={values.brandSlogan1 || "言启象限 | 语枢未来"} onChange={v => updateValue("brandSlogan1", v)} description="Words Initiate Quadrants; Language Pivots the Future" />
-                <EditableField label="品牌标语2" value={values.brandSlogan2 || "言启千行代码 | 语枢万物智能"} onChange={v => updateValue("brandSlogan2", v)} description="Words Spark Thousand Lines of Code; Language Hinges All Things' Intelligence" />
-                <EditableField label="品牌标语3" value={values.brandSlogan3 || "万象归元于云枢 | 深栈智启新纪元"} onChange={v => updateValue("brandSlogan3", v)} description="All Things Converge in Cloud Pivot; Deep Stacks Ignite a New Era of Intelligence" />
                 <div className="p-3 rounded-xl bg-[rgba(0,40,80,0.15)] border border-[rgba(0,180,255,0.06)]">
                   <div className="flex items-center gap-2 mb-1">
                     <Clock className="w-3.5 h-3.5 text-[rgba(0,212,255,0.4)]" />
@@ -1284,11 +1277,10 @@ export function SystemSettings() {
             <button
               key={section.id}
               onClick={() => setActiveSection(section.id)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${
-                activeSection === section.id
-                  ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.2)]"
-                  : "text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.05)] border border-transparent"
-              }`}
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all text-left ${activeSection === section.id
+                ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.2)]"
+                : "text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.05)] border border-transparent"
+                }`}
               style={{ fontSize: "0.82rem" }}
             >
               <section.icon className="w-4 h-4" />

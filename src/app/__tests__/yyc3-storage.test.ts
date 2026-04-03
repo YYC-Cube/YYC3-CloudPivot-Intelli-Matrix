@@ -8,7 +8,6 @@
  *  - CRUD 操作 (idbPut/idbGet/idbGetAll/idbDelete/idbClear/idbCount)
  *  - 批量写入 (idbPutMany)
  *  - exportAllData / importAllData
-import React from "react";
  *  - getStorageStats
  *  - localStorage Key 注册表
  *  - clearAllLocalStorage / clearAllStorage

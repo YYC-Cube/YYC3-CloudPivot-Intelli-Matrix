@@ -14,7 +14,6 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import React from "react";
 
 // Mock localStorage
 const localStorageMock = (() => {

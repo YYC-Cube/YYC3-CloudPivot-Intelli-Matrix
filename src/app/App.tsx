@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 import { Login } from "./components/Login";
@@ -50,7 +50,7 @@ if (typeof window !== "undefined") {
       return true; // suppress completely
     }
     if (typeof _prevOnerror === "function") {
-      return (_prevOnerror as any).apply(this, arguments);
+      return _prevOnerror.call(this, message, source, _lineno, _colno, error);
     }
     return false;
   };

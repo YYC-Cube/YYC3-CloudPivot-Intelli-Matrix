@@ -17,7 +17,7 @@ import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 const mockNavigate = vi.fn() as any;
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: "/ide" }),
 }));
@@ -29,7 +29,6 @@ vi.mock("../components/Layout", () => ({
 }));
 
 // Mock IDELayout component with tab state handling
-let currentTab = "monitor";
 const { useState } = React;
 
 vi.mock("../components/ide/IDELayout", () => ({
@@ -38,7 +37,6 @@ vi.mock("../components/ide/IDELayout", () => ({
 
     // Sync with external tab state for testing
     (globalThis as any)._setIDETab = setActiveTab;
-    currentTab = activeTab;
 
     return (
       <div data-testid="ide-layout">

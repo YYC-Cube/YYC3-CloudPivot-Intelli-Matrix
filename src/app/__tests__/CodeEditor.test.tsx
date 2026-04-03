@@ -12,7 +12,6 @@
 
 import { describe, it, expect, vi, afterEach , beforeEach} from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
-import React from "react";
 
 // Mock @uiw/react-codemirror (CodeMirror 在 jsdom 中无法正常初始化)
 vi.mock("@uiw/react-codemirror", () => ({

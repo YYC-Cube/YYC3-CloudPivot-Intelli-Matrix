@@ -7,7 +7,7 @@
  * i18n 已迁移
  */
 
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Settings, Zap } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { OperationCategory } from "./OperationCategory";

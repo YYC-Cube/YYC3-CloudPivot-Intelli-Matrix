@@ -29,8 +29,6 @@ export function PanelContainer({ panel, isActive }: PanelContainerProps) {
     onDrag,
     endDrag,
     startResize,
-    onResize,
-    endResize,
     updatePanel,
     removePanel,
   } = useLayoutContext();
@@ -77,9 +75,9 @@ export function PanelContainer({ panel, isActive }: PanelContainerProps) {
     }
   }, [panel.id, panel.isClosable, removePanel]);
 
-  const handleResizeStart = useCallback((direction: string, e: React.MouseEvent) => {
+  const handleResizeStart = useCallback((direction: 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw', e: React.MouseEvent) => {
     e.stopPropagation();
-    startResize(panel.id, direction as any, e.nativeEvent);
+    startResize(panel.id, direction, e.nativeEvent);
   }, [panel.id, startResize]);
 
   if (panel.isMinimized) {
@@ -92,7 +90,7 @@ export function PanelContainer({ panel, isActive }: PanelContainerProps) {
         top: 0,
         left: 0,
         width: '100vw',
-        height: 'calc(100vh - 60px)',
+        height: '100vh',
         zIndex: 9999,
       }
     : {

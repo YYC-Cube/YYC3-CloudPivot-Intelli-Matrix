@@ -1,14 +1,3 @@
-/**
- * @file: sidebar.tsx
- * @description: sidebar.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
 "use client";
 
 import * as React from "react";
@@ -42,10 +31,6 @@ const SIDEBAR_WIDTH = "16rem";
 const SIDEBAR_WIDTH_MOBILE = "18rem";
 const SIDEBAR_WIDTH_ICON = "3rem";
 const SIDEBAR_KEYBOARD_SHORTCUT = "b";
-
-const generateRandomSkeletonWidth = (): string => {
-  return `${Math.floor(Math.random() * 40) + 50}%`;
-};
 
 type SidebarContextProps = {
   state: "expanded" | "collapsed";
@@ -621,8 +606,10 @@ function SidebarMenuSkeleton({
 }: React.ComponentProps<"div"> & {
   showIcon?: boolean;
 }) {
-  const widthRef = React.useRef<string>(generateRandomSkeletonWidth());
-  const width = widthRef.current;
+  // Random width between 50 to 90%.
+  const width = React.useMemo(() => {
+    return `${Math.floor(Math.random() * 40) + 50}%`;
+  }, []);
 
   return (
     <div

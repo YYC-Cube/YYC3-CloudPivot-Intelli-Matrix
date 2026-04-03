@@ -13,12 +13,11 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import { FollowUpDrawer } from "../components/FollowUpDrawer";
 import type { FollowUpItem } from "../types";
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => vi.fn(),
 }));
 
@@ -197,10 +196,9 @@ describe("FollowUpDrawer", () => {
       );
       // Backdrop is the fixed inset-0 div with bg-black/50
       const backdrop = container.querySelector(".fixed.inset-0.bg-black\\/50");
-      if (backdrop) {
-        fireEvent.click(backdrop);
-        expect(onClose).toHaveBeenCalled();
-      }
+      expect(backdrop).toBeTruthy();
+      fireEvent.click(backdrop!);
+      expect(onClose).toHaveBeenCalled();
     });
 
     it("ESC 键应触发 onClose", () => {

@@ -26,7 +26,7 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { useNavigate } from "react-router-dom";
-import { FAMILY_MEMBERS, hexToRgb, DEEP_BG } from "./shared";
+import { FAMILY_MEMBERS, hexToRgb } from "./shared";
 
 // ═══ Settings Types ═══
 
@@ -43,6 +43,10 @@ interface FamilyUIConfig {
   autoMarkRead: boolean;
   messageRetentionDays: number;
   locale: "zh-CN" | "en-US";
+}
+
+interface FileInputEvent extends Event {
+  target: HTMLInputElement & EventTarget;
 }
 
 const DEFAULT_CONFIG: FamilyUIConfig = {
@@ -95,19 +99,19 @@ interface LinkStatus {
 }
 
 const ECOSYSTEM_LINKS: LinkNode[] = [
-  { id: "home", name: "家园首页", icon: Heart, color: "#FF69B4", path: "/ai-family-home", description: "家人状态 · 动态 · 空间入口" },
-  { id: "center", name: "Family 中心", icon: Sparkles, color: "#FF69B4", path: "/ai-family-center", description: "全景规划 · 信任公约" },
-  { id: "chat", name: "家人对话", icon: MessageCircle, color: "#00BFFF", path: "/ai-family-chat", description: "多轮对话 · 群聊" },
-  { id: "phone", name: "家人热线", icon: Phone, color: "#00FF88", path: "/ai-family-phone", description: "电话交互 · 来电/去电" },
-  { id: "fun", name: "文娱中心", icon: Gamepad2, color: "#FFD700", path: "/ai-family-fun", description: "棋牌对弈 · 才艺展示" },
-  { id: "activities", name: "全家活动", icon: Trophy, color: "#FF7043", path: "/ai-family-activities", description: "比赛 · 播报 · 勋章", storageKey: "yyc3-family-activities" },
-  { id: "learn", name: "学习成长", icon: BookOpen, color: "#00d4ff", path: "/ai-family-learn", description: "AI 导师 · 陪伴式学习" },
-  { id: "music", name: "音乐空间", icon: Music, color: "#BF00FF", path: "/ai-family-music", description: "音乐推荐 · 行业资讯" },
-  { id: "growth", name: "成长轨迹", icon: TrendingUp, color: "#FF7043", path: "/ai-family-growth", description: "成长记忆 · 里程碑" },
-  { id: "models", name: "模型控制", icon: Server, color: "#06b6d4", path: "/ai-family-models", storageKey: "yyc3-family-model-assignments", description: "大模型绑定 · API Key · 连接测试" },
-  { id: "voice", name: "语音系统", icon: Volume2, color: "#a855f7", path: "/ai-family-voice", storageKey: "yyc3-family-voice-profiles", description: "TTS/STT · 语音对话 · 音色配置" },
-  { id: "data", name: "数据中心", icon: Database, color: "#10b981", path: "/ai-family-data", description: "统一数据全景 · 统计 · 导出" },
-  { id: "comm", name: "通信中心", icon: Radio, color: "#3b82f6", path: "/ai-family-comm", storageKey: "yyc3-family-comm-messages", description: "内部通信 · 消息持久化" },
+  { id: "home", name: "家园首页", icon: Heart, color: "#FF69B4", path: "/ai-family", description: "家人状态 · 动态 · 空间入口" },
+  { id: "center", name: "Family中心", icon: Sparkles, color: "#FF69B4", path: "/ai-family/settings", description: "全景规划 · 信任公约" },
+  { id: "chat", name: "家人对话", icon: MessageCircle, color: "#00BFFF", path: "/ai-family/chat", description: "多轮对话 · 群聊" },
+  { id: "phone", name: "家人热线", icon: Phone, color: "#00FF88", path: "/ai-family/phone", description: "电话交互 · 来电/去电" },
+  { id: "fun", name: "文娱中心", icon: Gamepad2, color: "#FFD700", path: "/ai-family/fun", description: "棋牌对弈 · 才艺展示" },
+  { id: "activities", name: "全家活动", icon: Trophy, color: "#FF7043", path: "/ai-family/activities", description: "比赛 · 播报 · 勋章", storageKey: "yyc3-family-activities" },
+  { id: "learn", name: "学习成长", icon: BookOpen, color: "#00d4ff", path: "/ai-family/learn", description: "AI 导师 · 陪伴式学习" },
+  { id: "music", name: "音乐空间", icon: Music, color: "#BF00FF", path: "/ai-family/music", description: "音乐推荐 · 行业资讯" },
+  { id: "growth", name: "成长轨迹", icon: TrendingUp, color: "#FF7043", path: "/ai-family/growth", description: "成长记忆 · 里程碑" },
+  { id: "models", name: "模型控制", icon: Server, color: "#06b6d4", path: "/ai-family/models", storageKey: "yyc3-family-model-assignments", description: "大模型绑定 · API Key · 连接测试" },
+  { id: "voice", name: "语音系统", icon: Volume2, color: "#a855f7", path: "/ai-family/voice", storageKey: "yyc3-family-voice-profiles", description: "TTS/STT · 语音对话 · 音色配置" },
+  { id: "data", name: "数据中心", icon: Database, color: "#10b981", path: "/ai-family/data", description: "统一数据全景 · 统计 · 导出" },
+  { id: "comm", name: "通信中心", icon: Radio, color: "#3b82f6", path: "/ai-family/comm", storageKey: "yyc3-family-comm-messages", description: "内部通信 · 消息持久化" },
 ];
 
 // ═══ 子组件：配置分组 ═══
@@ -151,14 +155,12 @@ function Toggle({ value, onChange }: { value: boolean; onChange: (v: boolean) =>
   return (
     <button
       onClick={() => onChange(!value)}
-      className={`w-10 h-5 rounded-full transition-all relative ${
-        value ? "bg-cyan-500/30" : "bg-white/10"
-      }`}
+      className={`w-10 h-5 rounded-full transition-all relative ${value ? "bg-cyan-500/30" : "bg-white/10"
+        }`}
     >
       <div
-        className={`w-4 h-4 rounded-full absolute top-0.5 transition-all ${
-          value ? "left-5.5 bg-cyan-400" : "left-0.5 bg-white/40"
-        }`}
+        className={`w-4 h-4 rounded-full absolute top-0.5 transition-all ${value ? "left-5.5 bg-cyan-400" : "left-0.5 bg-white/40"
+          }`}
         style={{ left: value ? "22px" : "2px" }}
       />
     </button>
@@ -176,11 +178,10 @@ function SelectPill({ options, value, onChange }: {
         <button
           key={opt.key}
           onClick={() => onChange(opt.key)}
-          className={`px-2.5 py-1 rounded-md transition-all ${
-            value === opt.key
-              ? "bg-cyan-500/15 text-cyan-300"
-              : "text-white/30 hover:text-white/50"
-          }`}
+          className={`px-2.5 py-1 rounded-md transition-all ${value === opt.key
+            ? "bg-cyan-500/15 text-cyan-300"
+            : "text-white/30 hover:text-white/50"
+            }`}
           style={{ fontSize: "0.65rem" }}
         >
           {opt.label}
@@ -206,9 +207,9 @@ function LinkNodeCard({
   const rgb = hexToRgb(node.color);
   const statusColor = status.status === "ok" ? "#00FF88"
     : status.status === "warn" ? "#FFD700"
-    : status.status === "error" ? "#FF4444"
-    : status.status === "testing" ? "#00d4ff"
-    : "rgba(255,255,255,0.15)";
+      : status.status === "error" ? "#FF4444"
+        : status.status === "testing" ? "#00d4ff"
+          : "rgba(255,255,255,0.15)";
 
   return (
     <div
@@ -406,7 +407,7 @@ export function FamilyUISettings() {
     for (const key of ALL_STORAGE_KEYS) {
       try {
         const raw = localStorage.getItem(key);
-        if (raw) {allData[key] = JSON.parse(raw);}
+        if (raw) { allData[key] = JSON.parse(raw); }
       } catch { /* noop */ }
     }
     const blob = new Blob([JSON.stringify({
@@ -429,13 +430,13 @@ export function FamilyUISettings() {
     const input = document.createElement("input");
     input.type = "file";
     input.accept = ".json";
-    input.onchange = (e: any) => {
-      const file = e.target.files[0];
-      if (!file) {return;}
+    input.onchange = (e: Event) => {
+      const file = (e as FileInputEvent).target.files?.[0];
+      if (!file) { return; }
       const reader = new FileReader();
-      reader.onload = (ev) => {
+      reader.onload = (ev: ProgressEvent<FileReader>) => {
         try {
-          const parsed = JSON.parse(ev.target?.result as string);
+          const parsed = JSON.parse((ev.target?.result as string) || "");
           const data = parsed.data || parsed;
           let count = 0;
           for (const [key, value] of Object.entries(data)) {
@@ -473,7 +474,7 @@ export function FamilyUISettings() {
   const testedCount = okCount + warnCount + errorCount;
 
   return (
-    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>
@@ -525,11 +526,10 @@ export function FamilyUISettings() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all flex-1 justify-center whitespace-nowrap ${
-                  activeTab === tab.key
-                    ? "bg-[rgba(0,212,255,0.1)] text-cyan-300 border border-[rgba(0,212,255,0.2)]"
-                    : "text-white/40 hover:text-white/60 border border-transparent"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all flex-1 justify-center whitespace-nowrap ${activeTab === tab.key
+                  ? "bg-[rgba(0,212,255,0.1)] text-cyan-300 border border-[rgba(0,212,255,0.2)]"
+                  : "text-white/40 hover:text-white/60 border border-transparent"
+                  }`}
                 style={{ fontSize: "0.75rem" }}
               >
                 <tab.icon className="w-3.5 h-3.5" />
@@ -586,7 +586,7 @@ export function FamilyUISettings() {
                   </span>
                 </div>
                 <div className="space-y-2">
-                  {ECOSYSTEM_LINKS.map((link, i) => (
+                  {ECOSYSTEM_LINKS.map((link, _i) => (
                     <LinkNodeCard
                       key={link.id}
                       node={link}
@@ -690,7 +690,6 @@ export function FamilyUISettings() {
                   <div className="text-white/40 mb-2" style={{ fontSize: "0.65rem" }}>家人排序</div>
                   <div className="flex flex-wrap gap-1.5">
                     {FAMILY_MEMBERS.map(m => {
-                      const rgb = hexToRgb(m.color);
                       return (
                         <div
                           key={m.id}

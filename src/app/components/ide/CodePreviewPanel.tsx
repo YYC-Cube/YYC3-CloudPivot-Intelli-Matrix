@@ -5,10 +5,9 @@
  * Tab 式多文件编辑 + 语法高亮
  */
 
-import React from "react";
-import { X, Circle, Code2, FileText } from "lucide-react";
-import { CodeEditor, getLanguageLabel } from "../CodeEditor";
+import { Circle, Code2, FileText, X } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
+import { CodeEditor, getLanguageLabel } from "../CodeEditor";
 import type { OpenTab } from "./ide-types";
 
 interface CodePreviewPanelProps {

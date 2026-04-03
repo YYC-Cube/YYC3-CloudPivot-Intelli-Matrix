@@ -13,7 +13,6 @@
  */
 
 import { describe, it, expect, afterEach } from "vitest";
-import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import {
   StageReview,

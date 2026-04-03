@@ -10,9 +10,9 @@
  * - 配置导入/导出
  */
 
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
-  Plus, Trash2, Plug, Server, Cpu, Key,
+  Plus, Trash2, Plug, Server, Cpu,
   CheckCircle, AlertCircle, HelpCircle, RefreshCw,
   Edit3, Download, Upload, Globe, ChevronDown, ChevronUp,
 } from "lucide-react";
@@ -24,8 +24,8 @@ import { useI18n } from "../hooks/useI18n";
 import { ViewContext } from "../lib/view-context";
 
 function formatSize(bytes: number): string {
-  if (bytes >= 1e9) {return `${(bytes / 1e9).toFixed(1)}GB`;}
-  if (bytes >= 1e6) {return `${(bytes / 1e6).toFixed(0)}MB`;}
+  if (bytes >= 1e9) { return `${(bytes / 1e9).toFixed(1)}GB`; }
+  if (bytes >= 1e6) { return `${(bytes / 1e6).toFixed(0)}MB`; }
   return `${bytes}B`;
 }
 
@@ -53,7 +53,7 @@ export function ModelProviderPanel() {
     removeProvider,
     resetProvider,
     addModelToProvider,
-    removeModelFromProvider,
+    removeModelFromProvider: _removeModelFromProvider,
     exportConfig,
     importConfig,
   } = useModelProvider();
@@ -71,8 +71,8 @@ export function ModelProviderPanel() {
   const [importResult, setImportResult] = useState<string | null>(null);
 
   const statusConfig = {
-    active:    { color: "#00ff88", icon: CheckCircle, label: t("modelProvider.statusActive") },
-    error:     { color: "#ff3366", icon: AlertCircle, label: t("modelProvider.statusError") },
+    active: { color: "#00ff88", icon: CheckCircle, label: t("modelProvider.statusActive") },
+    error: { color: "#ff3366", icon: AlertCircle, label: t("modelProvider.statusError") },
     unchecked: { color: "rgba(0,212,255,0.3)", icon: HelpCircle, label: t("modelProvider.statusUnchecked") },
   };
 
@@ -90,7 +90,7 @@ export function ModelProviderPanel() {
 
   // Handle import
   const handleImport = () => {
-    if (!importText.trim()) {return;}
+    if (!importText.trim()) { return; }
     const success = importConfig(importText.trim());
     setImportResult(success ? "导入成功" : "导入失败，请检查 JSON 格式");
     if (success) {

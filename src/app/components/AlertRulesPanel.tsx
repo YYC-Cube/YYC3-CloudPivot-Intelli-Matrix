@@ -8,8 +8,8 @@
 
 import React, { useState } from "react";
 import {
-  Bell, BellRing, Plus, Trash2, ToggleLeft, ToggleRight,
-  AlertTriangle, ShieldAlert, Info, ChevronRight,
+  BellRing, Plus, Trash2, ToggleLeft, ToggleRight,
+  AlertTriangle, ShieldAlert, Info,
   CheckCircle2, XCircle, Clock, TrendingUp,
   Filter, Zap, Settings, ArrowUpRight, Pencil, Wifi,
 } from "lucide-react";
@@ -25,24 +25,24 @@ import { CreateRuleModal } from "./CreateRuleModal";
 // ============================================================
 
 function severityColor(s: AlertSeverity): string {
-  if (s === "critical") {return "#ff3366";}
-  if (s === "error") {return "#ff3366";}
-  if (s === "warning") {return "#ffaa00";}
+  if (s === "critical") { return "#ff3366"; }
+  if (s === "error") { return "#ff3366"; }
+  if (s === "warning") { return "#ffaa00"; }
   return "#00d4ff";
 }
 
 function severityIcon(s: AlertSeverity) {
-  if (s === "critical") {return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />;}
-  if (s === "error") {return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />;}
-  if (s === "warning") {return <AlertTriangle className="w-4 h-4" style={{ color: "#ffaa00" }} />;}
+  if (s === "critical") { return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />; }
+  if (s === "error") { return <ShieldAlert className="w-4 h-4" style={{ color: "#ff3366" }} />; }
+  if (s === "warning") { return <AlertTriangle className="w-4 h-4" style={{ color: "#ffaa00" }} />; }
   return <Info className="w-4 h-4" style={{ color: "#00d4ff" }} />;
 }
 
 function timeAgo(ts: number): string {
   const diff = Date.now() - ts;
-  if (diff < 60000) {return "刚刚";}
-  if (diff < 3600000) {return `${Math.floor(diff / 60000)}m ago`;}
-  if (diff < 86400000) {return `${Math.floor(diff / 3600000)}h ago`;}
+  if (diff < 60000) { return "刚刚"; }
+  if (diff < 3600000) { return `${Math.floor(diff / 60000)}m ago`; }
+  if (diff < 86400000) { return `${Math.floor(diff / 3600000)}h ago`; }
   return `${Math.floor(diff / 86400000)}d ago`;
 }
 
@@ -52,7 +52,7 @@ function timeAgo(ts: number): string {
 
 function StatsBar({ stats, t }: { stats: ReturnType<typeof useAlertRules>["stats"]; t: (k: string, v?: Record<string, string | number>) => string }) {
   const items = [
-    { label: t("alerts.totalRules"), value: stats.totalRules, color: "#00d4ff", icon: Bell },
+    { label: t("alerts.totalRules"), value: stats.totalRules, color: "#00d4ff", icon: BellRing },
     { label: t("alerts.activeRules"), value: stats.activeRules, color: "#00ff88", icon: Zap },
     { label: t("alerts.unresolvedEvents"), value: stats.unresolvedEvents, color: "#ffaa00", icon: AlertTriangle },
     { label: t("alerts.criticalEvents"), value: stats.criticalEvents, color: "#ff3366", icon: ShieldAlert },

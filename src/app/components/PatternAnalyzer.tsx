@@ -9,7 +9,6 @@ import {
   TrendingUp, TrendingDown, Minus, AlertTriangle,
   X, Clock, Repeat,
 } from "lucide-react";
-import { GlassCard } from "./GlassCard";
 import type { DetectedPattern, PatternSeverity } from "../types";
 
 const severityConfig: Record<PatternSeverity, { color: string; bg: string; label: string }> = {
@@ -71,7 +70,6 @@ export function PatternAnalyzer({
                 <div className="flex items-start justify-between gap-2 mb-1.5">
                   <div className="flex items-center gap-2">
                     <span
-                      data-testid={`pattern-severity-${pat.id}`}
                       className="px-1.5 py-0.5 rounded"
                       style={{ fontSize: "0.58rem", color: sev.color, backgroundColor: sev.bg }}
                     >

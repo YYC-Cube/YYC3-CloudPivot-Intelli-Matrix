@@ -1,18 +1,7 @@
-/**
- * @file: UserManagement.tsx
- * @description: UserManagement.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import {
   Users, UserPlus, Search, Shield, ShieldCheck, ShieldAlert, Crown,
-  Edit2, Trash2, Lock, Unlock, Mail, Clock, Activity,
+  Edit2, Trash2, Lock, Unlock, Activity,
   Eye, XCircle, Save, X, Plus, Check, RotateCcw
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";

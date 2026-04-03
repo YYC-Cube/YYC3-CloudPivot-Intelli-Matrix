@@ -5,10 +5,10 @@
  * 显示活跃告警计数、最新严重告警摘要、一键跳转按钮
  */
 
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import {
-  Bell, AlertTriangle, XCircle, ChevronRight, Shield,
+  AlertTriangle, XCircle, ChevronRight,
 } from "lucide-react";
 
 // Mock alert summary (matches useFollowUp data)

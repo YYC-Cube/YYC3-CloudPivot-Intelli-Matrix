@@ -64,12 +64,12 @@ const toastStyle = {
 };
 
 const STATUS_META: Record<TestStatus, { label: string; color: string; icon: React.ElementType }> = {
-  idle:    { label: "待测试", color: "rgba(0,212,255,0.3)", icon: Clock },
+  idle: { label: "待测试", color: "rgba(0,212,255,0.3)", icon: Clock },
   running: { label: "测试中", color: "#ffdd00", icon: Loader2 },
-  pass:    { label: "通过",   color: "#00ff88", icon: CheckCircle2 },
-  fail:    { label: "失败",   color: "#ff3366", icon: XCircle },
-  warn:    { label: "警告",   color: "#ffaa00", icon: AlertTriangle },
-  skip:    { label: "跳过",   color: "rgba(0,212,255,0.2)", icon: Clock },
+  pass: { label: "通过", color: "#00ff88", icon: CheckCircle2 },
+  fail: { label: "失败", color: "#ff3366", icon: XCircle },
+  warn: { label: "警告", color: "#ffaa00", icon: AlertTriangle },
+  skip: { label: "跳过", color: "rgba(0,212,255,0.2)", icon: Clock },
 };
 
 const RESULTS_KEY = "yyc3_connection_test_results";
@@ -82,14 +82,14 @@ function loadResults(): TestResult[] {
 }
 
 function saveResults(results: TestResult[]) {
-  try { localStorage.setItem(RESULTS_KEY, JSON.stringify(results)); } catch {}
+  try { localStorage.setItem(RESULTS_KEY, JSON.stringify(results)); } catch { }
 }
 
 // ============================================================
 // Network test helpers
 // ============================================================
 
-async function testFetch(url: string, options: RequestInit = {}, timeoutMs = 8000): Promise<{
+async function testFetch(url: string, options: globalThis.RequestInit = {}, timeoutMs = 8000): Promise<{
   ok: boolean;
   status: number;
   statusText: string;
@@ -106,11 +106,11 @@ async function testFetch(url: string, options: RequestInit = {}, timeoutMs = 800
     clearTimeout(timer);
     const latencyMs = Date.now() - start;
     let body = "";
-    try { body = await res.text(); } catch {}
+    try { body = await res.text(); } catch { }
     return { ok: res.ok, status: res.status, statusText: res.statusText, latencyMs, body };
-  } catch (err: any) {
+  } catch (err: unknown) {
     const latencyMs = Date.now() - start;
-    const msg = err?.message || String(err);
+    const msg = err instanceof Error ? err.message : String(err);
     let errorType: "cors" | "network" | "timeout" | "unknown" = "unknown";
     if (msg === "Failed to fetch" || msg.includes("NetworkError") || msg.includes("CORS") || msg.includes("cross-origin") || msg.includes("net::ERR_FAILED")) {
       errorType = "cors";
@@ -145,8 +145,8 @@ export function ServiceConnectionTest() {
 
   const saveProxy = (url: string) => {
     setProxyUrl(url);
-    if (url) {localStorage.setItem("yyc3_cors_proxy", url);}
-    else {localStorage.removeItem("yyc3_cors_proxy");}
+    if (url) { localStorage.setItem("yyc3_cors_proxy", url); }
+    else { localStorage.removeItem("yyc3_cors_proxy"); }
   };
 
   // ============================================================
@@ -218,15 +218,15 @@ export function ServiceConnectionTest() {
           if (r.ok) {
             const data = JSON.parse(r.body || "{}");
             const models = data.models || [];
-            const found = models.some((m: any) => m.name === model || m.model === model);
+            const found = models.some((m: { name?: string; model?: string }) => m.name === model || m.model === model);
             if (found) {
               result.steps[result.steps.length - 1] = { label: "模型列表", status: "pass", detail: `模型 ${model} 已安装 (共 ${models.length} 个模型)`, latencyMs: r.latencyMs, timestamp: Date.now() };
             } else {
-              result.steps[result.steps.length - 1] = { label: "模型列表", status: "warn", detail: `模型 ${model} 未找到。已安装: ${models.map((m: any) => m.name).join(", ") || "(空)"}`, latencyMs: r.latencyMs, timestamp: Date.now() };
+              result.steps[result.steps.length - 1] = { label: "模型列表", status: "warn", detail: `模型 ${model} 未找到。已安装: ${models.map((m: { name?: string }) => m.name).join(", ") || "(空)"}`, latencyMs: r.latencyMs, timestamp: Date.now() };
               result.suggestion = `请运行: ollama pull ${model}`;
             }
           }
-        } catch {}
+        } catch { }
 
         // Step 3: Chat test
         addStep("推理测试", "running", "发送 ping 请求...");
@@ -318,7 +318,7 @@ export function ServiceConnectionTest() {
         addStep("CORS 代理通道", "running", `通过代理 ${proxy} 测试...`);
         const proxyTestUrl = `${proxy.replace(/\/$/, "")}/${chatEndpoint}`;
         const proxyHeaders: Record<string, string> = { "Content-Type": "application/json" };
-        if (apiKey) {proxyHeaders["Authorization"] = `Bearer ${apiKey}`;}
+        if (apiKey) { proxyHeaders["Authorization"] = `Bearer ${apiKey}`; }
         const proxyRes = await testFetch(proxyTestUrl, {
           method: "POST",
           headers: proxyHeaders,
@@ -337,10 +337,10 @@ export function ServiceConnectionTest() {
 
     // Determine overall status
     const statuses = result.steps.map((s) => s.status);
-    if (statuses.includes("fail")) {result.overallStatus = "fail";}
-    else if (statuses.includes("warn")) {result.overallStatus = "warn";}
-    else if (statuses.every((s) => s === "pass" || s === "skip")) {result.overallStatus = "pass";}
-    else {result.overallStatus = "warn";}
+    if (statuses.includes("fail")) { result.overallStatus = "fail"; }
+    else if (statuses.includes("warn")) { result.overallStatus = "warn"; }
+    else if (statuses.every((s) => s === "pass" || s === "skip")) { result.overallStatus = "pass"; }
+    else { result.overallStatus = "warn"; }
 
     result.completedAt = Date.now();
     return result;
@@ -450,9 +450,9 @@ export function ServiceConnectionTest() {
       `4. 使用云端数据库 HTTP API (Supabase / PlanetScale / Neon)`;
 
     const statuses = result.steps.map((s) => s.status);
-    if (statuses.includes("fail")) {result.overallStatus = "fail";}
-    else if (statuses.every((s) => s === "pass")) {result.overallStatus = "pass";}
-    else {result.overallStatus = "warn";}
+    if (statuses.includes("fail")) { result.overallStatus = "fail"; }
+    else if (statuses.every((s) => s === "pass")) { result.overallStatus = "pass"; }
+    else { result.overallStatus = "warn"; }
 
     result.completedAt = Date.now();
     return result;
@@ -493,8 +493,9 @@ export function ServiceConnectionTest() {
         result.steps[0] = { label: "WebSocket 连接", status: "fail", detail: `连接超时或被拒绝 (${latency}ms)`, latencyMs: latency, timestamp: Date.now() };
         result.suggestion = `WebSocket 端点 ${wsEndpoint} 不可达。Dashboard 将使用模拟数据。`;
       }
-    } catch (err: any) {
-      result.steps[0] = { label: "WebSocket 连接", status: "fail", detail: `异常: ${err.message}`, timestamp: Date.now() };
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      result.steps[0] = { label: "WebSocket 连接", status: "fail", detail: `异常: ${msg}`, timestamp: Date.now() };
     }
 
     result.overallStatus = result.steps[0].status === "pass" ? "pass" : "fail";
@@ -610,9 +611,9 @@ export function ServiceConnectionTest() {
     }
 
     const statuses = result.steps.map((s) => s.status);
-    if (statuses.includes("fail")) {result.overallStatus = "fail";}
-    else if (statuses.every((s) => s === "pass" || s === "skip")) {result.overallStatus = "pass";}
-    else {result.overallStatus = "warn";}
+    if (statuses.includes("fail")) { result.overallStatus = "fail"; }
+    else if (statuses.every((s) => s === "pass" || s === "skip")) { result.overallStatus = "pass"; }
+    else { result.overallStatus = "warn"; }
 
     result.completedAt = Date.now();
     return result;
@@ -645,9 +646,9 @@ export function ServiceConnectionTest() {
 
     // 3. AI providers (configured models)
     for (const cm of configuredModels) {
-      if (abortRef.current) {break;}
+      if (abortRef.current) { break; }
       const provider = providers.find((p) => p.id === cm.providerId);
-      if (!provider) {continue;}
+      if (!provider) { continue; }
       const res = await testAIProvider(
         cm.providerId,
         cm.providerLabel,
@@ -665,7 +666,7 @@ export function ServiceConnectionTest() {
     // If no configured models, test all providers with a probe
     if (configuredModels.length === 0) {
       for (const p of providers) {
-        if (abortRef.current) {break;}
+        if (abortRef.current) { break; }
         const model = p.models[0] || "test";
         const res = await testAIProvider(
           p.id, p.label, p.baseUrl, p.authType, "", model, p.isLocal, proxyUrl || undefined,
@@ -677,7 +678,7 @@ export function ServiceConnectionTest() {
 
     // 4. Database connections
     for (const db of dbConnections) {
-      if (abortRef.current) {break;}
+      if (abortRef.current) { break; }
       const res = await testDB(db);
       allResults.push(res);
       setResults([...allResults]);
@@ -691,28 +692,6 @@ export function ServiceConnectionTest() {
     const warnCount = allResults.filter((r) => r.overallStatus === "warn").length;
     toast.success(`测试完成: ${passCount} 通过 / ${warnCount} 警告 / ${failCount} 失败`, { style: toastStyle, duration: 4000 });
   }, [testNetwork, testWebSocket, testAIProvider, testDB, configuredModels, providers, dbConnections, proxyUrl]);
-
-  // Run single test
-  const runSingleTest = useCallback(async (testId: string) => {
-    // Parse the test type
-    if (testId === "network-general") {
-      const res = await testNetwork();
-      setResults((prev) => {
-        const next = prev.filter((r) => r.id !== testId);
-        next.unshift(res);
-        saveResults(next);
-        return next;
-      });
-    } else if (testId === "ws-main") {
-      const res = await testWebSocket();
-      setResults((prev) => {
-        const next = prev.filter((r) => r.id !== testId);
-        next.unshift(res);
-        saveResults(next);
-        return next;
-      });
-    }
-  }, [testNetwork, testWebSocket]);
 
   const stopTests = () => { abortRef.current = true; };
 

@@ -4,8 +4,7 @@
  * 9.1 Design Tokens 展示 — 色彩 / 字体 / 间距 / 阴影 / 动效
  */
 
-import React, { useState } from "react";
-import { GlassCard } from "../GlassCard";
+import { useState } from "react";
 import type { ColorToken, TypographyToken, SpacingToken, ShadowToken, AnimationToken } from "../../types";
 
 // RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入

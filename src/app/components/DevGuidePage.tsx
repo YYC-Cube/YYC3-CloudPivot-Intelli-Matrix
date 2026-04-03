@@ -11,16 +11,14 @@
  * 架构概览 · 存储策略
  */
 
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   BookOpen, Server, Database, Globe, Cpu,
   Check, Clock, AlertCircle, ChevronRight,
   HardDrive, Terminal, MonitorSmartphone, Layers,
-  ArrowRight,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
-import { ViewContext } from "../lib/view-context";
 
 /* ============================================================
  *  10.1 技术选型
@@ -296,22 +294,20 @@ const STORAGE_LAYERS: StorageLayer[] = [
  * ============================================================ */
 
 const statusIcon: Record<PhaseStatus, { icon: React.ElementType; color: string; label: string }> = {
-  completed:  { icon: Check,       color: "#00ff88", label: "已完成" },
-  inProgress: { icon: Clock,       color: "#ffaa00", label: "进行中" },
-  planned:    { icon: AlertCircle, color: "rgba(0,212,255,0.3)", label: "已规划" },
+  completed: { icon: Check, color: "#00ff88", label: "已完成" },
+  inProgress: { icon: Clock, color: "#ffaa00", label: "进行中" },
+  planned: { icon: AlertCircle, color: "rgba(0,212,255,0.3)", label: "已规划" },
 };
 
 export function DevGuidePage() {
-  const view = useContext(ViewContext);
   const { t } = useI18n();
-  const isMobile = view?.isMobile ?? false;
   const [activeTab, setActiveTab] = useState<string>("tech");
 
   const tabs = [
-    { key: "tech",     label: t("devGuide.techStack") },
+    { key: "tech", label: t("devGuide.techStack") },
     { key: "priority", label: t("devGuide.devPriority") },
-    { key: "arch",     label: t("devGuide.architecture") },
-    { key: "storage",  label: t("devGuide.storageStrategy") },
+    { key: "arch", label: t("devGuide.architecture") },
+    { key: "storage", label: t("devGuide.storageStrategy") },
   ];
 
   return (
@@ -337,11 +333,10 @@ export function DevGuidePage() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-3 py-1.5 rounded-lg transition-all ${
-              activeTab === tab.key
-                ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.3)]"
-                : "text-[rgba(0,212,255,0.35)] hover:text-[#00d4ff] border border-transparent"
-            }`}
+            className={`px-3 py-1.5 rounded-lg transition-all ${activeTab === tab.key
+              ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.3)]"
+              : "text-[rgba(0,212,255,0.35)] hover:text-[#00d4ff] border border-transparent"
+              }`}
             style={{ fontSize: "0.72rem" }}
             data-testid={`devguide-tab-${tab.key}`}
           >

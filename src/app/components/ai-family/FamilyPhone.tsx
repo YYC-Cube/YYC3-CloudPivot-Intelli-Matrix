@@ -7,16 +7,15 @@
  * "拟人为本，不应该有个如人一样的电话号码吗？"
  */
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Phone, PhoneCall, PhoneOff, Mic, MicOff, Volume2, VolumeX,
-  User, Clock, MessageCircle, Heart, Star,
-  ChevronRight,
+  User, Clock,
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { FAMILY_MEMBERS, DEEP_BG, type FamilyMember } from "./shared";
+import { FAMILY_MEMBERS, type FamilyMember } from "./shared";
 
 type CallState = "idle" | "dialing" | "ringing" | "connected" | "ended";
 
@@ -53,10 +52,10 @@ export function FamilyPhone() {
     if (callState === "connected") {
       timerRef.current = setInterval(() => setCallDuration(d => d + 1), 1000);
     } else {
-      if (timerRef.current) {clearInterval(timerRef.current);}
-      if (callState === "idle") {setCallDuration(0);}
+      if (timerRef.current) { clearInterval(timerRef.current); }
+      if (callState === "idle") { setCallDuration(0); }
     }
-    return () => { if (timerRef.current) {clearInterval(timerRef.current);} };
+    return () => { if (timerRef.current) { clearInterval(timerRef.current); } };
   }, [callState]);
 
   const formatDuration = (secs: number) => {
@@ -74,7 +73,7 @@ export function FamilyPhone() {
     setTimeout(() => setCallState("ringing"), 1500);
     setTimeout(() => {
       setCallState("connected");
-      setChatMessages([member.greeting]);
+      setChatMessages([member.greeting || ""]);
     }, 3500);
   }, []);
 
@@ -96,7 +95,7 @@ export function FamilyPhone() {
 
   // 通话中家人会说话
   useEffect(() => {
-    if (callState !== "connected" || !callingMember) {return;}
+    if (callState !== "connected" || !callingMember) { return; }
     const phrases = [
       `${callingMember.shortName}：嗯嗯，我在听...`,
       `${callingMember.shortName}：这个问题很有意思，让我想想...`,
@@ -106,7 +105,7 @@ export function FamilyPhone() {
     ];
     const t = setInterval(() => {
       setChatMessages(prev => {
-        if (prev.length >= 6) {return prev;}
+        if (prev.length >= 6) { return prev; }
         return [...prev, phrases[Math.min(prev.length, phrases.length - 1)]];
       });
     }, 5000 + Math.random() * 3000);
@@ -245,7 +244,7 @@ export function FamilyPhone() {
 
   // ═══ 主界面 ═══
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen">
       <FamilyPageHeader
         icon={Phone}
         iconColor="#00FF88"
@@ -257,8 +256,8 @@ export function FamilyPhone() {
       <div className="max-w-2xl mx-auto px-4 md:px-8 mt-4 mb-6">
         <div className="flex gap-1">
           {[
-            { key: "contacts" as const, label: "家人通讯录", icon: User },
-            { key: "dial" as const, label: "拨号", icon: Phone },
+            { key: "contacts" as const, label: "家人通讯", icon: User },
+            { key: "dial" as const, label: "电话拨号", icon: Phone },
             { key: "logs" as const, label: "通话记录", icon: Clock },
           ].map(tab => (
             <button
@@ -332,7 +331,7 @@ export function FamilyPhone() {
                   className="bg-transparent text-center text-[#e0f0ff] outline-none w-full font-mono"
                   style={{ fontSize: "1.5rem", letterSpacing: "3px" }}
                   placeholder="YYC3-100X"
-                  onKeyDown={e => { if (e.key === "Enter") {dialNumber();} }}
+                  onKeyDown={e => { if (e.key === "Enter") { dialNumber(); } }}
                 />
                 <div className="h-px mt-3" style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent)" }} />
               </div>
@@ -344,13 +343,13 @@ export function FamilyPhone() {
                   return (
                     <button
                       key={m.id}
-                      onClick={() => setDialInput(m.phone)}
+                      onClick={() => setDialInput(m.phone || "")}
                       className="p-3 rounded-xl text-center transition-all hover:scale-[1.03]"
                       style={{ background: `${m.color}08`, border: `1px solid ${m.color}15` }}
                     >
                       <Icon className="w-4 h-4 mx-auto mb-1" style={{ color: m.color }} />
                       <p className="text-[rgba(224,240,255,0.5)] truncate" style={{ fontSize: "0.55rem" }}>{m.shortName}</p>
-                      <p className="text-[rgba(224,240,255,0.25)] font-mono" style={{ fontSize: "0.48rem" }}>{m.phone.slice(-4)}</p>
+                      <p className="text-[rgba(224,240,255,0.25)] font-mono" style={{ fontSize: "0.48rem" }}>{m.phone?.slice(-4) || ""}</p>
                     </button>
                   );
                 })}
@@ -378,7 +377,7 @@ export function FamilyPhone() {
           <div className="space-y-2">
             {MOCK_CALL_LOGS.map((log, i) => {
               const m = FAMILY_MEMBERS.find(f => f.id === log.memberId);
-              if (!m) {return null;}
+              if (!m) { return null; }
               const Icon = m.icon;
               return (
                 <FadeIn key={log.id} delay={i * 0.04}>

@@ -14,7 +14,7 @@ import { usePersistedList } from "./usePersistedState";
 
 import type {
   ExportReportType, ExportFormat, TimeRange,
-  ReportMetric, PerformanceSnapshot, SecuritySnapshot,
+  PerformanceSnapshot, SecuritySnapshot,
   ReportData, ReportHistoryEntry,
 } from "../types";
 

@@ -101,7 +101,6 @@ export function useWebSocketData(): WebSocketDataState {
   const wsRef = useRef<WebSocket | null>(null);
   const simulateTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const connectWSRef = useRef<() => void>(() => {});
 
   // ----- simulated data updater -----
   const runSimulation = useCallback(() => {
@@ -134,8 +133,8 @@ export function useWebSocketData(): WebSocketDataState {
     setLastSyncTime(new Date().toLocaleString("zh-CN", { hour12: false }));
   }, []);
 
-  // Update ref to avoid circular dependency
-  connectWSRef.current = useCallback(() => {
+  // ----- WebSocket connection -----
+  const connectWS = useCallback(() => {
     const wsUrl = getAPIConfig().wsEndpoint;
     setConnectionState("connecting");
 
@@ -198,7 +197,7 @@ export function useWebSocketData(): WebSocketDataState {
         // schedule reconnect
         reconnectTimerRef.current = setTimeout(() => {
           setReconnectCount((c) => c + 1);
-          connectWSRef.current();
+          connectWS();
         }, RECONNECT_DELAY_MS);
       };
 
@@ -217,7 +216,7 @@ export function useWebSocketData(): WebSocketDataState {
   // ----- lifecycle -----
   useEffect(() => {
     // Try WebSocket first, fallback to simulation
-    connectWSRef.current();
+    connectWS();
 
     // Start simulation immediately as fallback (will be stopped if WS connects)
     simulateTimerRef.current = setInterval(runSimulation, SIMULATE_INTERVAL_MS);
@@ -236,7 +235,7 @@ export function useWebSocketData(): WebSocketDataState {
         reconnectTimerRef.current = null;
       }
     };
-  }, [connectWSRef.current, runSimulation]);
+  }, [connectWS, runSimulation]);
 
   // ----- public API -----
   const manualReconnect = useCallback(() => {
@@ -248,8 +247,8 @@ export function useWebSocketData(): WebSocketDataState {
       reconnectTimerRef.current = null;
     }
     setConnectionState("reconnecting");
-    connectWSRef.current();
-  }, [connectWSRef]);
+    connectWS();
+  }, [connectWS]);
 
   const clearAlerts = useCallback(() => {
     setAlerts([]);
