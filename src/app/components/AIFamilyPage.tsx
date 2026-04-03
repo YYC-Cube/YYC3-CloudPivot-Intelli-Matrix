@@ -9,13 +9,14 @@
  * 风格: 赛博朋克 · 深空黑背景 · 霓虹光效 · 真实时钟走动
  */
 
-import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Ear, Brain, Eye, Star, Network, Shield, Scale,
   MessageCircle, ChevronRight, X, Sparkles,
   Clock, Users, Zap, Activity,
   Lightbulb,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "../hooks/useI18n";
 
 // ======== AI Family 成员数据 ========
@@ -166,11 +167,11 @@ function useContainerSize(ref: React.RefObject<HTMLDivElement | null>) {
   const [size, setSize] = useState({ width: 800, height: 600 });
   useEffect(() => {
     const el = ref.current;
-    if (!el) {return;}
+    if (!el) { return; }
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {setSize({ width, height });}
+        if (width > 0 && height > 0) { setSize({ width, height }); }
       }
     });
     ro.observe(el);
@@ -237,7 +238,6 @@ export function AIFamilyPage() {
       ref={containerRef}
       className="relative w-full h-full overflow-hidden flex items-center justify-center"
       style={{
-        background: "radial-gradient(ellipse at center, rgba(10,15,40,0.95) 0%, rgba(4,8,20,1) 60%, #020510 100%)",
         minHeight: "400px",
       }}
     >
@@ -618,18 +618,12 @@ function StatusBadge({ icon: Icon, label, value, color }: {
 }
 
 function MemberDetailDrawer({ member, onClose }: { member: AIFamilyMember; onClose: () => void }) {
+  const navigate = useNavigate();
   const Icon = member.icon;
 
-  const metrics = useMemo(() => {
-    const seed = member.id.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const pseudoRandom = ((seed * 9301 + 49297) % 233280) / 233280;
-    return {
-      tasks: Math.floor(pseudoRandom * 500) + 100,
-      latency: Math.floor(pseudoRandom * 80) + 20,
-      accuracy: (95 + pseudoRandom * 4.5).toFixed(1),
-      calls: Math.floor(pseudoRandom * 200) + 50,
-    };
-  }, [member.id]);
+  const handleNavigate = (subpage: string) => {
+    navigate(`/ai-family/${subpage}`);
+  };
 
   return (
     <>
@@ -754,10 +748,10 @@ function MemberDetailDrawer({ member, onClose }: { member: AIFamilyMember; onClo
         <div className="px-6 mt-5 mb-6">
           <SectionTitle label="运行指标" color={member.color} />
           <div className="mt-2 grid grid-cols-2 gap-2">
-            <MetricCard label="今日处理" value={`${metrics.tasks}`} unit="tasks" color={member.color} />
-            <MetricCard label="平均延迟" value={`${metrics.latency}`} unit="ms" color="#00BFFF" />
-            <MetricCard label="准确率" value={`${metrics.accuracy}`} unit="%" color="#00FF88" />
-            <MetricCard label="协作次数" value={`${metrics.calls}`} unit="calls" color="#BF00FF" />
+            <MetricCard label="今日处理" value={`${Math.floor(Math.random() * 500) + 100}`} unit="tasks" color={member.color} />
+            <MetricCard label="平均延迟" value={`${Math.floor(Math.random() * 80) + 20}`} unit="ms" color="#00BFFF" />
+            <MetricCard label="准确率" value={`${(95 + Math.random() * 4.5).toFixed(1)}`} unit="%" color="#00FF88" />
+            <MetricCard label="协作次数" value={`${Math.floor(Math.random() * 200) + 50}`} unit="calls" color="#BF00FF" />
           </div>
         </div>
 
@@ -765,6 +759,7 @@ function MemberDetailDrawer({ member, onClose }: { member: AIFamilyMember; onClo
         <div className="px-6 pb-6 mt-auto">
           <div className="flex items-center gap-2">
             <button
+              onClick={() => handleNavigate("chat")}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg transition-all"
               style={{
                 background: `${member.color}12`,
@@ -777,6 +772,7 @@ function MemberDetailDrawer({ member, onClose }: { member: AIFamilyMember; onClo
               对话
             </button>
             <button
+              onClick={() => handleNavigate("data")}
               className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg transition-all"
               style={{
                 background: "rgba(0,40,80,0.2)",
@@ -786,7 +782,7 @@ function MemberDetailDrawer({ member, onClose }: { member: AIFamilyMember; onClo
               }}
             >
               <Sparkles className="w-3.5 h-3.5" />
-              任务分配
+              数据中心
             </button>
           </div>
         </div>

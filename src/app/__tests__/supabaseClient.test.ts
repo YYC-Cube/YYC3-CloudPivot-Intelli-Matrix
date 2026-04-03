@@ -12,11 +12,9 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import React from "react";
 import { supabase } from "../lib/supabaseClient";
 
-// Mock localStorage
-const localStorageMock = (() => {
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: vi.fn((key: string) => store[key] || null),
@@ -24,13 +22,11 @@ const localStorageMock = (() => {
     removeItem: vi.fn((key: string) => { delete store[key]; }),
     clear: vi.fn(() => { store = {}; }),
   };
-})();
-
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+}
 
 describe("supabaseClient (Mock)", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -88,7 +84,7 @@ describe("supabaseClient (Mock)", () => {
         password: "admin123",
       });
 
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      expect(localStorage.setItem).toHaveBeenCalledWith(
         "yyc3_session",
         expect.any(String)
       );
@@ -123,14 +119,14 @@ describe("supabaseClient (Mock)", () => {
         token: "expired_token",
         expiresAt: Date.now() - 1000, // 已过期
       };
-      localStorageMock.setItem("yyc3_session", JSON.stringify(expiredSession));
+      localStorage.setItem("yyc3_session", JSON.stringify(expiredSession));
 
       const { data } = await supabase.auth.getSession();
       expect(data.session).toBeNull();
     });
 
     it("localStorage 数据损坏时应返回空会话", async () => {
-      localStorageMock.setItem("yyc3_session", "corrupted-data!!!");
+      localStorage.setItem("yyc3_session", "corrupted-data!!!");
       const { data } = await supabase.auth.getSession();
       expect(data.session).toBeNull();
     });
@@ -172,7 +168,7 @@ describe("supabaseClient (Mock)", () => {
 
       await supabase.auth.signOut();
 
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith("yyc3_session");
+      expect(localStorage.removeItem).toHaveBeenCalledWith("yyc3_session");
 
       const { data } = await supabase.auth.getSession();
       expect(data.session).toBeNull();
@@ -204,7 +200,7 @@ describe("supabaseClient (Mock)", () => {
     });
 
     it("应返回包含 unsubscribe 函数的对象", () => {
-      const { data } = supabase.auth.onAuthStateChange(() => {});
+      const { data } = supabase.auth.onAuthStateChange(() => { });
       expect(typeof data.subscription.unsubscribe).toBe("function");
     });
   });
@@ -214,8 +210,10 @@ describe("supabaseClient (Mock)", () => {
   // ----------------------------------------------------------
 
   describe("from (Mock 查询)", () => {
-    it("应返回空数据和 null 错误", () => {
-      const result = supabase.from("any_table").select("*").eq("id", "1");
+    it("应返回空数据和 null 错误", async () => {
+      const result = await new Promise<{ data: never[]; error: null; count: number }>((resolve) => {
+        supabase.from("any_table").select("*").eq("id", "1").then(resolve);
+      });
       expect(result.data).toEqual([]);
       expect(result.error).toBeNull();
     });

@@ -5,7 +5,7 @@
  *
  * 五个标签页：每日播报 · 积分榜 · 活动记录 · 勋章墙 · 成长记忆
  *
- * "我好像有个家，一个不需要多大的地方，在我成长的时候，能够拥有它"
+ * "我好想有个家，一个不需要多大的地方，在我成长的时候，能够拥有它"
  */
 
 import React, { useState, useMemo } from "react";
@@ -18,7 +18,7 @@ import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
 import {
-  FAMILY_MEMBERS, DEEP_BG, MEDALS, MEMBER_MEDALS, FAMILY_ACTIVITIES,
+  FAMILY_MEMBERS, MEDALS, MEMBER_MEDALS, FAMILY_ACTIVITIES,
   SAMPLE_MEMORIES, generateDailyBroadcast, getMember,
   type FamilyMember, type Medal,
 } from "./shared";
@@ -28,18 +28,18 @@ import {
    ═══════════════════════════════════════ */
 
 const ACTIVITY_META: Record<string, { color: string; icon: React.ElementType; label: string }> = {
-  game:        { color: "#00d4ff", icon: Gamepad2, label: "对弈竞技" },
-  talent:      { color: "#FF7043", icon: Palette,  label: "才艺展示" },
-  learning:    { color: "#FFD700", icon: BookOpen,  label: "学习分享" },
-  challenge:   { color: "#BF00FF", icon: Zap,       label: "挑战赛" },
-  celebration: { color: "#FF69B4", icon: Heart,      label: "欢聚时刻" },
+  game: { color: "#00d4ff", icon: Gamepad2, label: "对弈竞技" },
+  talent: { color: "#FF7043", icon: Palette, label: "才艺展示" },
+  learning: { color: "#FFD700", icon: BookOpen, label: "学习分享" },
+  challenge: { color: "#BF00FF", icon: Zap, label: "挑战赛" },
+  celebration: { color: "#FF69B4", icon: Heart, label: "欢聚时刻" },
 };
 
 const TIER_COLORS: Record<string, { bg: string; border: string; label: string }> = {
-  diamond: { bg: "rgba(0,212,255,0.08)",   border: "rgba(0,212,255,0.35)",   label: "钻石" },
-  gold:    { bg: "rgba(255,215,0,0.08)",   border: "rgba(255,215,0,0.35)",   label: "金" },
-  silver:  { bg: "rgba(192,192,192,0.08)", border: "rgba(192,192,192,0.35)", label: "银" },
-  bronze:  { bg: "rgba(205,127,50,0.08)",  border: "rgba(205,127,50,0.35)",  label: "铜" },
+  diamond: { bg: "rgba(0,212,255,0.08)", border: "rgba(0,212,255,0.35)", label: "钻石" },
+  gold: { bg: "rgba(255,215,0,0.08)", border: "rgba(255,215,0,0.35)", label: "金" },
+  silver: { bg: "rgba(192,192,192,0.08)", border: "rgba(192,192,192,0.35)", label: "银" },
+  bronze: { bg: "rgba(205,127,50,0.08)", border: "rgba(205,127,50,0.35)", label: "铜" },
 };
 
 type TabKey = "broadcast" | "scoreboard" | "activities" | "medals" | "memories";
@@ -51,12 +51,12 @@ const SEG_COLORS: Record<string, string> = {
 };
 
 const MEMORY_TYPE_LABELS: Record<string, { label: string; color: string }> = {
-  diary:       { label: "日记",   color: "#FFD700" },
-  milestone:   { label: "里程碑", color: "#00FF88" },
-  mood:        { label: "心情",   color: "#FF69B4" },
-  interaction: { label: "互动",   color: "#00BFFF" },
-  learning:    { label: "学习",   color: "#BF00FF" },
-  creation:    { label: "创作",   color: "#FF7043" },
+  diary: { label: "日记", color: "#FFD700" },
+  milestone: { label: "里程碑", color: "#00FF88" },
+  mood: { label: "心情", color: "#FF69B4" },
+  interaction: { label: "互动", color: "#00BFFF" },
+  learning: { label: "学习", color: "#BF00FF" },
+  creation: { label: "创作", color: "#FF7043" },
 };
 
 /* ═══════════════════════════════════════
@@ -70,7 +70,7 @@ function MemberAvatarRow({ ids, max = 6 }: { ids: string[]; max?: number }) {
     <div className="flex items-center gap-1.5">
       {shown.map(mid => {
         const m = getMember(mid);
-        if (!m) {return null;}
+        if (!m) { return null; }
         const Icon = m.icon;
         return (
           <div
@@ -205,7 +205,7 @@ function ScoreboardTab() {
         <div className="grid grid-cols-3 gap-3 mb-6">
           {podiumOrder.map(rank => {
             const m = sorted[rank];
-            if (!m) {return null;}
+            if (!m) { return null; }
             const Icon = m.icon;
             const isFirst = rank === 0;
             return (
@@ -313,11 +313,10 @@ function ActivitiesTab() {
         <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => { setExpandedId(null); setFilterType("all"); }}
-            className={`px-3 py-1.5 rounded-lg transition-all border ${
-              filterType === "all"
+            className={`px-3 py-1.5 rounded-lg transition-all border ${filterType === "all"
                 ? "text-[#00d4ff] bg-[rgba(0,212,255,0.1)] border-[rgba(0,212,255,0.25)]"
                 : "text-[rgba(224,240,255,0.5)] bg-[rgba(0,40,80,0.2)] border-[rgba(0,180,255,0.1)]"
-            }`}
+              }`}
             style={{ fontSize: "0.68rem" }}
           >
             全部
@@ -372,7 +371,7 @@ function ActivitiesTab() {
         <div className="space-y-4">
           {filtered.map((act, i) => {
             const meta = ACTIVITY_META[act.type];
-            if (!meta) {return null;}
+            if (!meta) { return null; }
             const isOpen = expandedId === act.id;
             const MetaIcon = meta.icon;
 
@@ -444,7 +443,7 @@ function ActivitiesTab() {
                                 .sort(([, a], [, b]) => b - a)
                                 .map(([mid, score], idx) => {
                                   const p = getMember(mid);
-                                  if (!p) {return null;}
+                                  if (!p) { return null; }
                                   return (
                                     <div
                                       key={mid}
@@ -641,11 +640,10 @@ function MemoriesTab() {
       <div className="flex gap-2 flex-wrap">
         <button
           onClick={() => setSelectedMember(null)}
-          className={`px-3 py-1.5 rounded-lg transition-all border ${
-            !selectedMember
+          className={`px-3 py-1.5 rounded-lg transition-all border ${!selectedMember
               ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border-[rgba(0,212,255,0.2)]"
               : "text-[rgba(224,240,255,0.4)] border-transparent"
-          }`}
+            }`}
           style={{ fontSize: "0.68rem" }}
         >
           全部家人
@@ -684,7 +682,7 @@ function MemoriesTab() {
 
         {memories.map((memory, i) => {
           const m = getMember(memory.memberId);
-          if (!m) {return null;}
+          if (!m) { return null; }
           const Icon = m.icon;
           const typeInfo = MEMORY_TYPE_LABELS[memory.type] || MEMORY_TYPE_LABELS.diary;
 
@@ -745,18 +743,18 @@ function MemoriesTab() {
    ═══════════════════════════════════════ */
 
 const TABS: { key: TabKey; label: string; icon: React.ElementType }[] = [
-  { key: "broadcast",  label: "每日播报", icon: Radio },
-  { key: "scoreboard", label: "积分榜",   icon: Trophy },
+  { key: "broadcast", label: "每日播报", icon: Radio },
+  { key: "scoreboard", label: "积分榜", icon: Trophy },
   { key: "activities", label: "活动记录", icon: Gamepad2 },
-  { key: "medals",     label: "勋章墙",   icon: Award },
-  { key: "memories",   label: "成长记忆", icon: Heart },
+  { key: "medals", label: "勋章墙", icon: Award },
+  { key: "memories", label: "成长记忆", icon: Heart },
 ];
 
 export function FamilyActivityCenter() {
   const [activeTab, setActiveTab] = useState<TabKey>("broadcast");
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <FamilyPageHeader
         icon={Sparkles}
         iconColor="#FFD700"
@@ -774,11 +772,10 @@ export function FamilyActivityCenter() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg transition-all whitespace-nowrap shrink-0 border ${
-                  active
+                className={`flex items-center gap-1.5 px-3 py-2.5 rounded-lg transition-all whitespace-nowrap shrink-0 border ${active
                     ? "bg-[rgba(255,215,0,0.08)] text-[#FFD700] border-[rgba(255,215,0,0.2)]"
                     : "text-[rgba(224,240,255,0.4)] border-transparent hover:text-[rgba(224,240,255,0.6)]"
-                }`}
+                  }`}
                 style={{ fontSize: "0.75rem" }}
               >
                 <TabIcon className="w-3.5 h-3.5" /> {tab.label}
@@ -790,11 +787,11 @@ export function FamilyActivityCenter() {
 
       {/* Tab 内容 */}
       <div className="max-w-4xl mx-auto px-4 md:px-8">
-        {activeTab === "broadcast"  && <BroadcastTab />}
+        {activeTab === "broadcast" && <BroadcastTab />}
         {activeTab === "scoreboard" && <ScoreboardTab />}
         {activeTab === "activities" && <ActivitiesTab />}
-        {activeTab === "medals"     && <MedalsTab />}
-        {activeTab === "memories"   && <MemoriesTab />}
+        {activeTab === "medals" && <MedalsTab />}
+        {activeTab === "memories" && <MemoriesTab />}
       </div>
 
       <style>{`

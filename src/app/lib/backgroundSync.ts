@@ -16,6 +16,7 @@ const SYNC_QUEUE_KEY = "yyc3_sync_queue";
 /** 注册后台同步（需 Service Worker 支持） */
 export async function registerBackgroundSync(tag = "sync-data") {
   if (
+    typeof window === "undefined" ||
     typeof navigator === "undefined" ||
     !("serviceWorker" in navigator) ||
     !("SyncManager" in window)
@@ -26,7 +27,10 @@ export async function registerBackgroundSync(tag = "sync-data") {
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    await (registration as ServiceWorkerRegistration & { sync: { register: (tag: string) => Promise<void> } }).sync.register(tag);
+    const syncManager = (registration as { sync?: { register(tag: string): Promise<void> } }).sync;
+    if (syncManager) {
+      await syncManager.register(tag);
+    }
     return true;
   } catch {
     console.info("[BackgroundSync] 注册失败");

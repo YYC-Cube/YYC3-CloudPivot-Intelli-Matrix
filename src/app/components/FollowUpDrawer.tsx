@@ -7,9 +7,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import {
-  X, AlertTriangle, AlertCircle, Info, XCircle, Clock, User, Tag,
-  ChevronRight, Zap, Bot, CheckCircle, Loader2, Send, RotateCcw,
-  Link2, Server, Cpu, Activity, Copy, Check,
+  X, AlertTriangle, AlertCircle, Info, XCircle, Clock, User,
+  ChevronRight, Zap, Bot, CheckCircle, Loader2,
+  Link2, Server, Copy, Check,
 } from "lucide-react";
 import { OperationChain } from "./OperationChain";
 import { QuickActionGroup } from "./QuickActionGroup";
@@ -154,21 +154,19 @@ export function FollowUpDrawer({
                 <SevIcon className="w-5 h-5" style={{ color: sev.color }} />
               </div>
               <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span
-                      data-testid="followup-severity-label"
-                      className="px-2 py-0.5 rounded"
-                      style={{ fontSize: "0.62rem", backgroundColor: `${sev.color}15`, color: sev.color }}
-                    >
-                      {sev.label}
-                    </span>
-                    <span
-                      data-testid="followup-status-label"
-                      className="px-2 py-0.5 rounded"
-                      style={{ fontSize: "0.62rem", backgroundColor: `${st.color}15`, color: st.color }}
-                    >
-                      {st.label}
-                    </span>
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <span
+                    className="px-2 py-0.5 rounded"
+                    style={{ fontSize: "0.62rem", backgroundColor: `${sev.color}15`, color: sev.color }}
+                  >
+                    {sev.label}
+                  </span>
+                  <span
+                    className="px-2 py-0.5 rounded"
+                    style={{ fontSize: "0.62rem", backgroundColor: `${st.color}15`, color: st.color }}
+                  >
+                    {st.label}
+                  </span>
                   <span className="text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.6rem" }}>
                     #{item.id}
                   </span>
@@ -177,7 +175,7 @@ export function FollowUpDrawer({
                   {item.title}
                 </h3>
                 {item.metric && (
-                  <p data-testid="followup-metric" className="mt-0.5" style={{ fontSize: "0.78rem", color: sev.color }}>
+                  <p className="mt-0.5" style={{ fontSize: "0.78rem", color: sev.color }}>
                     {item.metric}
                   </p>
                 )}
@@ -215,7 +213,6 @@ export function FollowUpDrawer({
           {tabs.map((tab) => (
             <button
               key={tab.key}
-              data-testid={`followup-tab-${tab.key}`}
               onClick={() => {
                 setActiveTab(tab.key);
                 if (tab.key === "ai" && aiSuggestions.length === 0) {loadAiSuggestions();}

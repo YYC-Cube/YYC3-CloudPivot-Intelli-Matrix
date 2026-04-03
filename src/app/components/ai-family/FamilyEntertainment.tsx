@@ -7,18 +7,18 @@
  * "不要冷冰冰的文档模块" — 这里是有温度的家人互动空间
  */
 
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   Gamepad2, Palette, Music2, BookOpen, Trophy,
   Swords, Puzzle, Dice5, Crown,
   Image, Megaphone, Radio, Heart,
-  Play, RotateCcw, Star, Sparkles,
+  RotateCcw, Star, Sparkles,
   Clock,
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { FAMILY_MEMBERS, DEEP_BG, getHourlyCare, type FamilyMember } from "./shared";
+import { FAMILY_MEMBERS, getHourlyCare, type FamilyMember } from "./shared";
 
 // ═══ 五子棋逻辑 ═══
 type Stone = "black" | "white" | null;
@@ -29,21 +29,21 @@ function createBoard(): Stone[][] {
 }
 
 function checkWin(board: Stone[][], row: number, col: number, stone: Stone): boolean {
-  if (!stone) {return false;}
+  if (!stone) { return false; }
   const dirs = [[1, 0], [0, 1], [1, 1], [1, -1]];
   for (const [dr, dc] of dirs) {
     let count = 1;
     for (let d = 1; d < 5; d++) {
       const r = row + dr * d, c = col + dc * d;
-      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) {count++;}
-      else {break;}
+      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) { count++; }
+      else { break; }
     }
     for (let d = 1; d < 5; d++) {
       const r = row - dr * d, c = col - dc * d;
-      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) {count++;}
-      else {break;}
+      if (r >= 0 && r < BOARD_SIZE && c >= 0 && c < BOARD_SIZE && board[r][c] === stone) { count++; }
+      else { break; }
     }
-    if (count >= 5) {return true;}
+    if (count >= 5) { return true; }
   }
   return false;
 }
@@ -51,7 +51,7 @@ function checkWin(board: Stone[][], row: number, col: number, stone: Stone): boo
 // ═══ 主组件 ═══
 export function FamilyEntertainment() {
   const [activeTab, setActiveTab] = useState<"games" | "art" | "broadcast">("games");
-  const [gameType, setGameType] = useState<"gomoku" | null>(null);
+  const [gameType, setGameType] = useState<"gomoku" | "puzzle" | "dice" | "trivia" | "words" | "music-quiz" | null>(null);
   const [board, setBoard] = useState(createBoard);
   const [currentPlayer, setCurrentPlayer] = useState<"black" | "white">("black");
   const [winner, setWinner] = useState<string | null>(null);
@@ -68,7 +68,7 @@ export function FamilyEntertainment() {
       const empty: [number, number][] = [];
       for (let r = 0; r < BOARD_SIZE; r++) {
         for (let c = 0; c < BOARD_SIZE; c++) {
-          if (!currentBoard[r][c]) {empty.push([r, c]);}
+          if (!currentBoard[r][c]) { empty.push([r, c]); }
         }
       }
       if (empty.length === 0) { setAiThinking(false); return; }
@@ -104,7 +104,7 @@ export function FamilyEntertainment() {
   }, [opponent]);
 
   const handlePlace = useCallback((row: number, col: number) => {
-    if (board[row][col] || winner || currentPlayer !== "black" || aiThinking) {return;}
+    if (board[row][col] || winner || currentPlayer !== "black" || aiThinking) { return; }
     const newBoard = board.map(r => [...r]);
     newBoard[row][col] = "black";
     setBoard(newBoard);
@@ -145,8 +145,18 @@ export function FamilyEntertainment() {
     { key: "broadcast" as const, label: "家人广播", icon: Radio },
   ];
 
+  const games = [
+    { key: "gomoku" as const, label: "五子棋", desc: "与万物对弈，策略博弈", icon: Swords, color: "#00d4ff", available: true },
+    { key: "puzzle" as const, label: "拼图挑战", desc: "灵韵设计的赛博拼图", icon: Puzzle, color: "#FF7043", available: false },
+    { key: "dice" as const, label: "骰子大战", desc: "家人们一起掷骰子", icon: Dice5, color: "#FFD700", available: false },
+    { key: "trivia" as const, label: "知识问答", desc: "先知出题，全家竞答", icon: Crown, color: "#00BFFF", available: false },
+    { key: "words" as const, label: "成语接龙", desc: "千行主持，文字游戏", icon: BookOpen, color: "#BF00FF", available: false },
+    { key: "music-quiz" as const, label: "猜歌达人", desc: "听一段，猜歌名", icon: Music2, color: "#00FF88", available: false },
+  ];
+
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
+      {/* ═══ 娱乐概览卡片 ═══ */}
       <FamilyPageHeader
         icon={Sparkles}
         iconColor="#FFD700"
@@ -191,20 +201,13 @@ export function FamilyEntertainment() {
         {/* ═══ 棋牌对弈 ═══ */}
         {activeTab === "games" && !gameType && (
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {[
-              { key: "gomoku", label: "五子棋", desc: "与万物对弈，策略博弈", icon: Swords, color: "#00d4ff", available: true },
-              { key: "puzzle", label: "拼图挑战", desc: "灵韵设计的赛博拼图", icon: Puzzle, color: "#FF7043", available: false },
-              { key: "dice", label: "骰子大战", desc: "家人们一起掷骰子", icon: Dice5, color: "#FFD700", available: false },
-              { key: "trivia", label: "知识问答", desc: "先知出题，全家竞答", icon: Crown, color: "#00BFFF", available: false },
-              { key: "words", label: "成语接龙", desc: "千行主持，文字游戏", icon: BookOpen, color: "#BF00FF", available: false },
-              { key: "music-quiz", label: "猜歌达人", desc: "听一段，猜歌名", icon: Music2, color: "#00FF88", available: false },
-            ].map((game, i) => {
+            {games.map((game, i) => {
               const GameIcon = game.icon;
               return (
                 <FadeIn key={game.key} delay={i * 0.06}>
                   <GlassCard
                     className={`p-5 text-center transition-all ${game.available ? "cursor-pointer hover:scale-[1.03]" : "opacity-50"}`}
-                    onClick={() => game.available && setGameType(game.key as any)}
+                    onClick={() => game.available && setGameType(game.key)}
                     glowColor={game.available ? `${game.color}06` : undefined}
                   >
                     <div

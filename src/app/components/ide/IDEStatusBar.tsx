@@ -5,24 +5,29 @@
  * Git 分支 + 行/列 + 语言 + 编码 + 缩进 + 错误/警告计数
  */
 
-import React from "react";
 import {
-  GitBranch, AlertTriangle, XCircle, Info,
-  Check, Wifi, WifiOff, Zap,
+  AlertTriangle,
+  Check,
+  GitBranch,
+  Info,
+  Wifi, WifiOff,
+  XCircle,
+  Zap,
 } from "lucide-react";
 import { useI18n } from "../../hooks/useI18n";
+import { getLanguageLabel } from "../CodeEditor";
 import { MOCK_GIT_BRANCHES } from "./ide-mock-data";
 import type { OpenTab } from "./ide-types";
-import { getLanguageLabel } from "../CodeEditor";
 
 interface IDEStatusBarProps {
   activeTab?: OpenTab;
   totalErrors: number;
   totalWarnings: number;
   isOnline: boolean;
+  onFormat?: () => void;
 }
 
-export function IDEStatusBar({ activeTab, totalErrors, totalWarnings, isOnline }: IDEStatusBarProps) {
+export function IDEStatusBar({ activeTab, totalErrors, totalWarnings, isOnline, onFormat }: IDEStatusBarProps) {
   const { t } = useI18n();
   const currentBranch = MOCK_GIT_BRANCHES.find((b) => b.current) ?? MOCK_GIT_BRANCHES[0];
 
@@ -42,7 +47,7 @@ export function IDEStatusBar({ activeTab, totalErrors, totalWarnings, isOnline }
       {/* Left section */}
       <div className="flex items-center gap-2">
         {/* Git branch */}
-        <button className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[rgba(0,212,255,0.08)] transition-all text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff]">
+        <button onClick={() => {}} className="flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-[rgba(0,212,255,0.08)] transition-all text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff]">
           <GitBranch className="w-3 h-3" />
           <span style={{ fontSize: "0.55rem" }}>{currentBranch.name}</span>
           {currentBranch.ahead > 0 && (
@@ -109,6 +114,7 @@ export function IDEStatusBar({ activeTab, totalErrors, totalWarnings, isOnline }
 
         {/* Format */}
         <button
+          onClick={onFormat}
           className="flex items-center gap-0.5 px-1 py-0.5 rounded text-[rgba(0,212,255,0.35)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all"
           title="Prettier"
         >

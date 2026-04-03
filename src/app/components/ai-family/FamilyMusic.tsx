@@ -7,7 +7,7 @@
  * 重构: 使用 shared.ts + FadeIn + FamilyPageHeader
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Music, Newspaper, Play, Pause, SkipForward, SkipBack,
   Volume2, VolumeX, Heart, Shuffle, Repeat, List, Rss,
@@ -16,7 +16,6 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { DEEP_BG } from "./shared";
 
 // ═══ 音乐数据 ═══
 const PLAYLIST = [
@@ -84,7 +83,7 @@ export function FamilyMusic() {
   };
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <FamilyPageHeader
         icon={activeTab === "music" ? Music : Newspaper}
         iconColor={activeTab === "music" ? "#FFD700" : "#00d4ff"}

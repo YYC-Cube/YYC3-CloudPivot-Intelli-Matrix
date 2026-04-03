@@ -7,23 +7,20 @@
  * 后端接口预留: POST /api/db/{detect|connect|query|tables|backup|restore|test|table-data}
  */
 
-import React, { useState, useCallback, useContext } from "react";
+import { useState, useCallback, useContext } from "react";
 import {
-  Database, Plus, Trash2, Play, Plug, Unplug, Search,
-  Table2, HardDrive, Download, Upload, RefreshCcw,
+  Database, Plus, Trash2, Play, Plug, Unplug,
+  Table2, HardDrive, RefreshCcw,
   ChevronRight, ChevronDown, Key, Eye, EyeOff, X,
   Scan, AlertTriangle, CheckCircle2, Loader2, Copy,
-  History, Zap, BookOpen, TestTube, Settings2,
-  Edit3, Check, XCircle,
+  History, BookOpen, TestTube,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { useLocalDatabase } from "../hooks/useLocalDatabase";
-import type { SQLTemplate } from "../types";
 import { SQLEditor } from "./CodeEditor";
 import { InlineEditableTable } from "./InlineEditableTable";
 import { ViewContext } from "../lib/view-context";
-import type { DatabaseType, DBConnection } from "../types";
-import { toast } from "sonner";
+import type { DatabaseType } from "../types";
 
 // ── 样式常量 ──
 const textPrimary = "#e0f0ff";
@@ -48,7 +45,6 @@ export function DatabaseManager() {
   const [expandedTable, setExpandedTable] = useState<string | null>(null);
   const [showTemplates, setShowTemplates] = useState(false);
   const [templateFilter, setTemplateFilter] = useState<string>("all");
-  const [editingConn, setEditingConn] = useState<string | null>(null);
 
   /** Execute SQL directly from InlineEditableTable (for UPDATE operations) */
   const executeInlineSQL = useCallback(async (sql: string): Promise<{ ok: boolean; error?: string; affectedRows?: number }> => {
@@ -77,7 +73,7 @@ export function DatabaseManager() {
   });
 
   const handleAddConnection = useCallback(() => {
-    if (!formData.name.trim()) {return;}
+    if (!formData.name.trim()) { return; }
     db.addConnection({
       name: formData.name,
       type: formData.type,
@@ -155,11 +151,10 @@ export function DatabaseManager() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 ${
-              activeTab === tab.key
-                ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
-                : "text-[rgba(0,212,255,0.35)] border border-transparent hover:border-[rgba(0,180,255,0.12)]"
-            }`}
+            className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 ${activeTab === tab.key
+              ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
+              : "text-[rgba(0,212,255,0.35)] border border-transparent hover:border-[rgba(0,180,255,0.12)]"
+              }`}
             style={{ fontSize: f.sm }}
           >
             <tab.icon className="w-3.5 h-3.5" />
@@ -295,15 +290,14 @@ export function DatabaseManager() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
                           <span style={{ fontSize: f.md, color: textPrimary }}>{conn.name}</span>
-                          <span className={`px-1.5 py-0.5 rounded-full ${
-                            conn.status === "connected" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
+                          <span className={`px-1.5 py-0.5 rounded-full ${conn.status === "connected" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
                             conn.status === "connecting" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
-                            conn.status === "error" ? "bg-[rgba(255,60,60,0.1)] text-[#ff6464]" :
-                            "bg-[rgba(0,212,255,0.05)] text-[rgba(0,212,255,0.3)]"
-                          }`} style={{ fontSize: f.xs }}>
+                              conn.status === "error" ? "bg-[rgba(255,60,60,0.1)] text-[#ff6464]" :
+                                "bg-[rgba(0,212,255,0.05)] text-[rgba(0,212,255,0.3)]"
+                            }`} style={{ fontSize: f.xs }}>
                             {conn.status === "connected" ? "已连接" :
-                             conn.status === "connecting" ? "连接中..." :
-                             conn.status === "error" ? "错误" : "未连接"}
+                              conn.status === "connecting" ? "连接中..." :
+                                conn.status === "error" ? "错误" : "未连接"}
                           </span>
                         </div>
                         <p style={{ fontSize: f.xs, color: textDim }}>
@@ -383,7 +377,7 @@ export function DatabaseManager() {
                       const isExpanding = expandedTable !== table.name;
                       setExpandedTable(isExpanding ? table.name : null);
                       db.setSelectedTable(isExpanding ? table : null);
-                      if (isExpanding) {db.loadTableData(table.name);}
+                      if (isExpanding) { db.loadTableData(table.name); }
                     }}
                     className="w-full px-4 py-3 flex items-center gap-3 hover:bg-[rgba(0,40,80,0.2)] transition-all text-left group"
                   >
@@ -497,11 +491,10 @@ export function DatabaseManager() {
                 </span>
                 <button
                   onClick={() => setShowTemplates(!showTemplates)}
-                  className={`px-2 py-1 rounded-lg flex items-center gap-1 transition-all ${
-                    showTemplates
-                      ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff]"
-                      : "bg-[rgba(0,212,255,0.04)] text-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)]"
-                  }`}
+                  className={`px-2 py-1 rounded-lg flex items-center gap-1 transition-all ${showTemplates
+                    ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff]"
+                    : "bg-[rgba(0,212,255,0.04)] text-[rgba(0,212,255,0.4)] hover:bg-[rgba(0,212,255,0.08)]"
+                    }`}
                   style={{ fontSize: f.xs }}
                 >
                   <BookOpen className="w-3 h-3" />
@@ -527,11 +520,10 @@ export function DatabaseManager() {
                     <button
                       key={cat}
                       onClick={() => setTemplateFilter(cat)}
-                      className={`px-2 py-0.5 rounded ${
-                        templateFilter === cat
-                          ? "bg-[rgba(0,212,255,0.15)] text-[#00d4ff]"
-                          : "text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
-                      }`}
+                      className={`px-2 py-0.5 rounded ${templateFilter === cat
+                        ? "bg-[rgba(0,212,255,0.15)] text-[#00d4ff]"
+                        : "text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff]"
+                        }`}
                       style={{ fontSize: f.xs }}
                     >
                       {cat === "all" ? "全部" : cat}
@@ -719,11 +711,10 @@ export function DatabaseManager() {
                       {backup.connectionName} · {formatBytes(backup.sizeBytes)} · {new Date(backup.createdAt).toLocaleString("zh-CN")}
                     </p>
                   </div>
-                  <span className={`px-1.5 py-0.5 rounded-full ${
-                    backup.status === "completed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
+                  <span className={`px-1.5 py-0.5 rounded-full ${backup.status === "completed" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
                     backup.status === "in_progress" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
-                    "bg-[rgba(255,60,60,0.1)] text-[#ff6464]"
-                  }`} style={{ fontSize: f.xs }}>
+                      "bg-[rgba(255,60,60,0.1)] text-[#ff6464]"
+                    }`} style={{ fontSize: f.xs }}>
                     {backup.status === "completed" ? "完成" : backup.status === "in_progress" ? "进行中" : "失败"}
                   </span>
                   <button
@@ -750,8 +741,8 @@ export function DatabaseManager() {
 }
 
 function formatBytes(bytes: number): string {
-  if (bytes < 1024) {return `${bytes} B`;}
-  if (bytes < 1048576) {return `${(bytes / 1024).toFixed(1)} KB`;}
-  if (bytes < 1073741824) {return `${(bytes / 1048576).toFixed(1)} MB`;}
+  if (bytes < 1024) { return `${bytes} B`; }
+  if (bytes < 1048576) { return `${(bytes / 1024).toFixed(1)} KB`; }
+  if (bytes < 1073741824) { return `${(bytes / 1048576).toFixed(1)} MB`; }
   return `${(bytes / 1073741824).toFixed(2)} GB`;
 }

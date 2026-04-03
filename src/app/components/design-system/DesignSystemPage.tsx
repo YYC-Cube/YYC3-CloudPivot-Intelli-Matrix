@@ -12,7 +12,7 @@
  * 9.3 阶段审核总结
  */
 
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   Palette, Layers, BookOpen, ClipboardCheck, ChevronRight,
 } from "lucide-react";

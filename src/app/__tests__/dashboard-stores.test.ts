@@ -10,20 +10,19 @@
  * - CRUD 操作验证
  */
 
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import React from "react";
+function createLocalStorageMock() {
+  const store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { for (const k of Object.keys(store)) { delete store[k]; } }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
+  };
+}
 
-// Mock localStorage
-const store: Record<string, string> = {};
-const localStorageMock = {
-  getItem: vi.fn((key: string) => store[key] ?? null),
-  setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
-  removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
-  get length() { return Object.keys(store).length; },
-  key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
-};
-(globalThis as any).localStorage = localStorageMock;
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
 import {
   nodeStore,
@@ -37,7 +36,7 @@ import {
 
 describe("dashboard-stores", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
     // Reset all stores
     nodeStore.reset();

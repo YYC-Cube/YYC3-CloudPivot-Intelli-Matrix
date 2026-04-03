@@ -4,7 +4,7 @@
  * 单个颜色变量卡片 · 显示 OKLch + HEX，点击弹出颜色选择器
  */
 
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { hexToOklch, formatOklch } from "./color-utils";
 import { ColorPicker } from "./ColorPicker";
 
@@ -53,7 +53,7 @@ export function ColorSwatch({ label, value, onChange }: ColorSwatchProps) {
 
       {open && (
         <div className="absolute z-50 mt-1 left-0" style={{ top: "100%" }}>
-          <ColorPicker value={value} onChange={onChange} onClose={() => setOpen(false)} />
+          <ColorPicker value={value} onChange={onChange} />
         </div>
       )}
     </div>

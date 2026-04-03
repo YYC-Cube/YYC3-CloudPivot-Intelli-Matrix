@@ -7,7 +7,7 @@
 import React from "react";
 import {
   Folder, FileText, FileJson, FileCode, ChevronRight,
-  ArrowUp, Home, RefreshCw,
+  ArrowUp, Home,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import type { FileItem } from "../types";
@@ -108,7 +108,7 @@ export function FileBrowser({
                 </div>
 
                 {/* Meta */}
-                {childCount !== null && (
+                {childCount !== null && childCount !== undefined && (
                   <span className="text-[rgba(0,212,255,0.2)] shrink-0" style={{ fontSize: "0.6rem" }}>
                     {childCount} 项
                   </span>

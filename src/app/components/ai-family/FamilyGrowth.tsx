@@ -6,7 +6,7 @@
  * 重构: 使用 shared.ts + FadeIn + FamilyPageHeader
  */
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import {
   TrendingUp, Award, Star, Target, Flame,
   Users, CheckCircle2, ArrowUpRight,
@@ -14,7 +14,7 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { FAMILY_MEMBERS, DEEP_BG } from "./shared";
+import { FAMILY_MEMBERS } from "./shared";
 
 // ═══ 热力图 ═══
 function generateHeatmap(): number[][] {
@@ -47,7 +47,7 @@ export function FamilyGrowth() {
   const heatColors = ["rgba(0,40,80,0.2)", "rgba(0,212,255,0.15)", "rgba(0,212,255,0.3)", "rgba(0,212,255,0.5)", "rgba(0,212,255,0.7)"];
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <FamilyPageHeader
         icon={TrendingUp}
         iconColor="#BF00FF"

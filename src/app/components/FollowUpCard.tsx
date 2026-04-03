@@ -105,7 +105,6 @@ export function FollowUpCard({
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
                 <span
-                  data-testid="followupcard-severity-label"
                   className="px-1.5 py-0.5 rounded"
                   style={{
                     fontSize: "0.58rem",
@@ -116,7 +115,6 @@ export function FollowUpCard({
                   {sev.label}
                 </span>
                 <span
-                  data-testid="followupcard-status-label"
                   className="px-1.5 py-0.5 rounded"
                   style={{
                     fontSize: "0.58rem",
@@ -135,7 +133,6 @@ export function FollowUpCard({
               </h4>
               {item.metric && (
                 <p
-                  data-testid="followupcard-metric"
                   className="mt-0.5"
                   style={{ fontSize: "0.72rem", color: sev.color }}
                 >

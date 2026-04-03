@@ -13,9 +13,9 @@
 
 import React, { useState, useCallback, useContext } from "react";
 import {
-  Database, Plus, Trash2, Edit3, Check, X, Eye, EyeOff,
-  Plug, Unplug, TestTube, Download, Upload, RotateCcw,
-  Loader2, CheckCircle2, AlertTriangle, XCircle, Server,
+  Database, Plus, Trash2, Edit3, Check, Eye, EyeOff,
+  Unplug, TestTube, Download, Upload, RotateCcw,
+  Loader2, CheckCircle2, XCircle, Server,
   Settings2, Play, Clock, Layers,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
@@ -35,18 +35,18 @@ const DB_TYPES: DBConnection["type"][] = ["postgresql", "mysql", "sqlite", "redi
 
 const DB_TYPE_META: Record<string, { label: string; color: string; defaultPort: number }> = {
   postgresql: { label: "PostgreSQL", color: "#336791", defaultPort: 5432 },
-  mysql:      { label: "MySQL",      color: "#4479A1", defaultPort: 3306 },
-  sqlite:     { label: "SQLite",     color: "#003B57", defaultPort: 0 },
-  redis:      { label: "Redis",      color: "#DC382D", defaultPort: 6379 },
-  mongodb:    { label: "MongoDB",    color: "#4DB33D", defaultPort: 27017 },
-  custom:     { label: "Custom",     color: "#00d4ff", defaultPort: 0 },
+  mysql: { label: "MySQL", color: "#4479A1", defaultPort: 3306 },
+  sqlite: { label: "SQLite", color: "#003B57", defaultPort: 0 },
+  redis: { label: "Redis", color: "#DC382D", defaultPort: 6379 },
+  mongodb: { label: "MongoDB", color: "#4DB33D", defaultPort: 27017 },
+  custom: { label: "Custom", color: "#00d4ff", defaultPort: 0 },
 };
 
 const STATUS_META: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-  connected:    { label: "已连接", color: "#00ff88", icon: CheckCircle2 },
+  connected: { label: "已连接", color: "#00ff88", icon: CheckCircle2 },
   disconnected: { label: "未连接", color: "rgba(0,212,255,0.4)", icon: Unplug },
-  error:        { label: "错误",   color: "#ff3366", icon: XCircle },
-  testing:      { label: "测试中", color: "#ffdd00", icon: Loader2 },
+  error: { label: "错误", color: "#ff3366", icon: XCircle },
+  testing: { label: "测试中", color: "#ffdd00", icon: Loader2 },
 };
 
 export function DatabaseConnectionPanel() {
@@ -85,8 +85,8 @@ export function DatabaseConnectionPanel() {
     });
     setTestingId(null);
     refresh();
-    if (success) {toast.success("连接测试成功", { style: toastStyle });}
-    else {toast.error("连接测试失败: 模拟超时", { style: toastStyle });}
+    if (success) { toast.success("连接测试成功", { style: toastStyle }); }
+    else { toast.error("连接测试失败: 模拟超时", { style: toastStyle }); }
   }, []);
 
   // ═══ CRUD ═══
@@ -100,7 +100,7 @@ export function DatabaseConnectionPanel() {
   };
 
   const saveEdit = () => {
-    if (!editingId) {return;}
+    if (!editingId) { return; }
     dbConnectionStore.update(editingId, {
       name: draft.name, type: draft.type as DBConnection["type"],
       host: draft.host, port: parseInt(draft.port) || 0,
@@ -115,7 +115,7 @@ export function DatabaseConnectionPanel() {
   };
 
   const addNew = () => {
-    if (!draft.name?.trim()) {return;}
+    if (!draft.name?.trim()) { return; }
     dbConnectionStore.add({
       name: draft.name.trim(),
       type: (draft.type as DBConnection["type"]) || "postgresql",
@@ -157,12 +157,12 @@ export function DatabaseConnectionPanel() {
     input.accept = ".json";
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
-      if (!file) {return;}
+      if (!file) { return; }
       const reader = new FileReader();
       reader.onload = () => {
         const ok = dbConnectionStore.importData(reader.result as string);
         if (ok) { refresh(); toast.success("已导入", { style: toastStyle }); }
-        else {toast.error("导入失败", { style: toastStyle });}
+        else { toast.error("导入失败", { style: toastStyle }); }
       };
       reader.readAsText(file);
     };
@@ -185,16 +185,16 @@ export function DatabaseConnectionPanel() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button onClick={exportAll} data-testid="db-export-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={exportAll} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
             <Download className="w-3.5 h-3.5" /> 导出
           </button>
-          <button onClick={importAll} data-testid="db-import-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={importAll} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(0,100,150,0.1)] border border-[rgba(0,180,255,0.15)] text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-all" style={{ fontSize: "0.72rem" }}>
             <Upload className="w-3.5 h-3.5" /> 导入
           </button>
-          <button onClick={() => { dbConnectionStore.reset(); refresh(); toast.info("已恢复默认"); }} data-testid="db-reset-btn" className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(255,170,0,0.08)] border border-[rgba(255,170,0,0.2)] text-[#ffaa00] transition-all" style={{ fontSize: "0.72rem" }}>
+          <button onClick={() => { dbConnectionStore.reset(); refresh(); toast.info("已恢复默认"); }} className="flex items-center gap-1 px-2.5 py-2 rounded-xl bg-[rgba(255,170,0,0.08)] border border-[rgba(255,170,0,0.2)] text-[#ffaa00] transition-all" style={{ fontSize: "0.72rem" }}>
             <RotateCcw className="w-3.5 h-3.5" /> 重置
           </button>
-          <button onClick={() => { setShowAddForm(true); setDraft({ type: "postgresql", host: "localhost", port: "5432" }); }} data-testid="db-new-connection-btn" className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff] transition-all" style={{ fontSize: "0.78rem" }}>
+          <button onClick={() => { setShowAddForm(true); setDraft({ type: "postgresql", host: "localhost", port: "5432" }); }} className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[rgba(0,140,200,0.15)] border border-[rgba(0,180,255,0.3)] text-[#00d4ff] transition-all" style={{ fontSize: "0.78rem" }}>
             <Plus className="w-4 h-4" /> 新建连接
           </button>
         </div>
@@ -332,7 +332,7 @@ export function DatabaseConnectionPanel() {
         <GlassCard className="p-8 text-center">
           <Server className="w-10 h-10 text-[rgba(0,212,255,0.15)] mx-auto mb-3" />
           <p className="text-[rgba(0,212,255,0.3)]" style={{ fontSize: "0.85rem" }}>暂无数据库连接</p>
-          <p className="text-[rgba(0,212,255,0.2)] mt-1" style={{ fontSize: "0.7rem" }}>点击&ldquo;新建连接&rdquo;开始配置</p>
+          <p className="text-[rgba(0,212,255,0.2)] mt-1" style={{ fontSize: "0.7rem" }}>点击"新建连接"开始配置</p>
         </GlassCard>
       )}
 
@@ -376,7 +376,7 @@ const DEFAULT_POOL: PoolConfig = {
 function loadPoolConfig(): PoolConfig {
   try {
     const raw = localStorage.getItem(POOL_STORAGE_KEY);
-    if (raw) {return { ...DEFAULT_POOL, ...JSON.parse(raw) };}
+    if (raw) { return { ...DEFAULT_POOL, ...JSON.parse(raw) }; }
   } catch { /* ignore */ }
   return { ...DEFAULT_POOL };
 }
@@ -553,7 +553,7 @@ function SQLQuickTest({ connections }: { connections: DBConnection[] }) {
   });
 
   const executeSQL = useCallback(async () => {
-    if (!sqlValue.trim()) {return;}
+    if (!sqlValue.trim()) { return; }
     setExecuting(true);
     setResult(null);
     setError(null);

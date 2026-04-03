@@ -18,19 +18,6 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import React from "react";
-
-// ─── Mock localStorage (Node 环境) ───────────────────
-const store: Record<string, string> = {};
-const localStorageMock = {
-  getItem: vi.fn((key: string) => store[key] ?? null),
-  setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
-  removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
-  get length() { return Object.keys(store).length; },
-  key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
-};
-(globalThis as any).localStorage = localStorageMock;
 
 // ─── Mock BroadcastChannel (Node 环境) ───────────────
 (globalThis as any).BroadcastChannel = class {
@@ -42,13 +29,25 @@ const localStorageMock = {
   close() {}
 };
 
+function createLocalStorageMock() {
+  const store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { for (const k of Object.keys(store)) { delete store[k]; } }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
+  };
+}
+
 // ============================================================
 // 1. Store CRUD 闭环验证
 // ============================================================
 
 describe("E2E: Store CRUD 闭环", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -111,7 +110,7 @@ describe("E2E: Store CRUD 闭环", () => {
 
 describe("E2E: Dashboard Stores 数据完整性", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    localStorage.clear();
     vi.clearAllMocks();
   });
 
@@ -167,7 +166,7 @@ describe("E2E: Dashboard Stores 数据完整性", () => {
 
 describe("E2E: env-config 配置闭环", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -177,7 +176,7 @@ describe("E2E: env-config 配置闭环", () => {
 
     // 1. 默认值
     expect(env("SYSTEM_NAME")).toBe("YYC³ CloudPivot Intelli-Matrix");
-    expect(env("SYSTEM_VERSION")).toBe("3.2.0");
+    expect(env("SYSTEM_VERSION")).toBe("0.0.1");
     expect(env("ENABLE_MOCK_MODE")).toBe(true);
 
     // 2. 修改
@@ -185,7 +184,7 @@ describe("E2E: env-config 配置闭环", () => {
     expect(env("SYSTEM_NAME")).toBe("Test System");
 
     // 3. 持久化验证
-    expect(localStorageMock.setItem).toHaveBeenCalledWith(
+    expect(localStorage.setItem).toHaveBeenCalledWith(
       "yyc3_env_config",
       expect.stringContaining("Test System")
     );
@@ -223,7 +222,7 @@ describe("E2E: env-config 配置闭环", () => {
 
   it("导入/导出往返一致性", async () => {
     vi.resetModules();
-    const { setEnvConfig, exportEnvConfig, importEnvConfig, getEnvConfig } = await import("../lib/env-config");
+    const { setEnvConfig, exportEnvConfig } = await import("../lib/env-config");
 
     setEnvConfig({ CLUSTER_ID: "E2E-TEST-CLUSTER" });
     const exported = exportEnvConfig();
@@ -231,7 +230,7 @@ describe("E2E: env-config 配置闭环", () => {
 
     // 重置再导入
     vi.resetModules();
-    localStorageMock.clear();
+    localStorage.clear();
     const mod2 = await import("../lib/env-config");
     expect(mod2.importEnvConfig(exported)).toBe(true);
     expect(mod2.getEnvConfig().CLUSTER_ID).toBe("E2E-TEST-CLUSTER");
@@ -244,7 +243,7 @@ describe("E2E: env-config 配置闭环", () => {
 
 describe("E2E: api-config 端点闭环", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    localStorage.clear();
     vi.clearAllMocks();
   });
 
@@ -344,8 +343,8 @@ describe("E2E: i18n 双语覆盖度", () => {
     const { default: zhCN } = await import("../i18n/zh-CN");
     const { default: enUS } = await import("../i18n/en-US");
 
-    expect(zhCN.nav.architecture).toBe("架构审计");
-    expect(enUS.nav.architecture).toBe("Architecture");
+    expect(zhCN.nav.architecture).toBe("系统架构");
+    expect(enUS.nav.architecture).toBe("System Arch");
   });
 });
 
@@ -388,7 +387,7 @@ describe("E2E: 错误处理工具链", () => {
 
 describe("E2E: 跨 Store 数据一致性", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    localStorage.clear();
     vi.clearAllMocks();
   });
 

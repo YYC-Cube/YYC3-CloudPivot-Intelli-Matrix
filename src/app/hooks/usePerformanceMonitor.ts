@@ -95,7 +95,7 @@ function measureFPS(callback: (fps: number) => void) {
 }
 
 function getMemoryInfo(): { usedMB: number; totalMB: number; percent: number } {
-  const mem = (performance as any).memory;
+  const mem = (performance as Performance & { memory?: { usedJSHeapSize: number; jsHeapSizeLimit: number } }).memory;
   if (!mem) {return { usedMB: 0, totalMB: 0, percent: 0 };}
   const used = mem.usedJSHeapSize / (1024 * 1024);
   const total = mem.jsHeapSizeLimit / (1024 * 1024);
@@ -113,7 +113,7 @@ function getDOMNodeCount(): number {
 }
 
 function getNetworkInfo(): { type: string; rtt: number } {
-  const conn = (navigator as any).connection;
+  const conn = (navigator as Navigator & { connection?: { effectiveType?: string; rtt?: number } }).connection;
   if (!conn) {return { type: "unknown", rtt: 0 };}
   return { type: conn.effectiveType || "unknown", rtt: conn.rtt || 0 };
 }

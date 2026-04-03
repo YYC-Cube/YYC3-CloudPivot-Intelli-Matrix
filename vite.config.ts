@@ -22,73 +22,77 @@
  * @notes: 修改配置后需要重启开发服务器
  */
 
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
-  base: './',
-  plugins: [
-    react(),
-    tailwindcss(),
-  ].filter(Boolean),
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    base: './',
+    plugins: [
+      react(),
+      tailwindcss(),
+    ].filter(Boolean),
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
-  server: {
-    port: 3218,
-    host: true,
-  },
+    server: {
+      port: parseInt(env.VITE_PORT || '3218'),
+      host: true,
+    },
 
-  assetsInclude: ['**/*.svg', '**/*.csv'],
+    assetsInclude: ['**/*.svg', '**/*.csv'],
 
-  build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    sourcemap: false,
-    chunkSizeWarningLimit: 400,
-    rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
+    build: {
+      target: 'esnext',
+      minify: 'esbuild',
+      sourcemap: false,
+      chunkSizeWarningLimit: 400,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react') || id.includes('react-dom')) {
+                return 'react-vendor';
+              }
+              if (id.includes('@mui')) {
+                return 'mui-vendor';
+              }
+              if (id.includes('@radix-ui')) {
+                return 'radix-vendor';
+              }
+              if (id.includes('recharts')) {
+                return 'recharts-vendor';
+              }
+              if (id.includes('lucide-react')) {
+                return 'lucide-vendor';
+              }
+              if (id.includes('motion')) {
+                return 'motion-vendor';
+              }
+              if (id.includes('date-fns')) {
+                return 'date-vendor';
+              }
+              if (id.includes('react-router')) {
+                return 'router-vendor';
+              }
+              if (id.includes('@supabase')) {
+                return 'supabase-vendor';
+              }
+              return 'vendor';
             }
-            if (id.includes('@mui')) {
-              return 'mui-vendor';
-            }
-            if (id.includes('@radix-ui')) {
-              return 'radix-vendor';
-            }
-            if (id.includes('recharts')) {
-              return 'recharts-vendor';
-            }
-            if (id.includes('lucide-react')) {
-              return 'lucide-vendor';
-            }
-            if (id.includes('motion')) {
-              return 'motion-vendor';
-            }
-            if (id.includes('date-fns')) {
-              return 'date-vendor';
-            }
-            if (id.includes('react-router')) {
-              return 'router-vendor';
-            }
-            if (id.includes('@supabase')) {
-              return 'supabase-vendor';
-            }
-            return 'vendor';
-          }
+          },
         },
       },
     },
-  },
 
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'recharts'],
-  },
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'recharts'],
+    },
+  }
 })

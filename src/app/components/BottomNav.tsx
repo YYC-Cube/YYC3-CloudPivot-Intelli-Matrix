@@ -16,20 +16,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Activity, BarChart3, AlertTriangle, Radar,
-  Wrench, RefreshCcw, FolderOpen, Settings,
+  Activity, AlertTriangle, Radar,
+  Wrench, FolderOpen, Settings,
   Brain, Sparkles, Cpu,
   Code2, Palette, BookOpen, Paintbrush, Terminal, Monitor,
   ShieldCheck, ClipboardList, Users, Cog,
-  MoreHorizontal, X, ChevronRight,
+  MoreHorizontal, X,
   BellRing, FileBarChart, BrainCircuit,
   HardDrive, Database, GitBranch,
   Smartphone,
   Package,
   Gauge,
   ServerCog,
-  UserCircle2,
-  MessageCircle, Share, Music, TrendingUp, Phone, Gamepad2, Mic, MessageSquare,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useI18n } from "../hooks/useI18n";
@@ -78,26 +76,6 @@ const MORE_CATEGORIES: MoreCategory[] = [
     ],
   },
   {
-    labelKey: "nav.catAIFamily", icon: UserCircle2,
-    items: [
-      { key: "nav.aiFamily",  path: "/ai-family",  icon: UserCircle2 },
-      { key: "nav.aiFamilyHome",  path: "/ai-family/home",  icon: MessageCircle },
-      { key: "nav.aiFamilyChat",  path: "/ai-family/chat",  icon: MessageCircle },
-      { key: "nav.aiFamilyShare",  path: "/ai-family/share",  icon: Share },
-      { key: "nav.aiFamilyLearn",  path: "/ai-family/learn",  icon: BookOpen },
-      { key: "nav.aiFamilyMusic",  path: "/ai-family/music",  icon: Music },
-      { key: "nav.aiFamilyGrowth",  path: "/ai-family/growth",  icon: TrendingUp },
-      { key: "nav.aiFamilyPhone",  path: "/ai-family/phone",  icon: Phone },
-      { key: "nav.aiFamilyFun",  path: "/ai-family/fun",  icon: Gamepad2 },
-      { key: "nav.aiFamilyActivities",  path: "/ai-family/activities",  icon: Activity },
-      { key: "nav.aiFamilyModels",  path: "/ai-family/models",  icon: Cpu },
-      { key: "nav.aiFamilyVoice",  path: "/ai-family/voice",  icon: Mic },
-      { key: "nav.aiFamilyData",  path: "/ai-family/data",  icon: Database },
-      { key: "nav.aiFamilyComm",  path: "/ai-family/comm",  icon: MessageSquare },
-      { key: "nav.aiFamilySettings",  path: "/ai-family/settings",  icon: Settings },
-    ],
-  },
-  {
     labelKey: "nav.catDev", icon: Code2,
     items: [
       { key: "nav.designSystem", path: "/design-system", icon: Palette },
@@ -133,22 +111,14 @@ export function BottomNav() {
 
   // 路由变化时关闭抽屉
   useEffect(() => {
-    setTimeout(() => {
-      setMoreOpen(false);
-    }, 0);
+    setMoreOpen(false);
   }, [location.pathname]);
 
   // 阻止 body 滚动
   useEffect(() => {
     if (moreOpen) {
-      setTimeout(() => {
-        document.body.style.overflow = "hidden";
-      }, 0);
-      return () => { 
-        setTimeout(() => {
-          document.body.style.overflow = "";
-        }, 0);
-      };
+      document.body.style.overflow = "hidden";
+      return () => { document.body.style.overflow = ""; };
     }
   }, [moreOpen]);
 
@@ -260,7 +230,6 @@ export function BottomNav() {
                 <button
                   key={tab.path}
                   onClick={() => navigate(tab.path)}
-                  data-testid={`primary-tab-${tab.i18nKey}`}
                   className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[52px] pt-2 pb-1 transition-all duration-150"
                 >
                   {/* 激活背景光 */}
@@ -297,7 +266,6 @@ export function BottomNav() {
             {/* ── 更多 Tab ── */}
             <button
               onClick={() => setMoreOpen((v) => !v)}
-              data-testid="bottom-nav-more-btn"
               className="relative flex flex-col items-center justify-center min-w-[56px] min-h-[52px] pt-2 pb-1 transition-all duration-150"
             >
               {(isInMoreSection || moreOpen) && (

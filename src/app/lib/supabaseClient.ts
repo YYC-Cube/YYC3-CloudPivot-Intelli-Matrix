@@ -74,7 +74,7 @@ class MockSupabaseClient {
     getSession: async () => {
       try {
         const raw = localStorage.getItem(SESSION_KEY);
-        if (!raw) {return { data: { session: null }, error: null };}
+        if (!raw) { return { data: { session: null }, error: null }; }
         const session: AppSession = JSON.parse(raw);
         if (Date.now() > session.expiresAt) {
           localStorage.removeItem(SESSION_KEY);
@@ -116,24 +116,82 @@ class MockSupabaseClient {
       } else {
         callback("SIGNED_OUT", null);
       }
-      return { data: { subscription: { unsubscribe: () => {} } } };
+      return { data: { subscription: { unsubscribe: () => { } } } };
     },
   };
 
   /** Mock 数据查询（模拟 Supabase .from().select() 链） */
-  from(_table: string) {
-    return {
-      select: (_columns?: string) => ({
-        eq: (_col: string, _val: unknown) => this._mockQuery(),
-        order: (_col: string, _opts?: { ascending?: boolean }) => this._mockQuery(),
-        limit: (_n: number) => this._mockQuery(),
-        then: (resolve: (val: unknown) => void) => resolve(this._mockQuery()),
-      }),
+  from(table: string) {
+    interface QueryBuilder {
+      _table: string;
+      _columns: string | undefined;
+      _filters: Record<string, unknown>;
+      _orderBy: { column: string; ascending?: boolean } | undefined;
+      _limit: number | undefined;
+      select: (columns?: string) => QueryBuilder;
+      eq: (col: string, val: unknown) => QueryBuilder;
+      order: (col: string, opts?: { ascending?: boolean }) => QueryBuilder;
+      limit: (n: number) => QueryBuilder;
+      then: (resolve: (val: { data: never[]; error: null; count: number }) => void) => { data: { subscription: { unsubscribe: () => void } } };
+      insert: (data: unknown) => { select: () => { single: () => Promise<{ data: Array<{ id: string;[key: string]: unknown }>; error: null; count: number }> }; error: null };
+      update: (data: unknown) => { eq: (col: string, val: unknown) => { select: () => { single: () => Promise<{ data: Array<{ id: string;[key: string]: unknown }>; error: null; count: number }> }; error: null } };
+      channel: (channelName: string) => { on: (event: string, callback: (payload: unknown) => void) => { subscribe: () => { data: { subscription: { unsubscribe: () => void } } } } };
+    }
+
+    const queryBuilder: QueryBuilder = {
+      _table: table,
+      _columns: undefined,
+      _filters: {},
+      _orderBy: undefined,
+      _limit: undefined,
+
+      select: (columns?: string) => {
+        queryBuilder._columns = columns;
+        return queryBuilder;
+      },
+      eq: (col: string, val: unknown) => {
+        queryBuilder._filters[col] = val;
+        return queryBuilder;
+      },
+      order: (col: string, opts?: { ascending?: boolean }) => {
+        queryBuilder._orderBy = { column: col, ascending: opts?.ascending };
+        return queryBuilder;
+      },
+      limit: (n: number) => {
+        queryBuilder._limit = n;
+        return queryBuilder;
+      },
+      then: (resolve: (val: { data: never[]; error: null; count: number }) => void) => {
+        resolve({ data: [], error: null, count: 0 });
+        return { data: { subscription: { unsubscribe: () => { } } } };
+      },
+      insert: (_data: unknown) => {
+        return { select: () => ({ single: async () => this._mockQuery(table) }), error: null };
+      },
+      update: (_data: unknown) => {
+        return { eq: (col: string, val: unknown) => { queryBuilder._filters[col] = val; return { select: () => ({ single: async () => this._mockQuery(table, queryBuilder._filters) }), error: null }; } };
+      },
+      channel: (_channelName: string) => {
+        return {
+          on: (_event: string, _callback: (payload: unknown) => void) => ({
+            subscribe: () => ({ data: { subscription: { unsubscribe: () => { } } } }),
+          }),
+        };
+      },
     };
+    return queryBuilder;
   }
 
-  private _mockQuery() {
-    return { data: [], error: null, count: 0 };
+  private _mockQuery(_table: string, _filters?: Record<string, unknown>): { data: Array<{ id: string;[key: string]: unknown }>; error: null; count: number } {
+    return { data: [{ id: `mock-${_table}-id-1` }], error: null, count: 1 };
+  }
+
+  channel(_channelName: string) {
+    return {
+      on: (_event: string, _config: unknown, _callback: (payload: unknown) => void) => ({
+        subscribe: () => ({ unsubscribe: () => { } }),
+      }),
+    };
   }
 }
 

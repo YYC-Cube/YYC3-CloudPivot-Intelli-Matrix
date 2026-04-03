@@ -25,28 +25,46 @@ import type { SecurityTab, RiskLevel, VitalRating } from "../types";
 // ============================================================
 
 function formatBytes(bytes: number): string {
-  if (bytes < 1024) {return `${bytes} B`;}
-  if (bytes < 1024 * 1024) {return `${(bytes / 1024).toFixed(1)} KB`;}
-  if (bytes < 1024 * 1024 * 1024) {return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;}
+  if (bytes < 1024) { return `${bytes} B`; }
+  if (bytes < 1024 * 1024) { return `${(bytes / 1024).toFixed(1)} KB`; }
+  if (bytes < 1024 * 1024 * 1024) { return `${(bytes / (1024 * 1024)).toFixed(1)} MB`; }
   return `${(bytes / (1024 * 1024 * 1024)).toFixed(1)} GB`;
 }
 
 function riskColor(risk: RiskLevel): string {
-  if (risk === "safe") {return "#00ff88";}
-  if (risk === "warning") {return "#ffaa00";}
+  if (risk === "safe") { return "#00ff88"; }
+  if (risk === "warning") { return "#ffaa00"; }
   return "#ff3366";
 }
 
 function statusIcon(status: "pass" | "warn" | "fail") {
-  if (status === "pass") {return <CheckCircle2 className="w-4 h-4" style={{ color: "#00ff88" }} />;}
-  if (status === "warn") {return <AlertTriangle className="w-4 h-4" style={{ color: "#ffaa00" }} />;}
+  if (status === "pass") { return <CheckCircle2 className="w-4 h-4" style={{ color: "#00ff88" }} />; }
+  if (status === "warn") { return <AlertTriangle className="w-4 h-4" style={{ color: "#ffaa00" }} />; }
   return <XCircle className="w-4 h-4" style={{ color: "#ff3366" }} />;
 }
 
 function vitalColor(rating: VitalRating): string {
-  if (rating === "good") {return "#00ff88";}
-  if (rating === "needs-improvement") {return "#ffaa00";}
+  if (rating === "good") { return "#00ff88"; }
+  if (rating === "needs-improvement") { return "#ffaa00"; }
   return "#ff3366";
+}
+
+const MEMORY_RISK_I18N_MAP: Record<RiskLevel, string> = {
+  safe: "security.memoryLow",
+  warning: "security.memoryMedium",
+  danger: "security.memoryHigh",
+};
+
+const VITALS_I18N_MAP: Record<string, string> = {
+  FID: "security.vitalsFID",
+  INP: "security.vitalsINP",
+  CLS: "security.vitalsCLS",
+  TTFB: "security.vitalsTTFB",
+  LCP: "security.vitalsLCP",
+};
+
+function memoryRiskLabel(risk: RiskLevel): string {
+  return MEMORY_RISK_I18N_MAP[risk];
 }
 
 function ScoreRing({ score, size = 80 }: { score: number; size?: number }) {
@@ -287,7 +305,7 @@ function PerformanceTabContent({ state, t }: { state: ReturnType<typeof useSecur
             <span className="text-[#e0f0ff]" style={{ fontSize: "0.85rem" }}>{t("security.memoryTitle")}</span>
           </div>
           <span style={{ fontSize: "0.7rem", color: riskColor(memory.leakRisk) }}>
-            {t("security.memoryLeakRisk")}: {t(`security.memory${memory.leakRisk.charAt(0).toUpperCase() + memory.leakRisk.slice(1)}` as any)}
+            {t("security.memoryLeakRisk")}: {t(memoryRiskLabel(memory.leakRisk))}
           </span>
         </div>
         <div className="grid grid-cols-2 gap-3 mb-3">
@@ -330,7 +348,7 @@ function PerformanceTabContent({ state, t }: { state: ReturnType<typeof useSecur
             <div key={v.name}>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-[rgba(224,240,255,0.7)]" style={{ fontSize: "0.72rem" }}>
-                  {t(`security.vitals${v.name}` as any)}
+                  {t(VITALS_I18N_MAP[v.name] ?? v.name)}
                 </span>
                 <div className="flex items-center gap-2">
                   <span style={{ fontSize: "0.85rem", color: vitalColor(v.rating), fontFamily: "'Orbitron', sans-serif" }}>
@@ -411,10 +429,10 @@ function DiagnosticsTabContent({ state, t }: { state: ReturnType<typeof useSecur
         </div>
         <div className="space-y-2.5">
           {[
-            { label: t("security.networkType"), value: network.type.toUpperCase() },
-            { label: t("security.networkDownlink"), value: `${network.downlink} Mbps` },
-            { label: t("security.networkRTT"), value: `${network.rtt} ms` },
-            { label: t("security.networkEffective"), value: network.effectiveType.toUpperCase() },
+            { label: t("security.networkType"), value: network.type.toUpperCase(), color: "#e0f0ff" as string },
+            { label: t("security.networkDownlink"), value: `${network.downlink} Mbps`, color: "#e0f0ff" as string },
+            { label: t("security.networkRTT"), value: `${network.rtt} ms`, color: "#e0f0ff" as string },
+            { label: t("security.networkEffective"), value: network.effectiveType.toUpperCase(), color: "#e0f0ff" as string },
             {
               label: t("security.networkStability"),
               value: network.isStable ? t("security.networkStable") : t("security.networkUnstable"),
@@ -423,7 +441,7 @@ function DiagnosticsTabContent({ state, t }: { state: ReturnType<typeof useSecur
           ].map((item) => (
             <div key={item.label} className="flex items-center justify-between" style={{ fontSize: "0.72rem" }}>
               <span className="text-[rgba(0,212,255,0.5)]">{item.label}</span>
-              <span style={{ color: (item as any).color || "#e0f0ff" }}>{item.value}</span>
+              <span style={{ color: item.color }}>{item.value}</span>
             </div>
           ))}
         </div>

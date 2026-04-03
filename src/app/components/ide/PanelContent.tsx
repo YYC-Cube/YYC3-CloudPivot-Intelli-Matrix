@@ -9,17 +9,13 @@
  * @tags: [ide],[layout],[panel]
  */
 
-import React from 'react';
 import type { Panel } from './ide-layout-types';
-import { useLayoutContext } from './LayoutContext';
 
 interface PanelContentProps {
   panel: Panel;
 }
 
 export function PanelContent({ panel }: PanelContentProps) {
-  const { activePanelId } = useLayoutContext();
-
   const renderContent = () => {
     switch (panel.type) {
       case 'code-editor':
@@ -100,9 +96,10 @@ export function PanelContent({ panel }: PanelContentProps) {
     <div
       className="panel-content"
       style={{
-        height: 'calc(100% - 36px)',
+        height: '100%',
+        width: '100%',
         background: 'rgba(4, 10, 22, 0.5)',
-        overflow: 'hidden',
+        overflow: 'auto',
       }}
     >
       {renderContent()}

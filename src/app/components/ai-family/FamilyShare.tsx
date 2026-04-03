@@ -14,7 +14,7 @@ import {
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import { FamilyPageHeader } from "./FamilyPageHeader";
-import { MEMBERS_MAP, DEEP_BG } from "./shared";
+import { MEMBERS_MAP } from "./shared";
 
 interface SharePost {
   id: string;
@@ -98,7 +98,7 @@ export function FamilyShare() {
   };
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <FamilyPageHeader
         icon={Share2}
         iconColor="#FF69B4"

@@ -7,21 +7,20 @@
  * 支持：多提供商 API Key 管理、模型分配、连接诊断、语音预览
  */
 
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Server, Cloud, Shield, Cpu, Globe, Zap,
-  Search, Check, Copy, ChevronDown, ChevronRight,
+  Search, Check, ChevronDown, ChevronRight,
   Eye, EyeOff, AlertCircle, CheckCircle2, Loader2,
-  Activity, Clock, Settings2, Download, Upload,
-  Volume2, VolumeX, Bot, Sparkles, ArrowRight, X,
+  Activity, Download,
+  Volume2, Bot, Sparkles, ArrowRight,
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import {
-  FAMILY_MEMBERS, MEMBERS_MAP, hexToRgb,
+  FAMILY_MEMBERS, hexToRgb,
   DEFAULT_MODEL_ASSIGNMENTS, DEFAULT_VOICE_PROFILES,
   type FamilyMember, type MemberModelAssignment, type VoiceProfile,
-  DEEP_BG,
 } from "./shared";
 
 // ═══ Provider 定义（自包含） ═══
@@ -143,7 +142,7 @@ const DIAG_STEPS: DiagStep[] = [
     label: "API Key 检查",
     check: (a, keys) => {
       const isLocal = a.providerId === "ollama";
-      if (isLocal) {return { ok: true, detail: "本地模型无需 API Key" };}
+      if (isLocal) { return { ok: true, detail: "本地模型无需 API Key" }; }
       const hasKey = !!keys[a.providerId];
       return hasKey
         ? { ok: true, detail: `${a.providerId} API Key 已配置 (${keys[a.providerId].slice(0, 6)}...)` }
@@ -187,7 +186,7 @@ const DIAG_STEPS: DiagStep[] = [
 function MemberModelCard({
   member,
   assignment,
-  voiceProfile,
+  voiceProfile: _voiceProfile,
   apiKeys,
   diagResult,
   onChangeModel,
@@ -212,8 +211,8 @@ function MemberModelCard({
 
   const statusColor = diagResult?.status === "success" ? "#00FF88"
     : diagResult?.status === "error" ? "#FF4444"
-    : diagResult?.status === "testing" ? "#FFD700"
-    : "rgba(255,255,255,0.2)";
+      : diagResult?.status === "testing" ? "#FFD700"
+        : "rgba(255,255,255,0.2)";
 
   return (
     <FadeIn delay={0.05}>
@@ -292,11 +291,10 @@ function MemberModelCard({
                           <button
                             key={`${p.id}-${m.id}`}
                             onClick={() => onChangeModel(p.id, m.id)}
-                            className={`w-full text-left px-2 py-1.5 rounded transition-all ${
-                              isActive
-                                ? "bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)]"
-                                : "bg-white/[0.02] border border-transparent hover:bg-white/[0.05] hover:border-white/[0.08]"
-                            }`}
+                            className={`w-full text-left px-2 py-1.5 rounded transition-all ${isActive
+                              ? "bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.3)]"
+                              : "bg-white/[0.02] border border-transparent hover:bg-white/[0.05] hover:border-white/[0.08]"
+                              }`}
                           >
                             <div className="flex items-center gap-1.5">
                               {isActive && <Check className="w-3 h-3 text-cyan-400" />}
@@ -343,11 +341,10 @@ function MemberModelCard({
 
               {diagResult && diagResult.status !== "idle" && (
                 <span
-                  className={`flex items-center gap-1 px-2 py-1 rounded ${
-                    diagResult.status === "success" ? "bg-emerald-500/10 text-emerald-400"
+                  className={`flex items-center gap-1 px-2 py-1 rounded ${diagResult.status === "success" ? "bg-emerald-500/10 text-emerald-400"
                     : diagResult.status === "error" ? "bg-red-500/10 text-red-400"
-                    : "bg-yellow-500/10 text-yellow-400"
-                  }`}
+                      : "bg-yellow-500/10 text-yellow-400"
+                    }`}
                   style={{ fontSize: "0.65rem" }}
                 >
                   {diagResult.status === "success" && <CheckCircle2 className="w-3 h-3" />}
@@ -524,7 +521,7 @@ export function FamilyModelSettings() {
 
       if (result.detail.includes("ms")) {
         const match = result.detail.match(/\((\d+)ms\)/);
-        if (match) {totalLatency = parseInt(match[1]);}
+        if (match) { totalLatency = parseInt(match[1]); }
       }
     }
 
@@ -543,9 +540,9 @@ export function FamilyModelSettings() {
   }, [assignments, apiKeys]);
 
   const handleSpeak = useCallback((member: FamilyMember, profile: VoiceProfile) => {
-    if (!("speechSynthesis" in window)) {return;}
+    if (!("speechSynthesis" in window)) { return; }
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(member.greeting);
+    const utterance = new SpeechSynthesisUtterance(member.greeting || "");
     utterance.pitch = profile.pitch;
     utterance.rate = profile.rate;
     utterance.volume = profile.volume;
@@ -553,7 +550,7 @@ export function FamilyModelSettings() {
     // Try to find a matching voice
     const voices = window.speechSynthesis.getVoices();
     const zhVoice = voices.find(v => v.lang.startsWith("zh"));
-    if (zhVoice) {utterance.voice = zhVoice;}
+    if (zhVoice) { utterance.voice = zhVoice; }
     window.speechSynthesis.speak(utterance);
   }, []);
 
@@ -572,7 +569,7 @@ export function FamilyModelSettings() {
 
   // Filter members
   const filteredMembers = useMemo(() => {
-    if (!searchQuery) {return FAMILY_MEMBERS;}
+    if (!searchQuery) { return FAMILY_MEMBERS; }
     const q = searchQuery.toLowerCase();
     return FAMILY_MEMBERS.filter(m =>
       m.name.toLowerCase().includes(q) ||
@@ -586,7 +583,7 @@ export function FamilyModelSettings() {
   const testedCount = Object.values(diagnostics).filter(d => d.status === "success").length;
 
   return (
-    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>
@@ -634,11 +631,10 @@ export function FamilyModelSettings() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all flex-1 justify-center ${
-                  activeTab === tab.key
-                    ? "bg-[rgba(0,212,255,0.1)] text-cyan-300 border border-[rgba(0,212,255,0.2)]"
-                    : "text-white/40 hover:text-white/60 border border-transparent"
-                }`}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-lg transition-all flex-1 justify-center ${activeTab === tab.key
+                  ? "bg-[rgba(0,212,255,0.1)] text-cyan-300 border border-[rgba(0,212,255,0.2)]"
+                  : "text-white/40 hover:text-white/60 border border-transparent"
+                  }`}
                 style={{ fontSize: "0.75rem" }}
               >
                 <tab.icon className="w-3.5 h-3.5" />

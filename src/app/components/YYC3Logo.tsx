@@ -10,7 +10,7 @@
  * - 圆角 overflow-hidden 保证视觉一致
  */
 
-import React from "react";
+
 import { YYC3LogoSvg } from "./YYC3LogoSvg";
 
 type LogoSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -49,7 +49,6 @@ export function YYC3Logo({
 
   return (
     <div
-      data-testid="yyc3-logo"
       className={`
         relative shrink-0 ${cfg.radius} overflow-hidden
         flex items-center justify-center

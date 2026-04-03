@@ -7,7 +7,7 @@
 import React from "react";
 import {
   Activity, BarChart3, Brain, Play, CheckCircle, TrendingUp,
-  Loader2, Clock, AlertCircle,
+  Loader2, Clock,
 } from "lucide-react";
 import type { StageResult, StageStatus } from "../types";
 import type { StageMeta } from "../types";
@@ -17,11 +17,11 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 const statusConfig: Record<StageStatus, { color: string; label: string }> = {
-  idle:      { color: "rgba(0,212,255,0.2)", label: "待执行" },
-  running:   { color: "#00d4ff",             label: "执行中" },
-  completed: { color: "#00ff88",             label: "已完成" },
-  error:     { color: "#ff3366",             label: "错误" },
-  skipped:   { color: "rgba(0,212,255,0.15)", label: "已跳过" },
+  idle: { color: "rgba(0,212,255,0.2)", label: "待执行" },
+  running: { color: "#00d4ff", label: "执行中" },
+  completed: { color: "#00ff88", label: "已完成" },
+  error: { color: "#ff3366", label: "错误" },
+  skipped: { color: "rgba(0,212,255,0.15)", label: "已跳过" },
 };
 
 interface LoopStageCardProps {
@@ -32,7 +32,7 @@ interface LoopStageCardProps {
   showConnector?: boolean;
 }
 
-export function LoopStageCard({ meta, result, index, isActive, showConnector }: LoopStageCardProps) {
+export function LoopStageCard({ meta, result, index: _index, isActive, showConnector }: LoopStageCardProps) {
   const Icon = iconMap[meta.icon] ?? Activity;
   const stCfg = statusConfig[result.status];
 
@@ -42,11 +42,10 @@ export function LoopStageCard({ meta, result, index, isActive, showConnector }: 
       <div className="flex flex-col items-center shrink-0 w-10">
         {/* Node circle */}
         <div
-          className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
-            isActive
+          className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${isActive
               ? "shadow-[0_0_16px_rgba(0,212,255,0.4)]"
               : ""
-          }`}
+            }`}
           style={{
             borderColor: result.status === "idle" ? "rgba(0,180,255,0.15)" : stCfg.color,
             backgroundColor: result.status === "idle"
@@ -91,7 +90,7 @@ export function LoopStageCard({ meta, result, index, isActive, showConnector }: 
           >
             {stCfg.label}
           </span>
-          {result.duration !== null && (
+          {result.duration !== null && result.duration !== undefined && (
             <span className="flex items-center gap-0.5 text-[rgba(0,212,255,0.25)]" style={{ fontSize: "0.58rem" }}>
               <Clock className="w-2.5 h-2.5" />
               {(result.duration / 1000).toFixed(1)}s

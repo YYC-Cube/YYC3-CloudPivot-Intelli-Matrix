@@ -18,7 +18,6 @@ const localStorageMock = (() => {
 Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useModelProvider, MODEL_PROVIDERS } from "../hooks/useModelProvider";
 

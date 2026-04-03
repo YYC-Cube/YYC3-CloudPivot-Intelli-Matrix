@@ -18,8 +18,8 @@ import {
   Undo2, ChevronDown, ChevronUp, Trash2, CheckSquare, Square,
 } from "lucide-react";
 import { toast } from "sonner";
-import { idbGetAll, idbPut, idbDelete as idbDeleteRecord, idbClear as idbClearStore } from "../lib/yyc3-storage";
-import type { ChangeType, EditableCellChange, CommittedChange } from "../types";
+import { idbGetAll, idbPut, idbClear as idbClearStore } from "../lib/yyc3-storage";
+import type { EditableCellChange, CommittedChange } from "../types";
 
 // RF-011: Re-export 已移除
 
@@ -123,6 +123,7 @@ export function InlineEditableTable({
   // ── IndexedDB 持久化: 加载 Undo 历史 ──
   useEffect(() => {
     if (historyLoaded) {return;}
+    setHistoryLoaded(true);
     idbGetAll<CommittedChange>("committedChanges").then((saved) => {
       if (saved.length > 0) {
         // 按提交时间降序, 仅保留同表名的记录
@@ -132,7 +133,6 @@ export function InlineEditableTable({
           .slice(0, 20);
         setCommittedHistory(filtered);
       }
-      setHistoryLoaded(true);
     });
   }, [historyLoaded, tableName]);
 
@@ -458,7 +458,7 @@ export function InlineEditableTable({
     <div>
       {/* ═══ 编辑模式提示 + 操作栏 ═══ */}
       {editable && (
-        <div className="flex items-center gap-2 mb-1 flex-wrap" data-testid="edit-hint">
+        <div className="flex items-center gap-2 mb-1 flex-wrap">
           <Edit3 className="w-3 h-3 text-[rgba(0,212,255,0.3)]" />
           <span style={{ fontSize: f.xs, color: textDim }}>
             双击编辑 · 勾选行可批量删除
@@ -779,7 +779,6 @@ export function InlineEditableTable({
                     return (
                       <td
                         key={col}
-                        data-testid={`cell-${ri}-${col}`}
                         className={`py-1.5 px-2 font-mono whitespace-nowrap max-w-[200px] truncate ${
                           isPK
                             ? "text-[#7b8cff]"

@@ -10,7 +10,6 @@ import {
   ArrowRightLeft, Pause, Play, HeartPulse, HardDrive, Terminal,
   Loader2, CheckCircle, XCircle, AlertTriangle,
 } from "lucide-react";
-import { GlassCard } from "./GlassCard";
 import type { OperationItem, OperationStatus } from "../types";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -41,11 +40,11 @@ interface QuickActionGridProps {
   isMobile?: boolean;
 }
 
-export function QuickActionGrid({ actions, isExecuting, onExecute, isMobile = false }: QuickActionGridProps) {
+export function QuickActionGrid({ actions, isExecuting: _isExecuting, onExecute, isMobile = false }: QuickActionGridProps) {
   const [confirmId, setConfirmId] = useState<string | null>(null);
 
   const handleClick = (action: OperationItem) => {
-    if (action.status === "running") {return;}
+    if (action.status === "running") { return; }
     if (action.dangerous && confirmId !== action.id) {
       setConfirmId(action.id);
       return;
@@ -70,13 +69,12 @@ export function QuickActionGrid({ actions, isExecuting, onExecute, isMobile = fa
             key={action.id}
             onClick={() => handleClick(action)}
             disabled={isRunning}
-            className={`relative p-3 rounded-xl text-left transition-all group ${
-              isRunning
+            className={`relative p-3 rounded-xl text-left transition-all group ${isRunning
                 ? "bg-[rgba(0,212,255,0.04)] border border-[rgba(0,180,255,0.1)] cursor-wait"
                 : isConfirming
-                ? "bg-[rgba(255,51,102,0.06)] border border-[rgba(255,51,102,0.25)] hover:border-[rgba(255,51,102,0.4)]"
-                : "bg-[rgba(8,25,55,0.7)] border border-[rgba(0,180,255,0.1)] hover:border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,40,80,0.2)]"
-            }`}
+                  ? "bg-[rgba(255,51,102,0.06)] border border-[rgba(255,51,102,0.25)] hover:border-[rgba(255,51,102,0.4)]"
+                  : "bg-[rgba(8,25,55,0.7)] border border-[rgba(0,180,255,0.1)] hover:border-[rgba(0,212,255,0.3)] hover:bg-[rgba(0,40,80,0.2)]"
+              }`}
             data-testid={`action-${action.id}`}
           >
             {/* Danger warning badge */}
