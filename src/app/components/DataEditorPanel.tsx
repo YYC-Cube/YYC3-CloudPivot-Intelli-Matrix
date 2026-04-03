@@ -260,6 +260,7 @@ export function DataEditorPanel() {
       name: addDraft.name.trim(),
       provider: addDraft.provider || "Custom",
       tier: (addDraft.tier as Model["tier"]) || "standby",
+      status: (addDraft.status as Model["status"]) || "active",
       avg_latency_ms: parseInt(addDraft.avg_latency_ms) || 100,
       throughput: parseInt(addDraft.throughput) || 500,
       created_at: new Date().toISOString(),

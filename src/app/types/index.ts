@@ -101,12 +101,16 @@ export function toNodeData(record: NodeStatusRecord): NodeData {
 /** 模型层级 */
 export type ModelTier = "primary" | "secondary" | "standby";
 
+/** 模型状态 */
+export type ModelStatus = "active" | "inactive" | "error";
+
 /** 模型配置（DB Schema: core.models） */
 export interface Model {
   id: string;
   name: string;
   provider: string;
   tier: ModelTier;
+  status: ModelStatus;
   avg_latency_ms: number;
   throughput: number;
   created_at: string;
@@ -131,8 +135,10 @@ export interface InferenceLog {
   model_id: string;
   agent_id: string;
   latency_ms: number;
+  duration: number;
   tokens_in: number;
   tokens_out: number;
+  tokens_used: number;
   status: InferenceStatus;
   created_at: string;
 }
@@ -1218,6 +1224,7 @@ export interface DataManagementState {
   syncEnabled: boolean;
   expiredItems: number;
   cacheSize: number;
+  privacyCleaned?: boolean;
 }
 
 /** 安全监控完整状态 */

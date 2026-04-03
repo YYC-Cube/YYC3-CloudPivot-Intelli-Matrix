@@ -1,20 +1,5 @@
-// @vitest-environment jsdom
-/**
- * usePatrol.test.tsx
- * =========
- * usePatrol Hook - 巡查模式状态管理测试 (jsdom 环境)
- *
- * 覆盖范围:
- * - 初始化状态
- * - runPatrol 扫描流程（进度 + 结果）
- * - toggleAutoPatrol 开关
- * - updateInterval 间隔更新
- * - viewReport / closeReport 报告查看
- * - 历史记录追加
- */
-
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { renderHook, act, cleanup, waitFor } from "@testing-library/react";
 import { usePatrol } from "../hooks/usePatrol";
 
 // Mock sonner toast
@@ -27,9 +12,54 @@ vi.mock("sonner", () => ({
   },
 }));
 
+// Create a mutable schedule state for mock
+let mockSchedule = {
+  enabled: true,
+  interval: 15,
+  lastRun: null as number | null,
+  nextRun: Date.now() + 15 * 60 * 1000,
+};
+
+// Mock patrol-service
+vi.mock("../lib/patrol-service", () => ({
+  patrolService: {
+    getPatrolHistory: vi.fn().mockResolvedValue([]),
+    getSchedule: vi.fn().mockImplementation(() => Promise.resolve({ ...mockSchedule })),
+    updateSchedule: vi.fn().mockImplementation((newSchedule: typeof mockSchedule) => {
+      mockSchedule = { ...newSchedule };
+      return Promise.resolve();
+    }),
+    runPatrol: vi.fn().mockImplementation((triggeredBy) => 
+      Promise.resolve({
+        id: `patrol-${Date.now()}`,
+        timestamp: Date.now(),
+        healthScore: 85,
+        checks: [
+          { id: "check-1", category: "system", label: "CPU Usage", status: "pass", value: "45%" },
+          { id: "check-2", category: "system", label: "Memory", status: "warning", value: "78%" },
+        ],
+        passCount: 1,
+        warningCount: 1,
+        criticalCount: 0,
+        skippedCount: 0,
+        totalChecks: 2,
+        triggeredBy: triggeredBy,
+      })
+    ),
+  },
+}));
+
 describe("usePatrol", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
+    // Reset mock schedule
+    mockSchedule = {
+      enabled: true,
+      interval: 15,
+      lastRun: null,
+      nextRun: Date.now() + 15 * 60 * 1000,
+    };
   });
 
   afterEach(() => {
@@ -51,9 +81,9 @@ describe("usePatrol", () => {
       expect(result.current.currentResult).toBeNull();
     });
 
-    it("history 应有初始数据", () => {
+    it("history 初始为空数组", () => {
       const { result } = renderHook(() => usePatrol());
-      expect(result.current.history.length).toBeGreaterThan(0);
+      expect(result.current.history.length).toBe(0);
     });
 
     it("schedule 应默认启用，间隔 15 分钟", () => {
@@ -140,24 +170,43 @@ describe("usePatrol", () => {
   // ----------------------------------------------------------
 
   describe("toggleAutoPatrol", () => {
-    it("关闭自动巡查", () => {
+    it("关闭自动巡查", async () => {
       const { result } = renderHook(() => usePatrol());
-      act(() => {
-        result.current.toggleAutoPatrol(false);
+      
+      // Wait for initial data load
+      await waitFor(() => {
+        expect(result.current.schedule.enabled).toBe(true);
       });
-      expect(result.current.schedule.enabled).toBe(false);
+      
+      await act(async () => {
+        await result.current.toggleAutoPatrol(false);
+      });
+      await waitFor(() => {
+        expect(result.current.schedule.enabled).toBe(false);
+      });
       expect(result.current.schedule.nextRun).toBeNull();
     });
 
-    it("开启自动巡查", () => {
+    it("开启自动巡查", async () => {
       const { result } = renderHook(() => usePatrol());
-      act(() => {
-        result.current.toggleAutoPatrol(false);
+      
+      // Wait for initial data load
+      await waitFor(() => {
+        expect(result.current.schedule.enabled).toBe(true);
       });
-      act(() => {
-        result.current.toggleAutoPatrol(true);
+      
+      await act(async () => {
+        await result.current.toggleAutoPatrol(false);
       });
-      expect(result.current.schedule.enabled).toBe(true);
+      await waitFor(() => {
+        expect(result.current.schedule.enabled).toBe(false);
+      });
+      await act(async () => {
+        await result.current.toggleAutoPatrol(true);
+      });
+      await waitFor(() => {
+        expect(result.current.schedule.enabled).toBe(true);
+      });
       expect(result.current.schedule.nextRun).not.toBeNull();
     });
   });
@@ -167,21 +216,37 @@ describe("usePatrol", () => {
   // ----------------------------------------------------------
 
   describe("updateInterval", () => {
-    it("应更新巡查间隔", () => {
+    it("应更新巡查间隔", async () => {
       const { result } = renderHook(() => usePatrol());
-      act(() => {
-        result.current.updateInterval(30);
+      
+      // Wait for initial data load
+      await waitFor(() => {
+        expect(result.current.schedule.interval).toBe(15);
       });
-      expect(result.current.schedule.interval).toBe(30);
+      
+      await act(async () => {
+        await result.current.updateInterval(30);
+      });
+      await waitFor(() => {
+        expect(result.current.schedule.interval).toBe(30);
+      });
     });
 
-    it("更新间隔应重新计算 nextRun", () => {
+    it("更新间隔应重新计算 nextRun", async () => {
       const { result } = renderHook(() => usePatrol());
-      const before = result.current.schedule.nextRun;
-      act(() => {
-        result.current.updateInterval(60);
+      
+      // Wait for initial data load
+      await waitFor(() => {
+        expect(result.current.schedule.nextRun).toBeDefined();
       });
-      expect(result.current.schedule.nextRun).not.toBe(before);
+      
+      const before = result.current.schedule.nextRun;
+      await act(async () => {
+        await result.current.updateInterval(60);
+      });
+      await waitFor(() => {
+        expect(result.current.schedule.nextRun).not.toBe(before);
+      });
     });
   });
 
@@ -190,19 +255,34 @@ describe("usePatrol", () => {
   // ----------------------------------------------------------
 
   describe("报告查看", () => {
-    it("viewReport 应设置 selectedReport", () => {
+    it("viewReport 应设置 selectedReport", async () => {
       const { result } = renderHook(() => usePatrol());
-      const report = result.current.history[0];
+      
+      // First run a patrol to create a result
+      await act(async () => {
+        await result.current.runPatrol("manual");
+      });
+      
+      const report = result.current.currentResult;
+      expect(report).not.toBeNull();
+      
       act(() => {
-        result.current.viewReport(report);
+        result.current.viewReport(report!);
       });
       expect(result.current.selectedReport).toEqual(report);
     });
 
-    it("closeReport 应清除 selectedReport", () => {
+    it("closeReport 应清除 selectedReport", async () => {
       const { result } = renderHook(() => usePatrol());
+      
+      // First run a patrol to create a result
+      await act(async () => {
+        await result.current.runPatrol("manual");
+      });
+      
+      const report = result.current.currentResult!;
       act(() => {
-        result.current.viewReport(result.current.history[0]);
+        result.current.viewReport(report);
       });
       act(() => {
         result.current.closeReport();

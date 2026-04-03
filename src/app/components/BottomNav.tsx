@@ -71,8 +71,8 @@ const MORE_CATEGORIES: MoreCategory[] = [
     labelKey: "nav.catAI", icon: Brain,
     items: [
       { key: "nav.aiDecision",     path: "/ai",           icon: Sparkles },
-      { key: "modelProvider.title", path: "/models",       icon: Cpu },
-      { key: "nav.aiDiagnostics",  path: "/ai-diagnosis", icon: BrainCircuit },
+      { key: "modelProvider.title", path: "/model-provider",icon: Cpu },
+      { key: "nav.aiDiagnostics",  path: "/ai-diagnostics",icon: BrainCircuit },
     ],
   },
   {

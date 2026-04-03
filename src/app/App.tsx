@@ -4,7 +4,7 @@ import { router } from "./routes";
 import { Login } from "./components/Login";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { installGlobalErrorListeners } from "./lib/error-handler";
-import { supabase, ghostSignIn, isGhostMode } from "./lib/supabaseClient";
+import { supabase, ghostSignIn, isGhostMode, initSupabaseClient } from "./lib/supabaseClient";
 import { useYYC3Head } from "./hooks/useYYC3Head";
 import { useI18nProvider, I18nContext } from "./hooks/useI18n";
 import { AuthContext } from "./lib/authContext";
@@ -94,6 +94,11 @@ export default function App() {
   // 安装全局错误监听器（仅一次）
   useEffect(() => {
     installGlobalErrorListeners();
+  }, []);
+
+  // 初始化 Supabase 客户端（仅一次）
+  useEffect(() => {
+    initSupabaseClient();
   }, []);
 
   useEffect(() => {

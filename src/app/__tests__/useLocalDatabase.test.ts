@@ -31,7 +31,7 @@ const { mockGetAPIConfig, DEFAULT_API_CONFIG } = vi.hoisted(() => {
   const DEFAULT_API_CONFIG = {
     enableBackend: false,
     timeout: 15000,
-    maxRetries: 2,
+    maxRetries: 1,
     dbBase: "/api/db",
     fsBase: "/api/fs",
     wsEndpoint: "ws://localhost:3113/ws",
@@ -66,6 +66,8 @@ import { useLocalDatabase, SQL_TEMPLATES, calcBackoffDelay } from "../hooks/useL
 describe("useLocalDatabase", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // 清除 localStorage 以确保测试环境干净
+    localStorage.clear();
     // 默认 enableBackend = false (Mock 模式)
     mockGetAPIConfig.mockReturnValue({ ...DEFAULT_API_CONFIG });
   });

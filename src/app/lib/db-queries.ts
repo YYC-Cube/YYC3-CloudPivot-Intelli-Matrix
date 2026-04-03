@@ -1,7 +1,7 @@
 /**
  * 数据库查询函数
  * ===============
- * YYC3 数据持久化层 — localStorage 可编辑实现
+ * YYC3 数据持久化层 — 混合存储实现
  *
  * 数据库 Schema 对接：
  *   core.models       -> 模型配置
@@ -10,17 +10,15 @@
  *   infra.nodes        -> 节点状态
  *
  * 数据源策略:
- *   1. 首次启动 → 写入默认 Mock 数据到 localStorage
- *   2. 后续读取 → 从 localStorage 获取 (支持 CRUD)
- *   3. 接入 Supabase 后 → 切换为 supabase.from() 调用
+ *   1. 优先使用 Supabase 数据库
+ *   2. Supabase 不可用时降级到 HybridStorageManager (LocalStorage)
+ *   3. 首次启动 → 从数据库加载初始数据
  */
 
-import { supabase } from "./supabaseClient";
-
-// ============================================================
-// 类型定义
-// ============================================================
-
+import { getNativeSupabaseClient } from "./native-supabase-client";
+import { getHybridStorage, initHybridStorage } from "./hybrid-storage-manager";
+import { queryMonitor } from "./query-monitor";
+import { queryCache, generateCacheKey } from "./query-cache";
 import type {
   Model,
   Agent,
@@ -41,32 +39,54 @@ const NODES_KEY = "yyc3_db_nodes";
 // 默认 Mock 数据 (仅首次初始化使用)
 // ============================================================
 
-const DEFAULT_MODELS: Model[] = [
-  { id: "m1", name: "LLaMA-70B", provider: "Meta", tier: "primary", avg_latency_ms: 120, throughput: 850, created_at: "2025-01-15T08:00:00Z" },
-  { id: "m2", name: "Qwen-72B", provider: "Alibaba", tier: "primary", avg_latency_ms: 135, throughput: 780, created_at: "2025-01-20T10:00:00Z" },
-  { id: "m3", name: "GPT-4o", provider: "OpenAI", tier: "secondary", avg_latency_ms: 200, throughput: 620, created_at: "2025-02-01T12:00:00Z" },
-  { id: "m4", name: "Claude-3.5", provider: "Anthropic", tier: "secondary", avg_latency_ms: 180, throughput: 700, created_at: "2025-02-05T09:00:00Z" },
-  { id: "m5", name: "Mistral-7B", provider: "Mistral", tier: "standby", avg_latency_ms: 45, throughput: 1200, created_at: "2025-02-10T14:00:00Z" },
-];
+const DEFAULT_MODELS: Model[] = [];
 
-const DEFAULT_AGENTS: Agent[] = [
-  { id: "a1", name: "CodeAssist", name_cn: "代码助手", role: "coding", description: "代码生成与审查", is_active: true },
-  { id: "a2", name: "DataAnalyst", name_cn: "数据分析师", role: "analysis", description: "数据分析与可视化", is_active: true },
-  { id: "a3", name: "DocWriter", name_cn: "文档撰写员", role: "writing", description: "技术文档生成", is_active: true },
-  { id: "a4", name: "SecurityGuard", name_cn: "安全守卫", role: "security", description: "安全审计与漏洞检测", is_active: false },
-  { id: "a5", name: "DevOpsBot", name_cn: "运维机器人", role: "ops", description: "自动化运维", is_active: true },
-];
+const DEFAULT_AGENTS: Agent[] = [];
 
-const DEFAULT_NODES: NodeStatusRecord[] = [
-  { id: "n1", hostname: "GPU-A100-01", gpu_util: 72, mem_util: 65, temp_celsius: 68, model_deployed: "LLaMA-70B", active_tasks: 12, status: "active" },
-  { id: "n2", hostname: "GPU-A100-02", gpu_util: 85, mem_util: 78, temp_celsius: 74, model_deployed: "Qwen-72B", active_tasks: 8, status: "active" },
-  { id: "n3", hostname: "GPU-A100-03", gpu_util: 92, mem_util: 88, temp_celsius: 82, model_deployed: "LLaMA-70B", active_tasks: 15, status: "warning" },
-  { id: "n4", hostname: "GPU-A100-04", gpu_util: 45, mem_util: 40, temp_celsius: 55, model_deployed: "Mistral-7B", active_tasks: 5, status: "active" },
-  { id: "n5", hostname: "GPU-A100-05", gpu_util: 0, mem_util: 10, temp_celsius: 35, model_deployed: "", active_tasks: 0, status: "inactive" },
-];
+const DEFAULT_NODES: NodeStatusRecord[] = [];
 
 // ============================================================
-// localStorage CRUD 工具层
+// 初始化 Hybrid Storage
+// ============================================================
+
+let storageInitialized = false;
+
+function initializeStorage(): void {
+  if (storageInitialized) {
+    return;
+  }
+
+  const supabaseClient = getNativeSupabaseClient();
+  
+  if (supabaseClient) {
+    initHybridStorage(supabaseClient, {
+      enableLocalStorage: true,
+      enableSupabase: true,
+      syncInterval: 30000,
+      syncOnWrite: true,
+      conflictResolution: "remote",
+    });
+  }
+
+  storageInitialized = true;
+}
+
+function getStorage() {
+  if (!storageInitialized) {
+    initializeStorage();
+  }
+
+  const storage = getHybridStorage();
+  
+  if (!storage) {
+    throw new Error("Storage not initialized");
+  }
+
+  return storage;
+}
+
+// ============================================================
+// localStorage CRUD 工具层 (降级方案)
 // ============================================================
 
 function loadData<T>(key: string, defaults: T[]): T[] {
@@ -74,7 +94,6 @@ function loadData<T>(key: string, defaults: T[]): T[] {
     const raw = localStorage.getItem(key);
     if (raw) {return JSON.parse(raw);}
   } catch { /* ignore */ }
-  // 首次: 写入默认值
   try { localStorage.setItem(key, JSON.stringify(defaults)); } catch { /* ignore */ }
   return [...defaults];
 }
@@ -83,142 +102,186 @@ function saveData<T>(key: string, data: T[]): void {
   try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* ignore */ }
 }
 
-// ============================================================
-// 内存缓存 (避免频繁解析 JSON)
-// ============================================================
-
 let _models: Model[] | null = null;
 let _agents: Agent[] | null = null;
 let _nodes: NodeStatusRecord[] | null = null;
 
-function getModels(): Model[] {
+function getLocalModels(): Model[] {
   if (!_models) {_models = loadData<Model>(MODELS_KEY, DEFAULT_MODELS);}
   return _models;
 }
 
-function getAgents(): Agent[] {
+function getLocalAgents(): Agent[] {
   if (!_agents) {_agents = loadData<Agent>(AGENTS_KEY, DEFAULT_AGENTS);}
   return _agents;
 }
 
-function getNodes(): NodeStatusRecord[] {
+function getLocalNodes(): NodeStatusRecord[] {
   if (!_nodes) {_nodes = loadData<NodeStatusRecord>(NODES_KEY, DEFAULT_NODES);}
   return _nodes;
 }
 
-function persistModels() { saveData(MODELS_KEY, getModels()); }
-function persistAgents() { saveData(AGENTS_KEY, getAgents()); }
-function persistNodes()  { saveData(NODES_KEY, getNodes()); }
+function persistLocalModels() { saveData(MODELS_KEY, getLocalModels()); }
+function persistLocalAgents() { saveData(AGENTS_KEY, getLocalAgents()); }
+function persistLocalNodes()  { saveData(NODES_KEY, getLocalNodes()); }
 
 // ============================================================
 // CRUD — Models
 // ============================================================
 
-export function addDbModel(model: Omit<Model, "id">): Model {
-  const models = getModels();
-  const newModel: Model = { ...model, id: `m-${Date.now()}` };
-  models.push(newModel);
-  persistModels();
-  return newModel;
+export async function addDbModel(model: Omit<Model, "id">): Promise<Model> {
+  try {
+    const storage = getStorage();
+    const newModel: Model = { ...model, id: `m-${Date.now()}` };
+    return await storage.add("models", newModel);
+  } catch {
+    const models = getLocalModels();
+    const newModel: Model = { ...model, id: `m-${Date.now()}` };
+    models.push(newModel);
+    persistLocalModels();
+    return newModel;
+  }
 }
 
-export function updateDbModel(id: string, updates: Partial<Model>): Model | null {
-  const models = getModels();
-  const idx = models.findIndex((m) => m.id === id);
-  if (idx < 0) {return null;}
-  models[idx] = { ...models[idx], ...updates };
-  persistModels();
-  return models[idx];
+export async function updateDbModel(id: string, updates: Partial<Model>): Promise<Model | null> {
+  try {
+    const storage = getStorage();
+    return await storage.update("models", id, updates);
+  } catch {
+    const models = getLocalModels();
+    const idx = models.findIndex((m) => m.id === id);
+    if (idx < 0) {return null;}
+    models[idx] = { ...models[idx], ...updates };
+    persistLocalModels();
+    return models[idx];
+  }
 }
 
-export function deleteDbModel(id: string): boolean {
-  const models = getModels();
-  const idx = models.findIndex((m) => m.id === id);
-  if (idx < 0) {return false;}
-  models.splice(idx, 1);
-  persistModels();
-  return true;
+export async function deleteDbModel(id: string): Promise<boolean> {
+  try {
+    const storage = getStorage();
+    return await storage.delete("models", id);
+  } catch {
+    const models = getLocalModels();
+    const idx = models.findIndex((m) => m.id === id);
+    if (idx < 0) {return false;}
+    models.splice(idx, 1);
+    persistLocalModels();
+    return true;
+  }
 }
 
 // ============================================================
 // CRUD — Agents
 // ============================================================
 
-export function addDbAgent(agent: Omit<Agent, "id">): Agent {
-  const agents = getAgents();
-  const newAgent: Agent = { ...agent, id: `a-${Date.now()}` };
-  agents.push(newAgent);
-  persistAgents();
-  return newAgent;
+export async function addDbAgent(agent: Omit<Agent, "id">): Promise<Agent> {
+  try {
+    const storage = getStorage();
+    const newAgent: Agent = { ...agent, id: `a-${Date.now()}` };
+    return await storage.add("agents", newAgent);
+  } catch {
+    const agents = getLocalAgents();
+    const newAgent: Agent = { ...agent, id: `a-${Date.now()}` };
+    agents.push(newAgent);
+    persistLocalAgents();
+    return newAgent;
+  }
 }
 
-export function updateDbAgent(id: string, updates: Partial<Agent>): Agent | null {
-  const agents = getAgents();
-  const idx = agents.findIndex((a) => a.id === id);
-  if (idx < 0) {return null;}
-  agents[idx] = { ...agents[idx], ...updates };
-  persistAgents();
-  return agents[idx];
+export async function updateDbAgent(id: string, updates: Partial<Agent>): Promise<Agent | null> {
+  try {
+    const storage = getStorage();
+    return await storage.update("agents", id, updates);
+  } catch {
+    const agents = getLocalAgents();
+    const idx = agents.findIndex((a) => a.id === id);
+    if (idx < 0) {return null;}
+    agents[idx] = { ...agents[idx], ...updates };
+    persistLocalAgents();
+    return agents[idx];
+  }
 }
 
-export function deleteDbAgent(id: string): boolean {
-  const agents = getAgents();
-  const idx = agents.findIndex((a) => a.id === id);
-  if (idx < 0) {return false;}
-  agents.splice(idx, 1);
-  persistAgents();
-  return true;
+export async function deleteDbAgent(id: string): Promise<boolean> {
+  try {
+    const storage = getStorage();
+    return await storage.delete("agents", id);
+  } catch {
+    const agents = getLocalAgents();
+    const idx = agents.findIndex((a) => a.id === id);
+    if (idx < 0) {return false;}
+    agents.splice(idx, 1);
+    persistLocalAgents();
+    return true;
+  }
 }
 
 // ============================================================
 // CRUD — Nodes
 // ============================================================
 
-export function addDbNode(node: Omit<NodeStatusRecord, "id">): NodeStatusRecord {
-  const nodes = getNodes();
-  const newNode: NodeStatusRecord = { ...node, id: `n-${Date.now()}` };
-  nodes.push(newNode);
-  persistNodes();
-  return newNode;
+export async function addDbNode(node: Omit<NodeStatusRecord, "id">): Promise<NodeStatusRecord> {
+  try {
+    const storage = getStorage();
+    const newNode: NodeStatusRecord = { ...node, id: `n-${Date.now()}` };
+    return await storage.add("nodes", newNode);
+  } catch {
+    const nodes = getLocalNodes();
+    const newNode: NodeStatusRecord = { ...node, id: `n-${Date.now()}` };
+    nodes.push(newNode);
+    persistLocalNodes();
+    return newNode;
+  }
 }
 
-export function updateDbNode(id: string, updates: Partial<NodeStatusRecord>): NodeStatusRecord | null {
-  const nodes = getNodes();
-  const idx = nodes.findIndex((n) => n.id === id);
-  if (idx < 0) {return null;}
-  nodes[idx] = { ...nodes[idx], ...updates };
-  persistNodes();
-  return nodes[idx];
+export async function updateDbNode(id: string, updates: Partial<NodeStatusRecord>): Promise<NodeStatusRecord | null> {
+  try {
+    const storage = getStorage();
+    return await storage.update("nodes", id, updates);
+  } catch {
+    const nodes = getLocalNodes();
+    const idx = nodes.findIndex((n) => n.id === id);
+    if (idx < 0) {return null;}
+    nodes[idx] = { ...nodes[idx], ...updates };
+    persistLocalNodes();
+    return nodes[idx];
+  }
 }
 
-export function deleteDbNode(id: string): boolean {
-  const nodes = getNodes();
-  const idx = nodes.findIndex((n) => n.id === id);
-  if (idx < 0) {return false;}
-  nodes.splice(idx, 1);
-  persistNodes();
-  return true;
+export async function deleteDbNode(id: string): Promise<boolean> {
+  try {
+    const storage = getStorage();
+    return await storage.delete("nodes", id);
+  } catch {
+    const nodes = getLocalNodes();
+    const idx = nodes.findIndex((n) => n.id === id);
+    if (idx < 0) {return false;}
+    nodes.splice(idx, 1);
+    persistLocalNodes();
+    return true;
+  }
 }
 
 // ============================================================
-// ��置 — 恢复默认 Mock 数据
+// 重置 — 恢复默认 Mock 数据
 // ============================================================
 
 export function resetDbModels(): Model[] {
   _models = DEFAULT_MODELS.map((m) => ({ ...m }));
-  persistModels();
+  persistLocalModels();
   return _models;
 }
 
 export function resetDbAgents(): Agent[] {
   _agents = DEFAULT_AGENTS.map((a) => ({ ...a }));
-  persistAgents();
+  persistLocalAgents();
   return _agents;
 }
 
 export function resetDbNodes(): NodeStatusRecord[] {
   _nodes = DEFAULT_NODES.map((n) => ({ ...n }));
-  persistNodes();
+  persistLocalNodes();
   return _nodes;
 }
 
@@ -230,18 +293,18 @@ export function exportDbData(): string {
   return JSON.stringify({
     version: 1,
     exportedAt: Date.now(),
-    models: getModels(),
-    agents: getAgents(),
-    nodes: getNodes(),
+    models: getLocalModels(),
+    agents: getLocalAgents(),
+    nodes: getLocalNodes(),
   }, null, 2);
 }
 
 export function importDbData(jsonStr: string): boolean {
   try {
     const data = JSON.parse(jsonStr);
-    if (data.models) { _models = data.models; persistModels(); }
-    if (data.agents) { _agents = data.agents; persistAgents(); }
-    if (data.nodes)  { _nodes = data.nodes; persistNodes(); }
+    if (data.models) { _models = data.models; persistLocalModels(); }
+    if (data.agents) { _agents = data.agents; persistLocalAgents(); }
+    if (data.nodes)  { _nodes = data.nodes; persistLocalNodes(); }
     return true;
   } catch {
     return false;
@@ -249,84 +312,385 @@ export function importDbData(jsonStr: string): boolean {
 }
 
 // ============================================================
-// 推理日志生成 (仍为运行时生成, 无需持久化)
+// 推理日志查询
 // ============================================================
 
-function generateMockLogs(count: number): InferenceLog[] {
-  const statuses: Array<"success" | "error" | "timeout"> = ["success", "error", "timeout"];
-  const modelIds = getModels().map((m) => m.id);
-  const agentIds = getAgents().filter((a) => a.is_active).map((a) => a.id);
+/** 获取最近推理日志 */
+export async function getRecentLogs(limit = 100): Promise<{ data: InferenceLog[]; error: null }> {
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const logs = await storage.get<InferenceLog>("inference_logs");
+      return { data: logs.slice(0, limit), error: null };
+    } catch {
+      return { data: [], error: null };
+    }
+  }
 
-  if (modelIds.length === 0 || agentIds.length === 0) {return [];}
+  try {
+    const { data, error } = await supabase
+      .from('inference_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(limit);
 
-  return Array.from({ length: count }, (_, i) => ({
-    id: `log-${String(i + 1).padStart(5, "0")}`,
-    model_id: modelIds[i % modelIds.length],
-    agent_id: agentIds[i % agentIds.length],
-    latency_ms: Math.floor(Math.random() * 300) + 20,
-    tokens_in: Math.floor(Math.random() * 2000) + 100,
-    tokens_out: Math.floor(Math.random() * 4000) + 200,
-    status: i % 10 === 9 ? statuses[1] : i % 15 === 14 ? statuses[2] : statuses[0],
-    created_at: new Date(Date.now() - i * 60_000).toISOString(),
-  }));
+    if (error) {throw error;}
+
+    return { data: data || [], error: null };
+  } catch (error) {
+    console.error('Failed to get recent logs:', error);
+    return { data: [], error: null };
+  }
+}
+
+/** 添加推理日志 */
+export async function addInferenceLog(log: Omit<InferenceLog, 'id'>): Promise<InferenceLog> {
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const newLog: InferenceLog = { 
+        ...log, 
+        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        created_at: new Date().toISOString(),
+      };
+      return await storage.add('inference_logs', newLog);
+    } catch (error) {
+      console.error('Failed to add inference log:', error);
+      throw error;
+    }
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('inference_logs')
+      .insert({
+        ...log,
+        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        created_at: new Date().toISOString(),
+      })
+      .select()
+      .single();
+
+    if (error) {throw error;}
+
+    return data as InferenceLog;
+  } catch (error) {
+    console.error('Failed to add inference log:', error);
+    throw error;
+  }
 }
 
 // ============================================================
-// Query Functions (API 兼容 — 签名不变)
+// Query Functions (真实数据库查询)
 // ============================================================
 
 /** 获取活跃模型列表 */
 export async function getActiveModels(): Promise<{ data: Model[]; error: null }> {
-  void supabase; // placeholder for future Supabase integration
-  return { data: [...getModels()], error: null };
-}
+  const cacheKey = generateCacheKey('models', 'getActiveModels', { status: 'active' });
+  const cached = queryCache.get<Model[]>(cacheKey);
+  
+  if (cached) {
+    return { data: cached, error: null };
+  }
 
-/** 获取最近推理日志 */
-export async function getRecentLogs(limit = 100): Promise<{ data: InferenceLog[]; error: null }> {
-  return { data: generateMockLogs(limit), error: null };
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const models = await storage.get<Model>("models");
+      const result = models.filter(m => m.status === 'active');
+      queryCache.set(cacheKey, result, 30000);
+      return { data: result, error: null };
+    } catch {
+      return { data: [], error: null };
+    }
+  }
+
+  try {
+    const result = await queryMonitor.wrapQuery(
+      'SELECT * FROM models WHERE status = $1',
+      'models',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('models')
+          .select('*')
+          .eq('status', 'active')
+          .order('created_at', { ascending: false });
+
+        if (error) {throw error;}
+
+        return { data: data || [], cacheHit: false };
+      }
+    );
+
+    queryCache.set(cacheKey, result.data, 30000);
+    return { data: result.data, error: null };
+  } catch (error) {
+    console.error('Failed to get active models:', error);
+    return { data: [], error: null };
+  }
 }
 
 /** 获取模型统计 */
 export async function getModelStats(
   modelId: string
 ): Promise<{ data: ModelStats | null; error: null }> {
-  const model = getModels().find((m) => m.id === modelId);
-  if (!model) {return { data: null, error: null };}
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const models = await storage.get<Model>("models");
+      const model = models.find((m) => m.id === modelId);
+      
+      if (!model) {return { data: null, error: null };}
 
-  return {
-    data: {
-      avgLatency: model.avg_latency_ms,
-      totalRequests: Math.floor(Math.random() * 50000) + 10000,
-      totalTokens: Math.floor(Math.random() * 5_000_000) + 1_000_000,
-      successRate: 95 + Math.random() * 4.5,
-    },
-    error: null,
-  };
+      return {
+        data: {
+          avgLatency: model.avg_latency_ms,
+          totalRequests: Math.floor(Math.random() * 50000) + 10000,
+          totalTokens: Math.floor(Math.random() * 5_000_000) + 1_000_000,
+          successRate: 95 + Math.random() * 4.5,
+        },
+        error: null,
+      };
+    } catch {
+      return { data: null, error: null };
+    }
+  }
+
+  try {
+    const { data: logs, error: logsError } = await supabase
+      .from('inference_logs')
+      .select('tokens_used, duration, status')
+      .eq('model_id', modelId);
+
+    if (logsError) {throw logsError;}
+
+    if (!logs || logs.length === 0) {
+      return { data: null, error: null };
+    }
+
+    const successfulLogs = logs.filter((log: InferenceLog) => log.status === 'success');
+    const avgLatency = successfulLogs.reduce((sum: number, log: InferenceLog) => sum + (log.duration || 0), 0) / successfulLogs.length;
+    const totalRequests = logs.length;
+    const totalTokens = logs.reduce((sum: number, log: InferenceLog) => sum + (log.tokens_used || 0), 0);
+    const successRate = (successfulLogs.length / totalRequests) * 100;
+
+    return {
+      data: {
+        avgLatency,
+        totalRequests,
+        totalTokens,
+        successRate,
+      },
+      error: null,
+    };
+  } catch (error) {
+    console.error('Failed to get model stats:', error);
+    return { data: null, error: null };
+  }
 }
 
 /** 获取节点状态 */
 export async function getNodesStatus(): Promise<{ data: NodeStatusRecord[]; error: null }> {
-  return { data: [...getNodes()], error: null };
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const nodes = await storage.get<NodeStatusRecord>("nodes");
+      return { data: nodes, error: null };
+    } catch {
+      return { data: [], error: null };
+    }
+  }
+
+  try {
+    return await queryMonitor.wrapQuery(
+      'SELECT * FROM nodes',
+      'nodes',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('nodes')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {throw error;}
+
+        return { data: data || [], cacheHit: false };
+      }
+    );
+  } catch (error) {
+    console.error('Failed to get nodes status:', error);
+    return { data: [], error: null };
+  }
 }
 
 /** 获取活跃 Agent 列表 */
 export async function getActiveAgents(): Promise<{ data: Agent[]; error: null }> {
-  return { data: getAgents().filter((a) => a.is_active), error: null };
+  const cacheKey = generateCacheKey('agents', 'getActiveAgents', { is_active: true });
+  const cached = queryCache.get<Agent[]>(cacheKey);
+  
+  if (cached) {
+    return { data: cached, error: null };
+  }
+
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const agents = await storage.get<Agent>("agents");
+      const result = agents.filter((a) => a.is_active);
+      queryCache.set(cacheKey, result, 30000);
+      return { data: result, error: null };
+    } catch {
+      return { data: [], error: null };
+    }
+  }
+
+  try {
+    const result = await queryMonitor.wrapQuery(
+      'SELECT * FROM agents WHERE is_active = true',
+      'agents',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('agents')
+          .select('*')
+          .eq('is_active', true)
+          .order('created_at', { ascending: false });
+
+        if (error) {throw error;}
+
+        return { data: data || [], cacheHit: false };
+      }
+    );
+
+    queryCache.set(cacheKey, result.data, 30000);
+    return { data: result.data, error: null };
+  } catch (error) {
+    console.error('Failed to get active agents:', error);
+    return { data: [], error: null };
+  }
 }
 
 /** 获取所有 Agent 列表 */
 export async function getAllAgents(): Promise<{ data: Agent[]; error: null }> {
-  return { data: [...getAgents()], error: null };
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const agents = await storage.get<Agent>("agents");
+      return { data: agents, error: null };
+    } catch {
+      return { data: [], error: null };
+    }
+  }
+
+  try {
+    return await queryMonitor.wrapQuery(
+      'SELECT * FROM agents',
+      'agents',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('agents')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) {throw error;}
+
+        return { data: data || [], cacheHit: false };
+      }
+    );
+  } catch (error) {
+    console.error('Failed to get all agents:', error);
+    return { data: [], error: null };
+  }
 }
 
 /** 获取单个模型 */
 export async function getModelById(id: string): Promise<{ data: Model | null; error: null }> {
-  const model = getModels().find((m) => m.id === id) || null;
-  return { data: model, error: null };
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const models = await storage.get<Model>("models");
+      const model = models.find((m) => m.id === id) || null;
+      return { data: model, error: null };
+    } catch {
+      return { data: null, error: null };
+    }
+  }
+
+  try {
+    return await queryMonitor.wrapQuery(
+      'SELECT * FROM models WHERE id = $1',
+      'models',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('models')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) {throw error;}
+
+        return { data: data || null, cacheHit: false };
+      }
+    );
+  } catch (error) {
+    console.error('Failed to get model by id:', error);
+    return { data: null, error: null };
+  }
 }
 
 /** 获取单个节点 */
 export async function getNodeById(id: string): Promise<{ data: NodeStatusRecord | null; error: null }> {
-  const node = getNodes().find((n) => n.id === id) || null;
-  return { data: node, error: null };
+  const supabase = getNativeSupabaseClient();
+  
+  if (!supabase) {
+    try {
+      const storage = getStorage();
+      const nodes = await storage.get<NodeStatusRecord>("nodes");
+      const node = nodes.find((n) => n.id === id) || null;
+      return { data: node, error: null };
+    } catch {
+      return { data: null, error: null };
+    }
+  }
+
+  try {
+    return await queryMonitor.wrapQuery(
+      'SELECT * FROM nodes WHERE id = $1',
+      'nodes',
+      'get',
+      async () => {
+        const { data, error } = await supabase
+          .from('nodes')
+          .select('*')
+          .eq('id', id)
+          .single();
+
+        if (error) {throw error;}
+
+        return { data: data || null, cacheHit: false };
+      }
+    );
+  } catch (error) {
+    console.error('Failed to get node by id:', error);
+    return { data: null, error: null };
+  }
 }

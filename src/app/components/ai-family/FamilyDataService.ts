@@ -220,7 +220,7 @@ class FamilyDataService {
       }
 
       // 更新 Store 中的成员数据
-      const members: FamilyMember[] = data.map((row) => {
+      const members: FamilyMember[] = data.map((row: any) => {
         const memberRow = row as DatabaseMemberRow;
         return {
           id: memberRow.id,
@@ -472,12 +472,12 @@ class FamilyDataService {
 
       // 更新本地 Store
       const newActivity: FamilyActivity = {
-        id: data[0].id,
+        id: (data as any)[0].id,
         ...activity,
       };
       useFamilyStore.getState().addActivity(newActivity);
 
-      return data[0].id;
+      return (data as any)[0].id;
     } catch (error) {
       console.error('[FamilyDataService] Failed to add activity:', error);
       throw error;
@@ -507,12 +507,12 @@ class FamilyDataService {
 
       // 更新本地 Store
       const newMessage: FamilyMessage = {
-        id: data[0].id,
+        id: (data as any)[0].id,
         ...message,
       };
       useFamilyStore.getState().addMessage(newMessage);
 
-      return data[0].id;
+      return (data as any)[0].id;
     } catch (error) {
       console.error('[FamilyDataService] Failed to add message:', error);
       throw error;
@@ -583,15 +583,15 @@ class FamilyDataService {
    * 监听成员变化
    */
   private subscribeToMembers(): void {
-    const subscription = supabase
+    const channel = supabase
       .channel('family_members_changes')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         {
           event: '*',
           schema: 'public',
           table: 'family_members',
-        },
+        } as any,
         (_payload: unknown) => {
           console.info('[FamilyDataService] Member changed:', _payload);
           this.syncMembers();
@@ -599,22 +599,30 @@ class FamilyDataService {
       )
       .subscribe();
 
-    this.subscriptions.set('members', subscription);
+    this.subscriptions.set('members', {
+      unsubscribe: () => {
+        if ('unsubscribe' in channel) {
+          channel.unsubscribe();
+        } else if ('data' in channel && channel.data?.subscription) {
+          channel.data.subscription.unsubscribe();
+        }
+      },
+    });
   }
 
   /**
    * 监听活动变化
    */
   private subscribeToActivities(): void {
-    const subscription = supabase
+    const channel = supabase
       .channel('family_activities_changes')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         {
           event: '*',
           schema: 'public',
           table: 'family_activities',
-        },
+        } as any,
         (_payload: unknown) => {
           console.info('[FamilyDataService] Activity changed:', _payload);
           this.syncActivities();
@@ -622,22 +630,30 @@ class FamilyDataService {
       )
       .subscribe();
 
-    this.subscriptions.set('activities', subscription);
+    this.subscriptions.set('activities', {
+      unsubscribe: () => {
+        if ('unsubscribe' in channel) {
+          channel.unsubscribe();
+        } else if ('data' in channel && channel.data?.subscription) {
+          channel.data.subscription.unsubscribe();
+        }
+      },
+    });
   }
 
   /**
    * 监听消息变化
    */
   private subscribeToMessages(): void {
-    const subscription = supabase
+    const channel = supabase
       .channel('family_messages_changes')
       .on(
-        'postgres_changes',
+        'postgres_changes' as any,
         {
           event: '*',
           schema: 'public',
           table: 'family_messages',
-        },
+        } as any,
         (_payload: unknown) => {
           console.info('[FamilyDataService] Message changed:', _payload);
           this.syncMessages();
@@ -645,7 +661,15 @@ class FamilyDataService {
       )
       .subscribe();
 
-    this.subscriptions.set('messages', subscription);
+    this.subscriptions.set('messages', {
+      unsubscribe: () => {
+        if ('unsubscribe' in channel) {
+          channel.unsubscribe();
+        } else if ('data' in channel && channel.data?.subscription) {
+          channel.data.subscription.unsubscribe();
+        }
+      },
+    });
   }
 
   /**

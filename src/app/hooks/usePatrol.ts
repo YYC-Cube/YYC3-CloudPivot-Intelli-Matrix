@@ -8,185 +8,15 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { usePersistedList } from "./usePersistedState";
+import { patrolService } from "../lib/patrol-service";
 import type {
   PatrolStatus,
-  CheckStatus,
-  PatrolInterval,
-  PatrolCheckItem,
   PatrolResult,
   PatrolSchedule,
+  PatrolInterval,
 } from "../types";
 
 // RF-011: Re-export 已移除 — 所有类型统一从 types/index.ts 导入
-
-// ============================================================
-//  Mock 巡查检查项生成
-// ============================================================
-
-function generateChecks(): PatrolCheckItem[] {
-  const checks: PatrolCheckItem[] = [];
-
-  const templates: Array<{
-    category: string;
-    label: string;
-    genValue: () => { value: string; status: CheckStatus; threshold?: string; detail?: string };
-  }> = [
-      {
-        category: "节点健康",
-        label: "节点在线率",
-        genValue: () => {
-          const v = 90 + Math.floor(Math.random() * 11);
-          return {
-            value: `${v}%`,
-            status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
-            threshold: "≥95%",
-            detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
-          };
-        },
-      },
-      {
-        category: "存储",
-        label: "存储容量",
-        genValue: () => {
-          const v = 60 + Math.floor(Math.random() * 35);
-          return {
-            value: `${v}%`,
-            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-            threshold: "<80%",
-          };
-        },
-      },
-      {
-        category: "网络",
-        label: "平均网络延迟",
-        genValue: () => {
-          const v = 10 + Math.floor(Math.random() * 80);
-          return {
-            value: `${v}ms`,
-            status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
-            threshold: "<50ms",
-            detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
-          };
-        },
-      },
-      {
-        category: "GPU",
-        label: "GPU 平均利用率",
-        genValue: () => {
-          const v = 40 + Math.floor(Math.random() * 55);
-          return {
-            value: `${v}%`,
-            status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
-            threshold: "<85%",
-          };
-        },
-      },
-      {
-        category: "GPU",
-        label: "GPU 温度",
-        genValue: () => {
-          const v = 55 + Math.floor(Math.random() * 30);
-          return {
-            value: `${v}°C`,
-            status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
-            threshold: "<75°C",
-          };
-        },
-      },
-      {
-        category: "内存",
-        label: "内存利用率",
-        genValue: () => {
-          const v = 50 + Math.floor(Math.random() * 45);
-          return {
-            value: `${v}%`,
-            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-            threshold: "<80%",
-          };
-        },
-      },
-      {
-        category: "安全",
-        label: "安全事件",
-        genValue: () => {
-          const v = Math.floor(Math.random() * 5);
-          return {
-            value: `${v} 事件`,
-            status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
-            threshold: "0 事件",
-          };
-        },
-      },
-      {
-        category: "安全",
-        label: "证书有效性",
-        genValue: () => {
-          const days = 10 + Math.floor(Math.random() * 350);
-          return {
-            value: `${days} 天`,
-            status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
-            threshold: ">30 天",
-          };
-        },
-      },
-    ];
-
-  templates.forEach((t, i) => {
-    const gen = t.genValue();
-    checks.push({
-      id: `chk-${String(i + 1).padStart(3, "0")}`,
-      category: t.category,
-      label: t.label,
-      status: gen.status,
-      value: gen.value,
-      threshold: gen.threshold,
-      detail: gen.detail,
-    });
-  });
-
-  return checks;
-}
-
-function buildResult(checks: PatrolCheckItem[], triggeredBy: "manual" | "auto" | "scheduled"): PatrolResult {
-  const passCount = checks.filter((c) => c.status === "pass").length;
-  const warningCount = checks.filter((c) => c.status === "warning").length;
-  const criticalCount = checks.filter((c) => c.status === "critical").length;
-  const skippedCount = checks.filter((c) => c.status === "skipped").length;
-  const healthScore = Math.round(
-    ((passCount * 100 + warningCount * 60 + criticalCount * 10) / (checks.length * 100)) * 100
-  );
-
-  return {
-    id: `patrol-${Date.now()}`,
-    timestamp: Date.now(),
-    duration: 2 + Math.floor(Math.random() * 8),
-    status: "completed",
-    healthScore,
-    totalChecks: checks.length,
-    passCount,
-    warningCount,
-    criticalCount,
-    skippedCount,
-    checks,
-    triggeredBy,
-  };
-}
-
-// ============================================================
-//  初始历史数据
-// ============================================================
-
-function generateInitialHistory(): PatrolResult[] {
-  const results: PatrolResult[] = [];
-  for (let i = 0; i < 5; i++) {
-    const checks = generateChecks();
-    const r = buildResult(checks, i % 2 === 0 ? "auto" : "scheduled");
-    r.id = `patrol-init-${i}`;
-    r.timestamp = Date.now() - (i + 1) * 30 * 60 * 1000;
-    results.push(r);
-  }
-  return results;
-}
 
 // ============================================================
 //  Hook
@@ -204,7 +34,7 @@ export function usePatrol() {
     prepend: prependHistory,
   } = usePersistedList<PatrolResult>(
     "patrolHistory",
-    generateInitialHistory()
+    []
   );
 
   const [schedule, setSchedule] = useState<PatrolSchedule>({
@@ -215,6 +45,25 @@ export function usePatrol() {
   });
 
   const autoTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // 加载初始数据
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const [historyData, scheduleData] = await Promise.all([
+          patrolService.getPatrolHistory(10),
+          patrolService.getSchedule(),
+        ]);
+        
+        _setHistory(historyData);
+        setSchedule(scheduleData);
+      } catch (error) {
+        console.error('Failed to load initial patrol data:', error);
+      }
+    };
+
+    loadInitialData();
+  }, [_setHistory]);
 
   // ── runPatrol ──────────────────────────────────────────────
 
@@ -230,19 +79,15 @@ export function usePatrol() {
         setProgress(Math.round((i / steps) * 100));
       }
 
-      const checks = generateChecks();
-      const result = buildResult(checks, triggeredBy);
+      const result = await patrolService.runPatrol(triggeredBy);
 
       setCurrentResult(result);
       setPatrolStatus("completed");
       setProgress(100);
       prependHistory(result);
 
-      setSchedule((s) => ({
-        ...s,
-        lastRun: Date.now(),
-        nextRun: s.enabled ? Date.now() + s.interval * 60 * 1000 : s.nextRun,
-      }));
+      const newSchedule = await patrolService.getSchedule();
+      setSchedule(newSchedule);
 
       if (triggeredBy === "manual") {
         toast.success(`巡查完成 — 健康度 ${result.healthScore}%`);
@@ -254,12 +99,15 @@ export function usePatrol() {
   // ── toggleAutoPatrol ───────────────────────────────────────
 
   const toggleAutoPatrol = useCallback(
-    (enabled: boolean) => {
-      setSchedule((s) => ({
-        ...s,
+    async (enabled: boolean) => {
+      const newSchedule = {
+        ...schedule,
         enabled,
-        nextRun: enabled ? Date.now() + s.interval * 60 * 1000 : null,
-      }));
+        nextRun: enabled ? Date.now() + schedule.interval * 60 * 1000 : null,
+      };
+
+      await patrolService.updateSchedule(newSchedule);
+      setSchedule(newSchedule);
 
       if (!enabled && autoTimerRef.current) {
         clearInterval(autoTimerRef.current);
@@ -268,20 +116,23 @@ export function usePatrol() {
 
       toast.info(enabled ? "自动巡查已开启" : "自动巡查已关闭");
     },
-    []
+    [schedule]
   );
 
   // ── updateInterval ─────────────────────────────────────────
 
   const updateInterval = useCallback(
-    (interval: PatrolInterval) => {
-      setSchedule((s) => ({
-        ...s,
+    async (interval: PatrolInterval) => {
+      const newSchedule = {
+        ...schedule,
         interval,
-        nextRun: s.enabled ? Date.now() + interval * 60 * 1000 : s.nextRun,
-      }));
+        nextRun: schedule.enabled ? Date.now() + interval * 60 * 1000 : schedule.nextRun,
+      };
+
+      await patrolService.updateSchedule(newSchedule);
+      setSchedule(newSchedule);
     },
-    []
+    [schedule]
   );
 
   // ── viewReport / closeReport ───────────────────────────────

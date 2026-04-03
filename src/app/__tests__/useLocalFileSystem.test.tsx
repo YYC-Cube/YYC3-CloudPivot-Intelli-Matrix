@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { renderHook, act, cleanup, waitFor } from "@testing-library/react";
 import { useLocalFileSystem } from "../hooks/useLocalFileSystem";
 
 vi.mock("sonner", () => ({
@@ -25,6 +25,7 @@ vi.mock("sonner", () => ({
 describe("useLocalFileSystem", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    localStorage.clear();
   });
 
   afterEach(() => {
@@ -62,9 +63,11 @@ describe("useLocalFileSystem", () => {
       expect(result.current.selectedFile).toBeNull();
     });
 
-    it("logs 应有初始数据", () => {
+    it("logs 应有初始数据", async () => {
       const { result } = renderHook(() => useLocalFileSystem());
-      expect(result.current.allLogs.length).toBe(50);
+      await waitFor(() => {
+        expect(result.current.allLogs.length).toBe(50);
+      });
     });
 
     it("reports 初始为空", () => {
