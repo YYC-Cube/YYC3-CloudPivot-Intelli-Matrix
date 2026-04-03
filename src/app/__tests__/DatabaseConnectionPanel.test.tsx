@@ -12,9 +12,9 @@
  * - 导出/导入按钮
  */
 
-import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import React from "react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 // Mock CodeMirror
 vi.mock("@uiw/react-codemirror", () => ({
@@ -49,6 +49,7 @@ vi.mock("sonner", () => ({
     success: vi.fn(),
     error: vi.fn(),
     info: vi.fn(),
+    warning: vi.fn(),
   },
 }));
 

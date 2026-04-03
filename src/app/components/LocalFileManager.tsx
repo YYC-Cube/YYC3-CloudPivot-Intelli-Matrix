@@ -6,7 +6,7 @@
  * i18n 已迁移
  */
 
-import React, { useState, useContext, useCallback } from "react";
+import { useState, useContext, useCallback } from "react";
 import {
   FolderOpen, Download, HardDrive, Trash2, Keyboard,
   Save, X, FileEdit,

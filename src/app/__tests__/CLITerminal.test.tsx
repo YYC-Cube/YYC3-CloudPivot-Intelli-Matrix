@@ -9,9 +9,9 @@
  * - 输入框渲染
  */
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, cleanup } from "@testing-library/react";
 import React from "react";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
 import { CLITerminal } from "../components/CLITerminal";
 
 vi.mock("lucide-react", () => ({
@@ -35,7 +35,7 @@ vi.mock("../hooks/useTerminal", () => ({
   }),
 }));
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => vi.fn(),
 }));
 

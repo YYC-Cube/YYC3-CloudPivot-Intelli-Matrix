@@ -9,7 +9,7 @@
 import React from "react";
 import {
   FileBarChart, Download, FileJson, FileSpreadsheet, Printer,
-  Clock, TrendingUp, TrendingDown, Minus, RefreshCw,
+  TrendingUp, TrendingDown, Minus, RefreshCw,
   ChevronRight, BarChart3, Shield, ClipboardList, Layers,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
@@ -26,15 +26,15 @@ import {
 // ============================================================
 
 function trendIcon(trend: "up" | "down" | "stable") {
-  if (trend === "up") {return <TrendingUp className="w-3 h-3" style={{ color: "#ff6666" }} />;}
-  if (trend === "down") {return <TrendingDown className="w-3 h-3" style={{ color: "#00ff88" }} />;}
+  if (trend === "up") { return <TrendingUp className="w-3 h-3" style={{ color: "#ff6666" }} />; }
+  if (trend === "down") { return <TrendingDown className="w-3 h-3" style={{ color: "#00ff88" }} />; }
   return <Minus className="w-3 h-3" style={{ color: "rgba(0,212,255,0.4)" }} />;
 }
 
 function reportTypeIcon(type: ReportType) {
-  if (type === "performance") {return <BarChart3 className="w-4 h-4 text-[#00d4ff]" />;}
-  if (type === "security") {return <Shield className="w-4 h-4 text-[#aa55ff]" />;}
-  if (type === "audit") {return <ClipboardList className="w-4 h-4 text-[#00ff88]" />;}
+  if (type === "performance") { return <BarChart3 className="w-4 h-4 text-[#00d4ff]" />; }
+  if (type === "security") { return <Shield className="w-4 h-4 text-[#aa55ff]" />; }
+  if (type === "audit") { return <ClipboardList className="w-4 h-4 text-[#00ff88]" />; }
   return <Layers className="w-4 h-4 text-[#ffaa00]" />;
 }
 
@@ -73,7 +73,7 @@ export function ReportExporter() {
   ];
 
   // Chart data from report
-  const chartData = report?.performanceHistory.map((p, i) => ({
+  const chartData = report?.performanceHistory.map((p, _i) => ({
     time: new Date(p.timestamp).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }),
     gpu: Number(p.gpuUsage.toFixed(1)),
     cpu: Number(p.cpuUsage.toFixed(1)),

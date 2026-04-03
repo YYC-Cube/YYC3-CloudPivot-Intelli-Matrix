@@ -1,0 +1,44 @@
+{
+  "typescript.tsserver.watchOptions": {
+    "watchFile": "useFsEvents",
+    "watchDirectory": "useFsEvents",
+    "synchronousWatchDirectory": true
+  },
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "typescript.surveys.enabled": false,
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "javascript.validate.enable": true,
+  "typescript.validate.enable": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/dist-electron/**": true,
+    "**/.pnpm-store/**": true
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/dist-electron": true,
+    "**/.pnpm-store": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/dist-electron": true,
+    "**/.pnpm-store": true,
+    "**/*.lock": true
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
+}

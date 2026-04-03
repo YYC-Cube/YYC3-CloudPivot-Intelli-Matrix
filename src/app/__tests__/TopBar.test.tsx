@@ -1,3 +1,4 @@
+import React from "react";
 /**
  * TopBar.test.tsx
  * ================
@@ -14,14 +15,13 @@
  */
 
 // @vitest-environment jsdom
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 const mockNavigate = vi.fn();
 let mockPathname = "/";
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
   useLocation: () => ({ pathname: mockPathname }),
 }));

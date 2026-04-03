@@ -16,7 +16,7 @@
 
 import React, { useState, useCallback, useEffect, useRef, useMemo } from "react";
 import {
-  Activity, Gauge, Cpu, Bell, BellOff, Edit3, Check, X, Save,
+  Activity, Gauge, Cpu, Bell, BellOff,
   RefreshCw, Download, MonitorSpeaker, Database, Layers,
   TrendingUp, TrendingDown, Minus, AlertTriangle, RotateCcw,
 } from "lucide-react";
@@ -252,13 +252,9 @@ export function PerformanceMonitor() {
   const [thresholds, setThresholds] = useState<AlertThresholds>(() => loadThresholds());
   const [alertLog, setAlertLog] = useState<Array<{ time: string; msg: string; type: string }>>([]);
   const frameRef = useRef<number>(0);
-  const lastFrameTimeRef = useRef<number>(0);
+  const lastFrameTimeRef = useRef<number>(performance.now());
   const fpsAccRef = useRef<number[]>([]);
   const lastAlertRef = useRef<Record<string, number>>({});
-
-  useEffect(() => {
-    lastFrameTimeRef.current = performance.now();
-  }, []);
 
   // 持久化阈值
   const updateThresholds = useCallback((t: AlertThresholds) => {

@@ -17,15 +17,17 @@ export function Workspace() {
   const { panels, activePanelId, layoutConfig } = useLayoutContext();
 
   return (
-    <div className="workspace" style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden' }}>
+    <div className="workspace" style={{ position: 'relative', height: '100%', width: '100%', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       <PanelToolbar />
       <div
         className="workspace-content"
         style={{
           position: 'relative',
+          flex: 1,
+          minHeight: 0,
           width: '100%',
-          height: 'calc(100% - 48px)', // 减去toolbar高度
           backgroundColor: layoutConfig.showGridLines ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+          overflow: 'hidden',
         }}
       >
         {/* 网格背景层 */}

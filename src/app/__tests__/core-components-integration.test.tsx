@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * core-components-integration.test.tsx
  * ======================================
@@ -15,6 +16,9 @@
  * - store.reset() 恢复默认数据
  */
 
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+
 // Mock localStorage
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
@@ -26,11 +30,6 @@ const localStorageMock = (() => {
   };
 })();
 Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
-
-// @vitest-environment jsdom
-import React from "react";
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor, act, cleanup } from "@testing-library/react";
 
 // ============================================================
 // Global mocks
@@ -54,6 +53,7 @@ vi.mock("sonner", () => ({
     success: vi.fn(),
     error: vi.fn(),
     info: vi.fn(),
+    warning: vi.fn(),
   },
 }));
 
@@ -432,10 +432,9 @@ describe("UserManagement 集成测试", () => {
       expect(screen.getAllByText("userMgmt.userDetail")[0]).toBeInTheDocument();
 
       const closeBtn = screen.getAllByText("userMgmt.userDetail")[0].parentElement?.querySelector("button");
-      if (closeBtn) {
-        fireEvent.click(closeBtn);
-        expect(screen.queryByText("userMgmt.userDetail")).not.toBeInTheDocument();
-      }
+      expect(closeBtn).toBeTruthy();
+      fireEvent.click(closeBtn!);
+      expect(screen.queryByText("userMgmt.userDetail")).not.toBeInTheDocument();
     });
   });
 
@@ -742,7 +741,7 @@ describe("跨组件数据流集成", () => {
 
   it("userStore 修改后 UserManagement 应反映变更", () => {
     userStore.reset();
-    const { rerender } = render(<UserManagement />);
+    render(<UserManagement />);
     expect(screen.getAllByText("8")[0]).toBeInTheDocument(); // total users = 8
     
     // 通过 UI 添加用户

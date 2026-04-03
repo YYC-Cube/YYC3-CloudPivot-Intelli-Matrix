@@ -16,7 +16,6 @@
  */
 
 // @vitest-environment jsdom
-import React from "react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
@@ -62,7 +61,7 @@ describe("UserManagement", () => {
       const count6Texts = screen.getAllByText("6");
       expect(count6Texts.length).toBeGreaterThan(0);
       // 使用更简单的文本匹配来查找 API 调用统计
-      const usageTexts = screen.getAllByText((content, element) => {
+      const usageTexts = screen.getAllByText((content, _element) => {
         return content?.includes("K");
       });
       expect(usageTexts.length).toBeGreaterThan(0);

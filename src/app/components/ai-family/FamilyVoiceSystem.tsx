@@ -11,7 +11,7 @@
  *  - 整点关爱语音播报
  */
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Volume2, VolumeX, Mic, MicOff, Play, Pause,
   Sliders, RefreshCw, AlertCircle,
@@ -24,7 +24,6 @@ import {
   FAMILY_MEMBERS, hexToRgb, getHourlyCare,
   DEFAULT_VOICE_PROFILES, AI_RESPONSES,
   type FamilyMember, type VoiceProfile,
-  DEEP_BG,
 } from "./shared";
 
 // ═══ localStorage ═══
@@ -53,6 +52,42 @@ interface VoiceConversation {
   timestamp: string;
 }
 
+interface SpeechRecognitionEvent {
+  resultIndex: number;
+  results: {
+    isFinal: boolean;
+    [index: number]: {
+      transcript: string;
+    };
+  }[];
+}
+
+interface SpeechRecognitionErrorEvent {
+  error: string;
+}
+
+interface SpeechRecognition {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  onresult: (event: SpeechRecognitionEvent) => void;
+  onend: () => void;
+  onerror: (event: SpeechRecognitionErrorEvent) => void;
+  start: () => void;
+  stop: () => void;
+  abort: () => void;
+}
+
+interface ExtendedWindow extends Window {
+  SpeechRecognition?: {
+    new(): SpeechRecognition;
+  };
+  webkitSpeechRecognition?: {
+    new(): SpeechRecognition;
+  };
+}
+
 function loadConversations(): VoiceConversation[] {
   try {
     const raw = localStorage.getItem(CONV_STORAGE_KEY);
@@ -69,7 +104,7 @@ function saveConversations(convs: VoiceConversation[]) {
 // ═══ TTS 引擎 ═══
 
 function speak(text: string, profile: VoiceProfile, onEnd?: () => void) {
-  if (!("speechSynthesis" in window)) {return;}
+  if (!("speechSynthesis" in window)) { return; }
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.pitch = profile.pitch;
@@ -78,13 +113,13 @@ function speak(text: string, profile: VoiceProfile, onEnd?: () => void) {
   u.lang = profile.lang;
   const voices = window.speechSynthesis.getVoices();
   const match = voices.find(v => v.lang.startsWith("zh")) || voices[0];
-  if (match) {u.voice = match;}
-  if (onEnd) {u.onend = onEnd;}
+  if (match) { u.voice = match; }
+  if (onEnd) { u.onend = onEnd; }
   window.speechSynthesis.speak(u);
 }
 
 function stopSpeaking() {
-  if ("speechSynthesis" in window) {window.speechSynthesis.cancel();}
+  if ("speechSynthesis" in window) { window.speechSynthesis.cancel(); }
 }
 
 // ═══ 子组件：单个家人语音卡片 ═══
@@ -143,19 +178,17 @@ function VoiceCard({
           </button>
           <button
             onClick={isPlaying ? onStop : onPlay}
-            className={`p-2 rounded-lg transition-all ${
-              isPlaying
-                ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                : "bg-[rgba(0,212,255,0.1)] text-cyan-300 hover:bg-[rgba(0,212,255,0.2)]"
-            }`}
+            className={`p-2 rounded-lg transition-all ${isPlaying
+              ? "bg-red-500/10 text-red-400 hover:bg-red-500/20"
+              : "bg-[rgba(0,212,255,0.1)] text-cyan-300 hover:bg-[rgba(0,212,255,0.2)]"
+              }`}
           >
             {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
           </button>
           <button
             onClick={() => setShowSettings(!showSettings)}
-            className={`p-2 rounded-lg transition-all ${
-              showSettings ? "bg-white/[0.08] text-white/60" : "text-white/20 hover:text-white/40 hover:bg-white/[0.04]"
-            }`}
+            className={`p-2 rounded-lg transition-all ${showSettings ? "bg-white/[0.08] text-white/60" : "text-white/20 hover:text-white/40 hover:bg-white/[0.04]"
+              }`}
           >
             <Sliders className="w-4 h-4" />
           </button>
@@ -210,9 +243,9 @@ function VoiceCard({
               <button
                 key={label}
                 onClick={() => {
-                  const text = label === "问候语" ? member.greeting
-                    : label === "关爱播报" ? member.careMessage
-                    : (AI_RESPONSES[member.id]?.[Math.floor(Math.random() * AI_RESPONSES[member.id].length)] || member.quote);
+                  const text = label === "问候语" ? (member.greeting || "")
+                    : label === "关爱播报" ? (member.careMessage || "")
+                      : (AI_RESPONSES[member.id]?.[Math.floor(Math.random() * AI_RESPONSES[member.id].length)] || member.quote);
                   speak(text, profile);
                 }}
                 className="px-2 py-1 rounded bg-white/[0.04] border border-white/[0.06] text-white/40 hover:text-white/60 hover:bg-white/[0.08] transition-all"
@@ -226,7 +259,7 @@ function VoiceCard({
           <button
             onClick={() => {
               const def = DEFAULT_VOICE_PROFILES.find(p => p.memberId === member.id);
-              if (def) {onUpdateProfile({ pitch: def.pitch, rate: def.rate, volume: def.volume });}
+              if (def) { onUpdateProfile({ pitch: def.pitch, rate: def.rate, volume: def.volume }); }
             }}
             className="flex items-center gap-1 text-white/30 hover:text-white/50 transition-colors"
             style={{ fontSize: "0.6rem" }}
@@ -261,13 +294,13 @@ function VoiceConversationPanel({
   const [isResponding, setIsResponding] = useState(false);
   const [srSupported, setSrSupported] = useState(true);
   const [textInput, setTextInput] = useState("");
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   const rgb = hexToRgb(member.color);
 
   const memberConvs = conversations.filter(c => c.memberId === member.id).slice(-10);
 
   useEffect(() => {
-    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const SpeechRecognition = (window as ExtendedWindow).SpeechRecognition || (window as ExtendedWindow).webkitSpeechRecognition;
     if (!SpeechRecognition) {
       setSrSupported(false);
       return;
@@ -278,7 +311,7 @@ function VoiceConversationPanel({
     recognition.lang = "zh-CN";
     recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event: any) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       let interim = "";
       let final = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -301,7 +334,7 @@ function VoiceConversationPanel({
       setIsListening(false);
     };
 
-    recognition.onerror = (event: any) => {
+    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
       console.warn("Speech recognition error:", event.error);
       setIsListening(false);
     };
@@ -313,7 +346,7 @@ function VoiceConversationPanel({
   }, []);
 
   const startListening = useCallback(() => {
-    if (!recognitionRef.current) {return;}
+    if (!recognitionRef.current) { return; }
     setTranscript("");
     setInterimTranscript("");
     setIsListening(true);
@@ -325,13 +358,13 @@ function VoiceConversationPanel({
   }, []);
 
   const stopListening = useCallback(() => {
-    if (!recognitionRef.current) {return;}
+    if (!recognitionRef.current) { return; }
     try { recognitionRef.current.stop(); } catch { /* noop */ }
     setIsListening(false);
   }, []);
 
   const handleRespond = useCallback((userText: string) => {
-    if (!userText.trim()) {return;}
+    if (!userText.trim()) { return; }
     setIsResponding(true);
 
     // Pick a random AI response
@@ -453,11 +486,10 @@ function VoiceConversationPanel({
             <button
               onClick={isListening ? stopListening : startListening}
               disabled={isResponding}
-              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-                isListening
-                  ? "bg-red-500/20 border-2 border-red-400 text-red-300 animate-pulse"
-                  : "bg-white/[0.06] border-2 border-white/[0.1] text-white/40 hover:bg-white/[0.1] hover:text-white/60"
-              } disabled:opacity-30`}
+              className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${isListening
+                ? "bg-red-500/20 border-2 border-red-400 text-red-300 animate-pulse"
+                : "bg-white/[0.06] border-2 border-white/[0.1] text-white/40 hover:bg-white/[0.1] hover:text-white/60"
+                } disabled:opacity-30`}
             >
               {isListening ? <MicOff className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
             </button>
@@ -532,7 +564,7 @@ export function FamilyVoiceSystem() {
   const handlePlay = useCallback((member: FamilyMember) => {
     const profile = profiles.find(p => p.memberId === member.id) || DEFAULT_VOICE_PROFILES[0];
     setPlayingMemberId(member.id);
-    speak(member.greeting, profile, () => setPlayingMemberId(null));
+    speak(member.greeting || "", profile, () => setPlayingMemberId(null));
   }, [profiles]);
 
   const handleStop = useCallback(() => {
@@ -569,11 +601,11 @@ export function FamilyVoiceSystem() {
   }, []);
 
   const srSupported = typeof window !== "undefined" && (
-    !!(window as any).SpeechRecognition || !!(window as any).webkitSpeechRecognition
+    !!((window as ExtendedWindow).SpeechRecognition) || !!((window as ExtendedWindow).webkitSpeechRecognition)
   );
 
   return (
-    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <FadeIn>

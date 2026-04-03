@@ -16,24 +16,41 @@ if (isJsdom) {
 
 // Mock Observer classes for jsdom
 class MockResizeObserver implements ResizeObserver {
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  observe() { }
+  unobserve() { }
+  disconnect() { }
 }
 
 class MockIntersectionObserver implements IntersectionObserver {
   readonly root: Document | Element | null = null;
   readonly rootMargin: string = "";
   readonly thresholds: ReadonlyArray<number> = [];
-  constructor() {}
-  observe() {}
-  unobserve() {}
-  disconnect() {}
+  constructor() { }
+  observe() { }
+  unobserve() { }
+  disconnect() { }
   takeRecords(): IntersectionObserverEntry[] { return []; }
 }
 
 //以下仅在 jsdom 环境执行
 if (isJsdom) {
+  // Mock localStorage
+  const localStorageMock = (() => {
+    let store: Record<string, string> = {};
+    return {
+      getItem: (key: string) => store[key] || null,
+      setItem: (key: string, value: string) => { store[key] = value.toString(); },
+      removeItem: (key: string) => { delete store[key]; },
+      clear: () => { store = {}; },
+      get length() { return Object.keys(store).length; },
+      key: (index: number) => Object.keys(store)[index] || null,
+    };
+  })();
+  Object.defineProperty(window, "localStorage", {
+    value: localStorageMock,
+    writable: true,
+  });
+
   // Mock matchMedia (jsdom 不支持)
   if (!window.matchMedia) {
     Object.defineProperty(window, "matchMedia", {
@@ -42,10 +59,10 @@ if (isJsdom) {
         matches: false,
         media: query,
         onchange: null,
-        addListener: () => {},
-        removeListener: () => {},
-        addEventListener: () => {},
-        removeEventListener: () => {},
+        addListener: () => { },
+        removeListener: () => { },
+        addEventListener: () => { },
+        removeEventListener: () => { },
         dispatchEvent: () => false,
       }),
     });
@@ -63,19 +80,19 @@ if (isJsdom) {
 
   // Mock scrollTo
   if (!window.scrollTo) {
-    window.scrollTo = () => {};
+    window.scrollTo = () => { };
   }
 
   // Mock scrollIntoView
   if (!Element.prototype.scrollIntoView) {
-    Element.prototype.scrollIntoView = () => {};
+    Element.prototype.scrollIntoView = () => { };
   }
 
   // Mock navigator.clipboard
   if (!navigator.clipboard) {
     Object.defineProperty(navigator, "clipboard", {
       value: {
-        writeText: async () => {},
+        writeText: async () => { },
         readText: async () => "",
       },
       writable: true,
@@ -83,4 +100,4 @@ if (isJsdom) {
   }
 }
 
-export {};
+export { };

@@ -14,7 +14,6 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import React from "react";
 import type { NetworkConfig } from "../types";
 import {
   DEFAULT_NETWORK_CONFIG,
@@ -221,7 +220,7 @@ describe("network-utils", () => {
           addEventListener: vi.fn(),
           removeEventListener: vi.fn(),
           dispatchEvent: vi.fn(),
-          binaryType: "blob" as BinaryType,
+          binaryType: "blob" as const,
           bufferedAmount: 0,
           extensions: "",
           protocol: "",
@@ -233,7 +232,7 @@ describe("network-utils", () => {
           CLOSED: 3 as const,
         };
         queueMicrotask(() => {
-          if (ws.onerror) {ws.onerror(new Event("error"));}
+          if (ws.onerror) { ws.onerror(new Event("error")); }
         });
         return ws as unknown as WebSocket;
       });

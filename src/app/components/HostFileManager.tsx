@@ -9,7 +9,7 @@
 
 import React, { useState, useCallback, useRef, useContext, useEffect } from "react";
 import {
-  FolderOpen, File, ChevronRight, ArrowUp, Plus, Trash2,
+  FolderOpen, File, ChevronRight, ArrowUp, Trash2,
   Download, Upload, Save, RotateCcw, Edit3, FolderPlus,
   FilePlus, Clock, HardDrive, AlertTriangle, X, Search,
   RefreshCcw, Image, History, Loader2, Code2,
@@ -20,24 +20,15 @@ import { CodeEditor, getLanguageLabel } from "./CodeEditor";
 import { ViewContext } from "../lib/view-context";
 import type { HostFileEntry } from "../types";
 
-// ── 样式常量 ──
-const cyanDim = "rgba(0,212,255,0.35)";
 const textPrimary = "#e0f0ff";
 const textDim = "rgba(0,212,255,0.4)";
 const fontSize = { xs: "0.65rem", sm: "0.72rem", md: "0.8rem", lg: "0.92rem" };
 
 type ActiveTab = "browser" | "editor" | "versions" | "recent";
 
-interface TabItem {
-  key: ActiveTab;
-  label: string;
-  icon: React.ElementType;
-  count?: number | null;
-}
-
 export function HostFileManager() {
   const view = useContext(ViewContext);
-  const isMobile = view?.isMobile ?? false;
+  const _isMobile = view?.isMobile ?? false;
   const fs = useHostFileSystem();
   const [activeTab, setActiveTab] = useState<ActiveTab>("browser");
   const [showNewDialog, setShowNewDialog] = useState<"file" | "dir" | null>(null);
@@ -48,7 +39,6 @@ export function HostFileManager() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [usePlainEditor, setUsePlainEditor] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const editorRef = useRef<HTMLTextAreaElement>(null);
 
   // ── Ctrl+S 快捷键 ──
   useEffect(() => {
@@ -64,9 +54,9 @@ export function HostFileManager() {
 
   // ── 创建 ──
   const handleCreate = useCallback(() => {
-    if (!newName.trim()) {return;}
-    if (showNewDialog === "file") {fs.createFile(newName.trim());}
-    else if (showNewDialog === "dir") {fs.createDirectory(newName.trim());}
+    if (!newName.trim()) { return; }
+    if (showNewDialog === "file") { fs.createFile(newName.trim()); }
+    else if (showNewDialog === "dir") { fs.createDirectory(newName.trim()); }
     setShowNewDialog(null);
     setNewName("");
   }, [showNewDialog, newName, fs]);
@@ -89,7 +79,7 @@ export function HostFileManager() {
     }
   }, [fs]);
 
-  const tabs: TabItem[] = [
+  const tabs = [
     { key: "browser" as const, label: "文件浏览", icon: FolderOpen },
     { key: "editor" as const, label: "编辑器", icon: File },
     { key: "versions" as const, label: "版本历史", icon: History, count: fs.currentFileVersions.length },
@@ -185,7 +175,7 @@ export function HostFileManager() {
 
       {/* ══ Stats Bar ══ */}
       {fs.rootHandle && (
-        <div className={`grid gap-2 ${isMobile ? "grid-cols-2" : "grid-cols-4"}`}>
+        <div className={`grid gap-2 ${_isMobile ? "grid-cols-2" : "grid-cols-4"}`}>
           {[
             { label: "文件数", value: fs.stats.files, color: "#00d4ff" },
             { label: "目录数", value: fs.stats.dirs, color: "#7b8cff" },
@@ -206,17 +196,16 @@ export function HostFileManager() {
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 ${
-              activeTab === tab.key
-                ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
-                : "text-[rgba(0,212,255,0.35)] border border-transparent hover:border-[rgba(0,180,255,0.12)]"
-            }`}
+            className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 ${activeTab === tab.key
+              ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
+              : "text-[rgba(0,212,255,0.35)] border border-transparent hover:border-[rgba(0,180,255,0.12)]"
+              }`}
             style={{ fontSize: fontSize.sm }}
           >
             <tab.icon className="w-3.5 h-3.5" />
             {tab.label}
             {tab.count !== null && tab.count !== undefined && tab.count > 0 && (
-              <span className="px-1.5 py-0.5 rounded-full bg-[rgba(0,212,255,0.1)]" style={{ fontSize: fontSize.xs }}>{tab.count ?? 0}</span>
+              <span className="px-1.5 py-0.5 rounded-full bg-[rgba(0,212,255,0.1)]" style={{ fontSize: fontSize.xs }}>{tab.count}</span>
             )}
           </button>
         ))}
@@ -253,9 +242,8 @@ export function HostFileManager() {
                     {i > 0 && <ChevronRight className="w-3 h-3 text-[rgba(0,212,255,0.2)]" />}
                     <button
                       onClick={() => fs.navigateToBreadcrumb(i)}
-                      className={`px-1.5 py-0.5 rounded ${
-                        i === fs.breadcrumbs.length - 1 ? "text-[#00d4ff]" : "text-[rgba(0,212,255,0.35)] hover:text-[#00d4ff]"
-                      }`}
+                      className={`px-1.5 py-0.5 rounded ${i === fs.breadcrumbs.length - 1 ? "text-[#00d4ff]" : "text-[rgba(0,212,255,0.35)] hover:text-[#00d4ff]"
+                        }`}
                     >
                       {seg}
                     </button>
@@ -318,7 +306,7 @@ export function HostFileManager() {
                 <input
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
-                  onKeyDown={(e) => { if (e.key === "Enter") {handleCreate();} if (e.key === "Escape") {setShowNewDialog(null);} }}
+                  onKeyDown={(e) => { if (e.key === "Enter") { handleCreate(); } if (e.key === "Escape") { setShowNewDialog(null); } }}
                   placeholder={showNewDialog === "file" ? "新文件名..." : "新目录名..."}
                   className="flex-1 bg-transparent border-none outline-none text-[#e0f0ff]"
                   style={{ fontSize: fontSize.sm }}
@@ -345,13 +333,12 @@ export function HostFileManager() {
                   return (
                     <div
                       key={entry.id}
-                      className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all group ${
-                        fs.selectedEntry?.id === entry.id
-                          ? "bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)]"
-                          : "hover:bg-[rgba(0,40,80,0.3)] border border-transparent"
-                      }`}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all group ${fs.selectedEntry?.id === entry.id
+                        ? "bg-[rgba(0,212,255,0.1)] border border-[rgba(0,212,255,0.2)]"
+                        : "hover:bg-[rgba(0,40,80,0.3)] border border-transparent"
+                        }`}
                       onClick={() => {
-                        if (entry.kind === "directory") {fs.navigateToDir(entry);}
+                        if (entry.kind === "directory") { fs.navigateToDir(entry); }
                         else {
                           fs.readFile(entry);
                           setActiveTab("editor");
@@ -375,7 +362,7 @@ export function HostFileManager() {
                         <input
                           value={renameValue}
                           onChange={(e) => setRenameValue(e.target.value)}
-                          onKeyDown={(e) => { if (e.key === "Enter") {handleRename(entry);} if (e.key === "Escape") {setRenaming(null);} }}
+                          onKeyDown={(e) => { if (e.key === "Enter") { handleRename(entry); } if (e.key === "Escape") { setRenaming(null); } }}
                           onBlur={() => handleRename(entry)}
                           className="flex-1 bg-transparent border-b border-[#00d4ff] outline-none text-[#e0f0ff]"
                           style={{ fontSize: fontSize.sm }}
@@ -386,9 +373,9 @@ export function HostFileManager() {
                         <span className="flex-1 text-[#e0f0ff] truncate" style={{ fontSize: fontSize.sm }}>{entry.name}</span>
                       )}
 
-                      {entry.kind === "file" && entry.size !== null && (
+                      {entry.kind === "file" && entry.size !== null && entry.size !== undefined && (
                         <span className="shrink-0" style={{ fontSize: fontSize.xs, color: textDim }}>
-                          {fs.formatSize(entry.size!)}
+                          {fs.formatSize(entry.size)}
                         </span>
                       )}
 
@@ -477,11 +464,10 @@ export function HostFileManager() {
                     <>
                       <button
                         onClick={() => setUsePlainEditor(!usePlainEditor)}
-                        className={`p-1.5 rounded-lg transition-all ${
-                          usePlainEditor
-                            ? "bg-[rgba(0,212,255,0.08)] text-[rgba(0,212,255,0.4)]"
-                            : "bg-[rgba(0,212,255,0.12)] text-[#00d4ff]"
-                        }`}
+                        className={`p-1.5 rounded-lg transition-all ${usePlainEditor
+                          ? "bg-[rgba(0,212,255,0.08)] text-[rgba(0,212,255,0.4)]"
+                          : "bg-[rgba(0,212,255,0.12)] text-[#00d4ff]"
+                          }`}
                         title={usePlainEditor ? "切换到 CodeMirror" : "切换到纯文本"}
                       >
                         <Code2 className="w-3.5 h-3.5" />
@@ -489,11 +475,10 @@ export function HostFileManager() {
                       <button
                         onClick={fs.saveFile}
                         disabled={!fs.editingDirty}
-                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${
-                          fs.editingDirty
-                            ? "bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] text-[#00ff88]"
-                            : "bg-[rgba(0,40,80,0.2)] border border-transparent text-[rgba(0,212,255,0.2)] cursor-not-allowed"
-                        }`}
+                        className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-all ${fs.editingDirty
+                          ? "bg-[rgba(0,255,136,0.1)] border border-[rgba(0,255,136,0.3)] text-[#00ff88]"
+                          : "bg-[rgba(0,40,80,0.2)] border border-transparent text-[rgba(0,212,255,0.2)] cursor-not-allowed"
+                          }`}
                         style={{ fontSize: fontSize.sm }}
                       >
                         <Save className="w-3.5 h-3.5" />
@@ -551,9 +536,9 @@ export function HostFileManager() {
               <div className="flex items-center justify-between mt-2" style={{ fontSize: fontSize.xs, color: "rgba(0,212,255,0.25)" }}>
                 <span className="truncate">{fs.selectedEntry.path}</span>
                 <span>
-                  {fs.editingContent !== null
+                  {fs.editingContent !== null && fs.editingContent !== undefined
                     ? `${fs.editingContent.length} 字符 · ${fs.formatSize(new TextEncoder().encode(fs.editingContent).length)}`
-                    : fs.selectedEntry.size !== null ? fs.formatSize(fs.selectedEntry.size!) : ""
+                    : fs.selectedEntry.size !== null && fs.selectedEntry.size !== undefined ? fs.formatSize(fs.selectedEntry.size) : ""
                   }
                 </span>
               </div>
@@ -646,7 +631,7 @@ export function HostFileManager() {
                   <div className="flex-1 min-w-0">
                     <p className="truncate" style={{ fontSize: fontSize.sm, color: textPrimary }}>{rf.name}</p>
                     <p className="truncate" style={{ fontSize: fontSize.xs, color: textDim }}>
-                      {rf.path} {rf.size !== null && `· ${fs.formatSize(rf.size!)}`}
+                      {rf.path} {rf.size !== null && rf.size !== undefined && `· ${fs.formatSize(rf.size)}`}
                     </p>
                   </div>
                   <span style={{ fontSize: fontSize.xs, color: textDim }}>

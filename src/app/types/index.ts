@@ -1779,3 +1779,136 @@ export interface AcceptanceItem {
   category: string;
   items: { label: string; passed: boolean }[];
 }
+
+/**
+ * ============================================================
+ * 38. AI Family (AI Family System)
+ * ============================================================
+ */
+
+/** 家庭成员状态 */
+export type FamilyMemberStatus = "online" | "speaking" | "idle";
+
+/** 家庭成员类型 */
+export interface FamilyMember {
+  id: string;
+  name: string;
+  shortName: string;
+  enTitle: string;
+  quote: string;
+  role: string;
+  phone: string;
+  personality: string;
+  hobbies: string[];
+  expertise: string[];
+  greeting: string;
+  careMessage: string;
+  responsibilities: string[];
+  coreAbility: string;
+  color: string;
+  icon: ElementType;
+  status: FamilyMemberStatus;
+  contribution: number;
+  growth: number;
+  streak: number;
+  mood: string;
+}
+
+/** 家庭活动类型 */
+export type FamilyActivityType = "game" | "learning" | "music" | "chat" | "achievement";
+
+/** 家庭活动 */
+export interface FamilyActivity {
+  id: string;
+  type: FamilyActivityType;
+  memberId: string;
+  memberName: string;
+  memberColor: string;
+  title: string;
+  description: string;
+  timestamp: number;
+  metadata?: Record<string, unknown>;
+}
+
+/** 家庭消息类型 */
+export type FamilyMessageType = "text" | "image" | "voice" | "file";
+
+/** 家庭消息 */
+export interface FamilyMessage {
+  id: string;
+  fromMemberId: string;
+  toMemberId?: string;
+  channelId: string;
+  content: string;
+  timestamp: number;
+  read: boolean;
+  type: FamilyMessageType;
+}
+
+/** 家庭设置 */
+export interface FamilySettings {
+  theme: "dark" | "light";
+  language: "zh-CN" | "en-US";
+  notifications: boolean;
+  soundEnabled: boolean;
+  autoSync: boolean;
+  syncInterval: number;
+}
+
+/** 学习课程等级 */
+export type CourseLevel = "beginner" | "intermediate" | "advanced";
+
+/** 学习课程 */
+export interface LearningCourse {
+  id: string;
+  title: string;
+  description: string;
+  color: string;
+  progress: number;
+  totalLessons: number;
+  completedLessons: number;
+  skill: string;
+  level: CourseLevel;
+}
+
+/** 成长记录 */
+export interface GrowthRecord {
+  id: string;
+  memberId: string;
+  date: string;
+  contribution: number;
+  mood: string;
+  activities: number;
+}
+
+/** 家庭数据同步结果 */
+export interface FamilySyncResult {
+  success: boolean;
+  timestamp: number;
+  synced: {
+    members: number;
+    activities: number;
+    messages: number;
+    learningProgress: number;
+  };
+  errors: string[];
+}
+
+/** 家庭上下文类型 */
+export interface FamilyContextType {
+  getMember: (id: string) => FamilyMember | undefined;
+  getOnlineMembers: () => FamilyMember[];
+  getMemberCount: () => number;
+  getOnlineCount: () => number;
+  getRecentActivities: (limit?: number) => FamilyActivity[];
+  getActivityCount: () => number;
+  getUnreadMessages: () => FamilyMessage[];
+  getUnreadMessageCount: () => number;
+  getMessageCount: () => number;
+  getCourseProgress: (courseId: string) => number;
+  getCompletedCourses: () => number;
+  getTotalContribution: () => number;
+  getAverageGrowth: () => number;
+  isOnline: () => boolean;
+  isSyncing: () => boolean;
+}

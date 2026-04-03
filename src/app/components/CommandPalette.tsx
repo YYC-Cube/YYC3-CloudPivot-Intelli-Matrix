@@ -79,11 +79,9 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
 
   useEffect(() => {
     if (isOpen) {
-      setTimeout(() => {
-        setQuery("");
-        setSelectedIndex(0);
-        setShowShortcuts(false);
-      }, 0);
+      setQuery("");
+      setSelectedIndex(0);
+      setShowShortcuts(false);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);

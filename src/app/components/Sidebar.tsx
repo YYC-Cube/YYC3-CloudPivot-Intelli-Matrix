@@ -19,13 +19,17 @@ import {
   HardDrive, Database, GitBranch,
   Smartphone, Package, Gauge, ServerCog,
   Layers,
-  UserCircle2,
   Zap,
-  MessageCircle, Share, Music, TrendingUp, Phone, Gamepad2, Mic, Database as DataIcon, MessageSquare, Settings as UISettings,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useI18n } from "../hooks/useI18n";
 import { YYC3Logo } from "./YYC3Logo";
+import {
+  AI_FAMILY_NAV,
+  type NavSubCategory,
+} from "../components/ai-family/navigation-config";
 
 /* ── 导航数据结构 ──────────────────────────────── */
 interface NavChild {
@@ -38,7 +42,8 @@ interface NavCategory {
   id: string;
   labelKey: string;
   icon: React.ElementType;
-  children: NavChild[];
+  children?: NavChild[];
+  subCategories?: NavSubCategory[];
 }
 
 const NAV_CATEGORIES: NavCategory[] = [
@@ -47,10 +52,10 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catMonitor",
     icon: Activity,
     children: [
-      { key: "nav.dataMonitor", path: "/",           icon: BarChart3 },
-      { key: "nav.followUp",    path: "/follow-up",   icon: AlertTriangle },
-      { key: "nav.patrol",      path: "/patrol",       icon: Radar },
-      { key: "nav.alertRules",  path: "/alerts",       icon: BellRing },
+      { key: "nav.dataMonitor", path: "/", icon: BarChart3 },
+      { key: "nav.followUp", path: "/follow-up", icon: AlertTriangle },
+      { key: "nav.patrol", path: "/patrol", icon: Radar },
+      { key: "nav.alertRules", path: "/alerts", icon: BellRing },
     ],
   },
   {
@@ -58,14 +63,14 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catOps",
     icon: Wrench,
     children: [
-      { key: "nav.operations",  path: "/operations",  icon: RefreshCcw },
-      { key: "nav.fileManager", path: "/files",        icon: FolderOpen },
-      { key: "nav.hostFiles",   path: "/host-files",   icon: HardDrive },
-      { key: "nav.database",    path: "/database",     icon: Database },
+      { key: "nav.operations", path: "/operations", icon: RefreshCcw },
+      { key: "nav.fileManager", path: "/files", icon: FolderOpen },
+      { key: "nav.hostFiles", path: "/host-files", icon: HardDrive },
+      { key: "nav.database", path: "/database", icon: Database },
       { key: "nav.dbConnections", path: "/db-connections", icon: Database },
       { key: "nav.connectionTest", path: "/connection-test", icon: Zap },
-      { key: "nav.serviceLoop", path: "/loop",         icon: SettingsIcon },
-      { key: "nav.reportExport", path: "/reports",     icon: FileBarChart },
+      { key: "nav.serviceLoop", path: "/loop", icon: SettingsIcon },
+      { key: "nav.reportExport", path: "/reports", icon: FileBarChart },
     ],
   },
   {
@@ -73,45 +78,25 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catAI",
     icon: Brain,
     children: [
-      { key: "nav.aiDecision",      path: "/ai",            icon: Sparkles },
-      { key: "modelProvider.title",  path: "/models",        icon: Cpu },
-      { key: "nav.aiDiagnostics",    path: "/ai-diagnosis",  icon: BrainCircuit },
+      { key: "nav.aiDecision", path: "/ai", icon: Sparkles },
+      { key: "modelProvider.title", path: "/model-provider", icon: Cpu },
+      { key: "nav.aiDiagnostics", path: "/ai-diagnostics", icon: BrainCircuit },
+      { key: "ollama.title", path: "/ollama-config", icon: Cpu },
     ],
   },
-  {
-    id: "ai-family",
-    labelKey: "nav.catAIFamily",
-    icon: UserCircle2,
-    children: [
-      { key: "nav.aiFamily",  path: "/ai-family",  icon: UserCircle2 },
-      { key: "nav.aiFamilyHome",  path: "/ai-family/home",  icon: MessageCircle },
-      { key: "nav.aiFamilyChat",  path: "/ai-family/chat",  icon: MessageCircle },
-      { key: "nav.aiFamilyShare",  path: "/ai-family/share",  icon: Share },
-      { key: "nav.aiFamilyLearn",  path: "/ai-family/learn",  icon: BookOpen },
-      { key: "nav.aiFamilyMusic",  path: "/ai-family/music",  icon: Music },
-      { key: "nav.aiFamilyGrowth",  path: "/ai-family/growth",  icon: TrendingUp },
-      { key: "nav.aiFamilyPhone",  path: "/ai-family/phone",  icon: Phone },
-      { key: "nav.aiFamilyFun",  path: "/ai-family/fun",  icon: Gamepad2 },
-      { key: "nav.aiFamilyActivities",  path: "/ai-family/activities",  icon: Activity },
-      { key: "nav.aiFamilyModels",  path: "/ai-family/models",  icon: Cpu },
-      { key: "nav.aiFamilyVoice",  path: "/ai-family/voice",  icon: Mic },
-      { key: "nav.aiFamilyData",  path: "/ai-family/data",  icon: DataIcon },
-      { key: "nav.aiFamilyComm",  path: "/ai-family/comm",  icon: MessageSquare },
-      { key: "nav.aiFamilySettings",  path: "/ai-family/settings",  icon: UISettings },
-    ],
-  },
+  AI_FAMILY_NAV,
   {
     id: "dev",
     labelKey: "nav.catDev",
     icon: Code2,
     children: [
       { key: "nav.designSystem", path: "/design-system", icon: Palette },
-      { key: "nav.devGuide",     path: "/dev-guide",     icon: BookOpen },
-      { key: "nav.theme",        path: "/theme",          icon: Paintbrush },
-      { key: "nav.terminal",     path: "/terminal",       icon: Terminal },
-      { key: "nav.ide",          path: "/ide",             icon: Monitor },
-      { key: "nav.refactoring",  path: "/refactoring",    icon: GitBranch },
-      { key: "nav.architecture", path: "/architecture",   icon: Layers },
+      { key: "nav.devGuide", path: "/dev-guide", icon: BookOpen },
+      { key: "nav.theme", path: "/theme", icon: Paintbrush },
+      { key: "nav.terminal", path: "/terminal", icon: Terminal },
+      { key: "nav.ide", path: "/ide", icon: Monitor },
+      { key: "nav.refactoring", path: "/refactoring", icon: GitBranch },
+      { key: "nav.architecture", path: "/architecture", icon: Layers },
     ],
   },
   {
@@ -119,11 +104,11 @@ const NAV_CATEGORIES: NavCategory[] = [
     labelKey: "nav.catAdmin",
     icon: ShieldCheck,
     children: [
-      { key: "nav.audit",   path: "/audit",    icon: ClipboardList },
-      { key: "nav.userMgmt", path: "/users",    icon: Users },
+      { key: "nav.audit", path: "/audit", icon: ClipboardList },
+      { key: "nav.userMgmt", path: "/users", icon: Users },
       { key: "nav.settings", path: "/settings", icon: Cog },
       { key: "nav.securityMonitor", path: "/security", icon: ShieldCheck },
-      { key: "nav.pwa",     path: "/pwa",      icon: Smartphone },
+      { key: "nav.pwa", path: "/pwa", icon: Smartphone },
       { key: "nav.dataEditor", path: "/data-editor", icon: Package },
       { key: "nav.performance", path: "/performance", icon: Gauge },
       { key: "nav.envConfig", path: "/env-config", icon: ServerCog },
@@ -133,13 +118,16 @@ const NAV_CATEGORIES: NavCategory[] = [
 
 // backward compat export
 export const navItems = NAV_CATEGORIES.flatMap((c) =>
-  c.children.map((ch) => ({ label: ch.key, path: ch.path }))
+  (c.children || []).map((ch) => ({ label: ch.key, path: ch.path }))
 );
 
 /* ── 辅助函数 ──────────────────────────────── */
 function getActiveCategoryId(pathname: string): string {
   for (const cat of NAV_CATEGORIES) {
-    if (cat.children.some((c) => c.path === pathname)) {return cat.id;}
+    if (cat.children?.some((c) => c.path === pathname)) { return cat.id; }
+    if (cat.subCategories?.some((subCat) =>
+      subCat.children.some((child) => child.path === pathname)
+    )) { return cat.id; }
   }
   return "monitor";
 }
@@ -163,9 +151,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const flyoutRef = useRef<HTMLDivElement>(null);
 
+  // 子分类展开状态管理
+  const [expandedSubCategories, setExpandedSubCategories] = useState<Record<string, boolean>>({});
+
   // debounced hover
   const handleMouseEnter = useCallback((catId: string) => {
-    if (hoverTimerRef.current) {clearTimeout(hoverTimerRef.current);}
+    if (hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); }
     setHoverCatId(catId);
   }, []);
 
@@ -175,7 +166,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
   // keep flyout open while hovering it
   const handleFlyoutEnter = useCallback(() => {
-    if (hoverTimerRef.current) {clearTimeout(hoverTimerRef.current);}
+    if (hoverTimerRef.current) { clearTimeout(hoverTimerRef.current); }
   }, []);
 
   // close on navigate
@@ -228,11 +219,10 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
               >
                 {/* ── 分类按钮 ── */}
                 <button
-                  data-testid={`nav-cat-${cat.id}`}
                   onClick={() => {
                     // 点击分类：导航到第一个子项
-                    const firstChild = cat.children[0];
-                    if (firstChild) {navigate(firstChild.path);}
+                    const firstChild = cat.children?.[0] || cat.subCategories?.[0]?.children[0];
+                    if (firstChild) { navigate(firstChild.path); }
                   }}
                   className="w-full relative group"
                   style={{ padding: collapsed ? "8px 0" : "6px 10px" }}
@@ -276,13 +266,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                 {/* ── 展开模式下直接显示子项 ── */}
                 {!collapsed && (
                   <div className="ml-[18px] pl-3 border-l border-[rgba(0,180,255,0.06)]">
-                    {cat.children.map((child) => {
+                    {cat.children?.map((child) => {
                       const ChildIcon = child.icon;
                       const isActive = location.pathname === child.path;
                       return (
                         <button
                           key={child.path}
-                          data-testid={`nav-item-${child.key}`}
                           onClick={() => navigate(child.path)}
                           className={`
                             w-full flex items-center gap-2 rounded-md my-px transition-all duration-150
@@ -296,6 +285,59 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                           <ChildIcon className="w-3.5 h-3.5 shrink-0" style={{ opacity: isActive ? 0.9 : 0.5 }} />
                           <span className="whitespace-nowrap overflow-hidden text-ellipsis">{t(child.key)}</span>
                         </button>
+                      );
+                    })}
+                    {/* 三级导航：子分类 */}
+                    {cat.subCategories?.map((subCat) => {
+                      const SubCatIcon = subCat.icon;
+                      const isSubCatActive = subCat.children.some(child => location.pathname === child.path);
+                      const subCatExpanded = expandedSubCategories[subCat.id] ?? subCat.defaultExpanded ?? false;
+                      return (
+                        <div key={subCat.id} className="mt-2">
+                          <button
+                            onClick={() => setExpandedSubCategories(prev => ({
+                              ...prev,
+                              [subCat.id]: !prev[subCat.id]
+                            }))}
+                            className="w-full flex items-center gap-2 rounded-md my-px transition-all duration-150"
+                            style={{ padding: "5px 8px", fontSize: "0.68rem" }}
+                          >
+                            {subCatExpanded ? (
+                              <ChevronUp className="w-3 h-3 shrink-0 text-[rgba(0,212,255,0.4)]" />
+                            ) : (
+                              <ChevronDown className="w-3 h-3 shrink-0 text-[rgba(0,212,255,0.4)]" />
+                            )}
+                            <SubCatIcon className="w-3.5 h-3.5 shrink-0" style={{ opacity: isSubCatActive ? 0.9 : 0.5 }} />
+                            <span className="whitespace-nowrap overflow-hidden text-ellipsis" style={{ color: isSubCatActive ? "#00d4ff" : "rgba(0,212,255,0.5)" }}>
+                              {subCat.labelZh}
+                            </span>
+                          </button>
+                          {subCatExpanded && (
+                            <div className="ml-4 pl-2 border-l border-[rgba(0,180,255,0.04)]">
+                              {subCat.children.map((child) => {
+                                const ChildIcon = child.icon;
+                                const isActive = location.pathname === child.path;
+                                return (
+                                  <button
+                                    key={child.path}
+                                    onClick={() => navigate(child.path)}
+                                    className={`
+                                      w-full flex items-center gap-2 rounded-md my-px transition-all duration-150
+                                      ${isActive
+                                        ? "bg-[rgba(0,212,255,0.08)] text-[#00d4ff]"
+                                        : "text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.65)] hover:bg-[rgba(0,212,255,0.03)]"
+                                      }
+                                    `}
+                                    style={{ padding: "4px 8px", fontSize: "0.64rem" }}
+                                  >
+                                    <ChildIcon className="w-3 h-3 shrink-0" style={{ opacity: isActive ? 0.9 : 0.5 }} />
+                                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">{child.label || t(child.key)}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
                       );
                     })}
                   </div>
@@ -331,13 +373,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
 
                       {/* 子项列表 */}
                       <div className="py-1">
-                        {cat.children.map((child) => {
+                        {cat.children?.map((child) => {
                           const ChildIcon = child.icon;
                           const isActive = location.pathname === child.path;
                           return (
                             <button
                               key={child.path}
-                              data-testid={`flyout-nav-item-${child.key}`}
                               onClick={() => navigate(child.path)}
                               className={`
                                 w-full flex items-center gap-2.5 text-left transition-all duration-100
@@ -356,6 +397,62 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
                             </button>
                           );
                         })}
+                        {/* 三级导航：子分类 */}
+                        {cat.subCategories?.map((subCat) => {
+                          const SubCatIcon = subCat.icon;
+                          const isSubCatActive = subCat.children.some(child => location.pathname === child.path);
+                          const subCatExpanded = expandedSubCategories[subCat.id] ?? subCat.defaultExpanded ?? false;
+                          return (
+                            <div key={subCat.id} className="mt-2">
+                              <button
+                                onClick={() => setExpandedSubCategories(prev => ({
+                                  ...prev,
+                                  [subCat.id]: !prev[subCat.id]
+                                }))}
+                                className="w-full flex items-center gap-2.5 text-left transition-all duration-100"
+                                style={{ padding: "6px 14px", fontSize: "0.72rem" }}
+                              >
+                                {subCatExpanded ? (
+                                  <ChevronUp className="w-3 h-3 shrink-0 text-[rgba(0,212,255,0.4)]" />
+                                ) : (
+                                  <ChevronDown className="w-3 h-3 shrink-0 text-[rgba(0,212,255,0.4)]" />
+                                )}
+                                <SubCatIcon className="w-3.5 h-3.5 shrink-0" style={{ opacity: isSubCatActive ? 1 : 0.5 }} />
+                                <span style={{ color: isSubCatActive ? "#00d4ff" : "rgba(0,212,255,0.6)" }}>
+                                  {subCat.labelZh}
+                                </span>
+                              </button>
+                              {subCatExpanded && (
+                                <div className="ml-4 pl-2 border-l border-[rgba(0,180,255,0.04)] py-1">
+                                  {subCat.children.map((child) => {
+                                    const ChildIcon = child.icon;
+                                    const isActive = location.pathname === child.path;
+                                    return (
+                                      <button
+                                        key={child.path}
+                                        onClick={() => navigate(child.path)}
+                                        className={`
+                                          w-full flex items-center gap-2.5 text-left transition-all duration-100
+                                          ${isActive
+                                            ? "bg-[rgba(0,212,255,0.08)] text-[#00d4ff]"
+                                            : "text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.04)]"
+                                          }
+                                        `}
+                                        style={{ padding: "6px 14px", fontSize: "0.70rem" }}
+                                      >
+                                        {isActive && (
+                                          <div className="w-[2.5px] h-3 rounded-full bg-[#00d4ff] shadow-[0_0_6px_rgba(0,212,255,0.5)] shrink-0" />
+                                        )}
+                                        <ChildIcon className="w-3 h-3 shrink-0" style={{ opacity: isActive ? 1 : 0.5 }} />
+                                        <span>{child.label || t(child.key)}</span>
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>
@@ -369,7 +466,6 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
         <div className="shrink-0 border-t border-[rgba(0,180,255,0.06)] py-2">
           <button
             onClick={onToggle}
-            data-testid="sidebar-toggle-btn"
             className="w-full flex items-center gap-2 text-[rgba(0,212,255,0.25)] hover:text-[rgba(0,212,255,0.5)] transition-all"
             style={{
               padding: collapsed ? "8px 0" : "6px 18px",

@@ -32,8 +32,7 @@ vi.mock("../lib/ollama-url", () => ({
   }),
 }));
 
-// Mock localStorage
-const localStorageMock = (() => {
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] || null,
@@ -41,11 +40,9 @@ const localStorageMock = (() => {
     removeItem: (key: string) => { delete store[key]; },
     clear: () => { store = {}; },
   };
-})();
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+}
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { ModelProviderPanel } from "../components/ModelProviderPanel";
@@ -101,6 +98,7 @@ function renderPanel() {
 
 describe("ModelProviderPanel", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     cleanup();
     localStorage.clear();
   });

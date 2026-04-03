@@ -9,9 +9,9 @@
  * - 验收清单
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  Check, Minus, Clock, AlertTriangle,
+  Check, Minus, Clock,
 } from "lucide-react";
 import type { ChapterStatus, ChapterReview, ProjectStats, AcceptanceItem } from "../../types";
 

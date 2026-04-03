@@ -25,7 +25,6 @@ import { FadeIn } from "./FadeIn";
 import {
   FAMILY_MEMBERS, SAMPLE_MESSAGES, AI_RESPONSES, hexToRgb,
   type FamilyMember, type FamilyMessage,
-  DEEP_BG,
 } from "./shared";
 
 // ═══ localStorage 持久化 ═══
@@ -38,7 +37,7 @@ function loadMessages(): FamilyMessage[] {
     const raw = localStorage.getItem(COMM_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) {return parsed;}
+      if (Array.isArray(parsed) && parsed.length > 0) { return parsed; }
     }
   } catch { /* noop */ }
   // First load → seed with sample data and persist
@@ -58,9 +57,9 @@ function saveMessages(msgs: FamilyMessage[]) {
 
 const MSG_TYPE_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
   announcement: { label: "公告", color: "#f59e0b", icon: Sparkles },
-  alert:        { label: "警报", color: "#ef4444", icon: Shield },
-  text:         { label: "消息", color: "#3b82f6", icon: MessageCircle },
-  heartbeat:    { label: "心跳", color: "#ec4899", icon: Heart },
+  alert: { label: "警报", color: "#ef4444", icon: Shield },
+  text: { label: "消息", color: "#3b82f6", icon: MessageCircle },
+  heartbeat: { label: "心跳", color: "#ec4899", icon: Heart },
 };
 
 // ═══ 日期分组工具 ═══
@@ -71,8 +70,8 @@ function formatDateGroup(dateStr: string): string {
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  if (date.toDateString() === today.toDateString()) {return "今天";}
-  if (date.toDateString() === yesterday.toDateString()) {return "昨天";}
+  if (date.toDateString() === today.toDateString()) { return "今天"; }
+  if (date.toDateString() === yesterday.toDateString()) { return "昨天"; }
   return date.toLocaleDateString("zh-CN", { month: "long", day: "numeric", weekday: "short" });
 }
 
@@ -86,11 +85,10 @@ function MemberStatusBar({ selectedMember, onSelect }: {
     <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
       <button
         onClick={() => onSelect("all")}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg shrink-0 transition-all ${
-          selectedMember === "all"
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg shrink-0 transition-all ${selectedMember === "all"
             ? "bg-[rgba(0,212,255,0.1)] text-cyan-300 border border-[rgba(0,212,255,0.2)]"
             : "bg-white/[0.03] text-white/40 border border-transparent hover:bg-white/[0.06]"
-        }`}
+          }`}
         style={{ fontSize: "0.7rem" }}
       >
         <Users className="w-3 h-3" />
@@ -103,11 +101,10 @@ function MemberStatusBar({ selectedMember, onSelect }: {
           <button
             key={m.id}
             onClick={() => onSelect(m.id)}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg shrink-0 transition-all ${
-              active
+            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg shrink-0 transition-all ${active
                 ? "border"
                 : "bg-white/[0.03] border border-transparent hover:bg-white/[0.06]"
-            }`}
+              }`}
             style={{
               ...(active ? { background: `rgba(${rgb},0.1)`, borderColor: `rgba(${rgb},0.3)`, color: m.color } : { color: "rgba(255,255,255,0.4)" }),
               fontSize: "0.7rem",
@@ -138,7 +135,7 @@ function MemberStatusBar({ selectedMember, onSelect }: {
 function MessageBubble({ msg, onDelete }: { msg: FamilyMessage; onDelete?: (id: string) => void }) {
   const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
   const to = msg.to === "all" ? null : FAMILY_MEMBERS.find(m => m.id === msg.to);
-  if (!from) {return null;}
+  if (!from) { return null; }
   const rgb = hexToRgb(from.color);
   const typeConfig = MSG_TYPE_CONFIG[msg.type] || MSG_TYPE_CONFIG.text;
   const TypeIcon = typeConfig.icon;
@@ -236,9 +233,9 @@ export function FamilyCommCenter() {
   const filteredMessages = useMemo(() => {
     const result = messages.filter(msg => {
       if (filterMember !== "all") {
-        if (msg.from !== filterMember && msg.to !== filterMember && msg.to !== "all") {return false;}
+        if (msg.from !== filterMember && msg.to !== filterMember && msg.to !== "all") { return false; }
       }
-      if (filterType !== "all" && msg.type !== filterType) {return false;}
+      if (filterType !== "all" && msg.type !== filterType) { return false; }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
@@ -246,7 +243,7 @@ export function FamilyCommCenter() {
           !msg.content.toLowerCase().includes(q) &&
           !(from?.shortName.toLowerCase().includes(q)) &&
           !(from?.name.toLowerCase().includes(q))
-        ) {return false;}
+        ) { return false; }
       }
       return true;
     });
@@ -283,7 +280,7 @@ export function FamilyCommCenter() {
 
   // Send message
   const handleSend = useCallback(() => {
-    if (!inputText.trim()) {return;}
+    if (!inputText.trim()) { return; }
     const newMsg: FamilyMessage = {
       id: `msg-${Date.now()}`,
       from: sendAs,
@@ -367,7 +364,7 @@ export function FamilyCommCenter() {
   }, []);
 
   return (
-    <div className="min-h-full pb-8 p-4 md:p-6 space-y-4" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <div className="max-w-4xl mx-auto flex flex-col" style={{ height: "calc(100vh - 120px)" }}>
         {/* Header */}
         <FadeIn>
@@ -460,11 +457,10 @@ export function FamilyCommCenter() {
             <button
               key={item.key}
               onClick={() => setFilterType(item.key)}
-              className={`px-2 py-1 rounded transition-all ${
-                filterType === item.key
+              className={`px-2 py-1 rounded transition-all ${filterType === item.key
                   ? "bg-[rgba(0,212,255,0.1)] text-cyan-300"
                   : "text-white/30 hover:text-white/50"
-              }`}
+                }`}
               style={{ fontSize: "0.6rem" }}
             >
               {item.label}
@@ -476,7 +472,7 @@ export function FamilyCommCenter() {
         </div>
 
         {/* Messages area */}
-        <GlassCard className="flex-1 p-4 overflow-y-auto mb-4" ref={scrollContainerRef as any}>
+        <GlassCard className="flex-1 p-4 overflow-y-auto mb-4" ref={scrollContainerRef as React.Ref<HTMLDivElement>}>
           <div className="space-y-4">
             {/* Load more button */}
             {hasMoreHistory && (
@@ -497,7 +493,7 @@ export function FamilyCommCenter() {
                 暂无消息
               </div>
             ) : (
-              groupedMessages.map((group, gi) => (
+              groupedMessages.map((group, _gi) => (
                 <React.Fragment key={group.date}>
                   <DateSeparator label={formatDateGroup(group.date)} />
                   {group.msgs.map(msg => (

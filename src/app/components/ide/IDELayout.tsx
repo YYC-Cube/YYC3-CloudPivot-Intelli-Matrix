@@ -10,49 +10,35 @@
  *   底部: 集成终端 (根据布局模式智能切换位置)
  *
  * 布局模式:
- *   编辑模式 (edit):   终端仅在右栏显示
- *   预览模式 (preview): 终端跨越中栏+右栏显示
- *   自由模式 (free):   可拖拽面板系统 (新功能)
+ *   编辑模式 (edit):   使用 PanelManager 自定义面板系统
+ *   预览模式 (preview): 使用 PanelManager 自定义面板系统
+ *   自由模式 (free):   自由拖拽布局 (Workspace)
  *
- * 使用 react-resizable-panels 实现面板拖拽调节
- * 新增自由模式支持完全自定义拖拽面板布局
+ * 使用自定义 PanelManager (from Knowledge/ide) 替代 react-resizable-panels
  */
 
-import React, { useState, useCallback, useEffect } from "react";
-import {
-  Panel,
-  Group,
-  Separator,
-} from "react-resizable-panels";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { useI18n } from "../../hooks/useI18n";
+import { AIChatPanel } from "./AIChatPanel";
+import { CodePreviewPanel } from "./CodePreviewPanel";
+import { FileExplorer } from "./FileExplorer";
+import { IDEStatusBar } from "./IDEStatusBar";
+import { IDETerminal } from "./IDETerminal";
 import { IDETopBar } from "./IDETopBar";
 import { IDEViewSwitcher } from "./IDEViewSwitcher";
-import { AIChatPanel } from "./AIChatPanel";
-import { FileExplorer } from "./FileExplorer";
-import { CodePreviewPanel } from "./CodePreviewPanel";
-import { IDETerminal } from "./IDETerminal";
-import { IDEStatusBar } from "./IDEStatusBar";
-import { MOCK_FILE_CONTENTS } from "./ide-mock-data";
-import { AI_MODELS } from "./ide-mock-data";
-import type { IDEViewMode, IDELayoutMode, OpenTab } from "./ide-types";
+import { AI_MODELS, MOCK_FILE_CONTENTS } from "./ide-mock-data";
+import type { IDELayoutMode, IDEViewMode, OpenTab } from "./ide-types";
 import { LayoutProvider } from "./LayoutContext";
 import { Workspace } from "./Workspace";
-import type { PanelType } from "./ide-layout-types";
-
-/** Resize handle styling */
-function ResizeHandle() {
-  return (
-    <Separator
-      className={`group relative flex items-center justify-center transition-all w-[3px] hover:w-[5px]`}
-      style={{ background: "rgba(0,180,255,0.06)" }}
-    >
-      <div
-        className={`rounded-full bg-[rgba(0,212,255,0.15)] group-hover:bg-[rgba(0,212,255,0.4)] transition-all w-[2px] h-8`}
-      />
-    </Separator>
-  );
-}
+import {
+  PanelManagerProvider,
+  PanelLayoutArea,
+  type PanelId,
+  LAYOUT_PRESETS,
+} from "./panel-manager/PanelManager";
 
 const LAYOUT_MODE_STORAGE_KEY = "yyc3-ide-layout-mode";
 
@@ -63,8 +49,12 @@ export function IDELayout() {
   const [layoutMode, setLayoutMode] = useState<IDELayoutMode>(() => {
     try {
       const stored = localStorage.getItem(LAYOUT_MODE_STORAGE_KEY);
-      if (stored === "edit" || stored === "preview" || stored === "free") { return stored; }
-    } catch { }
+      if (stored === "edit" || stored === "preview" || stored === "free") {
+        return stored;
+      }
+    } catch {
+      // Ignore storage errors
+    }
     return "preview";
   });
   const [selectedModel, setSelectedModel] = useState(AI_MODELS[0].id);
@@ -77,7 +67,9 @@ export function IDELayout() {
   useEffect(() => {
     try {
       localStorage.setItem(LAYOUT_MODE_STORAGE_KEY, layoutMode);
-    } catch { }
+    } catch {
+      // Ignore storage errors
+    }
   }, [layoutMode]);
 
   const handleBack = useCallback(() => {
@@ -86,14 +78,14 @@ export function IDELayout() {
 
   const handleFullscreen = useCallback(() => {
     if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => { });
+      document.exitFullscreen().catch(() => {});
     } else {
-      document.documentElement.requestFullscreen().catch(() => { });
+      document.documentElement.requestFullscreen().catch(() => {});
     }
   }, []);
 
   const handleFileSelect = useCallback((fileId: string, filename: string) => {
-    const existing = openTabs.find((t) => t.id === fileId);
+    const existing = openTabs.find((tab) => tab.id === fileId);
     if (existing) {
       setActiveTabId(fileId);
       return;
@@ -117,7 +109,7 @@ export function IDELayout() {
 
   const handleTabClose = useCallback((tabId: string) => {
     setOpenTabs((prev) => {
-      const next = prev.filter((t) => t.id !== tabId);
+      const next = prev.filter((tab) => tab.id !== tabId);
       if (activeTabId === tabId && next.length > 0) {
         setActiveTabId(next[next.length - 1].id);
       } else if (next.length === 0) {
@@ -129,16 +121,44 @@ export function IDELayout() {
 
   const handleContentChange = useCallback((tabId: string, content: string) => {
     setOpenTabs((prev) =>
-      prev.map((t) => (t.id === tabId ? { ...t, content, isModified: true } : t))
+      prev.map((tab) => (tab.id === tabId ? { ...tab, content, isModified: true } : tab))
     );
   }, []);
 
-  const handleAddPanel = useCallback((type: PanelType) => {
-    // 此方法仅在自由模式下使用，通过 LayoutProvider 的 addPanel 方法添加面板
-    console.log('Adding panel in layout mode:', layoutMode, 'type:', type);
-    // 编辑模式和预览模式下，面板由固定布局控制
-    // 自由模式下，面板由 LayoutContext 管理
-  }, [layoutMode]);
+  // TopBar action callbacks
+  const handleToggleExplorer = useCallback(() => {
+    // Toggle between current layout and files-focused layout
+    setLayoutMode((m) => m === "edit" ? "preview" : "edit");
+  }, []);
+  const handleToggleNotifications = useCallback(() => {
+    // Placeholder: show browser notification
+    if ("Notification" in window && Notification.permission === "granted") {
+      new Notification(t("ide.title"), { body: t("ide.noNewNotifications") });
+    } else if ("Notification" in window && Notification.permission !== "denied") {
+      Notification.requestPermission().then((p) => {
+        if (p === "granted") {
+          new Notification(t("ide.title"), { body: t("ide.noNewNotifications") });
+        }
+      });
+    }
+  }, [t]);
+  const handleOpenSettings = useCallback(() => {
+    navigate("/settings");
+  }, [navigate]);
+  const handleOpenRepo = useCallback(() => {
+    window.open("https://github.com", "_blank", "noopener,noreferrer");
+  }, []);
+  const handleShare = useCallback(() => {
+    navigator.clipboard.writeText(window.location.href).catch(() => {});
+  }, []);
+  const handleDeploy = useCallback(() => {
+    // Placeholder: could integrate with CI/CD
+  }, []);
+
+  // Status bar action callback
+  const handleFormat = useCallback(() => {
+    // TODO: format active file via Prettier
+  }, []);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -162,195 +182,72 @@ export function IDELayout() {
         e.preventDefault();
         setTerminalCollapsed((c) => !c);
       }
-      // Ctrl+3 to toggle layout mode
       if ((e.ctrlKey || e.metaKey) && e.key === "3") {
         e.preventDefault();
         setLayoutMode((m) => {
-          if (m === "edit") { return "preview"; }
-          if (m === "preview") { return "free"; }
+          if (m === "edit") {return "preview";}
+          if (m === "preview") {return "free";}
           return "edit";
         });
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [layoutMode, viewMode]);
+  }, []);
 
-  // Determine panel visibility based on view mode
-  const showLeftPanel = viewMode !== "code";
-  const showCenterPanel = viewMode !== "preview";
-
-  // Terminal component (reused in both layouts)
-  const terminalElement = (
-    <IDETerminal
-      isCollapsed={terminalCollapsed}
-      onToggleCollapse={() => setTerminalCollapsed((c) => !c)}
-    />
-  );
-
-  // Code editor component (reused)
-  const codeEditorElement = (
-    <CodePreviewPanel
-      openTabs={openTabs}
-      activeTabId={activeTabId}
-      onTabSelect={handleTabSelect}
-      onTabClose={handleTabClose}
-      onContentChange={handleContentChange}
-    />
-  );
-
-  /**
-   * 编辑模式布局:
-   * ┌──────────┬─────────────┬──────────────────┐
-   * │ AI Chat  │ File Explorer│ Code Editor      │
-   * │ (25%)    │ (45%)       │ (30%)            │
-   * │          │             ├──────────────────┤
-   * │          │             │ Terminal          │
-   * └──────────┴─────────────┴──────────────────┘
-   * 终端仅在右栏(代码编辑器下方)
-   */
-  const renderEditModeLayout = () => (
-    <Group orientation="horizontal" className="h-full">
-      {/* Left Panel - AI Chat */}
-      {showLeftPanel && (
-        <>
-          <Panel defaultSize={25} minSize={15} maxSize={40} id="ai-panel-e">
-            <AIChatPanel />
-          </Panel>
-          <ResizeHandle />
-        </>
-      )}
-
-      {/* Center Panel - File Explorer (full height) */}
-      {showCenterPanel && (
-        <>
-          <Panel
-            defaultSize={showLeftPanel ? 45 : 55}
-            minSize={15}
-            maxSize={60}
-            id="explorer-panel-e"
-          >
+  // Panel render function for PanelManager
+  const renderPanel = useCallback(
+    (panelId: PanelId, _nodeId: string) => {
+      switch (panelId) {
+        case "ai":
+          return <AIChatPanel />;
+        case "files":
+          return (
             <FileExplorer
               onFileSelect={handleFileSelect}
               activeFileId={activeTabId}
             />
-          </Panel>
-          <ResizeHandle />
-        </>
-      )}
-
-      {/* Right Panel - Code Editor + Terminal (vertical split) */}
-      <Panel
-        defaultSize={showLeftPanel && showCenterPanel ? 30 : showCenterPanel ? 45 : 75}
-        minSize={20}
-        id="right-panel-e"
-      >
-        <Group orientation="vertical" className="h-full">
-          <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="code-panel-e">
-            {codeEditorElement}
-          </Panel>
-          <ResizeHandle />
-          <Panel
-            defaultSize={terminalCollapsed ? 5 : 30}
-            minSize={terminalCollapsed ? 3 : 10}
-            maxSize={60}
-            id="terminal-panel-e"
-          >
-            {terminalElement}
-          </Panel>
-        </Group>
-      </Panel>
-    </Group>
+          );
+        case "code":
+          return (
+            <CodePreviewPanel
+              openTabs={openTabs}
+              activeTabId={activeTabId}
+              onTabSelect={handleTabSelect}
+              onTabClose={handleTabClose}
+              onContentChange={handleContentChange}
+            />
+          );
+        case "terminal":
+          return (
+            <IDETerminal
+              isCollapsed={terminalCollapsed}
+              onToggleCollapse={() => setTerminalCollapsed((c) => !c)}
+            />
+          );
+        default:
+          return (
+            <div className="flex items-center justify-center h-full text-slate-500 text-sm">
+              {t("ide.pm.panelPlaceholder")}: {panelId}
+            </div>
+          );
+      }
+    },
+    [
+      t,
+      handleFileSelect,
+      activeTabId,
+      openTabs,
+      handleTabSelect,
+      handleTabClose,
+      handleContentChange,
+      terminalCollapsed,
+    ],
   );
 
-  /**
-   * 预览模式布局:
-   * ┌──────────┬─────────────────────────────────┐
-   * │ AI Chat  │ File Explorer │ Code Editor      │
-   * │ (25%)    │ (45% of 75%) │ (55% of 75%)    │
-   * │          ├──────────────┴──────────────────┤
-   * │          │ Terminal (spans center+right)     │
-   * └──────────┴──────────────────────────────────┘
-   * 终端跨越中栏+右栏
-   */
-  const renderPreviewModeLayout = () => (
-    <Group orientation="horizontal" className="h-full">
-      {/* Left Panel - AI Chat */}
-      {showLeftPanel && (
-        <>
-          <Panel defaultSize={25} minSize={15} maxSize={40} id="ai-panel-p">
-            <AIChatPanel />
-          </Panel>
-          <ResizeHandle />
-        </>
-      )}
-
-      {/* Main area: Center + Right + Terminal */}
-      <Panel
-        defaultSize={showLeftPanel ? 75 : 100}
-        minSize={40}
-        id="main-panel-p"
-      >
-        <Group orientation="vertical" className="h-full">
-          {/* Top: Center + Right horizontal split */}
-          <Panel defaultSize={terminalCollapsed ? 95 : 70} minSize={30} id="editor-area-p">
-            <Group orientation="horizontal" className="h-full">
-              {/* Center Panel - File Explorer */}
-              {showCenterPanel && (
-                <>
-                  <Panel
-                    defaultSize={40}
-                    minSize={15}
-                    maxSize={60}
-                    id="explorer-panel-p"
-                  >
-                    <FileExplorer
-                      onFileSelect={handleFileSelect}
-                      activeFileId={activeTabId}
-                    />
-                  </Panel>
-                  <ResizeHandle />
-                </>
-              )}
-
-              {/* Right Panel - Code Editor */}
-              <Panel
-                defaultSize={showCenterPanel ? 60 : 100}
-                minSize={25}
-                id="code-panel-p"
-              >
-                {codeEditorElement}
-              </Panel>
-            </Group>
-          </Panel>
-
-          {/* Bottom - Terminal (spans center+right) */}
-          <ResizeHandle />
-          <Panel
-            defaultSize={terminalCollapsed ? 5 : 30}
-            minSize={terminalCollapsed ? 3 : 15}
-            maxSize={60}
-            id="terminal-panel-p"
-          >
-            {terminalElement}
-          </Panel>
-        </Group>
-      </Panel>
-    </Group>
-  );
-
-  /**
-   * 自由模式布局:
-   * ┌─────────────────────────────────────────────┐
-   * │ 可拖拽面板系统 - 完全自定义布局            │
-   * │ 支持面板拖拽、调整大小、最小化、最大化等   │
-   * └─────────────────────────────────────────────┘
-   */
-  const renderFreeModeLayout = () => (
-    <LayoutProvider>
-      <Workspace />
-    </LayoutProvider>
-  );
+  // Layout selection based on layoutMode AND viewMode
+  const editModeLayout = LAYOUT_PRESETS.designer;
+  const previewModeLayout = LAYOUT_PRESETS["ai-workspace"] || LAYOUT_PRESETS.default;
 
   return (
     <div
@@ -366,6 +263,12 @@ export function IDELayout() {
         onBack={handleBack}
         selectedModel={selectedModel}
         onModelChange={setSelectedModel}
+        onToggleExplorer={handleToggleExplorer}
+        onToggleNotifications={handleToggleNotifications}
+        onOpenSettings={handleOpenSettings}
+        onOpenRepo={handleOpenRepo}
+        onShare={handleShare}
+        onDeploy={handleDeploy}
       />
 
       {/* View Switcher with layout mode */}
@@ -403,8 +306,8 @@ export function IDELayout() {
           background: layoutMode === "edit"
             ? "linear-gradient(90deg, transparent 0%, rgba(0,212,255,0.05) 50%, transparent 100%)"
             : layoutMode === "preview"
-              ? "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)"
-              : "linear-gradient(90deg, transparent 0%, rgba(255,193,7,0.05) 50%, transparent 100%)",
+            ? "linear-gradient(90deg, transparent 0%, rgba(0,255,136,0.05) 50%, transparent 100%)"
+            : "linear-gradient(90deg, transparent 0%, rgba(255,136,0,0.05) 50%, transparent 100%)",
           borderBottom: "1px solid rgba(0,180,255,0.05)",
         }}
       >
@@ -416,17 +319,34 @@ export function IDELayout() {
         </span>
       </div>
 
-      {/* Main Content Area - conditional layout based on layoutMode */}
-      <div className="flex-1 min-h-0">
-        {layoutMode === "free" ? renderFreeModeLayout() : layoutMode === "edit" ? renderEditModeLayout() : renderPreviewModeLayout()}
+      {/* Main Content Area */}
+      <div className="flex-1 min-h-0 relative">
+        <div className="absolute inset-0">
+          {layoutMode === "free" ? (
+            <LayoutProvider>
+              <Workspace />
+            </LayoutProvider>
+          ) : (
+            <DndProvider backend={HTML5Backend}>
+              <PanelManagerProvider
+                renderPanel={renderPanel}
+                initialLayout={layoutMode === "edit" ? editModeLayout : previewModeLayout}
+                key={`${layoutMode}-${viewMode}`}
+              >
+                <PanelLayoutArea />
+              </PanelManagerProvider>
+            </DndProvider>
+          )}
+        </div>
       </div>
 
       {/* Status Bar */}
       <IDEStatusBar
-        activeTab={openTabs.find((t) => t.id === activeTabId)}
+        activeTab={openTabs.find((tab) => tab.id === activeTabId)}
         totalErrors={0}
         totalWarnings={1}
         isOnline={true}
+        onFormat={handleFormat}
       />
     </div>
   );

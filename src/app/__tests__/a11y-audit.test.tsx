@@ -11,13 +11,12 @@
  * - ARIA 属性正确
  */
 
-import React from "react";
-import { describe, it, expect, vi, afterEach , beforeEach} from "vitest";
+import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, cleanup } from "@testing-library/react";
 import { axe } from "vitest-axe";
 
 // Mock react-router navigate
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => vi.fn(),
   useLocation: () => ({ pathname: "/" }),
 }));
@@ -50,7 +49,7 @@ describe("GlassCard a11y", () => {
 
   it("可点击时应通过 a11y 检测", async () => {
     const { container } = render(
-      <GlassCard onClick={() => {}} role="button" tabIndex={0}>
+      <GlassCard onClick={() => { }} role="button" tabIndex={0}>
         <p>可点击卡片</p>
       </GlassCard>
     );
@@ -103,7 +102,7 @@ describe("ConnectionStatus a11y", () => {
         state="connected"
         reconnectCount={0}
         lastSyncTime="10:30:00"
-        onReconnect={() => {}}
+        onReconnect={() => { }}
       />
     );
     const results = await axe(container);
@@ -116,7 +115,7 @@ describe("ConnectionStatus a11y", () => {
         state="disconnected"
         reconnectCount={3}
         lastSyncTime="--:--"
-        onReconnect={() => {}}
+        onReconnect={() => { }}
       />
     );
     const results = await axe(container);

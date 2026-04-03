@@ -10,7 +10,7 @@
  * i18n 已迁移
  */
 
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   Bot, RefreshCw, Activity, AlertTriangle,
   CheckCircle, Loader2, ToggleLeft, ToggleRight,
