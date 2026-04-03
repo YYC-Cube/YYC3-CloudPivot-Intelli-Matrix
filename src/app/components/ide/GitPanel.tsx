@@ -5,13 +5,20 @@
  * 分支管理 + 变更暂存 + 提交历史 + Diff 预览
  */
 
-import React, { useState, useCallback } from "react";
 import {
+  ArrowDown,
+  ArrowUp,
+  Check, ChevronDown,
+  FileEdit, FilePlus,
+  FileType,
+  FileX,
   GitBranch, GitCommit as GitCommitIcon, GitPullRequest,
-  Plus, Minus, FileEdit, FilePlus, FileX, FileType,
-  Check, ChevronDown, ChevronRight, RefreshCw,
-  ArrowUp, ArrowDown, Search,
+  Minus,
+  Plus,
+  RefreshCw,
+  Search
 } from "lucide-react";
+import React, { useCallback, useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
 import { MOCK_GIT_BRANCHES, MOCK_GIT_CHANGES, MOCK_GIT_COMMITS } from "./ide-mock-data";
 import type { GitChange, GitCommit } from "./ide-types";
@@ -137,10 +144,10 @@ export function GitPanel() {
           )}
         </div>
         <div className="flex items-center gap-0.5">
-          <button className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all" title="Sync">
+          <button onClick={() => {}} className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all" title="Sync">
             <RefreshCw className="w-3 h-3" />
           </button>
-          <button className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all" title="Pull Request">
+          <button onClick={() => {}} className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[#00d4ff] hover:bg-[rgba(0,212,255,0.08)] transition-all" title="Pull Request">
             <GitPullRequest className="w-3 h-3" />
           </button>
         </div>

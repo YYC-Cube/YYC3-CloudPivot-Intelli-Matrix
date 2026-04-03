@@ -9,24 +9,23 @@
  * - update / remove / removeBatch
  * - reset
  * - exportData / importData
-import React from "react";
  * - count
  * - localStorage 持久化
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// Mock localStorage
-const store: Record<string, string> = {};
-const localStorageMock = {
-  getItem: vi.fn((key: string) => store[key] ?? null),
-  setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
-  removeItem: vi.fn((key: string) => { delete store[key]; }),
-  clear: vi.fn(() => { for (const k of Object.keys(store)) {delete store[k];} }),
-  get length() { return Object.keys(store).length; },
-  key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
-};
-(globalThis as any).localStorage = localStorageMock;
+function createLocalStorageMock() {
+  const store: Record<string, string> = {};
+  return {
+    getItem: vi.fn((key: string) => store[key] ?? null),
+    setItem: vi.fn((key: string, val: string) => { store[key] = val; }),
+    removeItem: vi.fn((key: string) => { delete store[key]; }),
+    clear: vi.fn(() => { for (const k of Object.keys(store)) { delete store[k]; } }),
+    get length() { return Object.keys(store).length; },
+    key: vi.fn((i: number) => Object.keys(store)[i] ?? null),
+  };
+}
 
 import { createLocalStore, type LocalStore } from "../lib/create-local-store";
 
@@ -46,7 +45,7 @@ describe("createLocalStore", () => {
   let s: LocalStore<TestItem>;
 
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
     s = createLocalStore<TestItem>("test_store", DEFAULTS, "t");
   });
@@ -68,7 +67,7 @@ describe("createLocalStore", () => {
 
     it("should persist defaults to localStorage on first call", () => {
       s.getAll();
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+      expect(localStorage.setItem).toHaveBeenCalledWith(
         "test_store",
         expect.any(String)
       );
@@ -105,7 +104,7 @@ describe("createLocalStore", () => {
 
     it("should persist after add", () => {
       s.add({ name: "New", value: 50 });
-      const stored = JSON.parse(store["test_store"]);
+      const stored = JSON.parse(localStorage.getItem("test_store")!);
       expect(stored).toHaveLength(4);
     });
   });
@@ -125,7 +124,7 @@ describe("createLocalStore", () => {
 
     it("should persist after update", () => {
       s.update("t-1", { value: 999 });
-      const stored = JSON.parse(store["test_store"]);
+      const stored = JSON.parse(localStorage.getItem("test_store")!);
       expect(stored.find((i: TestItem) => i.id === "t-1").value).toBe(999);
     });
   });
@@ -223,7 +222,7 @@ describe("createLocalStore", () => {
   describe("localStorage integration", () => {
     it("should read from existing localStorage data", () => {
       const existingData = [{ id: "stored-1", name: "Stored", value: 42 }];
-      store["test_store2"] = JSON.stringify(existingData);
+      localStorage.setItem("test_store2", JSON.stringify(existingData));
       const s2 = createLocalStore<TestItem>("test_store2", DEFAULTS, "t");
       expect(s2.count()).toBe(1);
       expect(s2.getById("stored-1")?.name).toBe("Stored");

@@ -1,15 +1,4 @@
-/**
- * @file: Dashboard.tsx
- * @description: Dashboard.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import {
   Activity, Clock, Server, Cpu, Zap, HardDrive,
   ArrowUpRight, ArrowDownRight, BarChart3, Layers,
@@ -78,11 +67,10 @@ function ChartTabBar({ active, onChange }: { active: AnalyticsTab; onChange: (t:
         <button
           key={tab.key}
           onClick={() => onChange(tab.key)}
-          className={`px-3 py-1.5 rounded-lg transition-all min-h-[36px] ${
-            active === tab.key
+          className={`px-3 py-1.5 rounded-lg transition-all min-h-[36px] ${active === tab.key
               ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
               : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] border border-transparent"
-          }`}
+            }`}
           style={{ fontSize: "0.75rem" }}
         >
           {tab.label}
@@ -108,7 +96,6 @@ export function Dashboard() {
 
   const isMobile = view?.isMobile ?? false;
   const isTablet = view?.isTablet ?? false;
-  const isDesktop = !isMobile && !isTablet;
 
   // Swipe handlers for chart tabs
   const swipeHandlers = useSwipeable({
@@ -297,11 +284,10 @@ export function Dashboard() {
             {ANALYTICS_TABS.map((tab) => (
               <div
                 key={tab}
-                className={`rounded-full transition-all duration-300 ${
-                  analyticsTab === tab
+                className={`rounded-full transition-all duration-300 ${analyticsTab === tab
                     ? "w-5 h-1.5 bg-[#00d4ff] shadow-[0_0_8px_rgba(0,212,255,0.4)]"
                     : "w-1.5 h-1.5 bg-[rgba(0,212,255,0.2)]"
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -350,11 +336,10 @@ export function Dashboard() {
               {!isMobile && (
                 <button
                   onClick={() => setShowAllNodes(!showAllNodes)}
-                  className={`flex items-center gap-1 px-2 py-1 rounded-lg border transition-all min-h-[32px] ${
-                    showAllNodes
+                  className={`flex items-center gap-1 px-2 py-1 rounded-lg border transition-all min-h-[32px] ${showAllNodes
                       ? "bg-[rgba(0,212,255,0.15)] border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
                       : "bg-[rgba(0,212,255,0.08)] border-[rgba(0,212,255,0.2)] text-[#00d4ff] hover:bg-[rgba(0,212,255,0.15)]"
-                  }`}
+                    }`}
                   style={{ fontSize: "0.7rem" }}
                 >
                   <Eye className="w-3 h-3" />
@@ -363,11 +348,10 @@ export function Dashboard() {
               )}
             </div>
           </div>
-          <div className={`grid gap-2 ${
-            showAllNodes
+          <div className={`grid gap-2 ${showAllNodes
               ? (isMobile ? "grid-cols-2" : isTablet ? "grid-cols-4" : "grid-cols-5")
               : (isMobile ? "grid-cols-2" : isTablet ? "grid-cols-3" : "grid-cols-4")
-          }`}>
+            }`}>
             {nodes.map((node) => (
               <NodeCard key={node.id} node={node} onClick={() => setSelectedNode(node)} />
             ))}
@@ -392,16 +376,15 @@ export function Dashboard() {
           <div className="space-y-2">
             {recentOpsStore.getAll().map((op) => (
               <div key={op.id} className="flex items-center gap-2 md:gap-3 p-2 md:p-2.5 rounded-lg bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.06)] hover:border-[rgba(0,180,255,0.15)] transition-all cursor-pointer">
-                <div className={`shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center ${
-                  op.status === "success" ? "bg-[rgba(0,255,136,0.1)]" :
-                  op.status === "running" ? "bg-[rgba(0,212,255,0.1)]" :
-                  op.status === "pending" ? "bg-[rgba(170,85,255,0.1)]" :
-                  "bg-[rgba(255,221,0,0.1)]"
-                }`}>
+                <div className={`shrink-0 w-7 h-7 md:w-8 md:h-8 rounded-lg flex items-center justify-center ${op.status === "success" ? "bg-[rgba(0,255,136,0.1)]" :
+                    op.status === "running" ? "bg-[rgba(0,212,255,0.1)]" :
+                      op.status === "pending" ? "bg-[rgba(170,85,255,0.1)]" :
+                        "bg-[rgba(255,221,0,0.1)]"
+                  }`}>
                   {op.status === "success" ? <CheckCircle2 className="w-3.5 h-3.5 text-[#00ff88]" /> :
-                   op.status === "running" ? <RefreshCw className="w-3.5 h-3.5 text-[#00d4ff] animate-spin" /> :
-                   op.status === "pending" ? <Clock className="w-3.5 h-3.5 text-[#aa55ff]" /> :
-                   <AlertTriangle className="w-3.5 h-3.5 text-[#ffdd00]" />}
+                    op.status === "running" ? <RefreshCw className="w-3.5 h-3.5 text-[#00d4ff] animate-spin" /> :
+                      op.status === "pending" ? <Clock className="w-3.5 h-3.5 text-[#aa55ff]" /> :
+                        <AlertTriangle className="w-3.5 h-3.5 text-[#ffdd00]" />}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5">
@@ -415,12 +398,11 @@ export function Dashboard() {
                   <p className="text-[rgba(0,212,255,0.4)] truncate" style={{ fontSize: "0.68rem" }}>{op.target}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className={`inline-block px-1.5 py-0.5 rounded ${
-                    op.status === "success" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
-                    op.status === "running" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
-                    op.status === "pending" ? "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]" :
-                    "bg-[rgba(255,221,0,0.1)] text-[#ffdd00]"
-                  }`} style={{ fontSize: "0.6rem" }}>
+                  <span className={`inline-block px-1.5 py-0.5 rounded ${op.status === "success" ? "bg-[rgba(0,255,136,0.1)] text-[#00ff88]" :
+                      op.status === "running" ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]" :
+                        op.status === "pending" ? "bg-[rgba(170,85,255,0.1)] text-[#aa55ff]" :
+                          "bg-[rgba(255,221,0,0.1)] text-[#ffdd00]"
+                    }`} style={{ fontSize: "0.6rem" }}>
                     {op.status === "success" ? t("monitor.statusDone") : op.status === "running" ? t("monitor.statusRunning") : op.status === "pending" ? t("monitor.statusPending") : t("monitor.statusAlert")}
                   </span>
                   <p className="text-[rgba(0,212,255,0.3)] mt-0.5" style={{ fontSize: "0.6rem" }}>{op.time}</p>
@@ -508,18 +490,17 @@ function NodeCard({ node, onClick }: { node: NodeData; onClick: () => void }) {
         ${node.status === "active"
           ? "bg-[rgba(0,255,136,0.03)] border-[rgba(0,255,136,0.15)] hover:border-[rgba(0,255,136,0.3)]"
           : node.status === "warning"
-          ? "bg-[rgba(255,221,0,0.03)] border-[rgba(255,221,0,0.15)] hover:border-[rgba(255,221,0,0.3)]"
-          : "bg-[rgba(255,51,102,0.03)] border-[rgba(255,51,102,0.15)] hover:border-[rgba(255,51,102,0.3)]"
+            ? "bg-[rgba(255,221,0,0.03)] border-[rgba(255,221,0,0.15)] hover:border-[rgba(255,221,0,0.3)]"
+            : "bg-[rgba(255,51,102,0.03)] border-[rgba(255,51,102,0.15)] hover:border-[rgba(255,51,102,0.3)]"
         }
       `}
     >
       <div className="flex items-center justify-between mb-1.5">
         <span className="text-[#c0dcf0] truncate" style={{ fontSize: "0.7rem" }}>{node.id}</span>
-        <div className={`w-2 h-2 rounded-full shrink-0 ${
-          node.status === "active" ? "bg-[#00ff88] shadow-[0_0_6px_rgba(0,255,136,0.5)]"
-          : node.status === "warning" ? "bg-[#ffdd00] shadow-[0_0_6px_rgba(255,221,0,0.5)] animate-pulse"
-          : "bg-[#ff3366] shadow-[0_0_6px_rgba(255,51,102,0.5)]"
-        }`} />
+        <div className={`w-2 h-2 rounded-full shrink-0 ${node.status === "active" ? "bg-[#00ff88] shadow-[0_0_6px_rgba(0,255,136,0.5)]"
+            : node.status === "warning" ? "bg-[#ffdd00] shadow-[0_0_6px_rgba(255,221,0,0.5)] animate-pulse"
+              : "bg-[#ff3366] shadow-[0_0_6px_rgba(255,51,102,0.5)]"
+          }`} />
       </div>
       {/* GPU bar */}
       <div className="mb-1">

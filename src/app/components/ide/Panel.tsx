@@ -57,6 +57,7 @@ export function Panel({ panel, isActive, onMouseDown, onMinimize, onMaximize, on
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
+        width: '100%',
         backgroundColor: 'rgba(30, 41, 59, 0.8)',
         border: isActive ? '2px solid #6366f1' : '1px solid #334155',
         borderRadius: '8px',
@@ -73,7 +74,9 @@ export function Panel({ panel, isActive, onMouseDown, onMinimize, onMaximize, on
         onClose={handleClose}
       />
       {panel.tabs.length > 0 && <TabBar panel={panel} />}
-      <PanelContent panel={panel} />
+      <div style={{ flex: 1, minHeight: 0, overflow: 'hidden' }}>
+        <PanelContent panel={panel} />
+      </div>
     </div>
   );
 }

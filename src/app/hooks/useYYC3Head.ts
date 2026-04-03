@@ -22,7 +22,7 @@ export function useYYC3Head() {
     // ----------------------------------------------------------
     // 页面标题
     // ----------------------------------------------------------
-    document.title = "YYC³ CloudPivot Intelli-Matrix · 数据看盘";
+    document.title = "YYC³ 言启象限 · 语枢智云";
 
     // ----------------------------------------------------------
     // 辅助: 创建或更新 <link> 标签
@@ -92,9 +92,9 @@ export function useYYC3Head() {
     // ----------------------------------------------------------
     // SEO / OG 基础 (本地系统用不上, 但规范化)
     // ----------------------------------------------------------
-    upsertMeta("description", "YYC³ CloudPivot Intelli-Matrix — 本地多端推理矩阵数据库数据看盘 — M4 Max + iMac + NAS 集群实时监控");
-    upsertMeta("og:title", "YYC³ CloudPivot Intelli-Matrix");
-    upsertMeta("og:description", "本地闭环多端推理矩阵数据看盘系统");
+    upsertMeta("description", "YYC³ 言启象限 · 语枢智云 — 本地多端推理矩阵智能监控平台");
+    upsertMeta("og:title", "YYC³ 言启象限 · 语枢智云");
+    upsertMeta("og:description", "本地闭环多端推理矩阵智能监控系统");
     upsertMeta("og:image", icons.webAppChrome512);
     upsertMeta("og:type", "website");
 

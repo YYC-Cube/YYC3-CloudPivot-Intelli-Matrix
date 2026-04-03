@@ -16,7 +16,6 @@ import type {
   StageResult,
   LoopRun,
   DataFlowEdge,
-  DataFlowNodeType,
   StageMeta,
   DataFlowNode,
 } from "../types";
@@ -187,10 +186,10 @@ export const DATA_FLOW_EDGES: DataFlowEdge[] = [
 ];
 
 export const DATA_FLOW_NODES: DataFlowNode[] = [
-  { type: "device",    label: "本地设备",     sublabel: "192.168.3.x",      color: "#00d4ff" },
-  { type: "storage",   label: "本地存储",     sublabel: "PostgreSQL + NAS", color: "#7b2ff7" },
-  { type: "dashboard", label: "YYC³ Dashboard", sublabel: "React + PWA",   color: "#00ff88" },
-  { type: "terminal",  label: "终端集成",     sublabel: "CLI / IDE",        color: "#ffaa00" },
+  { type: "device", label: "本地设备", sublabel: "192.168.3.x", color: "#00d4ff" },
+  { type: "storage", label: "本地存储", sublabel: "PostgreSQL + NAS", color: "#7b2ff7" },
+  { type: "dashboard", label: "YYC³ Dashboard", sublabel: "React + PWA", color: "#00ff88" },
+  { type: "terminal", label: "终端集成", sublabel: "CLI / IDE", color: "#ffaa00" },
 ];
 
 // ============================================================
@@ -227,7 +226,7 @@ export function useServiceLoop() {
 
   // 当前阶段索引
   const currentStageIndex = useMemo(() => {
-    if (!currentRun) {return -1;}
+    if (!currentRun) { return -1; }
     return ALL_STAGES.indexOf(currentRun.currentStage);
   }, [currentRun]);
 
@@ -238,11 +237,11 @@ export function useServiceLoop() {
     errorRuns: history.filter((r) => r.overallStatus === "error").length,
     avgDuration: history.length > 0
       ? Math.round(
-          history
-            .filter((r) => r.completedAt)
-            .reduce((acc, r) => acc + ((r.completedAt! - r.startedAt) || 0), 0) /
-          Math.max(history.filter((r) => r.completedAt).length, 1)
-        )
+        history
+          .filter((r) => r.completedAt)
+          .reduce((acc, r) => acc + ((r.completedAt! - r.startedAt) || 0), 0) /
+        Math.max(history.filter((r) => r.completedAt).length, 1)
+      )
       : 0,
   }), [history]);
 
@@ -303,7 +302,7 @@ export function useServiceLoop() {
   // 执行完整闭环
   const startLoop = useCallback(
     async (trigger: "manual" | "auto" | "alert" = "manual") => {
-      if (isRunning) {return;}
+      if (isRunning) { return; }
 
       abortRef.current = false;
       setIsRunning(true);
@@ -339,8 +338,8 @@ export function useServiceLoop() {
         toast.success("✅ 闭环流程完成", {
           description: `总耗时 ${((run.completedAt! - run.startedAt) / 1000).toFixed(1)}s`,
         });
-      } catch (err: any) {
-        if (err.message === "ABORTED") {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.message === "ABORTED") {
           run = { ...run, overallStatus: "error", completedAt: Date.now() };
           setCurrentRun(run);
           toast.info("闭环流程已中止");

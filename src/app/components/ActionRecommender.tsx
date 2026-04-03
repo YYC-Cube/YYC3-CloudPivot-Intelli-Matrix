@@ -4,17 +4,16 @@
  * 操作推荐引擎 · 展示 AI 推荐操作列表
  */
 
-import React from "react";
 import {
-  CheckCircle, XCircle, Zap, Bot, ArrowRight,
+  CheckCircle, Zap, Bot, ArrowRight,
   Shield, Loader2,
 } from "lucide-react";
 import type { AIRecommendation } from "../types";
 
 const impactConfig: Record<string, { color: string; label: string }> = {
-  high:   { color: "#00ff88", label: "高影响" },
+  high: { color: "#00ff88", label: "高影响" },
   medium: { color: "#ffaa00", label: "中影响" },
-  low:    { color: "#00d4ff", label: "低影响" },
+  low: { color: "#00d4ff", label: "低影响" },
 };
 
 interface ActionRecommenderProps {
@@ -102,7 +101,7 @@ export function ActionRecommender({
                     onClick={() => onDismiss(rec.id)}
                     className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.6)] hover:bg-[rgba(0,212,255,0.04)] transition-all"
                     style={{ fontSize: "0.65rem" }}
-                    data-testid={`dismiss-rec-${rec.id}`}
+                    data-testid={`dismiss-${rec.id}`}
                   >
                     忽略
                   </button>

@@ -4,7 +4,7 @@
  * @author: YanYuCloudCube Team
  * @version: v1.0.0
  * @created: 2026-03-23
- * @updated: 2026-03-23
+ * @updated: 2026-03-28
  * @status: active
  * @tags: [ide],[layout],[css]
  */
@@ -15,16 +15,20 @@
   display: flex;
   flex-direction: column;
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  overflow: hidden;
 }
 
 .workspace-content {
   flex: 1;
   padding: 16px;
   overflow: hidden;
+  position: relative;
 }
 
 .panel-container {
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-container.active {
@@ -37,20 +41,26 @@
 
 .panel {
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .panel.maximized {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
   z-index: 9999;
   border-radius: 0;
 }
 
 .panel-header {
   user-select: none;
+  flex-shrink: 0;
 }
 
 .panel-header:hover {
@@ -62,8 +72,15 @@
   border-radius: 4px;
 }
 
+.tab-bar {
+  flex-shrink: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .tab {
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .tab:hover {
@@ -72,6 +89,12 @@
 
 .tab.active {
   font-weight: 500;
+}
+
+.panel-content {
+  flex: 1;
+  overflow: auto;
+  min-height: 0;
 }
 
 .panel-resize-handle:hover {
@@ -85,3 +108,17 @@
 .panel-toolbar button:active {
   transform: scale(0.98);
 }
+
+/* 确保所有面板内容正确显示 */
+.panel-code-content,
+.panel-preview-content,
+.panel-terminal-content,
+.panel-explorer-content,
+.panel-ai-chat-content,
+.panel-database-content,
+.panel-git-content,
+.panel-default-content {
+  height: 100%;
+  overflow: auto;
+}
+

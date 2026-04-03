@@ -1,3 +1,4 @@
+// @vitest-environment jsdom
 /**
  * ArchitectureAudit.test.tsx
  * ===========================
@@ -14,9 +15,7 @@
  * - 已知缺口列表渲染
  */
 
-// @vitest-environment jsdom
-import React from "react";
-import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 
 vi.mock("../hooks/useI18n", () => ({
@@ -42,9 +41,6 @@ describe("ArchitectureAudit", () => {
   afterEach(() => {
     cleanup();
   });
-
-
-  beforeEach(() => vi.clearAllMocks());
 
   describe("页面基础渲染", () => {
     it("应渲染页面标题", () => {

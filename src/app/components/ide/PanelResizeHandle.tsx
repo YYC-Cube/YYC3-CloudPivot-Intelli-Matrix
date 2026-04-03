@@ -9,7 +9,7 @@
  * @tags: [ide],[layout],[panel]
  */
 
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 interface PanelResizeHandleProps {
   direction: 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw';

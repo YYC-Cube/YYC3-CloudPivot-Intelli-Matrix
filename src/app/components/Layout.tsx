@@ -1,15 +1,4 @@
-/**
- * @file: Layout.tsx
- * @description: Layout.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
-import React, { useState, useContext, Suspense } from "react";
+import { useState, useContext, Suspense } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import { Toaster } from "sonner";
 import { TopBar } from "./TopBar";
@@ -123,8 +112,12 @@ export function Layout() {
               )}
 
               {/* Page content */}
-              <div className={`flex-1 overflow-auto ${
-                location.pathname.startsWith("/ai-family")
+              <div className={`flex-1 ${
+                location.pathname.endsWith("/ide")
+                  ? "overflow-hidden relative"
+                  : "overflow-auto"
+              } ${
+                location.pathname.endsWith("/ide") || location.hash.startsWith("#/ai-family")
                   ? ""
                   : view.isMobile ? "px-3 pt-2 pb-[72px]" : view.isTablet ? "px-4 pt-3 pb-[72px]" : "p-4"
               }`}>

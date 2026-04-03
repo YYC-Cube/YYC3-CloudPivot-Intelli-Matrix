@@ -4,11 +4,13 @@
  * 视图切换栏：返回 / 预览 / 代码 / 布局模式 / 搜索 / 更多
  */
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Maximize2, Eye, Code2, Search, MoreHorizontal,
-  PanelRightClose, Columns3, LayoutTemplate,
+  PanelRightClose, Columns3, LayoutGrid,
+  Settings, Keyboard, Info,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../hooks/useI18n";
 import type { IDEViewMode, IDELayoutMode } from "./ide-types";
 
@@ -25,6 +27,8 @@ export function IDEViewSwitcher({
   viewMode, onViewChange, layoutMode, onLayoutModeChange, onSearch, onFullscreen,
 }: IDEViewSwitcherProps) {
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const [showMoreMenu, setShowMoreMenu] = useState(false);
 
   const viewButtons: { mode: IDEViewMode; icon: React.ElementType; label: string; shortcut: string }[] = [
     { mode: "preview", icon: Eye, label: t("ide.preview"), shortcut: "Ctrl+1" },
@@ -34,7 +38,7 @@ export function IDEViewSwitcher({
   const layoutButtons: { mode: IDELayoutMode; icon: React.ElementType; label: string; desc: string }[] = [
     { mode: "edit", icon: PanelRightClose, label: t("ide.editMode"), desc: t("ide.editModeDesc") },
     { mode: "preview", icon: Columns3, label: t("ide.previewMode"), desc: t("ide.previewModeDesc") },
-    { mode: "free", icon: LayoutTemplate, label: t("ide.freeMode"), desc: t("ide.freeModeDesc") },
+    { mode: "free", icon: LayoutGrid, label: t("ide.freeMode"), desc: t("ide.freeModeDesc") },
   ];
 
   return (
@@ -116,12 +120,50 @@ export function IDEViewSwitcher({
           <Search className="w-3 h-3" />
           <span>{t("ide.search")}</span>
         </button>
-        <button
-          className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.6)] hover:bg-[rgba(0,212,255,0.05)] transition-all"
-          title={t("ide.more")}
-        >
-          <MoreHorizontal className="w-3.5 h-3.5" />
-        </button>
+        <div className="relative">
+          <button
+            className="p-1 rounded text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.6)] hover:bg-[rgba(0,212,255,0.05)] transition-all"
+            title={t("ide.more")}
+            onClick={() => setShowMoreMenu((v) => !v)}
+          >
+            <MoreHorizontal className="w-3.5 h-3.5" />
+          </button>
+          {showMoreMenu && (
+            <>
+              <div className="fixed inset-0 z-40" onClick={() => setShowMoreMenu(false)} />
+              <div
+                className="absolute right-0 top-full mt-1 rounded shadow-xl z-50 py-1 min-w-[140px]"
+                style={{
+                  background: "rgba(8,20,45,0.95)",
+                  border: "1px solid rgba(0,180,255,0.2)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <button
+                  onClick={() => { setShowMoreMenu(false); navigate("/settings"); }}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-[0.68rem] text-slate-400 hover:bg-[rgba(30,41,59,0.15)] transition-colors"
+                >
+                  <Settings className="w-3 h-3" />
+                  <span>{t("ide.settings")}</span>
+                </button>
+                <button
+                  onClick={() => { setShowMoreMenu(false); }}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-[0.68rem] text-slate-400 hover:bg-[rgba(30,41,59,0.15)] transition-colors"
+                >
+                  <Keyboard className="w-3 h-3" />
+                  <span>{t("ide.shortcuts")}</span>
+                </button>
+                <button
+                  onClick={() => { setShowMoreMenu(false); }}
+                  className="w-full flex items-center gap-2 px-3 py-1.5 text-[0.68rem] text-slate-400 hover:bg-[rgba(30,41,59,0.15)] transition-colors"
+                >
+                  <Info className="w-3 h-3" />
+                  <span>{t("ide.about")}</span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

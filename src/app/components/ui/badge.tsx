@@ -1,14 +1,3 @@
-/**
- * @file: badge.tsx
- * @description: badge.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";

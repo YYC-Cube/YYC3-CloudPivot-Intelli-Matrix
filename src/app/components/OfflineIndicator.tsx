@@ -7,7 +7,7 @@
  * - 恢复在线时自动淡出
  */
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Wifi, WifiOff, RefreshCw, CloudOff } from "lucide-react";
 import { useOfflineMode } from "../hooks/useOfflineMode";
 
@@ -19,10 +19,10 @@ export function OfflineIndicator() {
   useEffect(() => {
     if (!isOnline) {
       setShow(true);
-      setTimeout(() => setJustReconnected(false), 0);
+      setJustReconnected(false);
     } else if (show) {
       // 刚恢复在线，短暂显示"已恢复连接"
-      setTimeout(() => setJustReconnected(true), 0);
+      setJustReconnected(true);
       const timer = setTimeout(() => {
         setShow(false);
         setJustReconnected(false);

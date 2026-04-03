@@ -5,7 +5,7 @@
  * 显示当前连接模式：在线 / 重连中 / 模拟模式 / 离线
  */
 
-import React from "react";
+
 import { Wifi, WifiOff, RefreshCw, Radio, Zap } from "lucide-react";
 import type { ConnectionState } from "../types";
 
@@ -115,7 +115,6 @@ export function ConnectionStatus({
       {(state === "disconnected" || state === "simulated") && (
         <button
           onClick={onReconnect}
-          data-testid="manual-reconnect-btn"
           className="ml-1 p-1 rounded hover:bg-[rgba(0,212,255,0.1)] transition-all"
           title="手动重连"
         >

@@ -9,10 +9,10 @@
 import React from "react";
 import {
   BrainCircuit, Play, Loader2, Search, Zap,
-  AlertTriangle, CheckCircle2, TrendingUp, TrendingDown,
+  AlertTriangle, TrendingUp, TrendingDown,
   Minus, Target, Lightbulb, Clock, ArrowRight,
   Activity, Eye, BarChart3, ChevronRight,
-  Cpu, MemoryStick, Wifi, HardDrive,
+  Cpu, MemoryStick, Wifi,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
@@ -369,7 +369,6 @@ export function AIDiagnostics() {
         <button
           onClick={startDiagnosis}
           disabled={status === "analyzing"}
-          data-testid="start-diagnosis-button"
           className="flex items-center gap-2 px-5 py-2.5 rounded-lg border transition-all"
           style={{
             fontSize: "0.78rem",

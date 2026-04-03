@@ -18,13 +18,12 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { renderHook, cleanup } from "@testing-library/react";
 import { useKeyboardShortcuts, SHORTCUT_LIST } from "../hooks/useKeyboardShortcuts";
 
 const mockNavigate = vi.fn();
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
 }));
 
@@ -32,7 +31,7 @@ vi.mock("sonner", () => ({
   toast: { info: vi.fn(), success: vi.fn() },
 }));
 
-function fireKeyDown(key: string, opts: Partial<KeyboardEventInit> = {}) {
+function fireKeyDown(key: string, opts: Partial<KeyboardEvent> = {}) {
   const event = new KeyboardEvent("keydown", {
     key,
     bubbles: true,

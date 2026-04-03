@@ -11,8 +11,7 @@
  * - 连接线
  */
 
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
-import React from "react";
+import { describe, it, expect, afterEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 import { LoopStageCard } from "../components/LoopStageCard";
 import type { StageResult, StageMeta } from "../types";

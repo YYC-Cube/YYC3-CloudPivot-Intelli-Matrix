@@ -8,7 +8,7 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import type { NetworkConfig, NetworkInterface, TestStatus, NetworkConfigState } from "../types";
+import type { NetworkConfig, NetworkConfigState } from "../types";
 import {
   loadNetworkConfig,
   saveNetworkConfig,

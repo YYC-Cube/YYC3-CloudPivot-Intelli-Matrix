@@ -10,6 +10,16 @@
 import { useState, useEffect, useCallback } from "react";
 import type { AlertLevel } from "../types";
 
+type NotificationPermission = "default" | "denied" | "granted";
+
+interface NotificationOptions {
+  body?: string;
+  icon?: string;
+  badge?: string;
+  tag?: string;
+  requireInteraction?: boolean;
+}
+
 export function usePushNotifications() {
   const [permission, setPermission] =
     useState<NotificationPermission>("default");
@@ -24,7 +34,7 @@ export function usePushNotifications() {
   }, []);
 
   const requestPermission = useCallback(async () => {
-    if (!supported) {return "denied" as NotificationPermission;}
+    if (!supported) { return "denied" as NotificationPermission; }
     const result = await Notification.requestPermission();
     setPermission(result);
     return result;
@@ -32,7 +42,7 @@ export function usePushNotifications() {
 
   const showNotification = useCallback(
     (title: string, options: NotificationOptions = {}) => {
-      if (permission !== "granted") {return null;}
+      if (permission !== "granted") { return null; }
 
       try {
         return new Notification(title, {

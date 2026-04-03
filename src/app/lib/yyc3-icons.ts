@@ -6,10 +6,10 @@ import type { ReactEventHandler } from "react";
  * YYC³ 图标资源中心化配置 — 与 GitHub 仓库 100% 对齐
  *
  * 仓库: https://github.com/YYC-Cube/Cloudpivotintellimatrix
- * 路径: public/yyc3-icons/
+ * 路径: public/yyc3-badge-icons/
  *
  * GitHub 仓库实际目录结构 (5 平台, 32 PNG):
- *   public/yyc3-icons/
+ *   public/yyc3-badge-icons/
  *   ├── Android/                     (6 files)
  *   │   ├── Play Store.png           512×512   160KB
  *   │   ├── hdpi.png                  72×72    6.7KB
@@ -67,7 +67,7 @@ import type { ReactEventHandler } from "react";
 // ============================================================
 
 const GH_BASE =
-  "https://raw.githubusercontent.com/YYC-Cube/Cloudpivotintellimatrix/main/public/yyc3-icons";
+  "https://raw.githubusercontent.com/YYC-Cube/Cloudpivotintellimatrix/main/public/yyc3-badge-icons";
 
 // ============================================================
 //  本地路径基础 URL (public/ 目录下)

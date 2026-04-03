@@ -11,7 +11,6 @@
  */
 
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import React from "react";
 import {
   addToSyncQueue,
   getSyncQueue,
@@ -20,8 +19,13 @@ import {
   processSyncQueue,
 } from "../lib/backgroundSync";
 
-// Mock localStorage
-const localStorageMock = (() => {
+// Mock navigator.serviceWorker
+Object.defineProperty(globalThis, "navigator", {
+  value: { serviceWorker: undefined },
+  writable: true,
+});
+
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: vi.fn((key: string) => store[key] || null),
@@ -29,19 +33,11 @@ const localStorageMock = (() => {
     removeItem: vi.fn((key: string) => { delete store[key]; }),
     clear: vi.fn(() => { store = {}; }),
   };
-})();
-
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
-
-// Mock navigator.serviceWorker
-Object.defineProperty(globalThis, "navigator", {
-  value: { serviceWorker: undefined },
-  writable: true,
-});
+}
 
 describe("backgroundSync", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 
@@ -55,7 +51,7 @@ describe("backgroundSync", () => {
     });
 
     it("localStorage 数据损坏时应返回空数组", () => {
-      localStorageMock.setItem("yyc3_sync_queue", "not-json!!!");
+      localStorage.setItem("yyc3_sync_queue", "not-json!!!");
       expect(getSyncQueue()).toEqual([]);
     });
   });

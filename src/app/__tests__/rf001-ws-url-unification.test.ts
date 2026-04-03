@@ -9,8 +9,10 @@
  * 3. api-config 是唯一权威 WS 端点配置源
  */
 
-// Mock localStorage
-const localStorageMock = (() => {
+// @vitest-environment jsdom
+import { describe, it, expect, vi, beforeEach } from "vitest";
+
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] || null,
@@ -18,15 +20,11 @@ const localStorageMock = (() => {
     removeItem: (key: string) => { delete store[key]; },
     clear: () => { store = {}; },
   };
-})();
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
-
-// @vitest-environment jsdom
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import React from "react";
+}
 
 describe("RF-001: WebSocket URL 三源统一", () => {
   beforeEach(() => {
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.resetModules();
     localStorage.clear();
   });

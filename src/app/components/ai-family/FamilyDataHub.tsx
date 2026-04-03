@@ -13,27 +13,26 @@
 import React, { useState, useMemo } from "react";
 import {
   Database, Users, Trophy, Heart, MessageCircle,
-  TrendingUp, Award, Clock, BarChart3, Activity,
-  Download, ArrowRight, Star, Zap, Shield,
+  TrendingUp, Award,
+  Download, Shield,
   BookOpen, Gamepad2, Sparkles, CalendarDays,
 } from "lucide-react";
 import { GlassCard } from "../GlassCard";
 import { FadeIn } from "./FadeIn";
 import {
   FAMILY_MEMBERS, FAMILY_ACTIVITIES, SAMPLE_MEMORIES, SAMPLE_MESSAGES,
-  MEMBER_MEDALS, MEDALS, getFamilyDataSummary, hexToRgb,
+  MEMBER_MEDALS, getFamilyDataSummary, hexToRgb,
   type FamilyMember,
-  DEEP_BG,
 } from "./shared";
 
 // ═══ Activity type config ═══
 
 const ACTIVITY_TYPE_CONFIG: Record<string, { icon: React.ElementType; label: string; color: string }> = {
-  game:        { icon: Gamepad2,  label: "游戏",   color: "#06b6d4" },
-  talent:      { icon: Sparkles,  label: "才艺",   color: "#f59e0b" },
-  learning:    { icon: BookOpen,  label: "学习",   color: "#a855f7" },
-  challenge:   { icon: Trophy,    label: "挑战",   color: "#ef4444" },
-  celebration: { icon: Heart,     label: "庆祝",   color: "#ec4899" },
+  game: { icon: Gamepad2, label: "游戏", color: "#06b6d4" },
+  talent: { icon: Sparkles, label: "才艺", color: "#f59e0b" },
+  learning: { icon: BookOpen, label: "学习", color: "#a855f7" },
+  challenge: { icon: Trophy, label: "挑战", color: "#ef4444" },
+  celebration: { icon: Heart, label: "庆祝", color: "#ec4899" },
 };
 
 // ═══ 子组件：指标卡片 ═══
@@ -61,7 +60,7 @@ function MetricCard({ icon: Icon, label, value, color, delay = 0 }: {
 function MemberRanking({ members }: { members: FamilyMember[] }) {
   const sorted = useMemo(() =>
     [...members].sort((a, b) => b.contribution - a.contribution),
-  [members]);
+    [members]);
 
   return (
     <GlassCard className="p-4">
@@ -150,7 +149,7 @@ function ActivityTimeline() {
                   <div className="flex items-center gap-1 mt-2 flex-wrap">
                     {act.participants.slice(0, 6).map(pid => {
                       const m = FAMILY_MEMBERS.find(fm => fm.id === pid);
-                      if (!m) {return null;}
+                      if (!m) { return null; }
                       const rgb = hexToRgb(m.color);
                       return (
                         <div
@@ -212,7 +211,7 @@ function RecentMessages() {
       <div className="space-y-2">
         {msgs.map(msg => {
           const from = FAMILY_MEMBERS.find(m => m.id === msg.from);
-          if (!from) {return null;}
+          if (!from) { return null; }
           const Icon = typeIcons[msg.type] || MessageCircle;
           const color = typeColors[msg.type] || "#3b82f6";
           const rgb = hexToRgb(from.color);
@@ -269,7 +268,7 @@ export function FamilyDataHub() {
   };
 
   return (
-    <div className="min-h-full pb-8 p-4 md:p-6 space-y-6" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen p-4 md:p-6 space-y-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <FadeIn>

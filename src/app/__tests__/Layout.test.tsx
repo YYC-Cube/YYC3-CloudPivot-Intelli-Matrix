@@ -17,17 +17,18 @@
 
 // @vitest-environment jsdom
 import React from "react";
-import { describe, it, expect, vi, beforeEach , afterEach} from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, cleanup } from "@testing-library/react";
 
 // ── Mocks ──
 
 const mockNavigate = vi.fn();
 const mockPathname = "/";
+const mockHash = "";
 
-vi.mock("react-router", () => ({
+vi.mock("react-router-dom", () => ({
   useNavigate: () => mockNavigate,
-  useLocation: () => ({ pathname: mockPathname }),
+  useLocation: () => ({ pathname: mockPathname, hash: mockHash }),
   Outlet: () => <div data-testid="outlet">Page Content</div>,
   createBrowserRouter: vi.fn(),
   RouterProvider: () => <div data-testid="router-provider" />,

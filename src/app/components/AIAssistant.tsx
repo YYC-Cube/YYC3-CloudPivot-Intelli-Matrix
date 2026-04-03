@@ -14,8 +14,8 @@
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import {
-  X, Send, Sparkles, Settings, ChevronUp,
-  Zap, Server, Database, Shield, RotateCcw, Play, Square, Copy, Check,
+  X, Send, Sparkles, Settings,
+  Zap, Server, Database, Shield, RotateCcw, Play, Copy, Check,
   Cpu, HardDrive, Activity, Network, Layers, Key, Sliders, MessageSquare,
   BookOpen, Command, Minimize2, Maximize2, Trash2
 } from "lucide-react";
@@ -48,16 +48,6 @@ interface PromptPreset {
 // ============================================================
 // Constants
 // ============================================================
-
-const INITIAL_TIMESTAMP = Date.now();
-
-let messageIdCounter = 0;
-const generateMessageId = (suffix: string = ""): string => {
-  messageIdCounter += 1;
-  return `msg-${messageIdCounter}${suffix}`;
-};
-
-const getCurrentTimestamp = (): number => Date.now();
 
 const SYSTEM_COMMANDS: SystemCommand[] = [
   { id: "cmd-01", icon: Activity, label: "集群状态总览", desc: "获取所有节点实时状态", category: "cluster", action: "查看当前集群所有节点的运行状态、GPU利用率和温度", color: "#00d4ff" },
@@ -145,7 +135,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
       id: "welcome",
       role: "assistant",
       content: "你好！我是 CP-IM AI 智能助理。\n\n我可以帮你：\n- 📊 查看集群状态和性能报告\n- 🚀 部署和管理推理模型\n- 🔧 执行系统运维操作\n- 🔍 分析日志和诊断问题\n\n请输入指令或点击右侧快捷命令开始操作。",
-      timestamp: INITIAL_TIMESTAMP,
+      timestamp: Date.now(),
     },
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -175,13 +165,13 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
 
   // Send message
   const sendMessage = useCallback(async (content: string) => {
-    if (!content.trim()) {return;}
+    if (!content.trim()) { return; }
 
     const userMsg: ChatMessage = {
-      id: generateMessageId(),
+      id: `msg-${Date.now()}`,
       role: "user",
       content: content.trim(),
-      timestamp: getCurrentTimestamp(),
+      timestamp: Date.now(),
     };
 
     setMessages(prev => [...prev, userMsg]);
@@ -193,10 +183,10 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
 
     const response = generateMockResponse(content);
     const assistantMsg: ChatMessage = {
-      id: generateMessageId("-resp"),
+      id: `msg-${Date.now()}-resp`,
       role: "assistant",
       content: response,
-      timestamp: getCurrentTimestamp(),
+      timestamp: Date.now(),
     };
 
     setMessages(prev => [...prev, assistantMsg]);
@@ -219,16 +209,16 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
     setSystemPrompt(preset.prompt);
     setActiveTab("chat");
     const sysMsg: ChatMessage = {
-      id: generateMessageId("-sys"),
+      id: `sys-${Date.now()}`,
       role: "system",
       content: `✅ 已切换系统角色为「${preset.name}」`,
-      timestamp: getCurrentTimestamp(),
+      timestamp: Date.now(),
     };
     setMessages(prev => [...prev, sysMsg]);
   };
 
   const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text).catch(() => {});
+    navigator.clipboard.writeText(text).catch(() => { });
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -238,7 +228,7 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
       id: "welcome-new",
       role: "assistant",
       content: "对话已清空。请输入新的指令开始操作。",
-      timestamp: getCurrentTimestamp(),
+      timestamp: Date.now(),
     }]);
   };
 
@@ -267,7 +257,6 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        data-testid="ai-assistant-float-btn"
         className="fixed z-[60] group"
         style={{
           bottom: isMobile ? 80 : 24,
@@ -325,7 +314,6 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
             {!isMobile && (
               <button
                 onClick={() => setIsMaximized(!isMaximized)}
-                data-testid="ai-assistant-maximize-btn"
                 className="p-1.5 rounded-lg hover:bg-[rgba(0,212,255,0.1)] transition-all"
                 title={isMaximized ? "还原" : "最大化"}
               >
@@ -336,7 +324,6 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
             )}
             <button
               onClick={() => { setIsOpen(false); setIsMaximized(false); }}
-              data-testid="ai-assistant-close-btn"
               className="p-1.5 rounded-lg hover:bg-[rgba(255,51,102,0.1)] transition-all"
             >
               <X className="w-4 h-4 text-[rgba(0,212,255,0.5)]" />
@@ -355,11 +342,10 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${
-                activeTab === tab.key
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all ${activeTab === tab.key
                   ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
                   : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] border border-transparent"
-              }`}
+                }`}
               style={{ fontSize: "0.72rem" }}
             >
               <tab.icon className="w-3.5 h-3.5" />
@@ -378,17 +364,15 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
               <div className="flex-1 overflow-auto p-3 space-y-3">
                 {messages.map(msg => (
                   <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                    <div className={`max-w-[85%] relative group ${
-                      msg.role === "user"
+                    <div className={`max-w-[85%] relative group ${msg.role === "user"
                         ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.2)] rounded-2xl rounded-br-sm"
                         : msg.role === "system"
                           ? "bg-[rgba(255,221,0,0.08)] border border-[rgba(255,221,0,0.15)] rounded-2xl"
                           : "bg-[rgba(0,40,80,0.3)] border border-[rgba(0,180,255,0.1)] rounded-2xl rounded-bl-sm"
-                    } px-3.5 py-2.5`}>
+                      } px-3.5 py-2.5`}>
                       <div
-                        className={`whitespace-pre-wrap ${
-                          msg.role === "user" ? "text-[#e0f0ff]" : msg.role === "system" ? "text-[#ffdd00]" : "text-[#c0dcf0]"
-                        }`}
+                        className={`whitespace-pre-wrap ${msg.role === "user" ? "text-[#e0f0ff]" : msg.role === "system" ? "text-[#ffdd00]" : "text-[#c0dcf0]"
+                          }`}
                         style={{ fontSize: "0.78rem", lineHeight: "1.6" }}
                       >
                         {msg.content}
@@ -442,7 +426,6 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                   <button
                     onClick={() => sendMessage(inputValue)}
                     disabled={!inputValue.trim() || isTyping}
-                    data-testid="ai-assistant-send-btn"
                     className="p-2.5 rounded-xl bg-gradient-to-r from-[#00d4ff] to-[#0066ff] text-white hover:shadow-[0_0_15px_rgba(0,180,255,0.3)] transition-all disabled:opacity-30 disabled:cursor-not-allowed min-w-[44px] min-h-[44px] flex items-center justify-center"
                   >
                     <Send className="w-4 h-4" />
@@ -460,12 +443,10 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                   <button
                     key={cat.key}
                     onClick={() => setCmdFilter(cat.key)}
-                    data-testid={`cmd-cat-${cat.key}`}
-                    className={`px-2.5 py-1 rounded-lg transition-all ${
-                      cmdFilter === cat.key
+                    className={`px-2.5 py-1 rounded-lg transition-all ${cmdFilter === cat.key
                         ? "bg-[rgba(0,212,255,0.12)] text-[#00d4ff] border border-[rgba(0,212,255,0.25)]"
                         : "text-[rgba(0,212,255,0.4)] hover:text-[#00d4ff] border border-transparent"
-                    }`}
+                      }`}
                     style={{ fontSize: "0.68rem" }}
                   >
                     {cat.label}
@@ -511,11 +492,10 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                 {PROMPT_PRESETS.map(preset => (
                   <div
                     key={preset.id}
-                    className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                      systemPrompt === preset.prompt
+                    className={`p-3 rounded-xl border cursor-pointer transition-all ${systemPrompt === preset.prompt
                         ? "bg-[rgba(0,212,255,0.1)] border-[rgba(0,212,255,0.3)]"
                         : "bg-[rgba(0,40,80,0.15)] border-[rgba(0,180,255,0.08)] hover:border-[rgba(0,180,255,0.2)]"
-                    }`}
+                      }`}
                     onClick={() => applyPreset(preset)}
                   >
                     <div className="flex items-center justify-between mb-1.5">
@@ -604,12 +584,10 @@ export function AIAssistant({ isMobile }: AIAssistantProps) {
                       <button
                         key={model.id}
                         onClick={() => setSelectedModel(model.id)}
-                        data-testid={`model-btn-${model.id}`}
-                        className={`w-full px-3 py-2 rounded-lg text-left transition-all flex items-center gap-2 ${
-                          selectedModel === model.id
+                        className={`w-full px-3 py-2 rounded-lg text-left transition-all flex items-center gap-2 ${selectedModel === model.id
                             ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.3)] text-[#00d4ff]"
                             : "bg-[rgba(0,40,80,0.2)] border border-[rgba(0,180,255,0.08)] text-[rgba(0,212,255,0.5)] hover:border-[rgba(0,180,255,0.2)]"
-                        }`}
+                          }`}
                         style={{ fontSize: "0.72rem" }}
                       >
                         {model.isLocal && (
