@@ -11,10 +11,20 @@ export default defineConfig({
       "figma:asset/*": path.resolve(__dirname, "./public/placeholder-logo.png"),
     },
   },
+  envDir: path.resolve(__dirname, "./.env-CloudPivot-Matrix"),
   test: {
     globals: false,
     include: ["src/app/__tests__/**/*.test.{ts,tsx}"],
     testTimeout: 10000,
+    env: {
+      NODE_ENV: "test",
+      POSTGRES_PASSWORD: "test_password_12345",
+      DB_PASSWORD: "test_password_12345",
+      ZHIPU_API_KEY: "test_zhipu_key_12345",
+      VITE_DEBUG_MODE: "false",
+      OLLAMA_HOST: "host.docker.internal",
+      OLLAMA_PORT: "11435",
+    },
 
     // 使用 jsdom 作为默认环境（React 组件测试需要 DOM）
     environment: "jsdom",

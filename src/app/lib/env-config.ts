@@ -14,7 +14,13 @@
  *
  * 🚨 不可逆变量: 一旦修改可能导致数据不兼容,
  *    必须通过 env() 读取, 禁止硬编码
+ *
+ * @deprecated 此文件已迁移到 src/config/config-loader.ts
+ * @see 使用新的配置管理系统: import { config } from '@/config'
  */
+
+import { config } from '@/config/config-loader';
+import { getOllamaBaseUrl } from './ollama-config';
 
 // ============================================================
 // 类型定义
@@ -30,7 +36,7 @@ export interface EnvConfig {
   API_BASE_URL: string;
   WS_ENDPOINT: string;
   OLLAMA_BASE_URL: string;
-  OLLAMA_PROXY_PATH: string;       // 同源后端代理路径 (解决 CORS)
+  OLLAMA_PROXY_PATH: string;
 
   // ── 存储键前缀 (不可逆 — 修改后旧数据丢失) ──
   STORAGE_PREFIX: string;
@@ -72,17 +78,17 @@ export interface EnvConfig {
 }
 
 // ============================================================
-// 默认值 (仅在 env 和 localStorage 都未设置时使用)
+// 默认值 (从新配置系统获取)
 // ============================================================
 
 const DEFAULTS: EnvConfig = {
-  SYSTEM_NAME: "YYC³ CloudPivot Intelli-Matrix",
-  SYSTEM_VERSION: "3.2.0",
-  SYSTEM_BUILD: "2026.03.07",
+  SYSTEM_NAME: config.app.APP_NAME,
+  SYSTEM_VERSION: config.app.APP_VERSION,
+  SYSTEM_BUILD: "2026.03.26",
 
-  API_BASE_URL: "http://192.168.3.1:3118/api",
-  WS_ENDPOINT: "ws://localhost:3113/ws",
-  OLLAMA_BASE_URL: "http://localhost:11434",
+  API_BASE_URL: config.api.API_BASE_URL,
+  WS_ENDPOINT: config.websocket.WS_URL,
+  OLLAMA_BASE_URL: getOllamaBaseUrl(),
   OLLAMA_PROXY_PATH: "/api/v1/llm/ollama",
 
   STORAGE_PREFIX: "yyc3_",
@@ -90,7 +96,7 @@ const DEFAULTS: EnvConfig = {
   IDB_VERSION: 3,
 
   CLUSTER_ID: "CN-EAST-PROD-01",
-  NODE_ENV: "development",
+  NODE_ENV: import.meta.env.MODE || "development",
 
   DEFAULT_AI_BASE_URL: "https://api.openai.com/v1",
   DEFAULT_AI_MODEL: "gpt-4o",
@@ -100,11 +106,11 @@ const DEFAULTS: EnvConfig = {
 
   SESSION_TIMEOUT_MIN: 30,
   MAX_LOGIN_ATTEMPTS: 5,
-  CORS_ORIGINS: "192.168.1.0/24,10.0.0.0/16,172.16.0.0/12",
+  CORS_ORIGINS: config.security.CORS_ORIGINS,
 
   ENABLE_MOCK_MODE: true,
-  ENABLE_DEBUG: false,
-  ENABLE_PWA: true,
+  ENABLE_DEBUG: config.features.DEBUG_MODE,
+  ENABLE_PWA: config.features.ENABLE_PWA,
   ENABLE_ELECTRON_IPC: false,
 
   DB_POOL_MIN: 2,
@@ -130,20 +136,19 @@ const ENV_STORAGE_KEY = "yyc3_env_config";
 function loadEnvOverrides(): Partial<EnvConfig> {
   const overrides: Partial<EnvConfig> = {};
   try {
-    // 1. 从 Vite 环境变量读取 (VITE_YYC3_ 前缀)
     const metaEnv = (import.meta as unknown as Record<string, unknown>).env as Record<string, string> | undefined;
     if (metaEnv) {
-      if (metaEnv.VITE_YYC3_SYSTEM_NAME)     {overrides.SYSTEM_NAME = metaEnv.VITE_YYC3_SYSTEM_NAME;}
-      if (metaEnv.VITE_YYC3_SYSTEM_VERSION)   {overrides.SYSTEM_VERSION = metaEnv.VITE_YYC3_SYSTEM_VERSION;}
-      if (metaEnv.VITE_YYC3_API_BASE_URL)     {overrides.API_BASE_URL = metaEnv.VITE_YYC3_API_BASE_URL;}
-      if (metaEnv.VITE_YYC3_WS_ENDPOINT)      {overrides.WS_ENDPOINT = metaEnv.VITE_YYC3_WS_ENDPOINT;}
-      if (metaEnv.VITE_YYC3_OLLAMA_BASE_URL)  {overrides.OLLAMA_BASE_URL = metaEnv.VITE_YYC3_OLLAMA_BASE_URL;}
+      if (metaEnv.VITE_YYC3_SYSTEM_NAME) {overrides.SYSTEM_NAME = metaEnv.VITE_YYC3_SYSTEM_NAME;}
+      if (metaEnv.VITE_YYC3_SYSTEM_VERSION) {overrides.SYSTEM_VERSION = metaEnv.VITE_YYC3_SYSTEM_VERSION;}
+      if (metaEnv.VITE_YYC3_API_BASE_URL) {overrides.API_BASE_URL = metaEnv.VITE_YYC3_API_BASE_URL;}
+      if (metaEnv.VITE_YYC3_WS_ENDPOINT) {overrides.WS_ENDPOINT = metaEnv.VITE_YYC3_WS_ENDPOINT;}
+      if (metaEnv.VITE_YYC3_OLLAMA_BASE_URL) {overrides.OLLAMA_BASE_URL = metaEnv.VITE_YYC3_OLLAMA_BASE_URL;}
       if (metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH) {overrides.OLLAMA_PROXY_PATH = metaEnv.VITE_YYC3_OLLAMA_PROXY_PATH;}
-      if (metaEnv.VITE_YYC3_CLUSTER_ID)       {overrides.CLUSTER_ID = metaEnv.VITE_YYC3_CLUSTER_ID;}
-      if (metaEnv.VITE_YYC3_STORAGE_PREFIX)    {overrides.STORAGE_PREFIX = metaEnv.VITE_YYC3_STORAGE_PREFIX;}
-      if (metaEnv.VITE_YYC3_ENABLE_MOCK)       {overrides.ENABLE_MOCK_MODE = metaEnv.VITE_YYC3_ENABLE_MOCK === "true";}
-      if (metaEnv.VITE_YYC3_ENABLE_DEBUG)      {overrides.ENABLE_DEBUG = metaEnv.VITE_YYC3_ENABLE_DEBUG === "true";}
-      if (metaEnv.MODE)                        {overrides.NODE_ENV = metaEnv.MODE;}
+      if (metaEnv.VITE_YYC3_CLUSTER_ID) {overrides.CLUSTER_ID = metaEnv.VITE_YYC3_CLUSTER_ID;}
+      if (metaEnv.VITE_YYC3_STORAGE_PREFIX) {overrides.STORAGE_PREFIX = metaEnv.VITE_YYC3_STORAGE_PREFIX;}
+      if (metaEnv.VITE_YYC3_ENABLE_MOCK) {overrides.ENABLE_MOCK_MODE = metaEnv.VITE_YYC3_ENABLE_MOCK === "true";}
+      if (metaEnv.VITE_YYC3_ENABLE_DEBUG) {overrides.ENABLE_DEBUG = metaEnv.VITE_YYC3_ENABLE_DEBUG === "true";}
+      if (metaEnv.MODE) {overrides.NODE_ENV = metaEnv.MODE;}
     }
   } catch { /* Vite env not available */ }
 
@@ -167,7 +172,6 @@ let _envConfig: EnvConfig | null = null;
 function buildConfig(): EnvConfig {
   const envOverrides = loadEnvOverrides();
   const stored = loadStoredConfig();
-  // 优先级: env > localStorage > defaults
   return { ...DEFAULTS, ...stored, ...envOverrides };
 }
 

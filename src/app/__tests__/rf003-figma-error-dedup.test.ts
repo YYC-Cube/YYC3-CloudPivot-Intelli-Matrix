@@ -10,7 +10,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import React from "react";
 import { isFigmaPlatformError } from "../lib/figma-error-filter";
 
 // Mock yyc3-storage to avoid IndexedDB in test
@@ -20,8 +19,7 @@ vi.mock("../lib/yyc3-storage", () => ({
   idbClear: vi.fn().mockResolvedValue(undefined),
 }));
 
-// Mock localStorage
-const localStorageMock = (() => {
+function createLocalStorageMock() {
   let store: Record<string, string> = {};
   return {
     getItem: vi.fn((key: string) => store[key] || null),
@@ -29,12 +27,11 @@ const localStorageMock = (() => {
     removeItem: vi.fn((key: string) => { delete store[key]; }),
     clear: vi.fn(() => { store = {}; }),
   };
-})();
-Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
+}
 
 describe("RF-003: Figma 错误处理去重", () => {
   beforeEach(() => {
-    localStorageMock.clear();
+    vi.stubGlobal("localStorage", createLocalStorageMock());
     vi.clearAllMocks();
   });
 

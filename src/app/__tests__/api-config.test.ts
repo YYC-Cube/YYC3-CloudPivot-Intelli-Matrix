@@ -26,7 +26,6 @@ Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 
 // 动态 import 以确保每次重新加载模块
 async function loadModule() {

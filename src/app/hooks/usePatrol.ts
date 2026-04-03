@@ -24,7 +24,6 @@ import type {
 // ============================================================
 
 function generateChecks(): PatrolCheckItem[] {
-  const categories = ["节点健康", "存储", "网络", "GPU", "内存", "安全"];
   const checks: PatrolCheckItem[] = [];
 
   const templates: Array<{
@@ -32,105 +31,105 @@ function generateChecks(): PatrolCheckItem[] {
     label: string;
     genValue: () => { value: string; status: CheckStatus; threshold?: string; detail?: string };
   }> = [
-    {
-      category: "节点健康",
-      label: "节点在线率",
-      genValue: () => {
-        const v = 90 + Math.floor(Math.random() * 11);
-        return {
-          value: `${v}%`,
-          status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
-          threshold: "≥95%",
-          detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
-        };
+      {
+        category: "节点健康",
+        label: "节点在线率",
+        genValue: () => {
+          const v = 90 + Math.floor(Math.random() * 11);
+          return {
+            value: `${v}%`,
+            status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
+            threshold: "≥95%",
+            detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
+          };
+        },
       },
-    },
-    {
-      category: "存储",
-      label: "存储容量",
-      genValue: () => {
-        const v = 60 + Math.floor(Math.random() * 35);
-        return {
-          value: `${v}%`,
-          status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-          threshold: "<80%",
-        };
+      {
+        category: "存储",
+        label: "存储容量",
+        genValue: () => {
+          const v = 60 + Math.floor(Math.random() * 35);
+          return {
+            value: `${v}%`,
+            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+            threshold: "<80%",
+          };
+        },
       },
-    },
-    {
-      category: "网络",
-      label: "平均网络延迟",
-      genValue: () => {
-        const v = 10 + Math.floor(Math.random() * 80);
-        return {
-          value: `${v}ms`,
-          status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
-          threshold: "<50ms",
-          detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
-        };
+      {
+        category: "网络",
+        label: "平均网络延迟",
+        genValue: () => {
+          const v = 10 + Math.floor(Math.random() * 80);
+          return {
+            value: `${v}ms`,
+            status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
+            threshold: "<50ms",
+            detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
+          };
+        },
       },
-    },
-    {
-      category: "GPU",
-      label: "GPU 平均利用率",
-      genValue: () => {
-        const v = 40 + Math.floor(Math.random() * 55);
-        return {
-          value: `${v}%`,
-          status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
-          threshold: "<85%",
-        };
+      {
+        category: "GPU",
+        label: "GPU 平均利用率",
+        genValue: () => {
+          const v = 40 + Math.floor(Math.random() * 55);
+          return {
+            value: `${v}%`,
+            status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
+            threshold: "<85%",
+          };
+        },
       },
-    },
-    {
-      category: "GPU",
-      label: "GPU 温度",
-      genValue: () => {
-        const v = 55 + Math.floor(Math.random() * 30);
-        return {
-          value: `${v}°C`,
-          status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
-          threshold: "<75°C",
-        };
+      {
+        category: "GPU",
+        label: "GPU 温度",
+        genValue: () => {
+          const v = 55 + Math.floor(Math.random() * 30);
+          return {
+            value: `${v}°C`,
+            status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
+            threshold: "<75°C",
+          };
+        },
       },
-    },
-    {
-      category: "内存",
-      label: "内存利用率",
-      genValue: () => {
-        const v = 50 + Math.floor(Math.random() * 45);
-        return {
-          value: `${v}%`,
-          status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-          threshold: "<80%",
-        };
+      {
+        category: "内存",
+        label: "内存利用率",
+        genValue: () => {
+          const v = 50 + Math.floor(Math.random() * 45);
+          return {
+            value: `${v}%`,
+            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+            threshold: "<80%",
+          };
+        },
       },
-    },
-    {
-      category: "安全",
-      label: "安全事件",
-      genValue: () => {
-        const v = Math.floor(Math.random() * 5);
-        return {
-          value: `${v} 事件`,
-          status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
-          threshold: "0 事件",
-        };
+      {
+        category: "安全",
+        label: "安全事件",
+        genValue: () => {
+          const v = Math.floor(Math.random() * 5);
+          return {
+            value: `${v} 事件`,
+            status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
+            threshold: "0 事件",
+          };
+        },
       },
-    },
-    {
-      category: "安全",
-      label: "证书有效性",
-      genValue: () => {
-        const days = 10 + Math.floor(Math.random() * 350);
-        return {
-          value: `${days} 天`,
-          status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
-          threshold: ">30 天",
-        };
+      {
+        category: "安全",
+        label: "证书有效性",
+        genValue: () => {
+          const days = 10 + Math.floor(Math.random() * 350);
+          return {
+            value: `${days} 天`,
+            status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
+            threshold: ">30 天",
+          };
+        },
       },
-    },
-  ];
+    ];
 
   templates.forEach((t, i) => {
     const gen = t.genValue();
@@ -201,7 +200,7 @@ export function usePatrol() {
 
   const {
     items: history,
-    setItems: setHistory,
+    setItems: _setHistory,
     prepend: prependHistory,
   } = usePersistedList<PatrolResult>(
     "patrolHistory",

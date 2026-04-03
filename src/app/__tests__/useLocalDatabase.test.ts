@@ -15,7 +15,7 @@
 
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 
 // ── Mock 函数 (定义在 vi.mock 之前) ──
 const { mockToast } = vi.hoisted(() => ({
@@ -23,6 +23,7 @@ const { mockToast } = vi.hoisted(() => ({
     success: vi.fn(),
     info: vi.fn(),
     error: vi.fn(),
+    warning: vi.fn(),
   },
 }));
 

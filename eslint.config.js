@@ -56,6 +56,11 @@ export default [
       react,
       'react-hooks': reactHooks,
     },
+    settings: {
+      react: {
+        version: '19.0',
+      },
+    },
     rules: {
       ...js.configs.recommended.rules,
       ...tseslint.configs.recommended.rules,

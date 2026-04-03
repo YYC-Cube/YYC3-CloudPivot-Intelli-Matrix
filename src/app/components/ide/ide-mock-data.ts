@@ -4,7 +4,7 @@
  * IDE 页面 Mock 数据
  */
 
-import type { IDEFile, IDEProject, ChatMessage, GitChange, GitCommit, GitBranch } from "./ide-types";
+import type { ChatMessage, GitBranch, GitChange, GitCommit, IDEFile, IDEProject } from "./ide-types";
 
 export const MOCK_FILE_TREE: IDEFile[] = [
   {
@@ -62,13 +62,13 @@ export const MOCK_FILE_TREE: IDEFile[] = [
 
 export const MOCK_FILE_CONTENTS: Record<string, string> = {
   "app-tsx": `import React from "react";
-import { RouterProvider } from "react-router";
+import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
 
 export default function App() {
   return <RouterProvider router={router} />;
 }`,
-  "routes-ts": `import { createBrowserRouter } from "react-router";
+  "routes-ts": `import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./components/Layout";
 import { DataMonitoring } from "./components/DataMonitoring";
 
@@ -141,7 +141,7 @@ const DEFAULT_NODES = [
 
 export const nodeStore = createLocalStore("yyc3_nodes", DEFAULT_NODES, "node");`,
   "layout-tsx": `import React from "react";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Toaster } from "sonner";
 
@@ -157,7 +157,7 @@ export function Layout() {
   );
 }`,
   "sidebar-tsx": `import React, { useState } from "react";
-import { NavLink, useLocation } from "react-router";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Monitor, AlertTriangle, Shield, Search,
   Database, Settings, ChevronDown,

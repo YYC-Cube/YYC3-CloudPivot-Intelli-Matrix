@@ -13,10 +13,9 @@ import {
 interface ColorPickerProps {
   value: string; // HEX
   onChange: (hex: string) => void;
-  onClose?: () => void;
 }
 
-export function ColorPicker({ value, onChange, onClose }: ColorPickerProps) {
+export function ColorPicker({ value, onChange }: ColorPickerProps) {
   const [rgb, setRgb] = useState<[number, number, number]>(() => hexToRgb(value));
   const [hsv, setHsv] = useState<[number, number, number]>(() => rgbToHsv(...hexToRgb(value)));
   const [hexInput, setHexInput] = useState(value.replace("#", ""));
@@ -30,11 +29,9 @@ export function ColorPicker({ value, onChange, onClose }: ColorPickerProps) {
   useEffect(() => {
     const newRgb = hexToRgb(value);
     const newHsv = rgbToHsv(...newRgb);
-    setTimeout(() => {
-      setRgb(newRgb);
-      setHsv(newHsv);
-      setHexInput(value.replace("#", ""));
-    }, 0);
+    setRgb(newRgb);
+    setHsv(newHsv);
+    setHexInput(value.replace("#", ""));
   }, [value]);
 
   // ── Draw SV canvas ──

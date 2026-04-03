@@ -15,7 +15,7 @@
  *  yaml/yml → YAML
  */
 
-import React, { useMemo, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";

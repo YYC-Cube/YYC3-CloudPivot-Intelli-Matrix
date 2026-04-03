@@ -12,7 +12,6 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import React from "react";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { QuickActionGrid } from "../components/QuickActionGrid";
 import type { OperationItem } from "../types";

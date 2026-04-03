@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { render, screen, fireEvent , cleanup } from "@testing-library/react";
-import React from "react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import { ReportExporter } from "../components/ReportExporter";
 import { useI18n } from "../hooks/useI18n";

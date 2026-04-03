@@ -4,9 +4,9 @@
  * 操作模板管理组件
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  Plus, Play, Trash2, Clock, ChevronDown, ChevronUp,
+  Plus, Play, Trash2, ChevronDown, ChevronUp,
   FileText, ListOrdered,
 } from "lucide-react";
 import { GlassCard } from "./GlassCard";

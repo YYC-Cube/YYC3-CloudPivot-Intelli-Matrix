@@ -1,21 +1,10 @@
-/**
- * @file: OperationAudit.tsx
- * @description: OperationAudit.tsx description
- * @author: YanYuCloudCube Team
- * @version: v1.0.0
- * @created: 2026-03-19
- * @updated: 2026-03-19
- * @status: active
- * @tags: [tag1],[tag2],[tag3]
- */
-
 import { GlassCard } from "./GlassCard";
 import { useI18n } from "../hooks/useI18n";
 import React, { useState, useMemo, useCallback } from "react";
 import {
-  Search, Filter, Download, Calendar, ChevronDown, ChevronLeft, ChevronRight,
-  CheckCircle2, XCircle, AlertTriangle, Clock, RefreshCw, Eye, MoreHorizontal,
-  User, Shield, Database, Server, Activity, FileJson, Copy, Check
+  Search, Download, ChevronLeft, ChevronRight,
+  CheckCircle2, XCircle, AlertTriangle, Clock, RefreshCw, Eye,
+  User, Shield, Database, Activity, FileJson
 } from "lucide-react";
 import {
   AreaChart, Area, ResponsiveContainer, XAxis, YAxis, CartesianGrid, Tooltip, BarChart, Bar, Cell

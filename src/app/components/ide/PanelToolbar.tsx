@@ -102,6 +102,10 @@ export function PanelToolbar() {
         padding: '8px 12px',
         background: 'rgba(6, 14, 31, 0.95)',
         borderBottom: '1px solid rgba(0, 180, 255, 0.1)',
+        height: '44px',
+        minHeight: '44px',
+        maxHeight: '44px',
+        flexShrink: 0,
       }}
     >
       {/* 添加面板按钮 */}
@@ -190,6 +194,7 @@ export function PanelToolbar() {
 
       {/* 布局设置按钮 */}
       <button
+        onClick={() => {}}
         className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium transition-all text-[rgba(224,240,255,0.7)] hover:bg-[rgba(0,212,255,0.1)] hover:text-[#e0f0ff]"
         title={t('ide.layoutSettings')}
       >

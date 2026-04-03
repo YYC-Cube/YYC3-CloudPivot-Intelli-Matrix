@@ -20,19 +20,12 @@
  *   Esc       关闭搜索/弹窗
  */
 
-import React from "react";
+
 import { IDELayout } from "./ide/IDELayout";
 
 export function IDEPanel() {
   return (
-    <div
-      className="w-full"
-      style={{
-        height: "calc(100% + 2rem)",
-        margin: "-1rem",
-        width: "calc(100% + 2rem)",
-      }}
-    >
+    <div className="absolute inset-0">
       <IDELayout />
     </div>
   );

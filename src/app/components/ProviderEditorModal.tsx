@@ -49,7 +49,7 @@ export function ProviderEditorModal({
   onUpdate,
   onReset,
 }: ProviderEditorModalProps) {
-  const { t } = useI18n();
+  const { t: _t } = useI18n();
   const isEditing = !!editingProvider;
   const isBuiltin = editingProvider?.isBuiltin ?? false;
 

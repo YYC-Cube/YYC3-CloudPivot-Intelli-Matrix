@@ -11,7 +11,7 @@
  * - 分级错误展示（页面级 / 模块级 / 组件级）
  */
 
-import React, { Component, type ErrorInfo, type ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 import { captureError } from "../lib/error-handler";
 import { isFigmaPlatformError } from "../lib/figma-error-filter";
 import { YYC3LogoSvg } from "./YYC3LogoSvg";

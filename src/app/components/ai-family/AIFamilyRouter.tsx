@@ -7,14 +7,15 @@
  * 如果 lazy 加载失败（Figma 沙箱限制），自动 fallback 到静态 import。
  */
 
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense } from "react";
 import { useParams, useLocation } from "react-router-dom";
+import { AIFamilyPage } from "../AIFamilyPage";
 
 // ═══ Lazy 加载（减少初始 bundle 大小）═══
 // 沙箱可能阻止 dynamic import，需要 fallback
 
 const lazyMap: Record<string, () => Promise<{ default: React.ComponentType }>> = {
-  home: () => import("./FamilyHome").then(m => ({ default: m.FamilyHome })),
+  home: () => Promise.resolve({ default: AIFamilyPage }),
   chat: () => import("./FamilyChat").then(m => ({ default: m.FamilyChat })),
   share: () => import("./FamilyShare").then(m => ({ default: m.FamilyShare })),
   learn: () => import("./FamilyLearn").then(m => ({ default: m.FamilyLearn })),
@@ -27,6 +28,7 @@ const lazyMap: Record<string, () => Promise<{ default: React.ComponentType }>> =
   voice: () => import("./FamilyVoiceSystem").then(m => ({ default: m.FamilyVoiceSystem })),
   data: () => import("./FamilyDataHub").then(m => ({ default: m.FamilyDataHub })),
   comm: () => import("./FamilyCommCenter").then(m => ({ default: m.FamilyCommCenter })),
+  ecosystem: () => import("./FamilyEcosystem").then(m => ({ default: m.FamilyEcosystem })),
   settings: () => import("./FamilyUISettings").then(m => ({ default: m.FamilyUISettings })),
 };
 
@@ -36,10 +38,7 @@ const VALID_KEYS = Object.keys(lazyMap);
 
 function LoadingFallback() {
   return (
-    <div
-      className="min-h-screen flex items-center justify-center"
-      style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}
-    >
+    <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-[rgba(0,212,255,0.15)] border-t-[rgba(0,212,255,0.6)] rounded-full animate-spin" />
         <span className="text-white/30" style={{ fontSize: "0.75rem" }}>加载中...</span>
@@ -52,10 +51,7 @@ function LoadingFallback() {
 
 function ErrorFallback({ subpage }: { subpage: string }) {
   return (
-    <div
-      className="min-h-screen flex items-center justify-center"
-      style={{ background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(8,16,35,1) 50%, rgba(6,12,28,1) 100%)" }}
-    >
+    <div className="min-h-screen flex items-center justify-center">
       <div className="text-center">
         <p className="text-amber-400/60" style={{ fontSize: "0.9rem" }}>加载模块失败</p>
         <p className="text-white/30 mt-2" style={{ fontSize: "0.7rem" }}>
@@ -79,7 +75,7 @@ class LazyErrorBoundary extends React.Component<
   { children: React.ReactNode; fallback: React.ReactNode },
   { hasError: boolean }
 > {
-  constructor(props: any) {
+  constructor(props: { children: React.ReactNode; fallback: React.ReactNode }) {
     super(props);
     this.state = { hasError: false };
   }
@@ -87,17 +83,30 @@ class LazyErrorBoundary extends React.Component<
     return { hasError: true };
   }
   render() {
-    if (this.state.hasError) {return this.props.fallback;}
+    if (this.state.hasError) { return this.props.fallback; }
     return this.props.children;
   }
 }
 
 // ═══ URL → subpage key 解析 ═══
 
-function resolveSubpage(pathname: string, paramSubpage?: string): string {
-  if (paramSubpage && VALID_KEYS.includes(paramSubpage)) {return paramSubpage;}
-  const match = pathname.match(/\/ai-family-(\w+)/);
-  if (match && VALID_KEYS.includes(match[1])) {return match[1];}
+function resolveSubpage(pathname: string, hash: string, paramSubpage?: string): string {
+  if (paramSubpage && VALID_KEYS.includes(paramSubpage)) { return paramSubpage; }
+
+  // HashRouter: 从 hash 中提取路径
+  const hashPath = hash.replace(/^#\/?/, '');
+  const hashMatch = hashPath.match(/ai-family\/(\w+)/);
+  if (hashMatch && VALID_KEYS.includes(hashMatch[1])) { return hashMatch[1]; }
+
+  // 也尝试从 pathname 匹配（非 HashRouter 模式）
+  const pathMatch = pathname.match(/\/ai-family\/(\w+)/);
+  if (pathMatch && VALID_KEYS.includes(pathMatch[1])) { return pathMatch[1]; }
+
+  // 检查是否是精确的 /ai-family 路径（没有子页面）
+  if (pathname === '/ai-family' || hashPath === 'ai-family') {
+    return 'home';
+  }
+
   return "home";
 }
 
@@ -116,7 +125,8 @@ function getLazyComponent(key: string): React.LazyExoticComponent<React.Componen
 export function AIFamilyRouter() {
   const { subpage } = useParams<{ subpage: string }>();
   const location = useLocation();
-  const key = resolveSubpage(location.pathname, subpage);
+  const key = resolveSubpage(location.pathname, location.hash, subpage);
+
   const LazyComponent = getLazyComponent(key);
 
   return (

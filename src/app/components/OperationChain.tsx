@@ -5,7 +5,7 @@
  * 展示告警/异常的完整操作链路，当前事件高亮
  */
 
-import React from "react";
+
 import {
   Cpu, Play, AlertTriangle, Zap, Wrench, CheckCircle, Server,
 } from "lucide-react";

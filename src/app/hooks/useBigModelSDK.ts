@@ -387,7 +387,7 @@ export function useBigModelSDK() {
       updateStats(response);
       setConnectionStatus("connected");
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       const latency = Date.now() - start;
       setConnectionStatus("error");
       const friendly = friendlyError(err, configuredModel);
@@ -585,7 +585,7 @@ export function useBigModelSDK() {
       setStreaming(false);
       setStreamingContent("");
       return response;
-    } catch (err: any) {
+    } catch (err: unknown) {
       setConnectionStatus("error");
       const friendly = friendlyError(err, configuredModel);
       setError(friendly);
@@ -694,7 +694,7 @@ export function useBigModelSDK() {
       }
 
       return { success: true, latencyMs: Date.now() - start };
-    } catch (err: any) {
+    } catch (err: unknown) {
       return { success: false, latencyMs: Date.now() - start, error: friendlyError(err, configuredModel) };
     }
   }, []);
@@ -744,8 +744,8 @@ export function useBigModelSDK() {
 // ============================================================
 
 /** 检测 CORS 和网络错误, 返回用户友好的中文提示 */
-function friendlyError(err: any, model: ConfiguredModel): string {
-  const msg = err?.message || String(err);
+function friendlyError(err: unknown, model: ConfiguredModel): string {
+  const msg = err instanceof Error ? err.message : String(err);
 
   // 典型 CORS / 网络拒绝错误
   if (

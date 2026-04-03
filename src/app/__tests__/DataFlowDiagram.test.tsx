@@ -12,7 +12,6 @@
  */
 
 import { describe, it, expect, afterEach } from "vitest";
-import React from "react";
 import { render, screen, cleanup } from "@testing-library/react";
 import { DataFlowDiagram } from "../components/DataFlowDiagram";
 import { DATA_FLOW_NODES, DATA_FLOW_EDGES } from "../hooks/useServiceLoop";

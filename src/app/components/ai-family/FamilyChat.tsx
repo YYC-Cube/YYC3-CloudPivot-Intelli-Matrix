@@ -7,14 +7,13 @@
  * 重构: 使用 shared.ts 共享数据 + 沙箱安全（无 motion/react）
  */
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import {
   MessageCircle, Send, Users, ChevronLeft, Smile,
   Sparkles, Search,
 } from "lucide-react";
-import { GlassCard } from "../GlassCard";
 import { useNavigate } from "react-router-dom";
-import { FAMILY_MEMBERS, AI_RESPONSES, hexToRgb, getMember, DEEP_BG } from "./shared";
+import { FAMILY_MEMBERS, AI_RESPONSES, hexToRgb, getMember } from "./shared";
 
 // ═══ Types ═══
 interface ChatMessage {
@@ -95,12 +94,12 @@ export function FamilyChat() {
   const activeChannelInfo = channels.find(c => c.id === activeChannel)!;
 
   return (
-    <div className="min-h-full pb-8 flex" style={{ background: DEEP_BG }}>
+    <div className="min-h-screen flex">
       {/* ═══ 左侧频道列表 ═══ */}
       <div className="w-64 shrink-0 border-r border-[rgba(0,180,255,0.08)] flex-col bg-[rgba(4,10,22,0.5)] hidden md:flex">
         <div className="p-4 border-b border-[rgba(0,180,255,0.06)]">
           <button
-            onClick={() => nav("/ai-family-home")}
+            onClick={() => nav("/ai-family")}
             className="flex items-center gap-2 text-[rgba(0,212,255,0.5)] hover:text-[#00d4ff] transition-colors mb-3"
             style={{ fontSize: "0.72rem" }}
           >
@@ -159,7 +158,7 @@ export function FamilyChat() {
         {/* 头部 */}
         <div className="shrink-0 px-5 py-3 border-b border-[rgba(0,180,255,0.08)] flex items-center justify-between bg-[rgba(4,10,22,0.5)]">
           <div className="flex items-center gap-3">
-            <button onClick={() => nav("/ai-family-home")} className="md:hidden text-[rgba(0,212,255,0.5)]">
+            <button onClick={() => nav("/ai-family")} className="md:hidden text-[rgba(0,212,255,0.5)]">
               <ChevronLeft className="w-5 h-5" />
             </button>
             <div

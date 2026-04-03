@@ -4,17 +4,16 @@
  * 语言切换器组件 · 支持中文/English 动态切换
  */
 
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Globe } from "lucide-react";
 import { useI18n } from "../hooks/useI18n";
-import type { Locale } from "../types";
 
 interface LanguageSwitcherProps {
   compact?: boolean;
 }
 
 export function LanguageSwitcher({ compact = false }: LanguageSwitcherProps) {
-  const { locale, setLocale, locales, t } = useI18n();
+  const { locale, setLocale, locales } = useI18n();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

@@ -218,24 +218,19 @@ export function IntegratedTerminal({ open, onClose }: IntegratedTerminalProps) {
   const ghost = isGhostMode();
 
   // ── 多 Tab 管理 ──
-  const [tabs, setTabs] = useState<TerminalTabMeta[]>([]);
+  const [tabs, setTabs] = useState<TerminalTabMeta[]>([
+    { id: "tab-1", label: "cpim", createdAt: Date.now() },
+  ]);
   const [activeTabId, setActiveTabId] = useState("tab-1");
-  const tabCounter = useRef(0);
-
-  useEffect(() => {
-    if (tabs.length === 0) {
-      setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
-    }
-  }, []);
+  const tabCounter = useRef(1);
 
   const addTab = useCallback(() => {
     if (tabs.length >= MAX_TABS) {return;}
     tabCounter.current += 1;
     const newId = `tab-${tabCounter.current}`;
-    const now = Date.now();
     setTabs((prev) => [
       ...prev,
-      { id: newId, label: `cpim-${tabCounter.current}`, createdAt: now },
+      { id: newId, label: `cpim-${tabCounter.current}`, createdAt: Date.now() },
     ]);
     setActiveTabId(newId);
   }, [tabs.length]);
@@ -281,10 +276,8 @@ export function IntegratedTerminal({ open, onClose }: IntegratedTerminalProps) {
     // reset if tabs empty
     if (tabs.length === 0) {
       tabCounter.current = 1;
-      setTimeout(() => {
-        setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
-        setActiveTabId("tab-1");
-      }, 0);
+      setTabs([{ id: "tab-1", label: "cpim", createdAt: Date.now() }]);
+      setActiveTabId("tab-1");
     }
   }, [open, tabs.length]);
 
