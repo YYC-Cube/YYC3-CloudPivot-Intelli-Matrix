@@ -18,6 +18,8 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { render, screen, fireEvent, waitFor, cleanup, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 const createMockSettings = () => {
   const settings: Record<string, any> = {
     aiModel: "qwen-72b",
@@ -37,7 +39,6 @@ const createMockSettings = () => {
 
 const mockSettingsStore = createMockSettings();
 
-// Mock hooks BEFORE importing component
 vi.mock("../hooks/useModelProvider", () => ({
   useModelProvider: () => ({
     availableModels: [
@@ -99,7 +100,7 @@ describe("AIAssistant", () => {
     it("面板应渲染 header 和模型名称", () => {
       openPanel();
       expect(screen.getAllByText("AI 智能助理")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("本地 Qwen-72B")[0]).toBeInTheDocument(); // default model
+      expect(screen.getAllByText("本地 Qwen-72B")[0]).toBeInTheDocument();
     });
 
     it("面板应渲染 4 个 Tab", () => {
@@ -112,11 +113,9 @@ describe("AIAssistant", () => {
 
     it("关闭按钮应关闭面板", () => {
       openPanel();
-      // Find close button (X icon)
-      // The last button in header area is close
       const headerBtns = screen.getAllByText("AI 智能助理")[0].closest("div")?.parentElement?.querySelectorAll("button");
       if (headerBtns && headerBtns.length > 0) {
-        fireEvent.click(headerBtns[headerBtns.length - 1]); // last = close
+        fireEvent.click(headerBtns[headerBtns.length - 1]);
         expect(screen.queryByText("AI 智能助理")).not.toBeInTheDocument();
       }
     });
@@ -125,7 +124,6 @@ describe("AIAssistant", () => {
       openPanel();
       const maxBtn = screen.getByTitle("最大化");
       fireEvent.click(maxBtn);
-      // After maximizing, title should change to 还原
       expect(screen.getAllByTitle("还原")[0]).toBeInTheDocument();
     });
   });
@@ -134,7 +132,7 @@ describe("AIAssistant", () => {
     function openChat() {
       render(<AIAssistant isMobile={false} />);
       const buttons = screen.getAllByRole("button");
-      fireEvent.click(buttons[0]); // open panel
+      fireEvent.click(buttons[0]);
     }
 
     it("应渲染欢迎消息", async () => {
@@ -176,205 +174,270 @@ describe("AIAssistant", () => {
   });
 
   describe("Commands Tab", () => {
-    function openCommands() {
+    it("应渲染命令分类过滤按钮", async () => {
+      const user = userEvent.setup();
       render(<AIAssistant isMobile={false} />);
       const buttons = screen.getAllByRole("button");
-      fireEvent.click(buttons[0]); // open panel
+      await user.click(buttons[0]);
+
       const commandTabs = screen.getAllByText("命令");
-      fireEvent.click(commandTabs[0]); // switch to commands tab
-    }
+      await user.click(commandTabs[0]);
 
-    it.skip("应渲染命令分类过滤按钮", async () => {
-      openCommands();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
       await waitFor(() => {
-        expect(screen.getAllByText("全部")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
-      expect(screen.getAllByText("集群")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("模型")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("数据")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("安全")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("监控")[0]).toBeInTheDocument();
+        expect(screen.getAllByText("全部")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      expect(screen.getAllByText("集群")[0]).toBeVisible();
+      expect(screen.getAllByText("模型")[0]).toBeVisible();
+      expect(screen.getAllByText("数据")[0]).toBeVisible();
+      expect(screen.getAllByText("安全")[0]).toBeVisible();
+      expect(screen.getAllByText("监控")[0]).toBeVisible();
     });
 
-    it.skip("应渲染命令列表", async () => {
-      openCommands();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
+    it("应渲染命令列表", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const commandTabs = screen.getAllByText("命令");
+      await user.click(commandTabs[0]);
+
       await waitFor(() => {
-        expect(screen.getAllByText("集群状态总览")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
-      expect(screen.getAllByText("重启异常节点")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("部署模型")[0]).toBeInTheDocument();
+        expect(screen.getAllByText("集群状态总览")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      expect(screen.getAllByText("重启异常节点")[0]).toBeVisible();
+      expect(screen.getAllByText("部署模型")[0]).toBeVisible();
     });
 
-    it.skip("点击分类应过滤命令", async () => {
-      openCommands();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
+    it("点击分类应过滤命令", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const commandTabs = screen.getAllByText("命令");
+      await user.click(commandTabs[0]);
+
       await waitFor(() => {
-        expect(screen.getAllByText("安全")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
-      fireEvent.click(screen.getAllByText("安全")[0]);
+        expect(screen.getAllByText("安全")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      await user.click(screen.getAllByText("安全")[0]);
+
       await waitFor(() => {
-        expect(screen.getAllByText("安全审计扫描")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
+        expect(screen.getAllByText("安全审计扫描")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
       expect(screen.queryByText("集群状态总览")).not.toBeInTheDocument();
     });
 
-    it.skip("点击命令应切换到对话并发送", async () => {
-      openCommands();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
+    it("点击命令应切换到对话并发送", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const commandTabs = screen.getAllByText("命令");
+      await user.click(commandTabs[0]);
+
       await waitFor(() => {
         expect(screen.queryAllByText("集群状态总览").length).toBeGreaterThan(0);
-      }, { timeout: 3000 });
+      }, { timeout: 5000 });
+
       const commandElements = screen.queryAllByText("集群状态总览");
       if (commandElements.length > 0) {
-        fireEvent.click(commandElements[0]);
+        await user.click(commandElements[0]);
       }
-      // Should switch to chat tab
+
       await waitFor(() => {
         const inputElements = screen.queryAllByPlaceholderText(/输入指令/);
         expect(inputElements.length).toBeGreaterThan(0);
-      }, { timeout: 3000 });
+      }, { timeout: 5000 });
     });
   });
 
   describe("Prompts Tab", () => {
-    function openPrompts() {
+    it("应渲染预设列表", async () => {
+      const user = userEvent.setup();
       render(<AIAssistant isMobile={false} />);
       const buttons = screen.getAllByRole("button");
-      fireEvent.click(buttons[0]);
-      fireEvent.click(screen.getAllByText("提示词")[0]);
-    }
+      await user.click(buttons[0]);
 
-    it.skip("应渲染预设列表", () => {
-      openPrompts();
-      expect(screen.getAllByText("运维诊断专家")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("模型调优顾问")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("数据分析师")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("安全审计员")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("智能运维助手")[0]).toBeInTheDocument();
+      const promptsTabs = screen.getAllByText("提示词");
+      await user.click(promptsTabs[0]);
+
+      await waitFor(() => {
+        expect(screen.getAllByText("运维诊断专家")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      expect(screen.getAllByText("模型调优顾问")[0]).toBeVisible();
+      expect(screen.getAllByText("数据分析师")[0]).toBeVisible();
+      expect(screen.getAllByText("安全审计员")[0]).toBeVisible();
+      expect(screen.getAllByText("智能运维助手")[0]).toBeVisible();
     });
 
-    it.skip("应渲染分类标签", () => {
-      openPrompts();
-      expect(screen.getAllByText("运维")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("通用")[0]).toBeInTheDocument();
+    it("应渲染分类标签", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const promptsTabs = screen.getAllByText("提示词");
+      await user.click(promptsTabs[0]);
+
+      await waitFor(() => {
+        expect(screen.getAllByText("运维")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      expect(screen.getAllByText("通用")[0]).toBeVisible();
     });
 
-    it.skip("应渲染自定义提示词编辑器", () => {
-      openPrompts();
-      expect(screen.getAllByText("自定义系统提示词")[0]).toBeInTheDocument();
-      expect(screen.getByPlaceholderText("输入自定义系统提示词...")).toBeInTheDocument();
+    it("应渲染自定义提示词编辑器", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const promptsTabs = screen.getAllByText("提示词");
+      await user.click(promptsTabs[0]);
+
+      await waitFor(() => {
+        expect(screen.getAllByText("自定义系统提示词")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      expect(screen.getByPlaceholderText("输入自定义系统提示词...")).toBeVisible();
     });
 
-    it.skip("点击预设应应用并切换到对话", () => {
-      openPrompts();
-      fireEvent.click(screen.getAllByText("运维诊断专家")[0]);
-      // Should switch to chat tab and add system message
-      expect(screen.getByPlaceholderText(/输入指令/)).toBeInTheDocument();
+    it("点击预设应应用预设", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const promptsTabs = screen.getAllByText("提示词");
+      await user.click(promptsTabs[0]);
+
+      await waitFor(() => {
+        expect(screen.getAllByText("运维诊断专家")[0]).toBeVisible();
+      }, { timeout: 5000 });
+
+      await user.click(screen.getAllByText("运维诊断专家")[0]);
+
+      await waitFor(() => {
+        const checkIcons = document.querySelectorAll('svg.lucide-check');
+        expect(checkIcons.length).toBeGreaterThan(0);
+      }, { timeout: 5000 });
     });
   });
 
   describe("Settings Tab", () => {
-    function openSettings() {
+    it("应渲染 API Key 输入框", async () => {
+      const user = userEvent.setup();
       render(<AIAssistant isMobile={false} />);
       const buttons = screen.getAllByRole("button");
-      fireEvent.click(buttons[0]);
+      await user.click(buttons[0]);
+
       const settingsTabs = screen.getAllByText("配置");
-      fireEvent.click(settingsTabs[0]);
-    }
+      await user.click(settingsTabs[0]);
 
-    it.skip("应渲染 API Key 输入框", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx")).toBeInTheDocument();
-      }, { timeout: 3000 });
+      const input = await screen.findByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx", {}, { timeout: 5000 });
+      expect(input).toBeVisible();
     });
 
-    it.skip("应渲染未配置 Key 提示", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getAllByText(/未配置 Key/)[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
+    it("应渲染未配置 Key 提示", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const hint = await screen.findByText(/未配置 Key/, {}, { timeout: 5000 });
+      expect(hint).toBeVisible();
     });
 
-    it.skip("输入 API Key 后应显示已配置", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx")).toBeInTheDocument();
-      }, { timeout: 3000 });
-      const input = screen.getByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx");
+    it("输入 API Key 后应显示已配置", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const input = await screen.findByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx", {}, { timeout: 5000 });
       fireEvent.change(input, { target: { value: "sk-test123" } });
-      // 检查 updateValue 是否被调用
+
       expect(mockSettingsStore.updateValue).toHaveBeenCalledWith("aiApiKey", "sk-test123");
     });
 
-    it.skip("应渲染模型选择按钮", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getAllByText("GPT-4o")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
-      expect(screen.getAllByText("GPT-3.5 Turbo")[0]).toBeInTheDocument();
-      expect(screen.getAllByText("本地 LLaMA-70B")[0]).toBeInTheDocument();
+    it("应渲染模型选择按钮", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const gpt4Btn = await screen.findByText("GPT-4o", {}, { timeout: 5000 });
+      expect(gpt4Btn).toBeVisible();
+      expect(screen.getAllByText("GPT-3.5 Turbo")[0]).toBeVisible();
+      expect(screen.getAllByText("本地 LLaMA-70B")[0]).toBeVisible();
     });
 
-    it.skip("点击模型应切换选中", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getAllByText("GPT-4o")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
-      const gpt4Btn = screen.getAllByText("GPT-4o")[0].closest("button")!;
-      fireEvent.click(gpt4Btn);
-      // 检查 updateValue 是否被调用
+    it("点击模型应切换选中", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const gpt4Text = await screen.findByText("GPT-4o", {}, { timeout: 5000 });
+      const gpt4Btn = gpt4Text.closest("button")!;
+      await user.click(gpt4Btn);
+
       expect(mockSettingsStore.updateValue).toHaveBeenCalledWith("aiModel", "gpt-4o");
     });
 
-    it.skip("应渲染温度滑块", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
-      await waitFor(() => {
-        expect(screen.getAllByText(/Temperature/)[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
+    it("应渲染温度滑块", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const tempLabel = await screen.findByText(/Temperature/, {}, { timeout: 5000 });
+      expect(tempLabel).toBeVisible();
     });
 
-    it.skip("显示/隐藏 API Key 切换", async () => {
-      openSettings();
-      await act(async () => {
-        await new Promise(resolve => setTimeout(resolve, 100));
-      });
+    it("显示/隐藏 API Key 切换", async () => {
+      const user = userEvent.setup();
+      render(<AIAssistant isMobile={false} />);
+      const buttons = screen.getAllByRole("button");
+      await user.click(buttons[0]);
+
+      const settingsTabs = screen.getAllByText("配置");
+      await user.click(settingsTabs[0]);
+
+      const input = await screen.findByPlaceholderText("sk-xxxxxxxxxxxxxxxxxxxxxxxx", {}, { timeout: 5000 });
+      expect(input).toHaveAttribute("type", "password");
+
+      const container = input.parentElement;
+      const toggleBtn = container?.querySelector("button");
+      expect(toggleBtn).toBeTruthy();
+      await user.click(toggleBtn!);
+
       await waitFor(() => {
-        expect(screen.queryAllByText("显示").length).toBeGreaterThan(0);
-      }, { timeout: 3000 });
-      const toggleBtn = screen.getAllByText("显示")[0];
-      fireEvent.click(toggleBtn);
-      await waitFor(() => {
-        expect(screen.getAllByText("隐藏")[0]).toBeInTheDocument();
-      }, { timeout: 3000 });
+        expect(input).toHaveAttribute("type", "text");
+      }, { timeout: 5000 });
     });
   });
 
@@ -391,7 +454,6 @@ describe("AIAssistant", () => {
       const buttons = screen.getAllByRole("button");
       fireEvent.click(buttons[0]);
       expect(screen.getByText("AI 智能助理")).toBeInTheDocument();
-      // In mobile, no maximize button
       expect(screen.queryByTitle("最大化")).not.toBeInTheDocument();
     });
   });

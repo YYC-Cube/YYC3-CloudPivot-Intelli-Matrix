@@ -96,6 +96,7 @@ if (isJsdom) {
         readText: async () => "",
       },
       writable: true,
+      configurable: true,
     });
   }
 }
