@@ -634,6 +634,120 @@ export function useHostFileSystem() {
     }
   }, []);
 
+  // ── 复制文件 ──
+  const copyFile = useCallback(async (entry: HostFileEntry, targetDirHandle?: FileSystemDirectoryHandle) => {
+    if (entry.kind !== "file" || !entry.handle) { return false; }
+    try {
+      const dirHandle = targetDirHandle || await getCurrentDirHandle();
+      if (!dirHandle) { return false; }
+
+      const file = await (entry.handle as FileSystemFileHandle).getFile();
+      const content = await file.arrayBuffer();
+      
+      const baseName = entry.name.replace(/\.[^.]+$/, "");
+      const ext = entry.name.match(/\.[^.]+$/)?.[0] || "";
+      let newName = `${baseName} (副本)${ext}`;
+      let counter = 1;
+      
+      while (true) {
+        try {
+          await dirHandle.getFileHandle(newName);
+          counter++;
+          newName = `${baseName} (副本 ${counter})${ext}`;
+        } catch {
+          break;
+        }
+      }
+
+      const newHandle = await dirHandle.getFileHandle(newName, { create: true });
+      const writable = await newHandle.createWritable();
+      await writable.write(content);
+      await writable.close();
+
+      await refreshCurrentDir();
+      toast.success(`已复制: ${entry.name} → ${newName}`);
+      return true;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`复制失败: ${msg}`);
+      return false;
+    }
+  }, [getCurrentDirHandle, refreshCurrentDir]);
+
+  // ── 移动文件 ──
+  const moveFile = useCallback(async (entry: HostFileEntry, targetDirHandle?: FileSystemDirectoryHandle) => {
+    if (entry.kind !== "file" || !entry.handle) { return false; }
+    try {
+      const currentDirHandle = await getCurrentDirHandle();
+      if (!currentDirHandle) { return false; }
+
+      const targetHandle = targetDirHandle || currentDirHandle;
+      const file = await (entry.handle as FileSystemFileHandle).getFile();
+      const content = await file.arrayBuffer();
+
+      const newHandle = await targetHandle.getFileHandle(entry.name, { create: true });
+      const writable = await newHandle.createWritable();
+      await writable.write(content);
+      await writable.close();
+
+      await currentDirHandle.removeEntry(entry.name);
+
+      await refreshCurrentDir();
+      toast.success(`已移动: ${entry.name}`);
+      return true;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`移动失败: ${msg}`);
+      return false;
+    }
+  }, [getCurrentDirHandle, refreshCurrentDir]);
+
+  // ── 复制到指定目录 ──
+  const copyToDirectory = useCallback(async (entry: HostFileEntry, targetPath: string) => {
+    if (!rootRef.current || entry.kind !== "file") { return false; }
+    try {
+      const targetHandle = await getDirectoryByPath(rootRef.current, targetPath.split("/").filter(Boolean));
+      if (targetHandle) {
+        return await copyFile(entry, targetHandle);
+      }
+      toast.error("目标目录不存在");
+      return false;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`复制失败: ${msg}`);
+      return false;
+    }
+  }, [copyFile]);
+
+  // ── 移动到指定目录 ──
+  const moveToDirectory = useCallback(async (entry: HostFileEntry, targetPath: string) => {
+    if (!rootRef.current || entry.kind !== "file") { return false; }
+    try {
+      const targetHandle = await getDirectoryByPath(rootRef.current, targetPath.split("/").filter(Boolean));
+      if (targetHandle) {
+        return await moveFile(entry, targetHandle);
+      }
+      toast.error("目标目录不存在");
+      return false;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      toast.error(`移动失败: ${msg}`);
+      return false;
+    }
+  }, [moveFile]);
+
+  // 辅助函数：根据路径获取目录句柄
+  const getDirectoryByPath = async (root: FileSystemDirectoryHandle, pathParts: string[]): Promise<FileSystemDirectoryHandle | null> => {
+    if (pathParts.length === 0) { return root; }
+    try {
+      const [first, ...rest] = pathParts;
+      const subDir = await root.getDirectoryHandle(first);
+      return getDirectoryByPath(subDir, rest);
+    } catch {
+      return null;
+    }
+  };
+
   // ── 上传文件 ──
   const uploadFiles = useCallback(async (files: FileList | File[]) => {
     const dirHandle = await getCurrentDirHandle();
@@ -757,6 +871,10 @@ export function useHostFileSystem() {
     deleteEntry,
     renameEntry,
     downloadFile,
+    copyFile,
+    moveFile,
+    copyToDirectory,
+    moveToDirectory,
     uploadFiles,
     searchFiles,
     restoreVersion,

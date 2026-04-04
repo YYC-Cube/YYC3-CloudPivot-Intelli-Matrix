@@ -74,6 +74,7 @@ export function ModelProviderPanel() {
     active: { color: "#00ff88", icon: CheckCircle, label: t("modelProvider.statusActive") },
     error: { color: "#ff3366", icon: AlertCircle, label: t("modelProvider.statusError") },
     unchecked: { color: "rgba(0,212,255,0.3)", icon: HelpCircle, label: t("modelProvider.statusUnchecked") },
+    checking: { color: "#ffaa00", icon: RefreshCw, label: "测试中..." },
   };
 
   // Handle export

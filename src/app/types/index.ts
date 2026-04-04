@@ -824,7 +824,8 @@ export interface ConfiguredModel {
   proxyUrl?: string;          // CORS 代理 URL (可选, 解决浏览器跨域限制)
   createdAt: number;
   lastUsed: number | null;
-  status: "active" | "error" | "unchecked";
+  status: "active" | "error" | "unchecked" | "checking";
+  latency?: number;           // 连接延迟 (ms)
 }
 
 /** Ollama 本地模型标签 (来自 /api/tags) */

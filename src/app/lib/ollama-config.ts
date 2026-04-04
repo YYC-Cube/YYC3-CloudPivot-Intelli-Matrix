@@ -442,3 +442,273 @@ export function getOllamaBaseUrl(): string {
   // 向后兼容：使用环境变量
   return `http://${config.ai.OLLAMA_HOST}:${config.ai.OLLAMA_PORT}`;
 }
+
+// ============================================================
+// 智能自测自连功能
+// ============================================================
+
+let autoDiscoveryTimer: ReturnType<typeof setInterval> | null = null;
+let healthCheckTimer: ReturnType<typeof setInterval> | null = null;
+
+/**
+ * 启动自动发现服务
+ */
+export function startAutoDiscovery(intervalMs: number = DEFAULT_DISCOVERY_INTERVAL): void {
+  if (autoDiscoveryTimer) {
+    clearInterval(autoDiscoveryTimer);
+  }
+
+  // 立即执行一次
+  performAutoDiscovery();
+
+  // 定时执行
+  autoDiscoveryTimer = setInterval(performAutoDiscovery, intervalMs);
+}
+
+/**
+ * 停止自动发现服务
+ */
+export function stopAutoDiscovery(): void {
+  if (autoDiscoveryTimer) {
+    clearInterval(autoDiscoveryTimer);
+    autoDiscoveryTimer = null;
+  }
+}
+
+/**
+ * 执行自动发现
+ */
+async function performAutoDiscovery(): Promise<void> {
+  const config = loadConfig();
+  if (!config.autoDiscovery) {return;}
+
+  try {
+    const discovered = await discoverOllamaServices();
+    const existingIds = new Set(config.instances.map(i => i.id));
+    const newInstances = discovered.filter(d => !existingIds.has(d.id));
+
+    if (newInstances.length > 0) {
+      newInstances.forEach(instance => {
+        config.instances.push(instance);
+      });
+      saveConfig();
+
+      // 如果没有激活实例，自动激活第一个在线实例
+      if (!config.activeInstanceId) {
+        const onlineInstance = newInstances.find(i => i.status === 'online');
+        if (onlineInstance) {
+          config.activeInstanceId = onlineInstance.id;
+          saveConfig();
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Auto discovery failed:', error);
+  }
+}
+
+/**
+ * 启动健康检查服务
+ */
+export function startHealthCheck(intervalMs: number = 30000): void {
+  if (healthCheckTimer) {
+    clearInterval(healthCheckTimer);
+  }
+
+  // 立即执行一次
+  performHealthCheck();
+
+  // 定时执行
+  healthCheckTimer = setInterval(performHealthCheck, intervalMs);
+}
+
+/**
+ * 停止健康检查服务
+ */
+export function stopHealthCheck(): void {
+  if (healthCheckTimer) {
+    clearInterval(healthCheckTimer);
+    healthCheckTimer = null;
+  }
+}
+
+/**
+ * 执行健康检查
+ */
+async function performHealthCheck(): Promise<void> {
+  const config = loadConfig();
+
+  for (const instance of config.instances) {
+    try {
+      const response = await fetch(`${instance.baseUrl}/api/tags`, {
+        method: 'GET',
+        signal: AbortSignal.timeout(3000),
+      });
+
+      const isOnline = response.ok;
+      instance.status = isOnline ? 'online' : 'offline';
+      instance.lastHealthCheck = new Date();
+    } catch {
+      instance.status = 'offline';
+      instance.lastHealthCheck = new Date();
+    }
+  }
+
+  saveConfig();
+}
+
+/**
+ * 智能连接 - 自动选择最佳实例
+ */
+export async function smartConnect(): Promise<OllamaInstance | null> {
+  const config = loadConfig();
+
+  // 如果已有激活实例且在线，直接返回
+  if (config.activeInstanceId) {
+    const active = config.instances.find(i => i.id === config.activeInstanceId);
+    if (active && active.status === 'online') {
+      return active;
+    }
+  }
+
+  // 执行一次快速扫描
+  const discovered = await discoverOllamaServices();
+
+  // 合并到配置中
+  for (const instance of discovered) {
+    const existing = config.instances.find(i => i.baseUrl === instance.baseUrl);
+    if (!existing) {
+      config.instances.push(instance);
+    } else {
+      existing.status = instance.status;
+      existing.lastHealthCheck = instance.lastHealthCheck;
+    }
+  }
+
+  // 选择第一个在线实例
+  const onlineInstance = config.instances.find(i => i.status === 'online');
+  if (onlineInstance) {
+    config.activeInstanceId = onlineInstance.id;
+    saveConfig();
+    return onlineInstance;
+  }
+
+  saveConfig();
+  return null;
+}
+
+/**
+ * 获取连接状态摘要
+ */
+export function getConnectionSummary(): {
+  totalInstances: number;
+  onlineInstances: number;
+  offlineInstances: number;
+  activeInstance: OllamaInstance | null;
+  autoDiscoveryEnabled: boolean;
+} {
+  const config = loadConfig();
+  const onlineInstances = config.instances.filter(i => i.status === 'online').length;
+  const offlineInstances = config.instances.filter(i => i.status === 'offline').length;
+
+  return {
+    totalInstances: config.instances.length,
+    onlineInstances,
+    offlineInstances,
+    activeInstance: getActiveOllamaInstance(),
+    autoDiscoveryEnabled: config.autoDiscovery,
+  };
+}
+
+/**
+ * 测试模型推理
+ */
+export async function testModelInference(
+  instance: OllamaInstance,
+  modelName: string,
+  prompt: string = "Hello"
+): Promise<{ success: boolean; response?: string; latency?: number; error?: string }> {
+  const startTime = Date.now();
+
+  try {
+    const response = await fetch(`${instance.baseUrl}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: modelName,
+        prompt,
+        stream: false,
+        options: {
+          num_predict: 10,
+        },
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+
+    const latency = Date.now() - startTime;
+
+    if (!response.ok) {
+      return { success: false, error: `HTTP ${response.status}`, latency };
+    }
+
+    const data = await response.json();
+    return { success: true, response: data.response, latency };
+  } catch (error) {
+    const latency = Date.now() - startTime;
+    return { success: false, error: error instanceof Error ? error.message : String(error), latency };
+  }
+}
+
+/**
+ * 自动配置 Ollama（一键设置）
+ */
+export async function autoConfigureOllama(): Promise<{
+  success: boolean;
+  instance?: OllamaInstance;
+  models?: OllamaModel[];
+  error?: string;
+}> {
+  try {
+    // 1. 智能连接
+    const instance = await smartConnect();
+    if (!instance) {
+      return { success: false, error: '未找到可用的 Ollama 服务' };
+    }
+
+    // 2. 获取模型列表
+    const models = await fetchOllamaModels(instance);
+
+    // 3. 启动自动发现和健康检查
+    startAutoDiscovery();
+    startHealthCheck();
+
+    return { success: true, instance, models };
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : String(error) };
+  }
+}
+
+/**
+ * 设置自动发现开关
+ */
+export function setAutoDiscovery(enabled: boolean): void {
+  const config = loadConfig();
+  config.autoDiscovery = enabled;
+  saveConfig();
+
+  if (enabled) {
+    startAutoDiscovery();
+  } else {
+    stopAutoDiscovery();
+  }
+}
+
+/**
+ * 清理所有定时器
+ */
+export function cleanup(): void {
+  stopAutoDiscovery();
+  stopHealthCheck();
+}

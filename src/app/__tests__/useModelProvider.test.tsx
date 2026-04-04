@@ -17,7 +17,31 @@ const localStorageMock = (() => {
 })();
 Object.defineProperty(globalThis, "localStorage", { value: localStorageMock });
 
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+// Mock fetch for testConnection
+globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+  if (url.includes("/chat/completions") || url.includes("/api/generate")) {
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({ choices: [{ message: { content: "OK" } }] }),
+      text: () => Promise.resolve("OK"),
+    });
+  }
+  if (url.includes("/api/tags")) {
+    return Promise.resolve({
+      ok: true,
+      status: 200,
+      json: () => Promise.resolve({
+        models: [
+          { name: "test-model", size: 1000000, digest: "abc123", details: {} },
+        ],
+      }),
+    });
+  }
+  return Promise.resolve({ ok: false, status: 404 });
+}) as typeof fetch;
+
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { renderHook, act, cleanup } from "@testing-library/react";
 import { useModelProvider, MODEL_PROVIDERS } from "../hooks/useModelProvider";
 

@@ -374,6 +374,103 @@ export function useLocalFileSystem() {
     return count;
   }, [fileTree, persistTree]);
 
+  /** 复制文件/目录 */
+  const copyItem = useCallback((id: string, targetPath: string) => {
+    const tree = JSON.parse(JSON.stringify(fileTree)) as FileItem[];
+    const item = findItem(tree, id);
+    if (!item) {
+      toast.error("找不到源文件");
+      return false;
+    }
+
+    function findByPath(items: FileItem[], p: string): FileItem | null {
+      for (const it of items) {
+        if (it.path === p && it.type === "directory") { return it; }
+        if (it.children) {
+          const found = findByPath(it.children, p);
+          if (found) { return found; }
+        }
+      }
+      return null;
+    }
+
+    const targetDir = targetPath === "~/.yyc3-cloudpivot" ? null : findByPath(tree, targetPath);
+    const newName = `${item.name} (副本)`;
+
+    const copiedItem: FileItem = {
+      ...JSON.parse(JSON.stringify(item)),
+      id: `${item.type === "file" ? "f" : "d"}-${Date.now()}`,
+      name: newName,
+      path: `${targetPath}/${newName}`,
+      modifiedAt: Date.now(),
+    };
+
+    if (targetDir) {
+      if (!targetDir.children) { targetDir.children = []; }
+      targetDir.children.push(copiedItem);
+    } else {
+      tree.push(copiedItem);
+    }
+
+    persistTree(tree);
+    toast.success(`已复制: ${item.name} → ${targetPath}`);
+    return true;
+  }, [fileTree, persistTree]);
+
+  /** 移动文件/目录 */
+  const moveItem = useCallback((id: string, targetPath: string) => {
+    const tree = JSON.parse(JSON.stringify(fileTree)) as FileItem[];
+    const item = findItem(tree, id);
+    if (!item) {
+      toast.error("找不到源文件");
+      return false;
+    }
+
+    function findByPath(items: FileItem[], p: string): FileItem | null {
+      for (const it of items) {
+        if (it.path === p && it.type === "directory") { return it; }
+        if (it.children) {
+          const found = findByPath(it.children, p);
+          if (found) { return found; }
+        }
+      }
+      return null;
+    }
+
+    const targetDir = targetPath === "~/.yyc3-cloudpivot" ? null : findByPath(tree, targetPath);
+
+    if (targetDir && targetDir.path.startsWith(item.path)) {
+      toast.error("不能将目录移动到其子目录中");
+      return false;
+    }
+
+    removeItem(tree, id);
+
+    item.path = `${targetPath}/${item.name}`;
+    item.modifiedAt = Date.now();
+
+    if (targetDir) {
+      if (!targetDir.children) { targetDir.children = []; }
+      targetDir.children.push(item);
+    } else {
+      tree.push(item);
+    }
+
+    persistTree(tree);
+    toast.success(`已移动: ${item.name} → ${targetPath}`);
+    return true;
+  }, [fileTree, persistTree]);
+
+  /** 复制到当前目录 */
+  const copyToCurrent = useCallback((id: string) => {
+    return copyItem(id, currentPath);
+  }, [copyItem, currentPath]);
+
+  /** 移动到当前目录 */
+  const moveToCurrent = useCallback((id: string) => {
+    return moveItem(id, currentPath);
+  }, [moveItem, currentPath]);
+
   /** 重置文件树 */
   const resetFileTree = useCallback(() => {
     const defaults = JSON.parse(JSON.stringify(DEFAULT_FILE_TREE));
@@ -550,6 +647,7 @@ export function useLocalFileSystem() {
     navigateTo, selectFile, goUp, formatSize,
     // CRUD
     addFile, addDirectory, renameItem, deleteItem, deleteBatch,
+    copyItem, moveItem, copyToCurrent, moveToCurrent,
     resetFileTree, exportFileTree, importFileTree,
     // 文件内容
     getFileContent, saveFileContent,

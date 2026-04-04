@@ -459,14 +459,302 @@ export function useModelProvider() {
     setConfiguredModels((prev) => prev.filter((m) => m.id !== id));
   }, []);
 
-  // ========== 测试连接 (Mock) ==========
-  const testConnection = useCallback(async (id: string) => {
-    setConfiguredModels((prev) =>
-      prev.map((m) =>
-        m.id === id ? { ...m, status: "active" as const, lastUsed: Date.now() } : m
-      )
-    );
+  // ========== 测试连接 (真实测试) ==========
+  const testConnection = useCallback(async (id: string): Promise<{ success: boolean; message: string; latency?: number }> => {
+    const model = configuredModels.find((m) => m.id === id);
+    if (!model) {
+      return { success: false, message: "模型配置不存在" };
+    }
+
+    const provider = providers.find((p) => p.id === model.providerId);
+    if (!provider) {
+      return { success: false, message: "服务商不存在" };
+    }
+
+    const startTime = Date.now();
+
+    try {
+      // 更新状态为测试中
+      setConfiguredModels((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, status: "checking" as const } : m))
+      );
+
+      // 构建测试请求
+      const baseUrl = model.baseUrl || provider.baseUrl;
+      let testUrl = "";
+      let headers: Record<string, string> = {};
+      let body: Record<string, unknown> = {};
+
+      if (provider.id === "ollama") {
+        // Ollama 测试连接
+        testUrl = `${baseUrl}/api/generate`;
+        body = {
+          model: model.model,
+          prompt: "Hi",
+          stream: false,
+          options: { num_predict: 1 },
+        };
+      } else {
+        // OpenAI 兼容 API 测试
+        testUrl = `${baseUrl}/chat/completions`;
+        headers = {
+          "Content-Type": "application/json",
+        };
+        if (provider.authType === "bearer") {
+          headers["Authorization"] = `Bearer ${model.apiKey}`;
+        } else {
+          headers["Authorization"] = `Bearer ${model.apiKey}`;
+        }
+        body = {
+          model: model.model,
+          messages: [{ role: "user", content: "Hi" }],
+          max_tokens: 1,
+        };
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+      const response = await fetch(testUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+        signal: controller.signal,
+      });
+
+      clearTimeout(timeoutId);
+      const latency = Date.now() - startTime;
+
+      if (response.ok) {
+        setConfiguredModels((prev) =>
+          prev.map((m) =>
+            m.id === id ? { ...m, status: "active" as const, lastUsed: Date.now(), latency } : m
+          )
+        );
+        return { success: true, message: `连接成功 (${latency}ms)`, latency };
+      } else {
+        const errorText = await response.text().catch(() => "Unknown error");
+        setConfiguredModels((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, status: "error" as const } : m))
+        );
+        return { success: false, message: `HTTP ${response.status}: ${errorText.slice(0, 100)}` };
+      }
+    } catch (err: unknown) {
+      const latency = Date.now() - startTime;
+      const message = err instanceof Error ? err.message : String(err);
+      setConfiguredModels((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, status: "error" as const } : m))
+      );
+      return { success: false, message: `连接失败: ${message}`, latency };
+    }
+  }, [configuredModels, providers]);
+
+  // ========== 批量测试所有模型连接 ==========
+  const testAllConnections = useCallback(async () => {
+    const results: Record<string, { success: boolean; message: string }> = {};
+    for (const model of configuredModels) {
+      results[model.id] = await testConnection(model.id);
+    }
+    return results;
+  }, [configuredModels, testConnection]);
+
+  // ========== 缓存机制 ==========
+  const [responseCache, setResponseCache] = useState<Map<string, { response: string; timestamp: number }>>(new Map());
+  const CACHE_TTL = 5 * 60 * 1000; // 5分钟缓存
+
+  const getCachedResponse = useCallback((cacheKey: string): string | null => {
+    const cached = responseCache.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return cached.response;
+    }
+    return null;
+  }, [responseCache]);
+
+  const setCachedResponse = useCallback((cacheKey: string, response: string) => {
+    setResponseCache((prev) => {
+      const next = new Map(prev);
+      next.set(cacheKey, { response, timestamp: Date.now() });
+      // 清理过期缓存
+      for (const [key, value] of next.entries()) {
+        if (Date.now() - value.timestamp > CACHE_TTL) {
+          next.delete(key);
+        }
+      }
+      return next;
+    });
   }, []);
+
+  const clearCache = useCallback(() => {
+    setResponseCache(new Map());
+  }, []);
+
+  // ========== 限流机制 ==========
+  const [requestTimestamps, setRequestTimestamps] = useState<number[]>([]);
+  const RATE_LIMIT_WINDOW = 60000; // 1分钟窗口
+  const RATE_LIMIT_MAX = 60; // 每分钟最多60次请求
+
+  const checkRateLimit = useCallback((): { allowed: boolean; remaining: number; resetIn: number } => {
+    const now = Date.now();
+    const windowStart = now - RATE_LIMIT_WINDOW;
+    const recentRequests = requestTimestamps.filter((t) => t > windowStart);
+    const remaining = Math.max(0, RATE_LIMIT_MAX - recentRequests.length);
+    const oldestInWindow = recentRequests[0];
+    const resetIn = oldestInWindow ? oldestInWindow + RATE_LIMIT_WINDOW - now : 0;
+
+    if (recentRequests.length >= RATE_LIMIT_MAX) {
+      return { allowed: false, remaining: 0, resetIn };
+    }
+
+    return { allowed: true, remaining: remaining - 1, resetIn };
+  }, [requestTimestamps]);
+
+  const recordRequest = useCallback(() => {
+    setRequestTimestamps((prev) => {
+      const now = Date.now();
+      const windowStart = now - RATE_LIMIT_WINDOW;
+      const filtered = prev.filter((t) => t > windowStart);
+      return [...filtered, now];
+    });
+  }, []);
+
+  // ========== 降级机制 ==========
+  const [fallbackChain, setFallbackChain] = useState<string[]>([]);
+  const [currentModelIndex, setCurrentModelIndex] = useState(0);
+
+  const setModelFallbackChain = useCallback((modelIds: string[]) => {
+    setFallbackChain(modelIds);
+    setCurrentModelIndex(0);
+  }, []);
+
+  const getNextFallbackModel = useCallback((): ConfiguredModel | null => {
+    if (fallbackChain.length === 0) {return null;}
+    const nextIndex = currentModelIndex + 1;
+    if (nextIndex >= fallbackChain.length) {return null;}
+    setCurrentModelIndex(nextIndex);
+    return configuredModels.find((m) => m.id === fallbackChain[nextIndex]) || null;
+  }, [fallbackChain, currentModelIndex, configuredModels]);
+
+  const getCurrentModel = useCallback((): ConfiguredModel | null => {
+    if (fallbackChain.length === 0) {return configuredModels[0] || null;}
+    return configuredModels.find((m) => m.id === fallbackChain[currentModelIndex]) || null;
+  }, [fallbackChain, currentModelIndex, configuredModels]);
+
+  // ========== 智能调用 (带缓存、限流、降级) ==========
+  const invokeModel = useCallback(async (
+    prompt: string,
+    options?: {
+      modelId?: string;
+      useCache?: boolean;
+      skipRateLimit?: boolean;
+      onFallback?: (fromModel: string, toModel: string) => void;
+    }
+  ): Promise<{ success: boolean; response?: string; error?: string; cached?: boolean; model?: string }> => {
+    const { modelId, useCache = true, skipRateLimit = false, onFallback } = options || {};
+
+    // 限流检查
+    if (!skipRateLimit) {
+      const rateCheck = checkRateLimit();
+      if (!rateCheck.allowed) {
+        return { success: false, error: `请求过于频繁，请 ${Math.ceil(rateCheck.resetIn / 1000)} 秒后重试` };
+      }
+    }
+
+    // 缓存检查
+    const cacheKey = `${modelId || "default"}:${prompt}`;
+    if (useCache) {
+      const cached = getCachedResponse(cacheKey);
+      if (cached) {
+        return { success: true, response: cached, cached: true };
+      }
+    }
+
+    // 获取模型
+    const targetModel = modelId
+      ? configuredModels.find((m) => m.id === modelId)
+      : getCurrentModel();
+
+    if (!targetModel) {
+      return { success: false, error: "没有可用的模型配置" };
+    }
+
+    const provider = providers.find((p) => p.id === targetModel.providerId);
+    if (!provider) {
+      return { success: false, error: "服务商不存在" };
+    }
+
+    try {
+      recordRequest();
+
+      const baseUrl = targetModel.baseUrl || provider.baseUrl;
+      let invokeUrl = "";
+      let headers: Record<string, string> = { "Content-Type": "application/json" };
+      let body: Record<string, unknown> = {};
+
+      if (provider.id === "ollama") {
+        invokeUrl = `${baseUrl}/api/generate`;
+        body = { model: targetModel.model, prompt, stream: false };
+      } else {
+        invokeUrl = `${baseUrl}/chat/completions`;
+        if (provider.authType === "bearer") {
+          headers["Authorization"] = `Bearer ${targetModel.apiKey}`;
+        } else {
+          headers["Authorization"] = `Bearer ${targetModel.apiKey}`;
+        }
+        body = { model: targetModel.model, messages: [{ role: "user", content: prompt }] };
+      }
+
+      const response = await fetch(invokeUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(30000),
+      });
+
+      if (!response.ok) {
+        // 尝试降级
+        const fallbackModel = getNextFallbackModel();
+        if (fallbackModel && onFallback) {
+          onFallback(targetModel.id, fallbackModel.id);
+          return invokeModel(prompt, { ...options, modelId: fallbackModel.id });
+        }
+        return { success: false, error: `HTTP ${response.status}`, model: targetModel.id };
+      }
+
+      const data = await response.json();
+      const responseText = provider.id === "ollama" ? data.response : data.choices?.[0]?.message?.content || "";
+
+      // 缓存响应
+      if (useCache) {
+        setCachedResponse(cacheKey, responseText);
+      }
+
+      // 更新最后使用时间
+      setConfiguredModels((prev) =>
+        prev.map((m) =>
+          m.id === targetModel.id ? { ...m, lastUsed: Date.now() } : m
+        )
+      );
+
+      return { success: true, response: responseText, model: targetModel.id };
+    } catch (err: unknown) {
+      // 尝试降级
+      const fallbackModel = getNextFallbackModel();
+      if (fallbackModel && onFallback) {
+        onFallback(targetModel.id, fallbackModel.id);
+        return invokeModel(prompt, { ...options, modelId: fallbackModel.id });
+      }
+      return { success: false, error: err instanceof Error ? err.message : String(err), model: targetModel.id };
+    }
+  }, [
+    configuredModels,
+    providers,
+    checkRateLimit,
+    recordRequest,
+    getCachedResponse,
+    setCachedResponse,
+    getCurrentModel,
+    getNextFallbackModel,
+  ]);
 
   // ========== 导出/导入配置 ==========
   const exportConfig = useCallback(() => {
@@ -544,6 +832,24 @@ export function useModelProvider() {
     updateModel,
     removeModel,
     testConnection,
+    testAllConnections,
+
+    // 缓存机制
+    getCachedResponse,
+    setCachedResponse,
+    clearCache,
+
+    // 限流机制
+    checkRateLimit,
+    recordRequest,
+
+    // 降级机制
+    setModelFallbackChain,
+    getNextFallbackModel,
+    getCurrentModel,
+
+    // 智能调用
+    invokeModel,
 
     // Ollama
     fetchOllamaModels,
