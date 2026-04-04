@@ -82,6 +82,8 @@ const enUS: TranslationKeys = {
     envConfig: "Env Config",
     architecture: "System Arch",
     aiFamily: "AI Family",
+    voiceControl: "Voice Control",
+    musicSpace: "Music Space",
   },
 
   // ======== Bottom Nav ========

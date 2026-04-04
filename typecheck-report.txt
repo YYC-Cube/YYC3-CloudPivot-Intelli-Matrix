@@ -1,0 +1,4 @@
+
+> yyc3-cloudpivot-intelli-matrix@1.0.0 type-check /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix
+> tsc --noEmit
+

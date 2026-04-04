@@ -1,0 +1,3454 @@
+{
+  "timestamp": "2026-03-27T12:02:36.171Z",
+  "summary": {
+    "totalFiles": 18,
+    "totalChecks": 342,
+    "totalPassed": 85,
+    "totalFailed": 257,
+    "totalWarnings": 213,
+    "avgScore": 26,
+    "passRate": "24.9"
+  },
+  "details": [
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/AIChatPanel.tsx",
+      "fileName": "AIChatPanel.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 33,
+      "totalWeight": 1,
+      "passed": 7,
+      "failed": 12,
+      "warnings": 10
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/CodePreviewPanel.tsx",
+      "fileName": "CodePreviewPanel.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 23,
+      "totalWeight": 1,
+      "passed": 4,
+      "failed": 15,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/FileExplorer.tsx",
+      "fileName": "FileExplorer.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": true,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 42,
+      "totalWeight": 1,
+      "passed": 8,
+      "failed": 11,
+      "warnings": 9
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/GitPanel.tsx",
+      "fileName": "GitPanel.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 20,
+      "totalWeight": 1,
+      "passed": 4,
+      "failed": 15,
+      "warnings": 12
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDELayout.tsx",
+      "fileName": "IDELayout.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": true,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 82,
+      "totalWeight": 1,
+      "passed": 15,
+      "failed": 4,
+      "warnings": 4
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDEStatusBar.tsx",
+      "fileName": "IDEStatusBar.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 23,
+      "totalWeight": 1,
+      "passed": 4,
+      "failed": 15,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDETerminal.tsx",
+      "fileName": "IDETerminal.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 48,
+      "totalWeight": 1,
+      "passed": 9,
+      "failed": 10,
+      "warnings": 8
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDETopBar.tsx",
+      "fileName": "IDETopBar.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 23,
+      "totalWeight": 1,
+      "passed": 4,
+      "failed": 15,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDEViewSwitcher.tsx",
+      "fileName": "IDEViewSwitcher.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 35,
+      "totalWeight": 1,
+      "passed": 6,
+      "failed": 13,
+      "warnings": 11
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/LayoutContext.tsx",
+      "fileName": "LayoutContext.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 20,
+      "totalWeight": 1,
+      "passed": 4,
+      "failed": 15,
+      "warnings": 12
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/Panel.tsx",
+      "fileName": "Panel.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 7,
+      "totalWeight": 1,
+      "passed": 1,
+      "failed": 18,
+      "warnings": 15
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelContainer.tsx",
+      "fileName": "PanelContainer.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 10,
+      "totalWeight": 1,
+      "passed": 2,
+      "failed": 17,
+      "warnings": 14
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelContent.tsx",
+      "fileName": "PanelContent.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 13,
+      "totalWeight": 1,
+      "passed": 2,
+      "failed": 17,
+      "warnings": 14
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelHeader.tsx",
+      "fileName": "PanelHeader.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 17,
+      "totalWeight": 1,
+      "passed": 3,
+      "failed": 16,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelResizeHandle.tsx",
+      "fileName": "PanelResizeHandle.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 13,
+      "totalWeight": 1,
+      "passed": 3,
+      "failed": 16,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelToolbar.tsx",
+      "fileName": "PanelToolbar.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": true,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 26,
+      "totalWeight": 1,
+      "passed": 5,
+      "failed": 14,
+      "warnings": 11
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/TabBar.tsx",
+      "fileName": "TabBar.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 17,
+      "totalWeight": 1,
+      "passed": 3,
+      "failed": 16,
+      "warnings": 13
+    },
+    {
+      "filePath": "/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/Workspace.tsx",
+      "fileName": "Workspace.tsx",
+      "checks": [
+        {
+          "category": "layoutStructure",
+          "checkId": "three_column_layout",
+          "name": "三栏布局实现",
+          "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "resizable_panels",
+          "name": "可调节面板",
+          "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "terminal_integration",
+          "name": "终端集成",
+          "description": "检查是否集成了底部终端组件",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "layoutStructure",
+          "checkId": "layout_modes",
+          "name": "布局模式支持",
+          "description": "检查是否支持编辑模式和预览模式",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.0625
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "ide_components_imports",
+          "name": "IDE组件导入",
+          "description": "检查是否正确导入所有必要的IDE组件",
+          "severity": "critical",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "hooks_usage",
+          "name": "Hooks使用",
+          "description": "检查是否正确使用React Hooks",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "componentDependencies",
+          "checkId": "i18n_integration",
+          "name": "国际化集成",
+          "description": "检查是否集成了国际化功能",
+          "severity": "medium",
+          "passed": true,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "panel_size_limits",
+          "name": "面板尺寸限制",
+          "description": "检查是否设置了面板的最小和最大尺寸",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "flex_layout",
+          "name": "Flex布局",
+          "description": "检查是否使用Flex布局实现响应式",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "responsiveDesign",
+          "checkId": "mobile_adaptation",
+          "name": "移动端适配",
+          "description": "检查是否考虑了移动端适配",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.06666666666666667
+        },
+        {
+          "category": "accessibility",
+          "checkId": "keyboard_shortcuts",
+          "name": "键盘快捷键",
+          "description": "检查是否实现了键盘快捷键功能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "aria_attributes",
+          "name": "ARIA属性",
+          "description": "检查是否使用了ARIA属性提升可访问性",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "accessibility",
+          "checkId": "focus_management",
+          "name": "焦点管理",
+          "description": "检查是否实现了焦点管理",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.049999999999999996
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "memoization",
+          "name": "记忆化",
+          "description": "检查是否使用了useCallback或useMemo优化性能",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "lazy_loading",
+          "name": "懒加载",
+          "description": "检查是否实现了组件懒加载",
+          "severity": "low",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "performanceOptimization",
+          "checkId": "state_management",
+          "name": "状态管理",
+          "description": "检查是否使用了合理的状态管理策略",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "visual_feedback",
+          "name": "视觉反馈",
+          "description": "检查是否提供了足够的视觉反馈",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "loading_states",
+          "name": "加载状态",
+          "description": "检查是否处理了加载状态",
+          "severity": "medium",
+          "passed": false,
+          "weight": 0.03333333333333333
+        },
+        {
+          "category": "userExperience",
+          "checkId": "error_handling",
+          "name": "错误处理",
+          "description": "检查是否实现了错误处理机制",
+          "severity": "high",
+          "passed": false,
+          "weight": 0.03333333333333333
+        }
+      ],
+      "score": 7,
+      "totalWeight": 1,
+      "passed": 1,
+      "failed": 18,
+      "warnings": 15
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "critical",
+      "issue": "三栏布局实现",
+      "description": "检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETerminal.tsx",
+        "IDETopBar.tsx",
+        "IDEViewSwitcher.tsx",
+        "LayoutContext.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "立即修复: 检查是否实现了左栏(AI面板)、中栏(文件管理器)、右栏(代码编辑器)三栏布局"
+    },
+    {
+      "priority": "critical",
+      "issue": "可调节面板",
+      "description": "检查是否使用 react-resizable-panels 实现面板拖拽调节",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETerminal.tsx",
+        "IDETopBar.tsx",
+        "IDEViewSwitcher.tsx",
+        "LayoutContext.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "立即修复: 检查是否使用 react-resizable-panels 实现面板拖拽调节"
+    },
+    {
+      "priority": "critical",
+      "issue": "IDE组件导入",
+      "description": "检查是否正确导入所有必要的IDE组件",
+      "affectedFiles": [
+        "GitPanel.tsx",
+        "LayoutContext.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "立即修复: 检查是否正确导入所有必要的IDE组件"
+    },
+    {
+      "priority": "high",
+      "issue": "终端集成",
+      "description": "检查是否集成了底部终端组件",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETopBar.tsx",
+        "IDEViewSwitcher.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "尽快修复: 检查是否集成了底部终端组件"
+    },
+    {
+      "priority": "high",
+      "issue": "布局模式支持",
+      "description": "检查是否支持编辑模式和预览模式",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETerminal.tsx",
+        "IDETopBar.tsx",
+        "LayoutContext.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "尽快修复: 检查是否支持编辑模式和预览模式"
+    },
+    {
+      "priority": "high",
+      "issue": "面板尺寸限制",
+      "description": "检查是否设置了面板的最小和最大尺寸",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETerminal.tsx",
+        "IDETopBar.tsx",
+        "IDEViewSwitcher.tsx",
+        "LayoutContext.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "尽快修复: 检查是否设置了面板的最小和最大尺寸"
+    },
+    {
+      "priority": "high",
+      "issue": "错误处理",
+      "description": "检查是否实现了错误处理机制",
+      "affectedFiles": [
+        "AIChatPanel.tsx",
+        "CodePreviewPanel.tsx",
+        "FileExplorer.tsx",
+        "GitPanel.tsx",
+        "IDEStatusBar.tsx",
+        "IDETerminal.tsx",
+        "IDETopBar.tsx",
+        "IDEViewSwitcher.tsx",
+        "Panel.tsx",
+        "PanelContainer.tsx",
+        "PanelContent.tsx",
+        "PanelHeader.tsx",
+        "PanelResizeHandle.tsx",
+        "PanelToolbar.tsx",
+        "TabBar.tsx",
+        "Workspace.tsx"
+      ],
+      "recommendation": "尽快修复: 检查是否实现了错误处理机制"
+    }
+  ]
+}

@@ -5,6 +5,9 @@
     "es2021": true,
     "node": true
   },
+  "globals": {
+    "RequestInit": "readonly"
+  },
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -35,7 +38,7 @@
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "react/prop-types": "off",
+    "react/prop-types": "warn",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-unused-vars": [
       "warn",
@@ -44,8 +47,8 @@
         "varsIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "@typescript-eslint/explicit-module-boundary-types": "warn",
     "no-console": [
       "warn",
       {

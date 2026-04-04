@@ -54,6 +54,21 @@
           run: pnpm run lint:fix
         - name: Check formatting
           run: pnpm exec prettier --check "src/**/*.{ts,tsx}" || true
+        - name: Check documentation standards
+          run: pnpm run docs:smart-check
+          continue-on-error: true
+        - name: Audit IDE layout
+          run: pnpm run audit:ide-layout
+          continue-on-error: true
+        - name: Audit unified data source
+          run: pnpm run audit:unified-data-source
+          continue-on-error: true
+        - name: Audit AI pipeline
+          run: pnpm run audit:ai-pipeline
+          continue-on-error: true
+        - name: Generate comprehensive audit report
+          run: pnpm run audit:comprehensive
+          continue-on-error: true
 
     test:
       name: Test (shard ${{ matrix.shard-index }})

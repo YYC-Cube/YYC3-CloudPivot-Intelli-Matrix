@@ -1,0 +1,24 @@
+[
+  {
+    "timestamp": "2026-03-27T10:57:36.301Z",
+    "totalDocs": 0,
+    "headerComplete": 0,
+    "brandComplete": 0,
+    "namingValid": 0,
+    "overallScore": 0,
+    "approved": 7,
+    "needsRevision": 650,
+    "rejected": 59
+  },
+  {
+    "timestamp": "2026-03-27T10:58:01.390Z",
+    "totalDocs": 0,
+    "headerComplete": 0,
+    "brandComplete": 0,
+    "namingValid": 0,
+    "overallScore": 0,
+    "approved": 0,
+    "needsRevision": 0,
+    "rejected": 0
+  }
+]

@@ -49,6 +49,8 @@ import { AIFamilyCenterPage } from "./components/AIFamilyCenterPage";
 import { FamilyHome } from "./components/ai-family/FamilyHome";
 import { ServiceConnectionTest } from "./components/ServiceConnectionTest";
 import { OllamaConfigPanel } from "./components/OllamaConfigPanel";
+import { VoiceControlPage } from "./components/VoiceControlPage";
+import { MusicSpacePage } from "./components/music/MusicSpacePage";
 import { NotFound } from "./components/NotFound";
 
 // ────────────────────────────────────────────
@@ -95,6 +97,8 @@ export const router = createHashRouter([
       { path: "ai-family-design", Component: AIFamilyDesignDoc },
       { path: "service-test", Component: ServiceConnectionTest },
       { path: "ollama-config", Component: OllamaConfigPanel },
+      { path: "voice", Component: VoiceControlPage },
+      { path: "music", Component: MusicSpacePage },
       { path: "ai-family/*", Component: AIFamilyRouter },
       { path: "*", Component: NotFound },
     ],

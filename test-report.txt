@@ -1,0 +1,1594 @@
+
+> yyc3-cloudpivot-intelli-matrix@1.0.0 test:ci /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix
+> vitest --run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90m/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix[39m
+
+(node:11841) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11840) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [31m❯[39m src/app/__tests__/useKeyboardShortcuts.test.tsx [2m([22m[2m13 tests[22m[2m | [22m[31m11 failed[39m[2m)[22m[32m 37[2mms[22m[39m
+[31m       [31m×[31m 应返回 8 个快捷键[39m[32m 10[2mms[22m[39m
+       [32m✓[39m 应包含操作中心快捷键[32m 0[2mms[22m[39m
+       [32m✓[39m 应包含文件管理快捷键[32m 5[2mms[22m[39m
+[31m       [31m×[31m Ctrl+Shift+O 应导航到 /operations[39m[32m 6[2mms[22m[39m
+[31m       [31m×[31m Ctrl+Shift+A 应导航到 /follow-up[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m Ctrl+Shift+P 应导航到 /patrol[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m Ctrl+Shift+L 应导航到 /terminal[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m Ctrl+Shift+F 应导航到 /files[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m Ctrl+K 应触发 onSearch 回调[39m[32m 3[2mms[22m[39m
+[31m       [31m×[31m Esc 应触发 onEscape 回调[39m[32m 8[2mms[22m[39m
+[31m       [31m×[31m 禁用时不应响应快捷键[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 输入框内应忽略导航快捷键[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 输入框内 Esc 仍应触发 onEscape[39m[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/AlertBanner.test.tsx [2m([22m[2m11 tests[22m[2m | [22m[31m11 failed[39m[2m)[22m[32m 15[2mms[22m[39m
+[31m       [31m×[31m 应渲染告警标题[39m[32m 9[2mms[22m[39m
+[31m       [31m×[31m 应渲染告警指标[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染告警计数信息[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染严重告警数[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染一键跟进按钮文字[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应有 data-testid=alert-banner[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击横幅应导航到 /follow-up[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m compact 模式不应渲染告警计数详情[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m compact 模式仍应渲染标题[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应有严重告警边框样式（有 critical 告警时）[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应有 cursor-pointer 样式[39m[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/CLITerminal.test.tsx [2m([22m[2m2 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 12[2mms[22m[39m
+[31m       [31m×[31m 应该渲染终端图标[39m[32m 10[2mms[22m[39m
+[31m       [31m×[31m 应该渲染终端窗口[39m[32m 1[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/Sidebar.test.tsx [2m([22m[2m18 tests[22m[2m | [22m[31m16 failed[39m[2m)[22m[32m 24[2mms[22m[39m
+[31m       [31m×[31m 应渲染 Logo[39m[32m 14[2mms[22m[39m
+[31m       [31m×[31m 折叠时不显示 YYC3 文字[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 折叠时不显示子菜单项文本[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 折叠时应渲染展开按钮 (ChevronRight)[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 展开时应显示 YYC3 文字[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 展开时应显示分类标签[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 展开时应显示子菜单项[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 展开时应显示收起按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击子菜单项应导航到对应路径[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击分类按钮应导航到第一个子项路径[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击 Logo 区域应导航到首页[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击收起按钮应调用 onToggle[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 首页时应渲染 monitor 分类按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m /patrol 页时应渲染 nav.patrol 子项按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m /settings 页时应渲染 admin 分类按钮[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 折叠模式 hover 分类应显示 flyout[39m[32m 0[2mms[22m[39m
+       [32m✓[39m navItems 应导出扁平导航数组[32m 0[2mms[22m[39m
+       [32m✓[39m SIDEBAR 宽度常量应正确[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/ActionRecommender.test.tsx [2m([22m[2m11 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[32m 78[2mms[22m[39m
+       [32m✓[39m 应渲染待处理推荐[32m 29[2mms[22m[39m
+       [32m✓[39m 应渲染描述[32m 4[2mms[22m[39m
+       [32m✓[39m 应渲染影响级别标签[32m 5[2mms[22m[39m
+       [32m✓[39m 应渲染置信度[32m 3[2mms[22m[39m
+       [32m✓[39m 可自动执行标签应显示[32m 3[2mms[22m[39m
+       [32m✓[39m 应有 data-testid[32m 5[2mms[22m[39m
+       [32m✓[39m 点击应用应触发 onApply[32m 5[2mms[22m[39m
+[31m       [31m×[31m 点击忽略应触发 onDismiss[39m[32m 7[2mms[22m[39m
+       [32m✓[39m 已应用推荐应显示在已应用区域[32m 11[2mms[22m[39m
+       [32m✓[39m 全部已应用时应显示空提示[32m 4[2mms[22m[39m
+       [32m✓[39m 无推荐时应显示空提示[32m 1[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/OfflineIndicator.test.tsx [2m([22m[2m5 tests[22m[2m | [22m[31m2 failed[39m[2m)[22m[32m 47[2mms[22m[39m
+     [32m✓[39m 在线状态应不渲染任何内容[32m 8[2mms[22m[39m
+     [32m✓[39m 离线状态应显示'离线模式'文本[32m 15[2mms[22m[39m
+     [32m✓[39m 离线且有同步时间应显示上次同步时间[32m 14[2mms[22m[39m
+[31m     [31m×[31m 恢复在线后应显示'网络已恢复'[39m[32m 6[2mms[22m[39m
+[31m     [31m×[31m 恢复在线且同步中应显示同步状态[39m[32m 3[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/CommandPalette.test.tsx [2m([22m[2m14 tests[22m[2m | [22m[31m14 failed[39m[2m)[22m[32m 21[2mms[22m[39m
+[31m       [31m×[31m isOpen=false 时不应渲染[39m[32m 11[2mms[22m[39m
+[31m       [31m×[31m isOpen=true 时应渲染[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染搜索输入框[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击遮罩应关闭[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 初始应显示所有项目[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 输入关键词应筛选结果[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 无匹配时应显示空提示[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击快捷键按钮应显示帮助面板[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 帮助面板应包含快捷键列表[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击项目应导航并关闭[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击 AI 决策项应导航到 /ai[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m Escape 应关闭[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m Enter 应执行选中项[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m ArrowDown 应移动选中项[39m[32m 2[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/TopBar.test.tsx [2m([22m[2m28 tests[22m[2m | [22m[31m27 failed[39m[2m)[22m[32m 25[2mms[22m[39m
+[31m       [31m×[31m 应渲染 CP-IM 标识[39m[32m 11[2mms[22m[39m
+[31m       [31m×[31m 应渲染搜索框[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染连接状态组件[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染语言切换器[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染用户头像 (initials)[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染通知徽标[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 不应渲染汉堡按钮 (桌面端)[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击通知按钮应显示通知面板[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 通知面板应包含 3 条通知[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击用户头像应显示下拉菜单 (桌面端)[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 用户菜单应包含导航项[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击登出应调用 onLogout[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击菜单项应导航并关闭菜单[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染 YYC3 标识而非 CP-IM[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染汉堡按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击汉堡按钮应调用 onToggleMobileMenu[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端不应渲染搜索框[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染微型连接状态点[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端不应渲染语言切换器[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m mobileMenuOpen 时应渲染抽屉内容[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 抽屉内应渲染导航分类[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 抽屉内点击导航项应导航并关闭菜单[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 抽屉底部应渲染登出按钮[39m[32m 3[2mms[22m[39m
+[31m       [31m×[31m Ghost 模式下应渲染 GHOST 标识[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 非 Ghost 模式不显示标识[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 桌面端应渲染终端按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 点击终端按钮应调用 onToggleTerminal[39m[32m 0[2mms[22m[39m
+       [32m✓[39m 应导出扁平导航数组[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/Dashboard.test.tsx [2m([22m[2m21 tests[22m[2m | [22m[31m21 failed[39m[2m)[22m[32m 25[2mms[22m[39m
+[31m       [31m×[31m 应渲染 AlertBanner[39m[32m 10[2mms[22m[39m
+[31m       [31m×[31m 应渲染 6 个统计卡片[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染趋势标识[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染吞吐量图表标题[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染模型负载分布[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染饼图图例项[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染所有节点卡片[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击节点应弹出 NodeDetailModal[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 关闭 NodeDetailModal 后应消失[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染节点矩阵标题[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染刷新按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染实时操作标题[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染所有操作条目[39m[32m 2[2mms[22m[39m
+[31m       [31m×[31m 桌面端应渲染三栏图表[39m[32m 4[2mms[22m[39m
+[31m       [31m×[31m 应渲染 AI 预测标签[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染 Tab 切换栏[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端点击 Tab 应切换图表[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端不应渲染全景按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 无 WebSocket 数据时应使用默认值[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 桌面端应渲染 4 个时间段按钮[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染 2 个时间段按钮[39m[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/Layout.test.tsx [2m([22m[2m17 tests[22m[2m | [22m[31m15 failed[39m[2m)[22m[32m 24[2mms[22m[39m
+[31m       [31m×[31m 应渲染 TopBar[39m[32m 15[2mms[22m[39m
+[31m       [31m×[31m 应渲染页面内容出口 (Outlet)[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染 AI 助手[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染命令面板[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染集成终端[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 应渲染 PWA 提示[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染离线指示器[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染 Toast 容器[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 应渲染 ErrorBoundary[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 桌面端应渲染 Sidebar[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 桌面端不应渲染 BottomNav[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端不应渲染 Sidebar[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 移动端应渲染 BottomNav[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 平板端不应渲染 Sidebar[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 平板端应渲染 BottomNav[39m[32m 0[2mms[22m[39m
+       [32m✓[39m WebSocketContext 应正确导出[32m 0[2mms[22m[39m
+       [32m✓[39m ViewContext 应正确导出[32m 0[2mms[22m[39m
+ [31m❯[39m src/app/__tests__/BottomNav.test.tsx [2m([22m[2m9 tests[22m[2m | [22m[31m9 failed[39m[2m)[22m[32m 20[2mms[22m[39m
+[31m       [31m×[31m 应渲染 4 个导航项[39m[32m 12[2mms[22m[39m
+[31m       [31m×[31m 应渲染 5 个按钮（4 个导航 + 1 个更多）[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击跟进应导航到 /follow-up[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击巡查应导航到 /patrol[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击操作应导航到 /operations[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 点击监控应导航到 /[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 首页时监控按钮应有激活样式[39m[32m 0[2mms[22m[39m
+[31m       [31m×[31m 跟进页时跟进按钮应有激活样式[39m[32m 1[2mms[22m[39m
+[31m       [31m×[31m 非活跃按钮应有降低透明度样式[39m[32m 1[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m统计卡片[2m > [22m[2m应渲染 4 个统计卡片
+[22m[39mThe tag <stop> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+The tag <linearGradient> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+The tag <defs> is unrecognized in this browser. If you meant to render a React component, start its name with an uppercase letter.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m统计卡片[2m > [22m[2m应渲染统计数值
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m统计卡片[2m > [22m[2m应渲染副标签
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m图表区域[2m > [22m[2m应渲染操作趋势图表标题
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+(node:11938) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m图表区域[2m > [22m[2m应渲染风险分布图表标题
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染审计日志标题
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染表头列
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染 10 条审计日志
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染操作类型
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染风险等级标签
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m审计日志表格[2m > [22m[2m应渲染 IP 地址
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m筛选按钮[2m > [22m[2m应渲染 4 个筛选按钮
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m筛选按钮[2m > [22m[2m默认选中全部
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m筛选按钮[2m > [22m[2m点击筛选按钮应切换激活状态
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m搜索与导出[2m > [22m[2m应渲染搜索框
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m搜索与导出[2m > [22m[2m应渲染导出按钮
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m分页[2m > [22m[2m应渲染总记录数
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m分页[2m > [22m[2m应渲染分页页码
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m分页[2m > [22m[2m第一页应高亮
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2m点击日志行应打开详情 Modal
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2mModal 应显示详情字段
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2mModal 应显示追踪链路和导出按钮
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2m关闭按钮应关闭 Modal
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2m点击遮罩应关闭 Modal
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+[90mstderr[2m | src/app/__tests__/OperationAudit.test.tsx[2m > [22m[2mOperationAudit[2m > [22m[2m详情 Modal[2m > [22m[2m不同状态日志 Modal 应显示对应状态文本
+[22m[39m<linearGradient /> is using incorrect casing. Use PascalCase for React components, or lowercase for HTML elements.
+
+ [32m✓[39m src/app/__tests__/OperationAudit.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[33m 327[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/ThemeCustomizer.test.tsx [2m([22m[2m25 tests[22m[2m)[22m[33m 385[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/Login.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[33m 668[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/InlineEditableTable.test.tsx [2m([22m[2m45 tests[22m[2m)[22m[33m 832[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/StageReview.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/rf-phase2.test.ts [2m([22m[2m29 tests[22m[2m)[22m[33m 1069[2mms[22m[39m
+     [33m[2m✓[22m[39m routes.ts 导出 router 对象 [33m 921[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/AIAssistant.test.tsx [2m([22m[2m29 tests[22m[2m)[22m[33m 426[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/FollowUpDrawer.test.tsx [2m([22m[2m18 tests[22m[2m)[22m[33m 1398[2mms[22m[39m
+       [33m[2m✓[22m[39m 切换到 AI 建议 tab 应加载建议 [33m 1215[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/FollowUpCard.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[32m 176[2mms[22m[39m
+(node:11951) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/UserManagement.test.tsx [2m([22m[2m23 tests[22m[2m)[22m[33m 408[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/usePatrol.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 1642[2mms[22m[39m
+       [33m[2m✓[22m[39m 运行巡查后应产生结果 [33m 405[2mms[22m[39m
+       [33m[2m✓[22m[39m 巡查结果应包含检查项 [33m 405[2mms[22m[39m
+       [33m[2m✓[22m[39m 巡查结果应正确统计各状态数 [33m 406[2mms[22m[39m
+       [33m[2m✓[22m[39m auto 触发类型应正确记录 [33m 407[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/ArchitectureAudit.test.tsx[2m > [22m[2mArchitectureAudit[2m > [22m[2m测试 Tab[2m > [22m[2m应切换到测试 Tab 并渲染测试矩阵
+[22m[39mEncountered two children with the same key, `types.test.ts`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+ [32m✓[39m src/app/__tests__/ArchitectureAudit.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 221[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/SDKChatPanel.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 273[2mms[22m[39m
+(node:11955) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/QuickActionGroup.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[33m 1902[2mms[22m[39m
+       [33m[2m✓[22m[39m 点击一键修复应触发 onQuickFix [33m 608[2mms[22m[39m
+       [33m[2m✓[22m[39m 点击标记解决应触发 onMarkResolved [33m 606[2mms[22m[39m
+       [33m[2m✓[22m[39m 点击查看详情应触发 onViewDetail [33m 607[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/ModelProviderPanel.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 218[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PatrolReport.test.tsx [2m([22m[2m15 tests[22m[2m)[22m[32m 105[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/integration.test.ts[2m > [22m[2mIntegration Tests[2m > [22m[2m错误处理 → 日志联动[2m > [22m[2mtrySafe 失败应自动记录到日志
+[22m[39m[YYC³ UNKNOWN] async failure Error: async failure
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/integration.test.ts:167:15
+    at trySafe (/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/lib/error-handler.ts:285:26)
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/integration.test.ts:166:35
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/vitest@4.0.18_@types+node@20.19.35_jiti@2.6.1_jsdom@28.1.0_lightningcss@1.31.1/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)
+
+[90mstdout[2m | src/app/__tests__/integration.test.ts[2m > [22m[2mIntegration Tests[2m > [22m[2m后台同步 → 队列处理联动[2m > [22m[2m完整的添加 → 处理 → 清空流程
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+ [32m✓[39m src/app/__tests__/ServiceLoopPanel.test.tsx [2m([22m[2m31 tests[22m[2m)[22m[32m 167[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/SystemSettings.test.tsx [2m([22m[2m28 tests[22m[2m)[22m[33m 350[2mms[22m[39m
+[90mstdout[2m | src/app/__tests__/integration.test.ts[2m > [22m[2mIntegration Tests[2m > [22m[2m后台同步 → 队列处理联动[2m > [22m[2mclearSyncQueue 应清除所有待同步项
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/integration.test.ts[2m > [22m[2mIntegration Tests[2m > [22m[2m跨模块状态一致性[2m > [22m[2m同时操作多个 localStorage 键不应冲突
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+ [32m✓[39m src/app/__tests__/integration.test.ts [2m([22m[2m12 tests[22m[2m)[22m[33m 308[2mms[22m[39m
+       [33m[2m✓[22m[39m 完整的添加 → 处理 → 清空流程 [33m 301[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/SecurityMonitor.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 216[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/core-components-integration.test.tsx [2m([22m[2m74 tests[22m[2m)[22m[33m 2354[2mms[22m[39m
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+(node:11968) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+ [32m✓[39m src/app/__tests__/PatrolHistory.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 242[2mms[22m[39m
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+ [32m✓[39m src/app/__tests__/ComponentShowcase.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 121[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/AddModelModal.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 99[2mms[22m[39m
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+ [32m✓[39m src/app/__tests__/a11y-audit.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 222[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PWAStatusPanel.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[33m 338[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DevGuidePage.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 209[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/ConnectionStatus.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 111[2mms[22m[39m
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2maddToSyncQueue[2m > [22m[2m应正确添加同步项
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2maddToSyncQueue[2m > [22m[2m添加后队列长度应增加
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2maddToSyncQueue[2m > [22m[2m每个项应有唯一 ID
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2mclearSyncQueue[2m > [22m[2m应清空同步队列
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2mgetSyncQueueStats[2m > [22m[2m应正确计算待处理项数
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+[90mstdout[2m | src/app/__tests__/backgroundSync.test.ts[2m > [22m[2mbackgroundSync[2m > [22m[2mprocessSyncQueue[2m > [22m[2m应处理队列中所有项
+[22m[39m[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+[BackgroundSync] 浏览器不支持后台同步，将使用在线时主动同步
+
+ [32m✓[39m src/app/__tests__/YYC3Logo.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PatrolDashboard.test.tsx [2m([22m[2m22 tests[22m[2m)[22m[32m 172[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PatternAnalyzer.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/backgroundSync.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 204[2mms[22m[39m
+(node:11979) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/NetworkConfig.test.tsx [2m([22m[2m30 tests[22m[2m)[22m[32m 165[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/ReportExporter.test.tsx[2m > [22m[2mReportExporter[2m > [22m[2mshould display export options when report is generated
+[22m[39mThe width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+[90mstderr[2m | src/app/__tests__/ReportExporter.test.tsx[2m > [22m[2mReportExporter[2m > [22m[2mshould export report when export button clicked
+[22m[39mThe width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(0) and height(0) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ [32m✓[39m src/app/__tests__/ReportExporter.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 101[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PWAInstallPrompt.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 88[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DataFlowDiagram.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 93[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DataEditorPanel.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 126[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/AISuggestionPanel.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+(node:11993) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/DatabaseConnectionPanel.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 165[2mms[22m[39m
+(node:11997) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/ReportGenerator.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 97[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/QuickActionGrid.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 60[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/AIDiagnostics.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 94[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/NodeDetailModal.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 85[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/OperationLogStream.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 73[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/LogViewer.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 83[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DesignTokens.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+(node:12007) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/ErrorBoundary.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[32m 122[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/LoopStageCard.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 52[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/AlertRulesPanel.test.tsx [2m([22m[2m5 tests[22m[2m)[22m[32m 104[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/OperationChain.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 70[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DesignSystemPage.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 88[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/OperationTemplate.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 58[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useAlertRules.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 25[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/OperationCenter.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 20[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/PatrolScheduler.test.tsx [2m([22m[2m12 tests[22m[2m)[22m[32m 56[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/LanguageSwitcher.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 31[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/i18n-packs.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 65[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/FileBrowser.test.tsx [2m([22m[2m11 tests[22m[2m)[22m[32m 61[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/LocalFileManager.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/core-integration.test.tsx [2m([22m[2m33 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/IDEPanel.test.tsx [2m([22m[2m10 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/e2e-integration.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/OperationCategory.test.tsx [2m([22m[2m7 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+(node:12026) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/useModelProvider.test.tsx [2m([22m[2m14 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/rf001-ws-url-unification.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/usePWAManager.test.tsx [2m([22m[2m16 tests[22m[2m)[22m[33m 5523[2mms[22m[39m
+       [33m[2m✓[22m[39m 更新后版本应变为 1.5.0 [33m 2003[2mms[22m[39m
+       [33m[2m✓[22m[39m 清空后 cacheEntries 应为空 [33m 1502[2mms[22m[39m
+       [33m[2m✓[22m[39m 应移除指定缓存条目 [33m 802[2mms[22m[39m
+       [33m[2m✓[22m[39m 刷新后 lastUpdated 应更新 [33m 1203[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/env-config.test.ts [2m([22m[2m26 tests[22m[2m)[22m[32m 8[2mms[22m[39m
+(node:12033) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/GlassCard.test.tsx [2m([22m[2m8 tests[22m[2m)[22m[32m 22[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/types.test.ts [2m([22m[2m35 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/settings-model-unified-dataflow.test.ts [2m([22m[2m24 tests[22m[2m)[22m[32m 12[2mms[22m[39m
+(node:12034) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/useTerminal.test.tsx [2m([22m[2m24 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/i18n-loop-devguide.test.ts [2m([22m[2m12 tests[22m[2m)[22m[32m 23[2mms[22m[39m
+(node:12036) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/useFollowUp.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[32m 16[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/api-config.test.ts [2m([22m[2m14 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mcaptureNetworkError[2m > [22m[2m应创建 NETWORK 类别的错误
+[22m[39m[YYC³ NETWORK] timeout
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mcaptureWSError[2m > [22m[2m应创建 WebSocket 相关错误
+[22m[39m[YYC³ NETWORK] connection refused
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mcaptureAuthError[2m > [22m[2m应创建 AUTH 类别的错误
+[22m[39m[YYC³ AUTH] session expired Error: session expired
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts:124:41
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/vitest@4.0.18_@types+node@20.19.35_jiti@2.6.1_jsdom@28.1.0_lightningcss@1.31.1/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)
+    at trace (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/vitest@4.0.18_@types+node@20.19.35_jiti@2.6.1_jsdom@28.1.0_lightningcss@1.31.1/node_modules/vitest/dist/chunks/test.B8ej_ZHS.js:239:21)
+    at runTest (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:12)
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mcaptureParseError[2m > [22m[2m应创建 PARSE 类别的错误
+[22m[39m[YYC³ PARSE] invalid json
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mgetErrorStats[2m > [22m[2m应正确按类别统计
+[22m[39m[YYC³ NETWORK] c
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mtrySafe[2m > [22m[2m失败时应返回 [null, AppError]
+[22m[39m[YYC³ UNKNOWN] async error Error: async error
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts:209:15
+    at trySafe (/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/lib/error-handler.ts:285:26)
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts:208:35
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/vitest@4.0.18_@types+node@20.19.35_jiti@2.6.1_jsdom@28.1.0_lightningcss@1.31.1/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)
+
+[90mstderr[2m | src/app/__tests__/error-handler.test.ts[2m > [22m[2merror-handler[2m > [22m[2mtrySafeSync[2m > [22m[2m失败时应返回 [null, AppError]
+[22m[39m[YYC³ UNKNOWN] sync error Error: sync error
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts:226:15
+    at trySafeSync (/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/lib/error-handler.ts:301:20)
+    at /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts:225:29
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:915:26
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1243:20
+    at new Promise (<anonymous>)
+    at runWithTimeout (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1209:10)
+    at file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/@vitest+runner@4.0.18/node_modules/@vitest/runner/dist/index.js:1653:37
+    at Traces.$ (file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/node_modules/.pnpm/vitest@4.0.18_@types+node@20.19.35_jiti@2.6.1_jsdom@28.1.0_lightningcss@1.31.1/node_modules/vitest/dist/chunks/traces.CCmnQaNT.js:142:27)
+
+ [32m✓[39m src/app/__tests__/error-handler.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useSecurityMonitor.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 19[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/CodeEditor.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[32m 18[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/dashboard-stores.test.ts [2m([22m[2m22 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/DataMonitoring.test.tsx [2m([22m[2m1 test[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useI18n.test.tsx [2m([22m[2m13 tests[22m[2m)[22m[32m 13[2mms[22m[39m
+(node:12048) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/db-queries.test.ts [2m([22m[2m18 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useAIDiagnostics.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/test-infrastructure.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useReportExporter.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 14[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useAISuggestion.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 6933[2mms[22m[39m
+       [33m[2m✓[22m[39m 应用后 applied 应为 true [33m 1971[2mms[22m[39m
+       [33m[2m✓[22m[39m 应用后 appliedCount 应增加 [33m 1620[2mms[22m[39m
+       [33m[2m✓[22m[39m 执行后 lastAnalyzedAt 应更新 [33m 3321[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/yyc3-storage.test.ts [2m([22m[2m20 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/rf002-error-log-dual-write.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 7[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/types-audit.test.ts [2m([22m[2m38 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/create-local-store.test.ts [2m([22m[2m23 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/i18n-consistency.test.ts [2m([22m[2m52 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+(node:12056) Warning: `--localstorage-file` was provided without a valid path
+(Use `node --trace-warnings ...` to show where the warning was created)
+ [32m✓[39m src/app/__tests__/useBigModelSDK.test.ts [2m([22m[2m27 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+[90mstderr[2m | src/app/__tests__/network-utils.test.ts[2m > [22m[2mnetwork-utils[2m > [22m[2mtestWebSocketConnection[2m > [22m[2m连接不可达时应返回失败结果
+[22m[39m[vitest] The vi.fn() mock did not use 'function' or 'class' in its implementation, see https://vitest.dev/api/vi#vi-spyon for examples.
+
+ [32m✓[39m src/app/__tests__/network-utils.test.ts [2m([22m[2m19 tests[22m[2m)[22m[32m 4[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/supabaseClient.test.ts [2m([22m[2m16 tests[22m[2m)[22m[32m 5[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/security-i18n.test.ts [2m([22m[2m17 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/rf003-figma-error-dedup.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 3[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/figma-error-filter.test.ts [2m([22m[2m40 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/security-types.test.ts [2m([22m[2m15 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/filesystem-types.test.ts [2m([22m[2m10 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/followup-types.test.ts [2m([22m[2m8 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/operation-types.test.ts [2m([22m[2m11 tests[22m[2m)[22m[32m 2[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/ai-types.test.ts [2m([22m[2m7 tests[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/service-loop-types.test.ts [2m([22m[2m6 tests[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/pwa-i18n-types.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 1[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useOperationCenter.test.tsx [2m([22m[2m17 tests[22m[2m)[22m[33m 7205[2mms[22m[39m
+       [33m[2m✓[22m[39m 执行后应更新操作状态和添加日志 [33m 3182[2mms[22m[39m
+       [33m[2m✓[22m[39m runTemplate 应更新 lastUsed [33m 4006[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useLocalFileSystem.test.tsx [2m([22m[2m26 tests[22m[2m)[22m[33m 9481[2mms[22m[39m
+       [33m[2m✓[22m[39m 生成 JSON 报告 [33m 2185[2mms[22m[39m
+       [33m[2m✓[22m[39m 生成 Markdown 报告 [33m 2919[2mms[22m[39m
+       [33m[2m✓[22m[39m 生成 CSV 报告 [33m 2285[2mms[22m[39m
+       [33m[2m✓[22m[39m isGenerating 在生成过程中应为 true [33m 2068[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useLocalDatabase.test.ts [2m([22m[2m33 tests[22m[2m)[22m[33m 17274[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=false 时不发起真实网络请求 [33m 2002[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=true 时尝试发起 fetch 请求 [33m 3807[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=true 但后端不可达时回退 Mock [33m 3715[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=true + maxRetries=0 时只请求一次 [33m 2002[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=true + maxRetries=2 且持续失败时最多重试 3 次 [33m 3714[2mms[22m[39m
+       [33m[2m✓[22m[39m enableBackend=true + 4xx 错误不重试 [33m 2003[2mms[22m[39m
+ [32m✓[39m src/app/__tests__/useServiceLoop.test.tsx [2m([22m[2m21 tests[22m[2m)[22m[33m 51171[2mms[22m[39m
+       [33m[2m✓[22m[39m 完整闭环后 history 应有 1 条记录 [33m 8048[2mms[22m[39m
+       [33m[2m✓[22m[39m 完整闭环后 6 个阶段均为 completed [33m 8110[2mms[22m[39m
+       [33m[2m✓[22m[39m 每个阶段应有 summary 和 details [33m 9002[2mms[22m[39m
+       [33m[2m✓[22m[39m trigger 应记录触发方式 [33m 7832[2mms[22m[39m
+       [33m[2m✓[22m[39m 运行后 totalRuns 应增加 [33m 9506[2mms[22m[39m
+       [33m[2m✓[22m[39m 清空后 history 应为空 [33m 8653[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 129 [49m[22m[31m⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/ActionRecommender.test.tsx[2m > [22mActionRecommender[2m > [22m交互[2m > [22m点击忽略应触发 onDismiss
+[31m[1mTestingLibraryElementError[22m[39m: Unable to find an element by: [data-testid="dismiss-rec-1"]
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"space-y-2"[39m
+      [33mdata-testid[39m=[32m"action-recommender"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"p-3 rounded-xl bg-[rgba(0,40,80,0.08)] border border-[rgba(0,180,255,0.06)] hover:bg-[rgba(0,40,80,0.14)] transition-all"[39m
+        [33mdata-testid[39m=[32m"rec-rec-1"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-2 mb-1.5"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-circle-check-big w-3.5 h-3.5 text-[#00ff88] shrink-0 mt-0.5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 11 3 3L22 4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[#e0f0ff]"[39m
+              [33mstyle[39m=[32m"font-size: 0.78rem;"[39m
+            [36m>[39m
+              [0m迁移模型到 GPU-A100-07[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"text-[rgba(0,212,255,0.4)] ml-5.5 mb-2"[39m
+          [33mstyle[39m=[32m"font-size: 0.7rem;"[39m
+        [36m>[39m
+          [0m负载 15%，延迟预计降至 800ms[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center justify-between ml-5.5 flex-wrap gap-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-3"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-1.5 py-0.5 rounded"[39m
+              [33mstyle[39m=[32m"font-size: 0.58rem; color: rgb(0, 255, 136); background-color: rgba(0, 255, 136, 0.082);"[39m
+            [36m>[39m
+              [0m高影响[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[rgba(0,212,255,0.3)]"[39m
+              [33mstyle[39m=[32m"font-size: 0.6rem;"[39m
+            [36m>[39m
+              [0m置信度 [0m
+              [0m92[0m
+              [0m%[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"flex items-center gap-0.5 text-[rgba(0,212,255,0.25)]"[39m
+              [33mstyle[39m=[32m"font-size: 0.58rem;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-zap w-2.5 h-2.5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m可自动执行[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-1.5"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[rgba(0,255,136,0.08)] border border-[rgba(0,255,136,0.2)] text-[#00ff88] hover:bg-[rgba(0,255,136,0.15)] transition-all disabled:opacity-40"[39m
+              [33mdata-testid[39m=[32m"apply-rec-1"[39m
+              [33mstyle[39m=[32m"font-size: 0.65rem;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-right w-3 h-3"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M5 12h14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m12 5 7 7-7 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m应用[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"flex items-center gap-1 px-2.5 py-1 rounded-lg text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.6)] hover:bg-[rgba(0,212,255,0.04)] transition-all"[39m
+              [33mdata-testid[39m=[32m"dismiss-rec-rec-1"[39m
+              [33mstyle[39m=[32m"font-size: 0.65rem;"[39m
+            [36m>[39m
+              [0m忽略[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"p-3 rounded-xl bg-[rgba(0,40,80,0.08)] border border-[rgba(0,180,255,0.06)] hover:bg-[rgba(0,40,80,0.14)] transition-all"[39m
+        [33mdata-testid[39m=[32m"rec-rec-2"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-start justify-between gap-2 mb-1.5"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-2"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-circle-check-big w-3.5 h-3.5 text-[#00ff88] shrink-0 mt-0.5"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M21.801 10A10 10 0 1 1 17 3.335"[39m
+              [36m/>[39m
+              [36m<path[39m
+                [33md[39m=[32m"m9 11 3 3L22 4"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[#e0f0ff]"[39m
+              [33mstyle[39m=[32m"font-size: 0.78rem;"[39m
+            [36m>[39m
+              [0m重启推理服务[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"text-[rgba(0,212,255,0.4)] ml-5.5 mb-2"[39m
+          [33mstyle[39m=[32m"font-size: 0.7rem;"[39m
+        [36m>[39m
+          [0m清理内存碎片[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"flex items-center justify-between ml-5.5 flex-wrap gap-2"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-3"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"px-1.5 py-0.5 rounded"[39m
+              [33mstyle[39m=[32m"font-size: 0.58rem; color: rgb(255, 170, 0); background-color: rgba(255, 170, 0, 0.082);"[39m
+            [36m>[39m
+              [0m中影响[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[rgba(0,212,255,0.3)]"[39m
+              [33mstyle[39m=[32m"font-size: 0.6rem;"[39m
+            [36m>[39m
+              [0m置信度 [0m
+              [0m78[0m
+              [0m%[0m
+            [36m</span>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"flex items-center gap-0.5 text-[rgba(0,212,255,0.25)]"[39m
+              [33mstyle[39m=[32m"font-size: 0.58rem;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-zap w-2.5 h-2.5"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m可自动执行[0m
+            [36m</span>[39m
+          [36m</div>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-1.5"[39m
+          [36m>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[rgba(0,255,136,0.08)] border border-[rgba(0,255,136,0.2)] text-[#00ff88] hover:bg-[rgba(0,255,136,0.15)] transition-all disabled:opacity-40"[39m
+              [33mdata-testid[39m=[32m"apply-rec-2"[39m
+              [33mstyle[39m=[32m"font-size: 0.65rem;"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mclass[39m=[32m"lucide lucide-arrow-right w-3 h-3"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"24"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-linecap[39m=[32m"round"[39m
+                [33mstroke-linejoin[39m=[32m"round"[39m
+                [33mstroke-width[39m=[32m"2"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"24"[39m
+                [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+              [36m>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M5 12h14"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"m12 5 7 7-7 7"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+              [0m应用[0m
+            [36m</button>[39m
+            [36m<button[39m
+              [33mclass[39m=[32m"flex items-center gap-1 px-2.5 py-1 rounded-lg text-[rgba(0,212,255,0.3)] hover:text-[rgba(0,212,255,0.6)] hover:bg-[rgba(0,212,255,0.04)] transition-all"[39m
+              [33mdata-testid[39m=[32m"dismiss-rec-rec-2"[39m
+              [33mstyle[39m=[32m"font-size: 0.65rem;"[39m
+            [36m>[39m
+              [0m忽略[0m
+            [36m</button>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"mt-3 pt-3 border-t border-[rgba(0,180,255,0.06)]"[39m
+      [36m>[39m
+        [36m<p[39m
+          [33mclass[39m=[32m"text-[rgba(0,212,255,0.25)] mb-2"[39m
+          [33mstyle[39m=[32m"font-size: 0.65rem;"[39m
+        [36m>[39m
+          [0m已应用 ([0m
+          [0m1[0m
+          [0m)[0m
+        [36m</p>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"space-y-1"[39m
+        [36m>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"flex items-center gap-2 p-2 rounded-lg opacity-50"[39m
+            [33mdata-testid[39m=[32m"applied-rec-3"[39m
+          [36m>[39m
+            [36m<svg[39m
+              [33maria-hidden[39m=[32m"true"[39m
+              [33mclass[39m=[32m"lucide lucide-shield w-3 h-3 text-[#00ff88] shrink-0"[39m
+              [33mfill[39m=[32m"none"[39m
+              [33mheight[39m=[32m"24"[39m
+              [33mstroke[39m=[32m"currentColor"[39m
+              [33mstroke-linecap[39m=[32m"round"[39m
+              [33mstroke-linejoin[39m=[32m"round"[39m
+              [33mstroke-width[39m=[32m"2"[39m
+              [33mviewBox[39m=[32m"0 0 24 24"[39m
+              [33mwidth[39m=[32m"24"[39m
+              [33mxmlns[39m=[32m"http://www.w3.org/2000/svg"[39m
+            [36m>[39m
+              [36m<path[39m
+                [33md[39m=[32m"M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"[39m
+              [36m/>[39m
+            [36m</svg>[39m
+            [36m<span[39m
+              [33mclass[39m=[32m"text-[rgba(0,212,255,0.4)] line-through"[39m
+              [33mstyle[39m=[32m"font-size: 0.7rem;"[39m
+            [36m>[39m
+              [0m扩容 NAS 存储[0m
+            [36m</span>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m src/app/__tests__/ActionRecommender.test.tsx:[2m103:30[22m[39m
+    [90m101| [39m    [34mit[39m([32m"点击忽略应触发 onDismiss"[39m[33m,[39m () [33m=>[39m {
+    [90m102| [39m      render(<ActionRecommender recommendations={mockRecs} onApply={on…
+    [90m103| [39m      fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByTestId[39m([32m"dismiss-rec-1"[39m))[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m104| [39m      [34mexpect[39m(onDismiss)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m"rec-1"[39m)[33m;[39m
+    [90m105| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应渲染告警标题
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应渲染告警指标
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应渲染告警计数信息
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应渲染严重告警数
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应渲染一键跟进按钮文字
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m基础渲染[2m > [22m应有 data-testid=alert-banner
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m导航[2m > [22m点击横幅应导航到 /follow-up
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22mcompact 模式[2m > [22mcompact 模式不应渲染告警计数详情
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22mcompact 模式[2m > [22mcompact 模式仍应渲染标题
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m样式[2m > [22m应有严重告警边框样式（有 critical 告警时）
+[41m[1m FAIL [22m[49m src/app/__tests__/AlertBanner.test.tsx[2m > [22mAlertBanner[2m > [22m样式[2m > [22m应有 cursor-pointer 样式
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m AlertBanner src/app/components/AlertBanner.tsx:[2m30:20[22m[39m
+    [90m 28| [39m
+    [90m 29| [39m[35mexport[39m [35mfunction[39m [33mAlertBanner[39m({ compact [33m=[39m [35mfalse[39m }[33m:[39m [33mAlertBannerProps[39m) {
+    [90m 30| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 31| [39m
+    [90m 32| [39m  [35mconst[39m hasCritical [33m=[39m [33mALERT_SUMMARY[39m[33m.[39mcritical [33m>[39m [34m0[39m[33m;[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m基础渲染[2m > [22m应渲染 4 个导航项
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m基础渲染[2m > [22m应渲染 5 个按钮（4 个导航 + 1 个更多）
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m导航点击[2m > [22m点击跟进应导航到 /follow-up
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m导航点击[2m > [22m点击巡查应导航到 /patrol
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m导航点击[2m > [22m点击操作应导航到 /operations
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m导航点击[2m > [22m点击监控应导航到 /
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m路由高亮[2m > [22m首页时监控按钮应有激活样式
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m路由高亮[2m > [22m跟进页时跟进按钮应有激活样式
+[41m[1m FAIL [22m[49m src/app/__tests__/BottomNav.test.tsx[2m > [22mBottomNav[2m > [22m路由高亮[2m > [22m非活跃按钮应有降低透明度样式
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m BottomNav src/app/components/BottomNav.tsx:[2m126:20[22m[39m
+    [90m124| [39m
+    [90m125| [39m[35mexport[39m [35mfunction[39m [33mBottomNav[39m() {
+    [90m126| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m127| [39m  [35mconst[39m location [33m=[39m [34museLocation[39m()[33m;[39m
+    [90m128| [39m  [35mconst[39m { t } [33m=[39m [34museI18n[39m()[33m;[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/CLITerminal.test.tsx[2m > [22mCLITerminal[2m > [22m组件渲染[2m > [22m应该渲染终端图标
+[41m[1m FAIL [22m[49m src/app/__tests__/CLITerminal.test.tsx[2m > [22mCLITerminal[2m > [22m组件渲染[2m > [22m应该渲染终端窗口
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m CLITerminal src/app/components/CLITerminal.tsx:[2m19:20[22m[39m
+    [90m 17| [39m  [35mconst[39m view [33m=[39m [34museContext[39m([33mViewContext[39m)[33m;[39m
+    [90m 18| [39m  [35mconst[39m isMobile [33m=[39m view[33m?.[39misMobile [33m??[39m [35mfalse[39m[33m;[39m
+    [90m 19| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 20| [39m
+    [90m 21| [39m  [35mconst[39m {
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m显示/隐藏[2m > [22misOpen=false 时不应渲染
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m显示/隐藏[2m > [22misOpen=true 时应渲染
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m显示/隐藏[2m > [22m应渲染搜索输入框
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m显示/隐藏[2m > [22m点击遮罩应关闭
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m搜索筛选[2m > [22m初始应显示所有项目
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m搜索筛选[2m > [22m输入关键词应筛选结果
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m搜索筛选[2m > [22m无匹配时应显示空提示
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m快捷键帮助[2m > [22m点击快捷键按钮应显示帮助面板
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m快捷键帮助[2m > [22m帮助面板应包含快捷键列表
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m导航执行[2m > [22m点击项目应导航并关闭
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m导航执行[2m > [22m点击 AI 决策项应导航到 /ai
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m键盘导航[2m > [22mEscape 应关闭
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m键盘导航[2m > [22mEnter 应执行选中项
+[41m[1m FAIL [22m[49m src/app/__tests__/CommandPalette.test.tsx[2m > [22mCommandPalette[2m > [22m键盘导航[2m > [22mArrowDown 应移动选中项
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m CommandPalette src/app/components/CommandPalette.tsx:[2m77:20[22m[39m
+    [90m 75| [39m  [35mconst[39m [showShortcuts[33m,[39m setShowShortcuts] [33m=[39m [34museState[39m([35mfalse[39m)[33m;[39m
+    [90m 76| [39m  [35mconst[39m inputRef [33m=[39m useRef[33m<[39m[33mHTMLInputElement[39m[33m>[39m([35mnull[39m)[33m;[39m
+    [90m 77| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 78| [39m  [35mconst[39m { t } [33m=[39m [34museI18n[39m()[33m;[39m
+    [90m 79| [39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染 AlertBanner
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染 6 个统计卡片
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染趋势标识
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染吞吐量图表标题
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染模型负载分布
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m基础渲染[2m > [22m应渲染饼图图例项
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m节点矩阵[2m > [22m应渲染所有节点卡片
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m节点矩阵[2m > [22m点击节点应弹出 NodeDetailModal
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m节点矩阵[2m > [22m关闭 NodeDetailModal 后应消失
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m节点矩阵[2m > [22m应渲染节点矩阵标题
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m节点矩阵[2m > [22m应渲染刷新按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m实时操作列表[2m > [22m应渲染实时操作标题
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m实时操作列表[2m > [22m应渲染所有操作条目
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m桌面端分析图表[2m > [22m桌面端应渲染三栏图表
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m桌面端分析图表[2m > [22m应渲染 AI 预测标签
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m移动端适配[2m > [22m移动端应渲染 Tab 切换栏
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m移动端适配[2m > [22m移动端点击 Tab 应切换图表
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m移动端适配[2m > [22m移动端不应渲染全景按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m默认数据兜底[2m > [22m无 WebSocket 数据时应使用默认值
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m时间段按钮[2m > [22m桌面端应渲染 4 个时间段按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Dashboard.test.tsx[2m > [22mDashboard[2m > [22m时间段按钮[2m > [22m移动端应渲染 2 个时间段按钮
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Dashboard src/app/components/Dashboard.tsx:[2m103:20[22m[39m
+    [90m101| [39m  [35mconst[39m view [33m=[39m [34museContext[39m([33mViewContext[39m)[33m;[39m
+    [90m102| [39m  [35mconst[39m { t } [33m=[39m [34museI18n[39m()[33m;[39m
+    [90m103| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m104| [39m  const [selectedNode, setSelectedNode] = useState<NodeData | null>(nu…
+    [90m105| [39m  const [analyticsTab, setAnalyticsTab] = useState<AnalyticsTab>("rada…
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染 TopBar
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染页面内容出口 (Outlet)
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染 AI 助手
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染命令面板
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染集成终端
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染 PWA 提示
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染离线指示器
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染 Toast 容器
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m基础渲染[2m > [22m应渲染 ErrorBoundary
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m桌面端布局[2m > [22m桌面端应渲染 Sidebar
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m桌面端布局[2m > [22m桌面端不应渲染 BottomNav
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m移动端布局[2m > [22m移动端不应渲染 Sidebar
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m移动端布局[2m > [22m移动端应渲染 BottomNav
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m平板端布局[2m > [22m平板端不应渲染 Sidebar
+[41m[1m FAIL [22m[49m src/app/__tests__/Layout.test.tsx[2m > [22mLayout[2m > [22m平板端布局[2m > [22m平板端应渲染 BottomNav
+[31m[1mError[22m: useLocation() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useLocation node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5573:3[22m[39m
+[36m [2m❯[22m Layout src/app/components/Layout.tsx:[2m50:20[22m[39m
+    [90m 48| [39m  [35mconst[39m view [33m=[39m [34museMobileView[39m()[33m;[39m
+    [90m 49| [39m  [35mconst[39m auth [33m=[39m [34museContext[39m([33mAuthContext[39m)[33m;[39m
+    [90m 50| [39m  [35mconst[39m location [33m=[39m [34museLocation[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 51| [39m  [35mconst[39m [mobileMenuOpen[33m,[39m setMobileMenuOpen] [33m=[39m [34museState[39m([35mfalse[39m)[33m;[39m
+    [90m 52| [39m  [35mconst[39m [commandPaletteOpen[33m,[39m setCommandPaletteOpen] [33m=[39m [34museState[39m([35mfalse[39m)[33m;[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+[90m [2m❯[22m workLoopSync node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17469:41[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/OfflineIndicator.test.tsx[2m > [22mOfflineIndicator[2m > [22m恢复在线后应显示'网络已恢复'
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: 网络已恢复. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"fixed top-0 left-0 right-0 z-[180] pointer-events-none flex justify-center pt-2"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"pointer-events-auto inline-flex items-center gap-2.5 px-4 py-2 rounded-xl backdrop-blur-xl border shadow-[0_4px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[rgba(255,51,102,0.1)] border-[rgba(255,51,102,0.3)]"[31m
+      [36m>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-wifi-off w-4 h-4 text-[#ff3366]"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M12 20h.01"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M8.5 16.429a5 5 0 0 1 7 0"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M5 12.859a10 10 0 0 1 5.17-2.69"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M19 12.859a10 10 0 0 0-2.007-1.523"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M2 8.82a15 15 0 0 1 4.177-2.643"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M22 8.82a15 15 0 0 0-11.288-3.764"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"m2 2 20 20"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"text-[#ff3366]"[31m
+          [33mstyle[31m=[32m"font-size: 0.78rem;"[31m
+        [36m>[31m
+          [0m离线模式[0m
+        [36m</span>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-cloud-off w-3.5 h-3.5 text-[rgba(255,51,102,0.5)]"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"m2 2 20 20"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m109:15[22m[39m
+[36m [2m❯[22m src/app/__tests__/OfflineIndicator.test.tsx:[2m95:19[22m[39m
+    [90m 93| [39m    })[33m;[39m
+    [90m 94| [39m
+    [90m 95| [39m    [34mexpect[39m(screen[33m.[39m[34mgetAllByText[39m([32m"网络已恢复"[39m)[[34m0[39m])[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 96| [39m  })[33m;[39m
+    [90m 97| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/OfflineIndicator.test.tsx[2m > [22mOfflineIndicator[2m > [22m恢复在线且同步中应显示同步状态
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: 网络已恢复. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"fixed top-0 left-0 right-0 z-[180] pointer-events-none flex justify-center pt-2"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"pointer-events-auto inline-flex items-center gap-2.5 px-4 py-2 rounded-xl backdrop-blur-xl border shadow-[0_4px_30px_rgba(0,0,0,0.3)] transition-all duration-500 bg-[rgba(255,51,102,0.1)] border-[rgba(255,51,102,0.3)]"[31m
+      [36m>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-wifi-off w-4 h-4 text-[#ff3366]"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M12 20h.01"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M8.5 16.429a5 5 0 0 1 7 0"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M5 12.859a10 10 0 0 1 5.17-2.69"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M19 12.859a10 10 0 0 0-2.007-1.523"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M2 8.82a15 15 0 0 1 4.177-2.643"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M22 8.82a15 15 0 0 0-11.288-3.764"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"m2 2 20 20"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+        [36m<span[31m
+          [33mclass[31m=[32m"text-[#ff3366]"[31m
+          [33mstyle[31m=[32m"font-size: 0.78rem;"[31m
+        [36m>[31m
+          [0m离线模式[0m
+        [36m</span>[31m
+        [36m<svg[31m
+          [33maria-hidden[31m=[32m"true"[31m
+          [33mclass[31m=[32m"lucide lucide-cloud-off w-3.5 h-3.5 text-[rgba(255,51,102,0.5)]"[31m
+          [33mfill[31m=[32m"none"[31m
+          [33mheight[31m=[32m"24"[31m
+          [33mstroke[31m=[32m"currentColor"[31m
+          [33mstroke-linecap[31m=[32m"round"[31m
+          [33mstroke-linejoin[31m=[32m"round"[31m
+          [33mstroke-width[31m=[32m"2"[31m
+          [33mviewBox[31m=[32m"0 0 24 24"[31m
+          [33mwidth[31m=[32m"24"[31m
+          [33mxmlns[31m=[32m"http://www.w3.org/2000/svg"[31m
+        [36m>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M10.94 5.274A7 7 0 0 1 15.71 10h1.79a4.5 4.5 0 0 1 4.222 6.057"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"M18.796 18.81A4.5 4.5 0 0 1 17.5 19H9A7 7 0 0 1 5.79 5.78"[31m
+          [36m/>[31m
+          [36m<path[31m
+            [33md[31m=[32m"m2 2 20 20"[31m
+          [36m/>[31m
+        [36m</svg>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/.pnpm/@testing-library+dom@10.4.1/node_modules/@testing-library/dom/dist/query-helpers.js:[2m109:15[22m[39m
+[36m [2m❯[22m src/app/__tests__/OfflineIndicator.test.tsx:[2m120:19[22m[39m
+    [90m118| [39m    })[33m;[39m
+    [90m119| [39m
+    [90m120| [39m    [34mexpect[39m(screen[33m.[39m[34mgetAllByText[39m([32m"网络已恢复"[39m)[[34m0[39m])[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m121| [39m    [34mexpect[39m(screen[33m.[39m[34mgetAllByText[39m([32m"同步中..."[39m)[[34m0[39m])[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m122| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m折叠状态[2m > [22m应渲染 Logo
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m折叠状态[2m > [22m折叠时不显示 YYC3 文字
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m折叠状态[2m > [22m折叠时不显示子菜单项文本
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m折叠状态[2m > [22m折叠时应渲染展开按钮 (ChevronRight)
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m展开状态[2m > [22m展开时应显示 YYC3 文字
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m展开状态[2m > [22m展开时应显示分类标签
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m展开状态[2m > [22m展开时应显示子菜单项
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m展开状态[2m > [22m展开时应显示收起按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m导航交互[2m > [22m点击子菜单项应导航到对应路径
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m导航交互[2m > [22m点击分类按钮应导航到第一个子项路径
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m导航交互[2m > [22m点击 Logo 区域应导航到首页
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m导航交互[2m > [22m点击收起按钮应调用 onToggle
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m路由高亮[2m > [22m首页时应渲染 monitor 分类按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m路由高亮[2m > [22m/patrol 页时应渲染 nav.patrol 子项按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22m路由高亮[2m > [22m/settings 页时应渲染 admin 分类按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/Sidebar.test.tsx[2m > [22mSidebar[2m > [22mFlyout 悬浮菜单 (折叠模式)[2m > [22m折叠模式 hover 分类应显示 flyout
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Sidebar src/app/components/Sidebar.tsx:[2m157:20[22m[39m
+    [90m155| [39m
+    [90m156| [39m[35mexport[39m [35mfunction[39m [33mSidebar[39m({ collapsed[33m,[39m onToggle }[33m:[39m [33mSidebarProps[39m) {
+    [90m157| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m158| [39m  [35mconst[39m location [33m=[39m [34museLocation[39m()[33m;[39m
+    [90m159| [39m  [35mconst[39m { t } [33m=[39m [34museI18n[39m()[33m;[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染 CP-IM 标识
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染搜索框
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染连接状态组件
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染语言切换器
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染用户头像 (initials)
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m应渲染通知徽标
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m桌面端基础渲染[2m > [22m不应渲染汉堡按钮 (桌面端)
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m通知面板[2m > [22m点击通知按钮应显示通知面板
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m通知面板[2m > [22m通知面板应包含 3 条通知
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m用户菜单[2m > [22m点击用户头像应显示下拉菜单 (桌面端)
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m用户菜单[2m > [22m用户菜单应包含导航项
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m用户菜单[2m > [22m点击登出应调用 onLogout
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m用户菜单[2m > [22m点击菜单项应导航并关闭菜单
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m移动端应渲染 YYC3 标识而非 CP-IM
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m移动端应渲染汉堡按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m点击汉堡按钮应调用 onToggleMobileMenu
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m移动端不应渲染搜索框
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m移动端应渲染微型连接状态点
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端[2m > [22m移动端不应渲染语言切换器
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端抽屉[2m > [22mmobileMenuOpen 时应渲染抽屉内容
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端抽屉[2m > [22m抽屉内应渲染导航分类
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端抽屉[2m > [22m抽屉内点击导航项应导航并关闭菜单
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m移动端抽屉[2m > [22m抽屉底部应渲染登出按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22mGhost Mode[2m > [22mGhost 模式下应渲染 GHOST 标识
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22mGhost Mode[2m > [22m非 Ghost 模式不显示标识
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m终端按钮[2m > [22m桌面端应渲染终端按钮
+[41m[1m FAIL [22m[49m src/app/__tests__/TopBar.test.tsx[2m > [22mTopBar[2m > [22m终端按钮[2m > [22m点击终端按钮应调用 onToggleTerminal
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m TopBar src/app/components/TopBar.tsx:[2m149:20[22m[39m
+    [90m147| [39m  onToggleTerminal[33m,[39m
+    [90m148| [39m}[33m:[39m [33mTopBarProps[39m) {
+    [90m149| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m150| [39m  [35mconst[39m location [33m=[39m [34museLocation[39m()[33m;[39m
+    [90m151| [39m  [35mconst[39m { t } [33m=[39m [34museI18n[39m()[33m;[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+[90m [2m❯[22m runWithFiberInDEV node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m874:13[22m[39m
+[90m [2m❯[22m performUnitOfWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m17641:22[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m快捷键列表[2m > [22m应返回 8 个快捷键
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m57:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m导航快捷键[2m > [22mCtrl+Shift+O 应导航到 /operations
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m75:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m导航快捷键[2m > [22mCtrl+Shift+A 应导航到 /follow-up
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m81:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m导航快捷键[2m > [22mCtrl+Shift+P 应导航到 /patrol
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m87:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m导航快捷键[2m > [22mCtrl+Shift+L 应导航到 /terminal
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m93:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m导航快捷键[2m > [22mCtrl+Shift+F 应导航到 /files
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m99:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m搜索快捷键[2m > [22mCtrl+K 应触发 onSearch 回调
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m108:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22mEscape 键[2m > [22mEsc 应触发 onEscape 回调
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m117:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22menabled=false[2m > [22m禁用时不应响应快捷键
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m125:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[20/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m输入框内[2m > [22m输入框内应忽略导航快捷键
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m133:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[21/129]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m src/app/__tests__/useKeyboardShortcuts.test.tsx[2m > [22museKeyboardShortcuts[2m > [22m输入框内[2m > [22m输入框内 Esc 仍应触发 onEscape
+[31m[1mError[22m: useNavigate() may be used only in the context of a <Router> component.[39m
+[90m [2m❯[22m invariant node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m199:11[22m[39m
+[90m [2m❯[22m useNavigateUnstable node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5609:3[22m[39m
+[90m [2m❯[22m useNavigate node_modules/.pnpm/react-router@7.13.1_react-dom@19.2.4_react@19.2.4__react@19.2.4/node_modules/react-router/dist/development/chunk-LFPYN7LY.mjs:[2m5606:46[22m[39m
+[36m [2m❯[22m Module.useKeyboardShortcuts src/app/hooks/useKeyboardShortcuts.ts:[2m54:20[22m[39m
+    [90m 52| [39m[35mexport[39m [35mfunction[39m [34museKeyboardShortcuts[39m(config[33m:[39m [33mShortcutConfig[39m [33m=[39m {}) {
+    [90m 53| [39m  const { enabled = true, onEscape, onSearch, onToggleTerminal } = con…
+    [90m 54| [39m  [35mconst[39m navigate [33m=[39m [34museNavigate[39m()[33m;[39m
+    [90m   | [39m                   [31m^[39m
+    [90m 55| [39m  [35mconst[39m lastToast [33m=[39m useRef[33m<[39mnumber[33m>[39m([34m0[39m)[33m;[39m
+    [90m 56| [39m
+[90m [2m❯[22m src/app/__tests__/useKeyboardShortcuts.test.tsx:[2m153:24[22m[39m
+[90m [2m❯[22m TestComponent node_modules/.pnpm/@testing-library+react@16.3.2_@testing-library+dom@10.4.1_@types+react-dom@19.2.3_@type_893f466751a7d66081fd06e9edb9241a/node_modules/@testing-library/react/dist/pure.js:[2m330:27[22m[39m
+[90m [2m❯[22m Object.react_stack_bottom_frame node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m25904:20[22m[39m
+[90m [2m❯[22m renderWithHooks node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m7662:22[22m[39m
+[90m [2m❯[22m updateFunctionComponent node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m10166:19[22m[39m
+[90m [2m❯[22m beginWork node_modules/.pnpm/react-dom@19.2.4_react@19.2.4/node_modules/react-dom/cjs/react-dom-client.development.js:[2m11778:18[22m[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[22/129]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m11 failed[39m[22m[2m | [22m[1m[32m107 passed[39m[22m[90m (118)[39m
+[2m      Tests [22m [1m[31m129 failed[39m[22m[2m | [22m[1m[32m1736 passed[39m[22m[90m (1865)[39m
+[2m   Start at [22m 10:47:17
+[2m   Duration [22m 52.03s[2m (transform 3.80s, setup 4.10s, import 13.03s, tests 115.92s, environment 33.91s)[22m
+
+ ELIFECYCLE  Command failed with exit code 1.

@@ -80,6 +80,8 @@ const zhCN = {
     envConfig: "环境变量",
     architecture: "系统架构",
     aiFamily: "AI Family",
+    voiceControl: "语音控制",
+    musicSpace: "音乐空间",
   },
 
   // ======== 底部导航 ========

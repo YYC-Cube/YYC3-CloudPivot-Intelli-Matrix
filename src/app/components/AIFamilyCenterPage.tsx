@@ -21,7 +21,7 @@ import {
 import { GlassCard } from "./GlassCard";
 import { useNavigate } from "react-router-dom";
 import {
-  FAMILY_MEMBERS, DEEP_BG, getHourlyCare,
+  FAMILY_MEMBERS, getHourlyCare,
   type FamilyMember,
 } from "./ai-family/shared";
 
@@ -186,7 +186,7 @@ export function AIFamilyCenterPage() {
   ];
 
   return (
-    <div className="min-h-full pb-8" style={{ background: DEEP_BG }}>
+    <div className="min-h-full pb-8">
       {/* ═══ 整点关爱播报横幅 ═══ */}
       <div className="px-4 md:px-8 pt-4">
         <div className="max-w-5xl mx-auto">

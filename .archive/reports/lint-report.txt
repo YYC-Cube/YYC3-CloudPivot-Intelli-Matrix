@@ -1,0 +1,761 @@
+
+> yyc3-cloudpivot-intelli-matrix@1.0.0 lint /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix
+> eslint . --ext .ts,.tsx,.js,.jsx
+
+(node:10556) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/eslint.config.js?mtime=1774486077489 is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Warning: React version not specified in eslint-plugin-react settings. See https://github.com/jsx-eslint/eslint-plugin-react#configuration .
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/App.tsx
+  53:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/AIAssistant.test.tsx
+  21:55  warning  'act' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/CLITerminal.test.tsx
+  12:36  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/DataMonitoring.test.tsx
+  11:36  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/DatabaseConnectionPanel.test.tsx
+  16:37  warning  'waitFor' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/DesignSystemPage.test.tsx
+  13:36  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/IDEPanel.test.tsx
+  32:5  warning  'currentTab' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/Layout.test.tsx
+  20:49  warning  'afterEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/LocalFileManager.test.tsx
+  14:36  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/LoopStageCard.test.tsx
+  14:32  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/OfflineIndicator.test.tsx
+  15:40  warning  'waitFor' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/OperationCenter.test.tsx
+  12:36  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/OperationChain.test.tsx
+  14:32  warning  'beforeEach' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/SecurityMonitor.test.tsx
+  9:42  warning  'cleanup' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  9:51  warning  'waitFor' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/UserManagement.test.tsx
+  65:56  warning  'element' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/api-config.test.ts
+  29:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/backgroundSync.test.ts
+  14:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/core-components-integration.test.tsx
+   32:48  warning  'afterEach' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   33:37  warning  'waitFor' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   33:46  warning  'act' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   33:51  warning  'cleanup' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  745:13  warning  'rerender' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/core-integration.test.tsx
+  20:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/dashboard-stores.test.ts
+  14:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/e2e-integration.test.ts
+   21:8   warning  'React' is defined but never used. Allowed unused vars must match /^_/u                     @typescript-eslint/no-unused-vars
+  226:44  warning  'importEnvConfig' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  226:61  warning  'getEnvConfig' is assigned a value but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/error-handler.test.ts
+  15:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/i18n-consistency.test.ts
+  14:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/i18n-loop-devguide.test.ts
+  14:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/i18n-packs.test.ts
+  13:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/integration.test.ts
+  17:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/network-utils.test.ts
+   17:8   warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  224:33  warning  'BinaryType' is not defined                                              no-undef
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/rf-phase2.test.ts
+  15:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/rf001-ws-url-unification.test.ts
+  26:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/rf002-error-log-dual-write.test.ts
+  14:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/rf003-figma-error-dedup.test.ts
+  13:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/security-i18n.test.ts
+  8:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/security-types.test.ts
+   8:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  17:3  warning  'PerformanceResult' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:3  warning  'MemoryResult' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/settings-model-unified-dataflow.test.ts
+  25:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/supabaseClient.test.ts
+  15:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/types-audit.test.ts
+   37:23  warning  'AppUser' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+   37:37  warning  'AppSession' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   37:54  warning  'AuthContextValue' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   39:8   warning  'NodeStatusType' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   39:29  warning  'NodeData' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   41:24  warning  'Model' is defined but never used. Allowed unused vars must match /^_/u                     @typescript-eslint/no-unused-vars
+   41:36  warning  'Agent' is defined but never used. Allowed unused vars must match /^_/u                     @typescript-eslint/no-unused-vars
+   41:48  warning  'InferenceStatus' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   41:70  warning  'InferenceLog' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   41:89  warning  'ModelStats' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   43:47  warning  'AlertData' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   43:63  warning  'ThroughputPoint' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   43:85  warning  'SystemStats' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   44:8   warning  'WSMessage' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   44:24  warning  'WebSocketDataState' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   46:8   warning  'NetworkInterface' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   46:31  warning  'NetworkMode' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   46:49  warning  'NetworkConfig' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   46:69  warning  'TestStatus' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   47:8   warning  'ConnectionTestResult' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+   47:35  warning  'NetworkConfigState' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   49:8   warning  'SyncItemType' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   49:27  warning  'SyncItem' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   49:42  warning  'SyncQueueStats' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   49:63  warning  'SyncProcessResult' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   51:8   warning  'ErrorCategory' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   51:28  warning  'ErrorSeverity' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   51:48  warning  'AppError' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   51:63  warning  'ErrorStats' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   53:8   warning  'Breakpoint' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   53:25  warning  'ViewState' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   55:8   warning  'ErrorBoundaryLevel' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   55:33  warning  'ChatMessage' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   55:51  warning  'CommandCategory' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   55:73  warning  'BeforeInstallPromptEvent' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   57:8   warning  'FollowUpSeverity' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   57:31  warning  'FollowUpStatus' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   57:52  warning  'ChainEventType' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   57:73  warning  'ChainEvent' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   58:8   warning  'FollowUpItem' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   58:27  warning  'QuickAction' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   60:8   warning  'OperationCategoryType' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   60:36  warning  'OperationCategoryMeta' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   60:64  warning  'OperationStatus' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   61:8   warning  'OperationItem' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   61:28  warning  'OperationTemplateItem' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   61:56  warning  'OperationLogEntry' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   61:80  warning  'LogFilterType' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   63:8   warning  'TerminalHistoryEntry' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+   63:35  warning  'IDEPanelTab' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   65:8   warning  'FileItemType' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   65:27  warning  'FileItem' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   65:42  warning  'LogLevel' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   65:57  warning  'LogEntry' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   66:8   warning  'ReportType' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   66:25  warning  'ReportFormat' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   66:44  warning  'ReportConfig' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   66:63  warning  'ReportResult' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   68:8   warning  'KeyboardShortcut' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   70:8   warning  'AnomalyPatternType' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   70:33  warning  'PatternSeverity' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   70:55  warning  'DetectedPattern' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   71:8   warning  'AIRecommendation' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   71:31  warning  'AIAnalysisResult' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   73:8   warning  'CommandPaletteItem' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   75:8   warning  'SWStatus' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   75:23  warning  'CacheEntry' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   75:40  warning  'PWAState' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   77:8   warning  'Locale' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+   77:21  warning  'LocaleInfo' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   79:24  warning  'StageStatus' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   79:42  warning  'StageResult' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   79:60  warning  'LoopRun' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+   80:8   warning  'DataFlowNodeType' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   80:31  warning  'DataFlowEdge' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   82:8   warning  'ModelProviderId' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   82:30  warning  'ModelProviderDef' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   82:53  warning  'ConfiguredModel' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   83:8   warning  'OllamaModel' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   83:26  warning  'OllamaTagsResponse' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   85:8   warning  'SDKConnectionStatus' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   85:34  warning  'ChatRole' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   85:49  warning  'ChatSession' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   85:67  warning  'SDKCapability' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   86:8   warning  'SDKUsageStats' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   86:28  warning  'SDKProviderCapabilities' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   86:58  warning  'SDKChatRequest' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   86:79  warning  'SDKChatResponse' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   88:8   warning  'HostFileEntry' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   88:28  warning  'FileVersion' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   88:46  warning  'HostFSState' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   90:52  warning  'DBConnection' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   90:71  warning  'DBTable' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+   90:85  warning  'DBColumn' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   91:8   warning  'QueryResult' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   91:26  warning  'DBBackup' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   93:66  warning  'PatrolCheckItem' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   94:8   warning  'PatrolResult' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   94:27  warning  'PatrolSchedule' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   96:26  warning  'ScanStatus' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   96:59  warning  'VitalRating' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   97:8   warning  'CSPResult' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   97:24  warning  'CookieResult' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   97:43  warning  'SensitiveDataResult' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   97:69  warning  'ResourceEntry' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   98:8   warning  'PerformanceResult' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   98:32  warning  'MemoryResult' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+   98:51  warning  'WebVital' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+   98:66  warning  'DeviceInfo' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+   99:8   warning  'NetworkInfo' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   99:26  warning  'BrowserFeature' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   99:47  warning  'BrowserInfo' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+   99:65  warning  'StorageUsage' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  100:8   warning  'DataManagementState' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  100:34  warning  'SecurityMonitorState' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  102:8   warning  'StageMeta' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+  102:24  warning  'DataFlowNode' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  104:8   warning  'RegisteredShortcut' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  106:8   warning  'I18nContextValue' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  108:8   warning  'SQLTemplate' is defined but never used. Allowed unused vars must match /^_/u               @typescript-eslint/no-unused-vars
+  110:25  warning  'EditableCellChange' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  112:46  warning  'AlertCondition' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  112:67  warning  'EscalationLevel' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  113:8   warning  'AlertThreshold' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  113:29  warning  'EscalationPolicy' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  113:68  warning  'AlertEvent' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  113:85  warning  'AlertRulesOptions' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  116:8   warning  'ReportMetric' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  116:27  warning  'PerformanceSnapshot' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  116:53  warning  'SecuritySnapshot' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  117:8   warning  'ReportData' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  117:25  warning  'ReportHistoryEntry' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  119:49  warning  'ConfidenceLevel' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  119:71  warning  'ActionPriority' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  120:32  warning  'AnomalyRecord' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+  120:52  warning  'SuggestedAction' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  121:8   warning  'PredictiveForecast' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  121:33  warning  'DiagnosticSession' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  122:8   warning  'WsNodeSnapshot' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  122:29  warning  'DiagnosticsOptions' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  123:8   warning  'DiagnosticHistoryEntry' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  123:37  warning  'DiagnosticView' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  125:8   warning  'RecentFile' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  127:24  warning  'StorageChangeEvent' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  132:8   warning  'StatusDef' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/types.test.ts
+  15:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/useI18n.test.tsx
+  18:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/useKeyboardShortcuts.test.tsx
+  21:8   warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  35:49  warning  'KeyboardEventInit' is not defined                                       no-undef
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/useLocalDatabase.test.ts
+  18:27  warning  'cleanup' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/useModelProvider.test.tsx
+  21:8  warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/__tests__/useSecurityMonitor.test.tsx
+  8:8   warning  'React' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  9:27  warning  'cleanup' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/AIAssistant.tsx
+  17:32  warning  'ChevronUp' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:51  warning  'Square' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/AIDiagnostics.tsx
+  12:18  warning  'CheckCircle2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  15:27  warning  'HardDrive' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/AIFamilyPage.tsx
+  12:38  warning  'useCallback' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ActionRecommender.tsx
+  9:16  warning  'XCircle' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/AlertBanner.tsx
+  11:3   warning  'Bell' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  11:47  warning  'Shield' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/AlertRulesPanel.tsx
+  12:37  warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ArchitectureAudit.tsx
+   22:26  warning  'Palette' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  342:11  warning  't' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/BottomNav.tsx
+  19:13  warning  'BarChart3' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  20:11  warning  'RefreshCcw' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  24:22  warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/CreateRuleModal.tsx
+   12:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  139:91  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  158:78  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/Dashboard.tsx
+  111:9  warning  'isDesktop' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DataEditorPanel.tsx
+    16:35   warning  'Save' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+    37:8    warning  'ModelPerfEntry' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+    37:29   warning  'RecentOpEntry' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   895:108  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+   896:127  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+  1002:209  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+  1003:272  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+  1156:105  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+  1157:128  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DataEditorTables.tsx
+  15:10  warning  'toast' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  18:7   warning  'toastStyle' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  28:22  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+  29:22  warning  Unexpected any. Specify a different type                                               @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DataFlowDiagram.tsx
+  13:15  warning  'ArrowLeftRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  15:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DatabaseConnectionPanel.tsx
+  16:41  warning  'X' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  17:3   warning  'Plug' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  18:26  warning  'AlertTriangle' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DatabaseManager.tsx
+  12:47  warning  'Search' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+  13:22  warning  'Download' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+  13:32  warning  'Upload' is defined but never used. Allowed unused vars must match /^_/u                   @typescript-eslint/no-unused-vars
+  16:12  warning  'Zap' is defined but never used. Allowed unused vars must match /^_/u                      @typescript-eslint/no-unused-vars
+  16:37  warning  'Settings2' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  17:3   warning  'Edit3' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+  17:10  warning  'Check' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+  17:17  warning  'XCircle' is defined but never used. Allowed unused vars must match /^_/u                  @typescript-eslint/no-unused-vars
+  21:15  warning  'SQLTemplate' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  25:29  warning  'DBConnection' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+  26:10  warning  'toast' is defined but never used. Allowed unused vars must match /^_/u                    @typescript-eslint/no-unused-vars
+  51:10  warning  'editingConn' is assigned a value but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  51:23  warning  'setEditingConn' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/DevGuidePage.tsx
+   19:3  warning  'ArrowRight' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  307:9  warning  'isMobile' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/EnvConfigEditor.tsx
+  17:3   warning  'Save' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:24  warning  'Info' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/FileBrowser.tsx
+  10:18  warning  'RefreshCw' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/FollowUpDrawer.tsx
+  10:62  warning  'Tag' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  11:49  warning  'Send' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  11:55  warning  'RotateCcw' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  12:18  warning  'Cpu' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  12:23  warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/HostFileManager.tsx
+  12:44  warning  'Plus' is defined but never used. Allowed unused vars must match /^_/u                @typescript-eslint/no-unused-vars
+  24:7   warning  'cyanDim' is assigned a value but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  51:9   warning  'editorRef' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/InlineEditableTable.tsx
+  21:42  warning  'idbDeleteRecord' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  22:15  warning  'ChangeType' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/LanguageSwitcher.tsx
+  10:15  warning  'Locale' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  17:39  warning  't' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/LogViewer.tsx
+  124:19  warning  'LevelIcon' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/Login.tsx
+  53:14  warning  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/LoopStageCard.tsx
+  10:19  warning  'AlertCircle' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  35:47  warning  'index' is defined but never used. Allowed unused args must match /^_/u        @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ModelProviderPanel.tsx
+  15:36  warning  'Key' is defined but never used. Allowed unused vars must match /^_/u                               @typescript-eslint/no-unused-vars
+  56:5   warning  'removeModelFromProvider' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/NetworkConfig.tsx
+  374:43  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  396:59  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  397:62  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  398:61  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/OperationAudit.tsx
+  16:11  warning  'Filter' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  16:29  warning  'Calendar' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  16:39  warning  'ChevronDown' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  17:64  warning  'MoreHorizontal' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  18:27  warning  'Server' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  18:55  warning  'Copy' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+  18:61  warning  'Check' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/OperationLogStream.tsx
+  10:46  warning  'Filter' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+  45:62  warning  'isMobile' is assigned a value but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/OperationTemplate.tsx
+  9:23  warning  'Clock' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/PatrolHistory.tsx
+  10:20  warning  'Shield' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/PatrolReport.tsx
+  10:53  warning  'Shield' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/PatternAnalyzer.tsx
+  12:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/PerformanceMonitor.tsx
+  19:40  warning  'Edit3' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  19:47  warning  'Check' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  19:54  warning  'X' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  19:57  warning  'Save' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ProviderEditorModal.tsx
+  52:11  warning  't' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/QuickActionGrid.tsx
+  13:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  44:44  warning  'isExecuting' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/QuickActionGroup.tsx
+  11:3   warning  'RotateCcw' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  11:14  warning  'Pause' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  11:21  warning  'ArrowUpRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/RefactoringReport.tsx
+  15:31  warning  'Zap' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  15:36  warning  'Database' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  16:44  warning  'XCircle' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ReportExporter.tsx
+  12:3   warning  'Clock' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  76:56  warning  'i' is defined but never used. Allowed unused args must match /^_/u      @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/SDKChatPanel.tsx
+  18:46  warning  'Bot' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/SecurityMonitor.tsx
+  290:138  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  333:52   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  426:46   warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ServiceConnectionTest.tsx
+   92:48   warning  'RequestInit' is not defined                                                              no-undef
+  111:17   warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  221:43   warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  225:135  warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  496:19   warning  Unexpected any. Specify a different type                                                  @typescript-eslint/no-explicit-any
+  696:9    warning  'runSingleTest' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/SystemSettings.tsx
+   17:10   warning  'GitBranch' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   17:37   warning  'FileJson' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   18:42   warning  'Copy' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   19:14   warning  'HardDrive' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  365:74   warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  564:39   warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  564:106  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  587:24   warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+  592:24   warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/UserManagement.tsx
+  15:32  warning  'Mail' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  15:38  warning  'Clock' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/AIFamilyRouter.tsx
+  10:27  warning  'useState' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  10:37  warning  'useEffect' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  82:22  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyChat.tsx
+  15:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyCommCenter.tsx
+  479:91  warning  Unexpected any. Specify a different type                              @typescript-eslint/no-explicit-any
+  500:43  warning  'gi' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyDataHub.tsx
+  16:22  warning  'Clock' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  16:29  warning  'BarChart3' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  16:40  warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  17:13  warning  'ArrowRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  17:25  warning  'Star' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+  17:31  warning  'Zap' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+  24:18  warning  'MEDALS' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyEntertainment.tsx
+   10:49  warning  'useEffect' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   15:3   warning  'Play' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  207:78  warning  Unexpected any. Specify a different type                                     @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyHome.tsx
+  14:25  warning  'Sparkles' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  15:38  warning  'Gamepad2' is defined but never used. Allowed unused vars must match /^_/u              @typescript-eslint/no-unused-vars
+  24:7   warning  'SPACE_ICONS' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  48:10  warning  'getGreetingIcon' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyModelSettings.tsx
+   13:18  warning  'Copy' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+   15:13  warning  'Clock' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   15:20  warning  'Settings2' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   15:41  warning  'Upload' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   16:12  warning  'VolumeX' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   16:48  warning  'X' is defined but never used. Allowed unused vars must match /^_/u             @typescript-eslint/no-unused-vars
+   21:19  warning  'MEMBERS_MAP' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  190:3   warning  'voiceProfile' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyPhone.tsx
+  13:16  warning  'MessageCircle' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  13:31  warning  'Heart' is defined but never used. Allowed unused vars must match /^_/u          @typescript-eslint/no-unused-vars
+  13:38  warning  'Star' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+  14:3   warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyUISettings.tsx
+  432:26  warning  Unexpected any. Specify a different type                                        @typescript-eslint/no-explicit-any
+  589:47  warning  'i' is defined but never used. Allowed unused args must match /^_/u             @typescript-eslint/no-unused-vars
+  693:29  warning  'rgb' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ai-family/FamilyVoiceSystem.tsx
+  264:33  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  270:42  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  270:79  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  281:36  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  304:35  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  572:18  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  572:57  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/design-system/ComponentShowcase.tsx
+   12:43  warning  'Bell' is defined but never used. Allowed unused vars must match /^_/u           @typescript-eslint/no-unused-vars
+   13:3   warning  'Activity' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   13:13  warning  'Shield' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   13:21  warning  'Server' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   13:29  warning  'Database' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+   13:39  warning  'Zap' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   14:3   warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   14:17  warning  'ExternalLink' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   16:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  236:23  warning  'Icon' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/design-system/DesignTokens.tsx
+  8:10  warning  'GlassCard' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/design-system/StageReview.tsx
+  14:24  warning  'AlertTriangle' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/AIChatPanel.tsx
+  12:13  warning  'Code2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/FileExplorer.tsx
+  11:11  warning  'Plus' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+  13:47  warning  'Scissors' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/GitPanel.tsx
+  12:23  warning  'ChevronRight' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDELayout.tsx
+  136:9  warning  'handleAddPanel' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  138:5  warning  Unexpected console statement. Only these console methods are allowed: warn, error, info    no-console
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/IDETerminal.tsx
+  10:46  warning  'Maximize2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  10:57  warning  'Minimize2' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelContainer.tsx
+  32:5   warning  'onResize' is assigned a value but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  33:5   warning  'endResize' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  82:40  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelContent.tsx
+  21:11  warning  'activePanelId' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ide/PanelResizeHandle.tsx
+  12:17  warning  'useEffect' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/theme/ColorPicker.tsx
+  19:48  warning  'onClose' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/theme/color-utils.ts
+  123:7   warning  This assigned value is not used in subsequent statements  no-useless-assignment
+  123:14  warning  This assigned value is not used in subsequent statements  no-useless-assignment
+  123:21  warning  This assigned value is not used in subsequent statements  no-useless-assignment
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ui/calendar.tsx
+  74:45  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  77:46  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  80:12  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/components/ui/chart.tsx
+  139:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  140:13  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  195:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  274:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  289:27  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/docs/FINAL-AUDIT-REPORT.ts
+  110:45  warning  Unnecessary escape character: \`  no-useless-escape
+  144:65  warning  Unnecessary escape character: \`  no-useless-escape
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useAIDiagnostics.ts
+  16:34  warning  'ConfidenceLevel' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  16:51  warning  'ActionPriority' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  19:3   warning  'WsNodeSnapshot' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useAISuggestion.ts
+  16:3  warning  'AIAnalysisResult' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  17:3  warning  'AnomalyPatternType' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useAlertRules.ts
+   16:18  warning  'AlertMetric' is defined but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+   16:31  warning  'AlertCondition' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   16:47  warning  'EscalationLevel' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+   17:3   warning  'AlertThreshold' is defined but never used. Allowed unused vars must match /^_/u         @typescript-eslint/no-unused-vars
+   17:19  warning  'EscalationPolicy' is defined but never used. Allowed unused vars must match /^_/u       @typescript-eslint/no-unused-vars
+  231:13  warning  'setAllRules' is assigned a value but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  232:13  warning  'rulesLoaded' is assigned a value but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+  239:13  warning  'eventsLoaded' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useBigModelSDK.ts
+  390:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  588:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  697:19  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  747:29  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useFollowUp.ts
+  9:33  warning  'useEffect' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useHostFileSystem.ts
+   21:40  warning  'idbPutMany' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   54:17  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  138:52  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  190:52  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  316:39  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  333:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  354:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  380:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  420:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  465:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  499:45  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  512:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  524:46  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  530:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  543:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  561:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  577:46  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  588:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  605:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  618:46  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  625:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  657:45  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+  663:19  warning  Unexpected any. Specify a different type                                      @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useI18n.ts
+   13:8   warning  'React' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   44:45  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   46:15  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+   72:55  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+  103:65  warning  Unexpected any. Specify a different type                                 @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useInstallPrompt.ts
+  30:28  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useLocalDatabase.ts
+  36:3  warning  'DBColumn' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useLocalFileSystem.ts
+   21:3   warning  'ReportType' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+   30:7   warning  'LOGS_STORAGE_KEY' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  146:10  warning  'findParent' is defined but never used. Allowed unused vars must match /^_/u                 @typescript-eslint/no-unused-vars
+  268:11  warning  'parent' is assigned a value but never used. Allowed unused vars must match /^_/u            @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useModelProvider.ts
+  312:19  warning  Unexpected any. Specify a different type                                                        @typescript-eslint/no-explicit-any
+  385:5   warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useNetworkConfig.ts
+  11:30  warning  'NetworkInterface' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  11:48  warning  'TestStatus' is defined but never used. Allowed unused vars must match /^_/u        @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useOperationCenter.ts
+  8:33  warning  'useRef' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+  8:41  warning  'useEffect' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/usePWAManager.ts
+  33:20  warning  'setSWStatus' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  41:20  warning  'setIsOnline' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/usePatrol.ts
+   27:9   warning  'categories' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  204:15  warning  'setHistory' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/usePerformanceMonitor.ts
+   98:31  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+  116:30  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/usePushNotifications.ts
+  15:14  warning  'NotificationPermission' is not defined  no-undef
+  27:41  warning  'NotificationPermission' is not defined  no-undef
+  34:30  warning  'NotificationOptions' is not defined     no-undef
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useReportExporter.ts
+  17:3  warning  'ReportMetric' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useSecurityMonitor.ts
+   12:3   warning  'ScanStatus' is defined but never used. Allowed unused vars must match /^_/u      @typescript-eslint/no-unused-vars
+   14:3   warning  'VitalRating' is defined but never used. Allowed unused vars must match /^_/u     @typescript-eslint/no-unused-vars
+   18:3   warning  'ResourceEntry' is defined but never used. Allowed unused vars must match /^_/u   @typescript-eslint/no-unused-vars
+   24:3   warning  'BrowserFeature' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+   26:3   warning  'StorageUsage' is defined but never used. Allowed unused vars must match /^_/u    @typescript-eslint/no-unused-vars
+  142:62  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+  153:65  warning  Unexpected any. Specify a different type                                          @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useServiceLoop.ts
+   19:3   warning  'DataFlowNodeType' is defined but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+  342:21  warning  Unexpected any. Specify a different type                                            @typescript-eslint/no-explicit-any
+
+/Volumes/Max/YYC3-CloudPivot-Intelli-Matrix/src/app/hooks/useTerminal.ts
+  200:11  warning  'updated' is assigned a value but never used. Allowed unused vars must match /^_/u  @typescript-eslint/no-unused-vars
+
+✖ 482 problems (0 errors, 482 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+

@@ -1,0 +1,38 @@
+
+> yyc3-cloudpivot-intelli-matrix@1.0.0 build /Volumes/Max/YYC3-CloudPivot-Intelli-Matrix
+> tsc -p electron/tsconfig.json && vite build
+
+vite v7.3.1 building client environment for production...
+transforming...
+✓ 2987 modules transformed.
+Circular chunk: vendor -> react-vendor -> vendor. Please adjust the manual chunk logic for these chunks.
+rendering chunks...
+computing gzip size...
+dist/index.html                                   1.38 kB │ gzip:   0.62 kB
+dist/assets/FadeIn-Cmpvd093.js                    0.56 kB │ gzip:   0.36 kB
+dist/assets/FamilyPageHeader-BmSGjd1R.js          0.98 kB │ gzip:   0.54 kB
+dist/assets/FamilyGrowth-BgsW8iPE.js              7.97 kB │ gzip:   2.67 kB
+dist/assets/FamilyShare-Co0VJEct.js               8.09 kB │ gzip:   3.44 kB
+dist/assets/FamilyLearn-BuvSzu-m.js               8.46 kB │ gzip:   2.96 kB
+dist/assets/FamilyChat-B-5rvkU1.js                8.85 kB │ gzip:   3.36 kB
+dist/assets/FamilyHome-DrjereWk.js               10.04 kB │ gzip:   3.58 kB
+dist/assets/FamilyDataHub-B5_5O51n.js            10.54 kB │ gzip:   3.11 kB
+dist/assets/FamilyMusic-D54J2gyy.js              10.79 kB │ gzip:   3.66 kB
+dist/assets/FamilyPhone-2l1iQVw1.js              11.55 kB │ gzip:   3.62 kB
+dist/assets/FamilyEntertainment-Dp_9A_6f.js      12.39 kB │ gzip:   4.33 kB
+dist/assets/FamilyCommCenter-a5TrOaH8.js         12.98 kB │ gzip:   4.22 kB
+dist/assets/FamilyVoiceSystem-CxfyjWJN.js        15.72 kB │ gzip:   4.51 kB
+dist/assets/FamilyModelSettings-CC6HX4G3.js      19.04 kB │ gzip:   6.17 kB
+dist/assets/FamilyActivityCenter-UbLnWf9i.js     20.61 kB │ gzip:   5.63 kB
+dist/assets/FamilyUISettings-qNzA4R1j.js         21.90 kB │ gzip:   6.71 kB
+dist/assets/shared-C70SOoIG.js                   23.65 kB │ gzip:  10.30 kB
+dist/assets/motion-vendor-GxjHIm7K.js            91.72 kB │ gzip:  30.28 kB
+dist/assets/react-vendor-D-boPY1T.js            559.44 kB │ gzip: 162.48 kB
+dist/assets/vendor-C9zvr68O.js                  819.99 kB │ gzip: 282.66 kB
+dist/assets/index-BybY9era.js                 1,160.95 kB │ gzip: 283.98 kB
+
+(!) Some chunks are larger than 400 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 2.54s

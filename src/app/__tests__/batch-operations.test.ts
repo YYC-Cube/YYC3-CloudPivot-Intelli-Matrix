@@ -71,7 +71,7 @@ describe("BatchOperations", () => {
         { id: "2", changes: { name: "Updated Item 2" } },
       ];
 
-      let callIndex = 0;
+      const callIndex = 0;
       mockFrom.mockImplementation(() => ({
         update: vi.fn().mockReturnValue({
           eq: vi.fn().mockReturnValue({

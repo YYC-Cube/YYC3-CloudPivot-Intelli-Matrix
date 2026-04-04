@@ -1134,12 +1134,7 @@ export function AIFamilyDesignDoc() {
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
 
   return (
-    <div
-      className="min-h-full"
-      style={{
-        background: "linear-gradient(180deg, rgba(4,8,20,1) 0%, rgba(6,14,31,1) 20%, rgba(8,20,48,0.95) 50%, rgba(6,14,31,1) 80%, rgba(4,8,20,1) 100%)",
-      }}
-    >
+    <div className="min-h-full">
       {/* Hero */}
       <HeroBanner />
 

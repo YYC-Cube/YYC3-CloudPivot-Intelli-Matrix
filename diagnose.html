@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YYC³ 诊断页面</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+          sans-serif;
+        background: linear-gradient(135deg, #060e1f 0%, #0a1628 30%, #081430 60%, #040c1a 100%);
+        color: #ffffff;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .container {
+        max-width: 1200px;
+        width: 100%;
+        background: rgba(6, 14, 31, 0.8);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 8px;
+        padding: 30px;
+        margin: 0 auto;
+      }
+      h1 {
+        color: #00d4ff;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      .test-section {
+        margin: 20px 0;
+        padding: 15px;
+        border-radius: 4px;
+        background: rgba(0, 212, 255, 0.05);
+        border-left: 3px solid #00d4ff;
+      }
+      .success {
+        color: #00ff88;
+      }
+      .error {
+        color: #ff4444;
+      }
+      .info {
+        color: #00d4ff;
+      }
+      button {
+        background: #00d4ff;
+        color: #060e1f;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px;
+        transition: all 0.3s ease;
+      }
+      button:hover {
+        background: #00b8e6;
+        transform: translateY(-2px);
+      }
+      .log-output {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+        border-radius: 4px;
+        padding: 15px;
+        margin-top: 20px;
+        max-height: 400px;
+        overflow-y: auto;
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+      }
+      .log-entry {
+        margin: 5px 0;
+        padding: 5px;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>YYC³ 系统诊断页面</h1>
+      
+      <div class="test-section info">
+        <strong>JavaScript 状态:</strong> <span id="js-status">检测中...</span>
+      </div>
+      
+      <div class="test-section info">
+        <strong>React 状态:</strong> <span id="react-status">检测中...</span>
+      </div>
+      
+      <div class="test-section info">
+        <strong>路由状态:</strong> <span id="router-status">检测中...</span>
+      </div>
+      
+      <div class="test-section info">
+        <strong>翻译状态:</strong> <span id="i18n-status">检测中...</span>
+      </div>
+      
+      <div class="test-section info">
+        <strong>浏览器信息:</strong> <span id="browser-info">检测中...</span>
+      </div>
+      
+      <div class="test-section info">
+        <strong>控制台日志:</strong>
+      </div>
+      
+      <div id="log-output" class="log-output"></div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="testAll()">运行所有测试</button>
+        <button onclick="clearLogs()">清除日志</button>
+        <button onclick="goToApp()">访问主应用</button>
+      </div>
+    </div>
+
+    <script>
+      // 拦截 console.log
+      const originalConsoleLog = console.log;
+      const originalConsoleError = console.error;
+      const originalConsoleWarn = console.warn;
+      const logOutput = document.getElementById('log-output');
+      
+      function addLog(message, type = 'info') {
+        const entry = document.createElement('div');
+        entry.className = 'log-entry';
+        entry.style.color = type === 'error' ? '#ff4444' : type === 'success' ? '#00ff88' : '#00d4ff';
+        entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        logOutput.appendChild(entry);
+        logOutput.scrollTop = logOutput.scrollHeight;
+      }
+      
+      console.log = function(...args) {
+        originalConsoleLog.apply(console, args);
+        addLog(args.join(' '), 'info');
+      };
+      
+      console.error = function(...args) {
+        originalConsoleError.apply(console, args);
+        addLog(args.join(' '), 'error');
+      };
+      
+      console.warn = function(...args) {
+        originalConsoleWarn.apply(console, args);
+        addLog(args.join(' '), 'info');
+      };
+      
+      // 检测 JavaScript
+      document.getElementById('js-status').textContent = '✅ 正常工作';
+      addLog('JavaScript 已加载并正常工作', 'success');
+      
+      // 检测浏览器信息
+      const browserInfo = `${navigator.userAgent}`;
+      document.getElementById('browser-info').textContent = browserInfo.substring(0, 60) + '...';
+      addLog(`浏览器: ${browserInfo.substring(0, 100)}`, 'info');
+      
+      // 检测 React
+      document.getElementById('react-status').textContent = '⚠️ 未加载 (这是测试页面)';
+      addLog('React 未加载 (这是纯 HTML 测试页面)', 'info');
+      
+      // 检测路由
+      document.getElementById('router-status').textContent = '⚠️ 未加载 (这是测试页面)';
+      addLog('路由未加载 (这是纯 HTML 测试页面)', 'info');
+      
+      // 检测翻译
+      document.getElementById('i18n-status').textContent = '⚠️ 未加载 (这是测试页面)';
+      addLog('翻译未加载 (这是纯 HTML 测试页面)', 'info');
+      
+      // 测试函数
+      function testAll() {
+        addLog('开始系统测试...', 'info');
+        
+        try {
+          // 测试基本功能
+          const testArray = [1, 2, 3, 4, 5];
+          const sum = testArray.reduce((a, b) => a + b, 0);
+          addLog(`数组求和测试: ${sum === 15 ? '✅ 通过' : '❌ 失败'}`, sum === 15 ? 'success' : 'error');
+          
+          // 测试对象操作
+          const testObj = { name: 'YYC³', version: '1.0.0' };
+          addLog(`对象操作测试: ${JSON.stringify(testObj)}`, 'success');
+          
+          // 测试异步操作
+          Promise.resolve('异步测试成功').then(result => {
+            addLog(result, 'success');
+          });
+          
+          // 测试 DOM 操作
+          const testDiv = document.createElement('div');
+          testDiv.textContent = 'DOM 测试';
+          addLog('DOM 操作测试: ✅ 通过', 'success');
+          
+          addLog('系统测试完成', 'success');
+        } catch (error) {
+          addLog(`系统测试失败: ${error.message}`, 'error');
+        }
+      }
+      
+      function clearLogs() {
+        logOutput.innerHTML = '';
+        addLog('日志已清除', 'info');
+      }
+      
+      function goToApp() {
+        window.location.href = '/';
+      }
+      
+      // 页面加载完成
+      window.addEventListener('load', () => {
+        addLog('页面加载完成', 'success');
+        addLog('准备就绪，可以开始测试', 'info');
+      });
+      
+      // 检测错误
+      window.addEventListener('error', (event) => {
+        addLog(`错误: ${event.message}`, 'error');
+      });
+      
+      // 检测未处理的 Promise 拒绝
+      window.addEventListener('unhandledrejection', (event) => {
+        addLog(`未处理的 Promise 拒绝: ${event.reason}`, 'error');
+      });
+    </script>
+  </body>
+</html>
