@@ -74,62 +74,69 @@ describe("OperationService", () => {
 
   describe("executeAction", () => {
     it("应成功执行操作", async () => {
-      const { OperationService } = await import("../lib/operation-service");
-      const operationService = new OperationService();
+      const originalRandom = Math.random;
+      Math.random = () => 0.9;
 
-      const mockOperation = {
-        id: "op-1",
-        name: "Restart Service",
-        type: "system",
-        status: "idle",
-        result: null,
-        duration: null,
-        completed_at: null,
-      };
+      try {
+        const { OperationService } = await import("../lib/operation-service");
+        const operationService = new OperationService();
 
-      let callCount = 0;
-
-      (mockSupabase.from as any).mockImplementation((table: string) => {
-        callCount++;
-        
-        if (table === "operation_logs") {
-          return {
-            insert: vi.fn().mockReturnValue({
-              select: vi.fn().mockReturnValue({
-                single: vi.fn().mockResolvedValue({ data: null, error: null }),
-              }),
-            }),
-          };
-        }
-
-        return {
-          select: vi.fn().mockReturnThis(),
-          eq: vi.fn().mockReturnThis(),
-          single: vi.fn().mockImplementation(() => {
-            if (callCount === 1) {
-              return Promise.resolve({ data: [mockOperation], error: null });
-            }
-            if (callCount === 2) {
-              return Promise.resolve({ data: { ...mockOperation, status: "running" }, error: null });
-            }
-            return Promise.resolve({ 
-              data: { 
-                ...mockOperation, 
-                status: "success", 
-                duration: 100,
-                completed_at: new Date().toISOString() 
-              }, 
-              error: null 
-            });
-          }),
-          update: vi.fn().mockReturnThis(),
+        const mockOperation = {
+          id: "op-1",
+          name: "Restart Service",
+          type: "system",
+          status: "idle",
+          result: null,
+          duration: null,
+          completed_at: null,
         };
-      });
 
-      const result = await operationService.executeAction("op-1");
+        let callCount = 0;
 
-      expect(result).toBeDefined();
-      expect(result.status).toBe("success");
+        (mockSupabase.from as any).mockImplementation((table: string) => {
+          callCount++;
+          
+          if (table === "operation_logs") {
+            return {
+              insert: vi.fn().mockReturnValue({
+                select: vi.fn().mockReturnValue({
+                  single: vi.fn().mockResolvedValue({ data: null, error: null }),
+                }),
+              }),
+            };
+          }
+
+          return {
+            select: vi.fn().mockReturnThis(),
+            eq: vi.fn().mockReturnThis(),
+            single: vi.fn().mockImplementation(() => {
+              if (callCount === 1) {
+                return Promise.resolve({ data: [mockOperation], error: null });
+              }
+              if (callCount === 2) {
+                return Promise.resolve({ data: { ...mockOperation, status: "running" }, error: null });
+              }
+              return Promise.resolve({ 
+                data: { 
+                  ...mockOperation, 
+                  status: "success", 
+                  duration: 100,
+                  completed_at: new Date().toISOString() 
+                }, 
+                error: null 
+              });
+            }),
+            update: vi.fn().mockReturnThis(),
+          };
+        });
+
+        const result = await operationService.executeAction("op-1");
+
+        expect(result).toBeDefined();
+        expect(result.status).toBe("success");
+      } finally {
+        Math.random = originalRandom;
+      }
     });
   });
 });
