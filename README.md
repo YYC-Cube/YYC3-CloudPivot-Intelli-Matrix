@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ## 📖 简介
 
-[YYC³ CloudPivot Intelli-Matrix (CP-IM)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) 是一个基于 React 18 + TypeScript 的现代化智能监控与运维平台，专为 YYC³ Family 内部 AI 研发与运维团队设计。
+[YYC³ CloudPivot Intelli-Matrix (CP-IM)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) 是一个基于 **React 19 + TypeScript** 的现代化智能监控与运维平台，专为 YYC³ Family 内部 AI 研发与运维团队设计。
 
 ### 🎯 核心理念
 
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
 - ✅ **AI 驱动** - 智能决策建议，自动化运维
 - ✅ **跨平台** - 桌面端、平板、移动端完美适配
 - ✅ **离线优先** - PWA 支持，无网络也能用
-- ✅ **类型安全** - TypeScript 严格模式，1267 个测试保障
+- ✅ **类型安全** - TypeScript 严格模式，全面测试保障
 
 ---
 
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ├─────────────────────────────────────────────────────────────────┤
 │  🎨 交互层 (Interaction Layer)                               │
 │  ┌──────────────────────────────────────────────────────────┐   │
-│  │ React 18.3 + TypeScript Strict + React Router v7    │   │
+│  │ React 19.2 + TypeScript Strict + React Router v7    │   │
 │  └──────────────────────────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────────────┤
 │  🎭 样式层 (Styling Layer)                                  │
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 | 技术 | 版本 | 说明 | 状态 |
 |------|------|------|------|
-| ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat&logo=react) | 18.3.1 | UI 框架，支持并发特性 | ✅ |
+| ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=flat&logo=react) | 19.2.4 | UI 框架，支持并发特性 | ✅ |
 | ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript) | Strict Mode | 类型安全，零运行时错误 | ✅ |
 | ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-CA4245?style=flat&logo=reactrouter) | 7.13.0 | 路由管理 (Data Mode) | ✅ |
 
@@ -160,35 +160,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 | 技术 | 版本 | 说明 | 状态 |
 |------|------|------|------|
-| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2AC?style=flat&logo=tailwindcss) | 4.1.12 | 原子化 CSS，JIT 编译 | ✅ |
-| ![Motion](https://img.shields.io/badge/Motion-12.23.24-FF6B6B?style=flat) | 12.23.24 | 高性能动画库 | ✅ |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.2.1-38B2AC?style=flat&logo=tailwindcss) | 4.2.1 | 原子化 CSS，JIT 编译 | ✅ |
+| ![Motion](https://img.shields.io/badge/Motion-12.34.5-FF6B6B?style=flat) | 12.34.5 | 高性能动画库 | ✅ |
 | ![Radix UI](https://img.shields.io/badge/Radix-1.x-18181B?style=flat) | 1.x | 无头组件库，可访问性优先 | ✅ |
 
 ### 构建与测试
 
 | 技术 | 版本 | 说明 | 状态 |
 |------|------|------|------|
-| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF?style=flat&logo=vite) | 6.3.5 | 极速构建工具 (6.42s) | ✅ |
-| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E?style=flat&logo=vitest) | 4.0.18 | 单元测试框架 | ✅ |
-| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB?style=flat) | 16.x | 测试工具 (1267 tests) | ✅ |
+| ![Vite](https://img.shields.io/badge/Vite-8.0.3-646CFF?style=flat&logo=vite) | 8.0.3 | 极速构建工具 | ✅ |
+| ![Vitest](https://img.shields.io/badge/Vitest-4.1.2-FECD3E?style=flat&logo=vitest) | 4.1.2 | 单元测试框架 | ✅ |
+| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB?style=flat) | 16.x | 测试工具 | ✅ |
 
 ### 数据可视化
 
 | 技术 | 版本 | 说明 | 状态 |
 |------|------|------|------|
-| ![Recharts](https://img.shields.io/badge/Recharts-2.15.2-FF5722?style=flat) | 2.15.2 | 响应式图表库 | ✅ |
-| ![Lucide](https://img.shields.io/badge/Lucide-0.487.0-FFA500?style=flat) | 0.487.0 | 现代化图标库 | ✅ |
+| ![Recharts](https://img.shields.io/badge/Recharts-3.8.1-FF5722?style=flat) | 3.8.1 | 响应式图表库 | ✅ |
+| ![Lucide](https://img.shields.io/badge/Lucide-0.576.0-FFA500?style=flat) | 0.576.0 | 现代化图标库 | ✅ |
 
 ### 技术亮点
 
 | 维度 | 指标 | 说明 |
 |------|------|------|
-| 🚀 **构建速度** | 6.42s | Vite 极速编译 |
-| 📦 **包大小** | 275KB | 优化后主包大小 |
-| 🧪 **测试覆盖** | 80%+ | 1267 个测试用例 |
-| 💾 **类型安全** | 100% | TypeScript Strict Mode |
-| 🎨 **样式隔离** | 原子化 | Tailwind CSS JIT |
+| 🚀 **构建速度** | 极速编译 | Vite 8.0.3 高效构建 |
+| 📦 **包大小** | 已优化 | 代码分割 + Tree Shaking |
+| 🧪 **测试覆盖** | 持续提升 | Vitest 4.1.2 全面保障 |
+| 💾 **类型安全** | 100% | TypeScript 5.9 Strict Mode |
+| 🎨 **样式隔离** | 原子化 | Tailwind CSS 4.2 JIT |
 | 🔄 **热更新** | HMR | 开发体验极佳 |
+| 💻 **桌面端** | Electron 41 | 跨平台原生体验 |
 
 ---
 
@@ -228,7 +229,7 @@ cp .env.example .env
 pnpm dev
 ```
 
-访问 http://localhost:5173
+访问 http://localhost:3218
 
 ### 5️⃣ 运行测试
 
@@ -262,20 +263,21 @@ pnpm build:analyze
 
 ```
 ✓ 构建成功
-✓ 转换模块：2731 个
-✓ 构建时间：6.42 秒
+✓ Vite 8.0.3 + React 19.2 高效编译
+✓ 完整的代码分割与 Tree Shaking
+✓ Electron 桌面端支持
 
 输出文件:
-- dist/index.html                     1.48 kB │ gzip:   0.65 kB
-- dist/assets/index-xxxxx.css       143.07 kB │ gzip:  21.59 kB
-- dist/assets/react-vendor-xxxxx.js 228.83 kB │ gzip:  75.01 kB
-- dist/assets/charts-vendor-xxxxx.js 442.94 kB │ gzip: 116.90 kB
-- dist/assets/index-xxxxx.js        275.69 kB │ gzip:  80.45 kB
+- dist/index.html                     入口 HTML
+- dist/assets/index-*.css            样式文件 (Tailwind CSS)
+- dist/assets/react-vendor-*.js      React 核心包 (代码分割)
+- dist/assets/charts-vendor-*.js     图表库 (Recharts 3.x)
+- dist/assets/index-*.js             应用主包
 
 ✅ 优化成果:
-- 初始 JS 减少 82% (1.54MB → 275KB)
-- 实现完整的代码分割
+- Vite 8 极速热更新
 - 所有路由懒加载
+- Electron 41 跨平台支持
 ```
 
 ### 7️⃣ Docker 部署
@@ -359,7 +361,7 @@ YYC3-CloudPivot-Intelli-Matrix/
 ├── public/                     # 静态资源
 ├── src/
 │   ├── app/
-│   │   ├── __tests__/         # 测试文件 (1267 个测试)
+│   │   ├── __tests__/         # 测试文件 (Vitest + Testing Library)
 │   │   ├── components/        # 组件库 (55+ 组件)
 │   │   ├── hooks/             # 自定义 Hooks (19 个)
 │   │   ├── i18n/              # 国际化语言包
@@ -485,12 +487,23 @@ VITE_AI_API_KEY=your_api_key
 
 | 服务 | 端口 | 说明 |
 |------|------|------|
-| 开发服务器 | 5173 | Vite 默认端口 |
+| 开发服务器 | 3218 | Vite (项目配置) |
+| WebSocket | 3113 | 实时数据推送 |
+| API 服务 | 3000 | 后端 API (可选) |
+| Supabase | 云端 | 数据库服务 (Supabase Cloud) |
+
+> **注意**: 项目使用端口 **3218** 作为开发服务器端口 (非 Vite 默认的 5173)
+
+### 完整端口配置
+
+| 服务 | 端口 | 说明 |
+|------|------|------|
+| 开发服务器 | 3218 | Vite (项目配置) |
 | 生产部署 | 3118 | 符合 YYC³ 标准 (3200-3500) |
 | WebSocket | 3113 | 实时数据推送 |
+| API 服务 | 3000 | 后端 API (可选) |
 | Nginx 代理 | 80/443 | 反向代理 |
-| Prometheus | 9090 | 监控指标 |
-| Grafana | 3000 | 数据可视化 |
+| Supabase | 云端 | 数据库服务 (Supabase Cloud) |
 
 ---
 
@@ -540,8 +553,9 @@ API 参考、组件参考、开发者交接、测试指南、审核报告、架�
 
 | 指标 | 值 | 状态 |
 |------|-----|------|
-| 测试通过率 | 100% (1267/1267) | ✅ 优秀 |
-| 测试覆盖率 | 14%+ | ⚠️ 持续优化中 |
+| 测试框架 | Vitest 4.1.2 + Testing Library 16.x | ✅ |
+| 测试通过率 | 100% | ✅ 优秀 |
+| 测试覆盖率 | 持续提升中 | ⚠️ 持续优化 |
 | TypeScript 错误 | 0 | ✅ 优秀 |
 
 ### 运行测试
@@ -647,13 +661,14 @@ Copyright © 2026 YanYuCloudCube Team. All rights reserved.
 | 指标 | 数值 | 说明 |
 |------|------|------|
 | 📁 **代码行数** | ~50,000+ | TypeScript + React |
-| 🧪 **测试用例** | 1,267 | Vitest 单元测试 |
-| 📊 **测试覆盖率** | 14%+ | 当前覆盖率（持续优化中） |
-| 📦 **构建产物** | 275KB | 优化后主包大小 |
-| 🚀 **构建时间** | 6.42s | Vite 极速编译 |
-| 🎨 **组件数量** | 55+ | 可复用 UI 组件 |
-| 🔌 **自定义 Hooks** | 19 | 业务逻辑封装 |
-| 📚 **类型定义** | 21 大类 | TypeScript 类型 |
+| 🧪 **测试框架** | Vitest 4.1.2 | 单元测试 |
+| 📊 **测试覆盖率** | 持续提升中 | 当前覆盖率（持续优化中） |
+| 📦 **构建产物** | 已优化 | 代码分割 + Tree Shaking |
+| 🚀 **构建工具** | Vite 8.0.3 | 极速编译 |
+| 💻 **桌面端** | Electron 41 | 跨平台原生体验 |
+| 🎨 **组件数量** | 55+ | 可复用 UI 组件 (Radix UI) |
+| 🔌 **自定义 Hooks** | 19+ | 业务逻辑封装 |
+| 📚 **类型定义** | 21 大类 | TypeScript 5.9 Strict |
 | 🌍 **国际化** | 2 种语言 | 中文 / English |
 | 📱 **响应式支持** | 3 种设备 | Desktop / Tablet / Mobile |
 
@@ -706,7 +721,7 @@ Copyright © 2026 YanYuCloudCube Team. All rights reserved.
 
 ### Introduction
 
-[YYC³ CloudPivot Intelli-Matrix (CP-IM)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) is a modern intelligent monitoring and operations platform based on React 18 + TypeScript, designed for YYC³ Family internal AI R&D and operations teams.
+[YYC³ CloudPivot Intelli-Matrix (CP-IM)](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) is a modern intelligent monitoring and operations platform based on **React 19 + TypeScript**, designed for YYC³ Family internal AI R&D and operations teams.
 
 ### Core Philosophy
 
@@ -755,7 +770,7 @@ pnpm build
 ├─────────────────────────────────────────────────────────────────┤
 │  🎨 Interaction Layer                                      │
 │  ┌──────────────────────────────────────────────────────────┐   │
-│  │ React 18.3 + TypeScript Strict + React Router v7    │   │
+│  │ React 19.2 + TypeScript Strict + React Router v7    │   │
 │  └──────────────────────────────────────────────────────────┘   │
 ├─────────────────────────────────────────────────────────────────┤
 │  🎭 Styling Layer                                         │
@@ -784,7 +799,7 @@ pnpm build
 
 | Technology | Version | Description | Status |
 |------------|-----------|-------------|--------|
-| ![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=flat&logo=react) | 18.3.1 | UI Framework with concurrency features | ✅ |
+| ![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=flat&logo=react) | 19.2.4 | UI Framework with concurrency features | ✅ |
 | ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat&logo=typescript) | Strict Mode | Type safety, zero runtime errors | ✅ |
 | ![React Router](https://img.shields.io/badge/React%20Router-7.13.0-CA4245?style=flat&logo=reactrouter) | 7.13.0 | Routing (Data Mode) | ✅ |
 
@@ -792,35 +807,36 @@ pnpm build
 
 | Technology | Version | Description | Status |
 |------------|-----------|-------------|--------|
-| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.1.12-38B2AC?style=flat&logo=tailwindcss) | 4.1.12 | Atomic CSS with JIT compilation | ✅ |
-| ![Motion](https://img.shields.io/badge/Motion-12.23.24-FF6B6B?style=flat) | 12.23.24 | High-performance animation library | ✅ |
+| ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.2.1-38B2AC?style=flat&logo=tailwindcss) | 4.2.1 | Atomic CSS with JIT compilation | ✅ |
+| ![Motion](https://img.shields.io/badge/Motion-12.34.5-FF6B6B?style=flat) | 12.34.5 | High-performance animation library | ✅ |
 | ![Radix UI](https://img.shields.io/badge/Radix-1.x-18181B?style=flat) | 1.x | Headless component library, accessibility first | ✅ |
 
 #### Build & Test
 
 | Technology | Version | Description | Status |
 |------------|-----------|-------------|--------|
-| ![Vite](https://img.shields.io/badge/Vite-6.3.5-646CFF?style=flat&logo=vite) | 6.3.5 | Lightning-fast build tool (6.42s) | ✅ |
-| ![Vitest](https://img.shields.io/badge/Vitest-4.0.18-FECD3E?style=flat&logo=vitest) | 4.0.18 | Unit testing framework | ✅ |
-| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB?style=flat) | 16.x | Testing tools (1267 tests) | ✅ |
+| ![Vite](https://img.shields.io/badge/Vite-8.0.3-646CFF?style=flat&logo=vite) | 8.0.3 | Lightning-fast build tool | ✅ |
+| ![Vitest](https://img.shields.io/badge/Vitest-4.1.2-FECD3E?style=flat&logo=vitest) | 4.1.2 | Unit testing framework | ✅ |
+| ![Testing Library](https://img.shields.io/badge/Testing_Library-16.x-E535AB?style=flat) | 16.x | Testing tools | ✅ |
 
 #### Data Visualization
 
 | Technology | Version | Description | Status |
 |------------|-----------|-------------|--------|
-| ![Recharts](https://img.shields.io/badge/Recharts-2.15.2-FF5722?style=flat) | 2.15.2 | Responsive chart library | ✅ |
-| ![Lucide](https://img.shields.io/badge/Lucide-0.487.0-FFA500?style=flat) | 0.487.0 | Modern icon library | ✅ |
+| ![Recharts](https://img.shields.io/badge/Recharts-3.8.1-FF5722?style=flat) | 3.8.1 | Responsive chart library | ✅ |
+| ![Lucide](https://img.shields.io/badge/Lucide-0.576.0-FFA500?style=flat) | 0.576.0 | Modern icon library | ✅ |
 
 #### Technical Highlights
 
 | Dimension | Metric | Description |
 |-----------|---------|-------------|
-| 🚀 **Build Speed** | 6.42s | Vite ultra-fast compilation |
-| 📦 **Bundle Size** | 275KB | Optimized main bundle size |
-| 🧪 **Test Coverage** | 80%+ | 1,267 test cases |
-| 💾 **Type Safety** | 100% | TypeScript Strict Mode |
-| 🎨 **Style Isolation** | Atomic | Tailwind CSS JIT |
+| 🚀 **Build Speed** | Ultra-fast | Vite 8.0.3 high-efficiency build |
+| 📦 **Bundle Size** | Optimized | Code splitting + Tree Shaking |
+| 🧪 **Test Coverage** | Improving | Vitest 4.1.2 comprehensive coverage |
+| 💾 **Type Safety** | 100% | TypeScript 5.9 Strict Mode |
+| 🎨 **Style Isolation** | Atomic | Tailwind CSS 4.2 JIT |
 | 🔄 **Hot Reload** | HMR | Excellent development experience |
+| 💻 **Desktop** | Electron 41 | Cross-platform native experience |
 
 ### Documentation
 
@@ -833,10 +849,11 @@ Detailed documentation available in [docs/](./docs/) directory.
 | Metric | Value | Description |
 |--------|--------|-------------|
 | 📁 **Lines of Code** | ~50,000+ | TypeScript + React |
-| 🧪 **Test Cases** | 1,267 | Vitest unit tests |
-| 📊 **Test Coverage** | 14%+ | Current coverage (optimizing) |
-| 📦 **Build Output** | 275KB | Optimized main bundle size |
-| 🚀 **Build Time** | 6.42s | Vite ultra-fast compilation |
+| 🧪 **Test Framework** | Vitest 4.1.2 | Unit testing |
+| 📊 **Test Coverage** | Improving | Current coverage (optimizing) |
+| 📦 **Build Output** | Optimized | Code splitting + Tree Shaking |
+| 🚀 **Build Tool** | Vite 8.0.3 | Ultra-fast compilation |
+| 💻 **Desktop** | Electron 41 | Cross-platform native experience |
 | 🎨 **Components** | 55+ | Reusable UI components |
 | 🔌 **Custom Hooks** | 19 | Business logic abstraction |
 | 📚 **Type Definitions** | 21 Categories | TypeScript types |
