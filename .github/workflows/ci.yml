@@ -38,7 +38,7 @@
           with:
             fetch-depth: 0
         - name: Setup pnpm
-          uses: pnpm/action-setup@v5
+          uses: pnpm/action-setup@v6
           with:
             version: ${{ env.PNPM_VERSION }}
         - name: Setup Node.js
@@ -83,7 +83,7 @@
         - name: Checkout code
           uses: actions/checkout@v6
         - name: Setup pnpm
-          uses: pnpm/action-setup@v5
+          uses: pnpm/action-setup@v6
           with:
             version: ${{ env.PNPM_VERSION }}
         - name: Setup Node.js
@@ -112,7 +112,7 @@
         - name: Checkout code
           uses: actions/checkout@v6
         - name: Setup pnpm
-          uses: pnpm/action-setup@v5
+          uses: pnpm/action-setup@v6
           with:
             version: ${{ env.PNPM_VERSION }}
         - name: Setup Node.js
