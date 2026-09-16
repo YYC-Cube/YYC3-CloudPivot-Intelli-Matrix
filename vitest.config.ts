@@ -1,6 +1,6 @@
-import { defineConfig } from "vitest/config";
 import path from "path";
 import { fileURLToPath } from "url";
+import { defineConfig } from "vitest/config";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,15 +55,33 @@ export default defineConfig({
       //   phase2     → 2026-10 目标 45%
       //   phase3     → 2026-11+ 目标 60%（最终目标 80%）
       // 阶段达标后由维护者修改本文件推进 gate 常量，保证门禁只升不降（ratchet）。
-      thresholds: (() => {
-        const GATES: Record<string, { lines: number; functions: number; branches: number; statements: number }> = {
-          phase1: { lines: 26, functions: 23, branches: 25, statements: 25 },
-          phase2: { lines: 45, functions: 40, branches: 35, statements: 45 },
-          phase3: { lines: 60, functions: 55, branches: 50, statements: 60 },
-          final: { lines: 80, functions: 75, branches: 70, statements: 80 },
-        };
-        return GATES[process.env.COVERAGE_GATE ?? ""] ?? { lines: 20, functions: 18, branches: 18, statements: 20 };
-      })(),
+      //
+      // shard 模式豁免：分片运行时覆盖率仅为局部样本（≈1/N），对全局阈值判定
+      // 必然误报失败。分片仅产出 lcov 供 coverage-gate job 合并后统一判门禁。
+      // （thresholds 置空跳过判定；vitest 4 不接受 false，需省略或清零）
+      ...(process.env.VITEST_SHARD
+        ? {}
+        : {
+          thresholds: (() => {
+            const GATES: Record<
+              string,
+              { lines: number; functions: number; branches: number; statements: number }
+            > = {
+              phase1: { lines: 26, functions: 23, branches: 25, statements: 25 },
+              phase2: { lines: 45, functions: 40, branches: 35, statements: 45 },
+              phase3: { lines: 60, functions: 55, branches: 50, statements: 60 },
+              final: { lines: 80, functions: 75, branches: 70, statements: 80 },
+            };
+            return (
+              GATES[process.env.COVERAGE_GATE ?? ""] ?? {
+                lines: 20,
+                functions: 18,
+                branches: 18,
+                statements: 20,
+              }
+            );
+          })(),
+        }),
     },
   },
 });

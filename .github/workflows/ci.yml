@@ -95,6 +95,11 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Run tests with coverage
         run: pnpm test:ci --shard=${{ matrix.shard-index }}/${{ matrix.shard-total }} --coverage
+        env:
+          # shard 模式下跳过 vitest 全局覆盖率阈值（局部样本≠全局），门禁由
+          # coverage-gate job 基于合并后的全量报告统一判定
+          VITEST_SHARD: "1"
+          COVERAGE_GATE: ""
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
         if: always()
