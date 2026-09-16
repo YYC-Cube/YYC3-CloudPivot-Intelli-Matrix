@@ -6,6 +6,26 @@
 
 ---
 
+## [1.0.1] - 2026-09-17
+
+### Fixed
+
+- **calendar.tsx 迁移至 react-day-picker v10 API**（dependabot 升级 10.0.1 后遗留的编译阻断）
+  - classNames 键名全面更名：`nav_button_previous/next`→`button_previous/next`、`table`→`month_grid`、`head_row`→`weekdays`、`head_cell`→`weekday`、`row`→`week`、`cell`→`day`、`day`→`day_button`、`day_*`→去前缀（`range_start/range_end/selected/today/outside/disabled/range_middle/hidden`）
+  - components: `IconLeft/IconRight` → `Chevron`（按 orientation 映射 lucide 图标）
+- **CI test 分片覆盖率阈值误判**：`--shard + --coverage` 时 vitest 按分片局部覆盖率（≈7%）对照全局阈值（26%）判定，4 分片全误报失败
+  - `vitest.config.ts`: `VITEST_SHARD` 存在时省略 thresholds（shard 仅产 lcov 供合并）
+  - `ci.yml`: test job 注入 `VITEST_SHARD=1`，阈值判定职责收归 coverage-gate job（全量单跑）
+- **Docker 镜像构建失败（ERR_PNPM_IGNORED_BUILDS）**：deps 阶段缺失 `pnpm-workspace.yaml`（allowBuilds 审批）与 `.npmrc`；`NODE_VERSION` 默认 20→22（pnpm 11 要求 Node ≥22.13）
+
+### Verified
+
+- **CI 全链绿灯**（run 35133374332）: Code Quality ✅ / Test 4 分片 ✅ / Coverage Gate phase1 ✅ / Build ✅ / Docker Build & Push ✅ / GitHub Pages 部署 ✅
+- 覆盖率基线: Lines 27.33% / Functions 23.71% / Branches 25.69% / Statements 25.94%（均达 phase1 门禁）
+- Docker builder 阶段本地全链验证（pnpm install + pnpm build）通过
+
+---
+
 ## [1.0.0] - 2026-09-16
 
 ### Security
