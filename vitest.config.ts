@@ -49,13 +49,21 @@ export default defineConfig({
         "src/app/docs/**",
         "src/app/__tests__/**",
       ],
-      // 80% 最低覆盖率门槛（当前实际覆盖率约 7%，先降低到 5% 作为临时门槛）
-      thresholds: {
-        lines: 5,
-        functions: 5,
-        branches: 5,
-        statements: 5,
-      },
+      // 覆盖率渐进门禁：环境变量 COVERAGE_GATE 控制阶段阈值
+      //   未设置      → 本地宽松基线（防止误伤开发体验）
+      //   phase1     → 2026-09 基线锁定（lines 26 / functions 23 / branches 25 / statements 25）
+      //   phase2     → 2026-10 目标 45%
+      //   phase3     → 2026-11+ 目标 60%（最终目标 80%）
+      // 阶段达标后由维护者修改本文件推进 gate 常量，保证门禁只升不降（ratchet）。
+      thresholds: (() => {
+        const GATES: Record<string, { lines: number; functions: number; branches: number; statements: number }> = {
+          phase1: { lines: 26, functions: 23, branches: 25, statements: 25 },
+          phase2: { lines: 45, functions: 40, branches: 35, statements: 45 },
+          phase3: { lines: 60, functions: 55, branches: 50, statements: 60 },
+          final: { lines: 80, functions: 75, branches: 70, statements: 80 },
+        };
+        return GATES[process.env.COVERAGE_GATE ?? ""] ?? { lines: 20, functions: 18, branches: 18, statements: 20 };
+      })(),
     },
   },
 });

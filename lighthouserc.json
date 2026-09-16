@@ -1,0 +1,74 @@
+{
+  "ci": {
+    "collect": {
+      "url": "https://Pivot.yyc3.top/",
+      "numberOfRuns": 3,
+      "settings": {
+        "preset": "desktop",
+        "maxWaitForLoad": 45000
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.6 }],
+        "categories:accessibility": ["error", { "minScore": 0.8 }],
+        "categories:best-practices": ["warn", { "minScore": 0.7 }],
+        "categories:seo": ["off"],
+
+        "resource-summary:script:size": ["error", { "maxNumericValue": 700 }],
+        "resource-summary:stylesheet:size": ["error", { "maxNumericValue": 150 }],
+        "resource-summary:image:size": ["warn", { "maxNumericValue": 1500 }],
+        "resource-summary:font:size": ["warn", { "maxNumericValue": 400 }],
+        "resource-summary:total:size": ["warn", { "maxNumericValue": 3000 }],
+
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 4000 }],
+        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.25 }],
+        "total-blocking-time": ["warn", { "maxNumericValue": 2000 }],
+        "first-contentful-paint": ["off"],
+        "speed-index": ["off"],
+        "interactive": ["off"],
+
+        "uses-long-cache-ttl": "off",
+        "uses-http2": "off",
+        "canonical": "off",
+        "is-crawlable": "off",
+        "installable-manifest": "off",
+        "splash-screen": "off",
+        "themed-omnibox": "off",
+        "maskable-icon": "off",
+        "content-width": "off",
+        "image-aspect-ratio": "off",
+        "image-size-responsive": "off",
+        "modern-image-formats": "off",
+        "uses-optimized-images": "off",
+        "unused-css-rules": "off",
+        "unused-javascript": "warn",
+        "legacy-javascript": "off",
+        "server-response-time": "off",
+        "mainthread-work-breakdown": "off",
+        "bootup-time": "off",
+        "uses-rel-preconnect": "off",
+        "redirects-http": "off",
+        "uses-passive-event-listeners": "off",
+        "no-document-write": "off",
+        "geolocation-on-start": "off",
+        "notification-on-start": "off",
+        "load-fast-enough-for-pwa": "off",
+        "works-offline": "off",
+        "offline-start-url": "off",
+        "deprecations": "warn",
+        "errors-logged": "warn",
+        "user-timings": "off",
+        "diagnostics": "off",
+        "network-requests": "off",
+        "metrics": "off",
+        "pwa-installable": "off",
+        "pwa-maskable-icon": "off"
+      }
+    },
+    "upload": {
+      "target": "temporary-public",
+      "outputDir": ".lighthouseci"
+    }
+  }
+}

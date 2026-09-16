@@ -53,7 +53,91 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # ── 部署后域名自动验活（YYC³ 家族域名巡检规范）──────────────
+  # 成功标准: HTTPS 200 + 返回体含 YYC³ 品牌标识 + 响应 < 15s
+  # 失败处理: 10 次指数退避重试 → 告警 job 自动创建 P0 Issue
+  verify-domain:
+    name: Domain Health Check (Pivot.yyc3.top)
+    runs-on: ubuntu-latest
+    needs: deploy
+    outputs:
+      alive: ${{ steps.probe.outputs.alive }}
+    steps:
+      - name: Probe domain with retry (10 attempts, exponential backoff)
+        id: probe
+        run: |
+          HOST="https://Pivot.yyc3.top/"
+          for i in $(seq 1 10); do
+            echo "::group::Attempt $i/10"
+            HTTP_CODE=$(curl -s -o /tmp/page.html -w '%{http_code}' --max-time 15 "$HOST" || echo "000")
+            BODY_CHECK=$(grep -c "YYC" /tmp/page.html 2>/dev/null || echo "0")
+            echo "http_code=$HTTP_CODE body_match=$BODY_CHECK"
+            echo "::endgroup::"
+            if [ "$HTTP_CODE" = "200" ] && [ "$BODY_CHECK" -ge 1 ]; then
+              echo "alive=true" >> "$GITHUB_OUTPUT"
+              echo "✅ 域名验活通过: $HOST → $HTTP_CODE (品牌内容断言 OK)"
+              exit 0
+            fi
+            echo "alive=false" >> "$GITHUB_OUTPUT"
+            sleep $((i * 10))   # 指数退避: 10s, 20s, 30s ... 100s
+          done
+          echo "❌ 域名验活失败: 10 次重试后仍不可达或内容异常"
+          exit 1
+
+      - name: Upload probe artifact (失败时留存诊断证据)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-probe-failure-${{ github.run_id }}
+          path: /tmp/page.html
+          retention-days: 7
+          if-no-files-found: ignore
+
+  # ── 验活失败自动告警: 自动创建 P0 Issue ─────────────────────
+  alert-on-failure:
+    name: Alert (auto-issue on probe failure)
+    runs-on: ubuntu-latest
+    needs: [deploy, verify-domain]
+    if: failure() || needs.verify-domain.outputs.alive == 'false'
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Create P0 issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const title = `🚨 [P0] Pages 域名验活失败: Pivot.yyc3.top`;
+            const body = [
+              '## 域名自动验活告警',
+              '',
+              '| 项 | 值 |',
+              '|:---|:---|',
+              `| 域名 | Pivot.yyc3.top |`,
+              `| 触发 | 部署 ${context.sha.slice(0,7)} 后验活 10 次重试均失败 |`,
+              `| 工作流 | [${context.runId}](${runUrl}) |`,
+              `| 时间 | ${new Date().toISOString()} |`,
+              '',
+              '### 处理流程',
+              '1. 检查 DNS: `dig pivot.yyc3.top CNAME` → 应指向 `yyccube.github.io`',
+              '2. 检查 Pages 绑定: Repo Settings → Pages → Custom domain',
+              '3. 检查仓库 CNAME 文件内容是否为 `Pivot.yyc3.top`',
+              '4. 恢复后在 Issue 关闭并注明根因',
+              '',
+              '_本 Issue 由 deploy.yml verify-domain 告警机制自动创建_'
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['P0', 'incident', 'pages']
+            });

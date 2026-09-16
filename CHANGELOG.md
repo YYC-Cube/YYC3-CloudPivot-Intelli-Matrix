@@ -10,6 +10,15 @@
 
 ### Added
 
+- **部署后域名自动验活（deploy.yml `verify-domain`）**
+  - Pivot.yyc3.top 探活: HTTPS 200 + 品牌内容断言，10 次指数退避重试
+  - 失败自动创建 P0 Issue（含 DNS/Pages 绑定排查流程）+ 诊断产物留存
+- **Lighthouse 性能预算门禁（lighthouserc.json + ci.yml `lighthouse` job）**
+  - 性能 ≥60 / 无障碍 ≥80 强制阻断，脚本 ≤700KB 样式 ≤150KB 预算
+  - PR/手动触发，HTML 报告上传 artifact 保留 14 天
+- **覆盖率渐进门禁（vitest.config.ts + ci.yml `coverage-gate` job）**
+  - `COVERAGE_GATE` 环境变量驱动: phase1(26%) → phase2(45%) → phase3(60%) → final(80%)
+  - CI 强制 phase1 门禁，只升不降（ratchet），本地开发不受影响
 - 完整的 CI/CD 自动化流程
 - GitHub Actions 工作流（质量门禁、安全审计、性能基准测试）
 - Docker 多阶段构建支持
