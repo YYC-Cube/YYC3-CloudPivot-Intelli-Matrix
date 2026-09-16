@@ -131,7 +131,7 @@ export const MusicSpacePage: React.FC = () => {
   } = useMusicSpace({
     autoPlay: false,
     onSongChange: (song) => {
-      console.log('🎵 Now playing:', song.title, '-', song.artist);
+      console.info('🎵 Now playing:', song.title, '-', song.artist);
     },
   });
 

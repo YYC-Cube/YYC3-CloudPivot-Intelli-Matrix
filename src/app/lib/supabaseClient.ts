@@ -25,11 +25,11 @@ import type { AppUser, AppSession } from "../types";
 
 const MOCK_USERS: Record<string, { password: string; user: AppUser }> = {
   "admin@cloudpivot.local": {
-    password: "admin123",
+    password: import.meta.env.VITE_MOCK_ADMIN_PASSWORD || "change_admin_password",
     user: { id: "usr-001", email: "admin@cloudpivot.local", role: "admin", name: "YYC Admin" },
   },
   "dev@cloudpivot.local": {
-    password: "dev123",
+    password: import.meta.env.VITE_MOCK_DEV_PASSWORD || "change_dev_password",
     user: { id: "usr-002", email: "dev@cloudpivot.local", role: "developer", name: "YYC Developer" },
   },
 };

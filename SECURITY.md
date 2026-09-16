@@ -167,6 +167,35 @@ pnpm update
 
 ## 🛡️ 安全功能
 
+### v1.0.0 安全加固 (2026-04-09)
+
+在开源发布前进行的终极安全审查中，实施了以下关键加固措施：
+
+#### 🔴 P0 - 关键修复
+
+| 修复项 | 文件 | 描述 |
+|--------|------|------|
+| 硬编码密码移除 | `src/app/lib/supabaseClient.ts` | 将 Mock 用户密码从硬编码改为环境变量读取 |
+| 测试密钥外部化 | `vitest.config.ts` | 替换 3 个硬编码测试密钥为 `process.env` 引用 |
+| XSS 防护增强 | `src/app/components/ui/chart.tsx` | 为 `dangerouslySetInnerHTML` 添加 HTML 消毒函数 |
+
+#### 🟡 P1 - 代码质量优化
+
+| 优化项 | 影响 |
+|--------|------|
+| 日志规范化 (13 处) | `console.log` → `console.info/warn`，符合生产规范 |
+| 类型安全强化 | 修复核心文件 `any` 类型定义，提升类型覆盖率 |
+
+#### ✅ 验证结果
+
+```
+TypeScript 编译:  0 错误, 0 警告
+ESLint 检查:     0 错误, 97 警告 (↓ 从 99)
+单元测试:        2023/2023 通过 (100%)
+安全扫描:        无硬编码凭证残留
+XSS 检测:        dangerouslySetInnerHTML 已消毒
+```
+
 ### Ghost Mode
 
 Ghost Mode 是一个开发便捷功能，仅用于开发环境：

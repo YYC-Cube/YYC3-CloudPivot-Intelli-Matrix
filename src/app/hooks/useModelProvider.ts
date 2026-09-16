@@ -687,7 +687,7 @@ export function useModelProvider() {
 
       const baseUrl = targetModel.baseUrl || provider.baseUrl;
       let invokeUrl = "";
-      let headers: Record<string, string> = { "Content-Type": "application/json" };
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
       let body: Record<string, unknown> = {};
 
       if (provider.id === "ollama") {

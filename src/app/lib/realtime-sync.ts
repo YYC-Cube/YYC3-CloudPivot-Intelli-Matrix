@@ -26,6 +26,15 @@ export interface RealtimeEvent<T = unknown> {
   timestamp: number;
 }
 
+interface SupabaseRealtimePayload {
+  eventType: string;
+  table: string;
+  old: unknown;
+  new: unknown;
+}
+
+type SubscriptionStatus = 'SUBSCRIBED' | 'CHANNEL_ERROR' | 'TIMED_OUT' | 'CLOSED';
+
 export type RealtimeSubscriptionCallback<T = unknown> = (
   event: RealtimeEvent<T>
 ) => void;
@@ -69,12 +78,12 @@ export class RealtimeSync {
         event: eventType,
         schema: 'public',
         table: table,
-      }, (payload: any) => {
+      }, (payload: SupabaseRealtimePayload) => {
         const event: RealtimeEvent<T> = {
-          eventType: payload.eventType,
+          eventType: payload.eventType as RealtimeEventType,
           table: payload.table,
-          oldRecord: payload.old,
-          record: payload.new,
+          oldRecord: payload.old as T | null,
+          record: payload.new as T,
           timestamp: Date.now(),
         };
 
@@ -86,7 +95,7 @@ export class RealtimeSync {
       const subscribePromise = (channel as any).subscribe();
       
       await new Promise<void>((resolve, reject) => {
-        subscribePromise.then((status: any) => {
+        subscribePromise.then((status: SubscriptionStatus) => {
           if (status === 'SUBSCRIBED') {
             RealtimeSync.isConnected = true;
             resolve();

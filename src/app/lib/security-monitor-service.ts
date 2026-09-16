@@ -25,6 +25,11 @@ import type {
 // 类型定义
 // ============================================================
 
+interface LayoutShiftEntry {
+  hadRecentInput: boolean;
+  value: number;
+}
+
 interface SecurityScanRecord {
   id: string;
   scan_type: string;
@@ -326,9 +331,9 @@ export class SecurityMonitorService {
     }
 
     // CLS (Cumulative Layout Shift)
-    const clsEntries = performance.getEntriesByType('layout-shift');
+    const clsEntries = performance.getEntriesByType('layout-shift') as unknown as LayoutShiftEntry[];
     if (clsEntries.length > 0) {
-      const cls = clsEntries.reduce((sum: number, entry: any) => sum + (entry.hadRecentInput ? 0 : entry.value), 0);
+      const cls = clsEntries.reduce((sum: number, entry: LayoutShiftEntry) => sum + (entry.hadRecentInput ? 0 : entry.value), 0);
       vitals.push({
         name: 'CLS',
         value: cls,

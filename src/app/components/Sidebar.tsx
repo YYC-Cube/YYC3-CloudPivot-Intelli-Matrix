@@ -23,7 +23,6 @@ import {
   ChevronDown,
   ChevronUp,
   Mic,
-  Music,
 } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useI18n } from "../hooks/useI18n";
@@ -83,9 +82,7 @@ const NAV_CATEGORIES: NavCategory[] = [
       { key: "nav.aiDecision", path: "/ai", icon: Sparkles },
       { key: "modelProvider.title", path: "/model-provider", icon: Cpu },
       { key: "nav.aiDiagnostics", path: "/ai-diagnostics", icon: BrainCircuit },
-      { key: "ollama.title", path: "/ollama-config", icon: Cpu },
       { key: "nav.voiceControl", path: "/voice", icon: Mic },
-      { key: "nav.musicSpace", path: "/music", icon: Music },
     ],
   },
   AI_FAMILY_NAV,

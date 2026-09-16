@@ -18,6 +18,24 @@
 - 安全扫描（Trivy、pnpm audit）
 - 测试覆盖率报告（Codecov）
 - 开源文档（CONTRIBUTING.md、CODE_OF_CONDUCT.md）
+- **全局统一数据管理架构**
+  - GlobalStoreRegistry - 单例数据存储注册中心
+  - UnifiedStores - 统一数据存储定义
+  - GlobalStoreContext - 全局数据访问上下文
+  - 跨标签页数据同步（BroadcastChannel）
+  - 自动数据迁移机制
+- **统一设置管理面板**
+  - 数据概览标签
+  - 模型配置管理（CRUD完整支持）
+  - Ollama实例管理（CRUD完整支持）
+  - 数据库连接管理（CRUD完整支持）
+  - 告警规则管理（CRUD完整支持）
+  - 巡查配置管理（CRUD完整支持）
+  - 数据导入导出功能
+- **一体化存储核心文档**
+  - 教科书级标准文档
+  - 纯开源、本地化、一用户一端架构说明
+  - 智能协同极致信任理念阐述
 
 ### Changed
 
@@ -25,6 +43,15 @@
 - 改进测试文件结构，修复 51 个失败的测试
 - 重构 layoutContext，统一上下文类型
 - 优化 CI 工作流，添加并行测试分片
+- **导航栏结构优化**
+  - 移除独立的Ollama配置入口（已集成到大模型设置页面）
+  - 移除独立的音乐空间入口（属于AI Family内容）
+- **UI页面功能完善**
+  - 所有设置项支持完整的编辑功能
+  - 所有设置项支持删除操作
+  - 所有设置项支持新增操作
+  - 表单验证与错误提示优化
+  - 编辑模式UI状态管理
 
 ### Fixed
 
@@ -33,6 +60,15 @@
 - 修复多元素匹配导致的测试失败
 - 修复 Dashboard 移动端时间段按钮显示问题
 - 修复 Sidebar 路由高亮显示问题
+- 修复数据库连接类型定义不一致问题
+- 修复表单编辑状态管理问题
+- **🔒 安全强化 (v1.0.0 发布前终极审查)**
+  - **P0-关键**: 移除 `supabaseClient.ts` 硬编码密码 (admin123, dev123)
+  - **P0-关键**: 替换 `vitest.config.ts` 测试密钥为环境变量引用
+  - **P0-关键**: 为 `chart.tsx` dangerouslySetInnerHTML 添加 HTML 消毒函数
+  - **P1-优化**: 清理 13 处 console.log 残留，规范化日志级别
+  - **P1-优化**: 修复核心文件 any 类型定义（security-monitor, realtime-sync）
+  - **验证**: 全部 2023 个测试通过，TypeScript 零错误编译
 
 ---
 

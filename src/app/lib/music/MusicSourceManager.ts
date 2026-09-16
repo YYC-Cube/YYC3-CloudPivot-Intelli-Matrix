@@ -335,7 +335,7 @@ class MusicSourceManager {
     mood?: string;
   }): Promise<MusicSong | null> {
     try {
-      console.log('AI Music Generation params:', params);
+      console.info('AI Music Generation params:', params);
 
       const aiSong: MusicSong = {
         id: `ai-${Date.now()}`,
@@ -357,7 +357,7 @@ class MusicSourceManager {
   }
 
   getStreamingUrl(songId: string, provider: string): string | null {
-    console.log(`Getting streaming URL for ${songId} from ${provider}`);
+    console.info(`Getting streaming URL for ${songId} from ${provider}`);
     return null;
   }
 

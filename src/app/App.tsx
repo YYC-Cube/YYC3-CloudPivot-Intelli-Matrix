@@ -9,6 +9,7 @@ import { useYYC3Head } from "./hooks/useYYC3Head";
 import { useI18nProvider, I18nContext } from "./hooks/useI18n";
 import { AuthContext } from "./lib/authContext";
 import { isFigmaPlatformError } from "./lib/figma-error-filter";
+import { GlobalStoreProvider } from "./contexts/GlobalStoreContext";
 import type { UserRole, AppSession } from "./types";
 
 // ────────────────────────────────────────────────────────────────
@@ -180,11 +181,13 @@ export default function App() {
   // 已登录 - 显示主应用
   return (
     <ErrorBoundary level="page" source="App">
-      <AuthContext.Provider value={{ logout: handleLogout, userEmail, userRole, isGhost }}>
-        <I18nContext.Provider value={i18nValue}>
-          <RouterProvider router={router} />
-        </I18nContext.Provider>
-      </AuthContext.Provider>
+      <GlobalStoreProvider>
+        <AuthContext.Provider value={{ logout: handleLogout, userEmail, userRole, isGhost }}>
+          <I18nContext.Provider value={i18nValue}>
+            <RouterProvider router={router} />
+          </I18nContext.Provider>
+        </AuthContext.Provider>
+      </GlobalStoreProvider>
     </ErrorBoundary>
   );
 }

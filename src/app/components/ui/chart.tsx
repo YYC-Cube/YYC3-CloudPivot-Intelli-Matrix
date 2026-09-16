@@ -16,6 +16,16 @@ import * as RechartsPrimitive from "recharts";
 
 import { cn } from "./utils";
 
+function sanitizeHTML(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;")
+    .replace(/\//g, "&#x2F;");
+}
+
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
@@ -103,22 +113,24 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   return (
     <style
       dangerouslySetInnerHTML={{
-        __html: Object.entries(THEMES)
-          .map(
-            ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
+        __html: sanitizeHTML(
+          Object.entries(THEMES)
+            .map(
+              ([theme, prefix]) => `
+${prefix} [data-chart=${sanitizeHTML(id)}] {
 ${colorConfig
                 .map(([key, itemConfig]) => {
                   const color =
                     itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
                     itemConfig.color;
-                  return color ? `  --color-${key}: ${color};` : null;
+                  return color ? `  --color-${sanitizeHTML(key)}: ${sanitizeHTML(color)};` : null;
                 })
                 .join("\n")}
 }
 `,
-          )
-          .join("\n"),
+            )
+            .join("\n"),
+        ),
       }}
     />
   );

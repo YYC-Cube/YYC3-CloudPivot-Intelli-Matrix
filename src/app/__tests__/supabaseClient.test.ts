@@ -38,7 +38,7 @@ describe("supabaseClient (Mock)", () => {
     it("正确凭据应登录成功", async () => {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: "admin@cloudpivot.local",
-        password: "admin123",
+        password: "change_admin_password",
       });
 
       expect(error).toBeNull();
@@ -50,7 +50,7 @@ describe("supabaseClient (Mock)", () => {
     it("开发者账号应登录成功", async () => {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: "dev@cloudpivot.local",
-        password: "dev123",
+        password: "change_dev_password",
       });
 
       expect(error).toBeNull();
@@ -81,7 +81,7 @@ describe("supabaseClient (Mock)", () => {
     it("登录成功后应写入 localStorage", async () => {
       await supabase.auth.signInWithPassword({
         email: "admin@cloudpivot.local",
-        password: "admin123",
+        password: "change_admin_password",
       });
 
       expect(localStorage.setItem).toHaveBeenCalledWith(
@@ -104,7 +104,7 @@ describe("supabaseClient (Mock)", () => {
     it("登录后应返回有效会话", async () => {
       await supabase.auth.signInWithPassword({
         email: "admin@cloudpivot.local",
-        password: "admin123",
+        password: "change_admin_password",
       });
 
       const { data } = await supabase.auth.getSession();
@@ -145,7 +145,7 @@ describe("supabaseClient (Mock)", () => {
     it("登录后应返回当前用户信息", async () => {
       await supabase.auth.signInWithPassword({
         email: "dev@cloudpivot.local",
-        password: "dev123",
+        password: "change_dev_password",
       });
 
       const { data } = await supabase.auth.getUser();
@@ -163,7 +163,7 @@ describe("supabaseClient (Mock)", () => {
     it("登出后会话应被清除", async () => {
       await supabase.auth.signInWithPassword({
         email: "admin@cloudpivot.local",
-        password: "admin123",
+        password: "change_admin_password",
       });
 
       await supabase.auth.signOut();
@@ -190,7 +190,7 @@ describe("supabaseClient (Mock)", () => {
     it("已登录时应回调 SIGNED_IN", async () => {
       await supabase.auth.signInWithPassword({
         email: "admin@cloudpivot.local",
-        password: "admin123",
+        password: "change_admin_password",
       });
 
       const callback = vi.fn();

@@ -41,14 +41,14 @@
 
 ### 核心优势
 
-| 维度 | 能力 |
-|:-----|:-----|
-| 🎯 **开箱即用** | 完整的监控、巡查、操作中心一体化方案 |
-| 🤖 **AI 驱动** | 智能决策建议、自动化运维、模式分析 |
-| 💻 **跨平台** | Web + Electron Desktop + PWA 离线三端覆盖 |
-| 🔒 **类型安全** | TypeScript Strict Mode，100% 类型覆盖 |
-| ⚡ **高性能** | Vite 8 极速构建、代码分割、Tree Shaking |
-| 🌍 **国际化** | 中文 / English 双语支持 |
+| 维度　　　　　　| 能力　　　　　　　　　　　　　　　　　　　|
+| :----------------| :------------------------------------------|
+| 🎯 **开箱即用** | 完整的监控、巡查、操作中心一体化方案　　　|
+| 🤖 **AI 驱动**　| 智能决策建议、自动化运维、模式分析　　　　|
+| 💻 **跨平台**　 | Web + Electron Desktop + PWA 离线三端覆盖 |
+| 🔒 **类型安全** | TypeScript Strict Mode，100% 类型覆盖　　 |
+| ⚡ **高性能**　　| Vite 8 极速构建、代码分割、Tree Shaking　 |
+| 🌍 **国际化**　 | 中文 / English 双语支持　　　　　　　　　 |
 
 ---
 
@@ -341,8 +341,8 @@ pnpm test:ci
 
 ### 在线访问
 
-- **生产环境**: https://cpim.yyccube.xin/
-- **GitHub Pages**: https://yyccube.github.io/YYC3-CloudPivot-Intelli-Matrix/
+- **生产环境**: <https://cpim.yyccube.xin/>
+- **GitHub Pages**: <https://yyccube.github.io/YYC3-CloudPivot-Intelli-Matrix/>
 
 ---
 
@@ -385,6 +385,7 @@ graph LR
 **Type**: `feat` | `fix` | `docs` | `style` | `refactor` | `test` | `chore` | `ci`
 
 **示例**:
+
 ```
 feat(dashboard): add real-time node status monitoring widget
 
@@ -425,7 +426,7 @@ copies of the Software...
 
 | 方式 | 信息 |
 |:-----|:-----|
-| **邮箱** | admin@0379.email |
+| **邮箱** | <admin@0379.email> |
 | **组织** | [YanYuCloudCube](https://github.com/YYC-Cube) |
 | **仓库** | [YYC³ CP-IM](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) |
 | **Issues** | [问题反馈](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/issues) |
@@ -449,7 +450,7 @@ copies of the Software...
 
 <div align="center">
 
-### ⭐ 如果这个项目对你有帮助，请给一个 Star 支持！
+### ⭐ 如果这个项目对你有帮助，请给一个 Star 支持
 
 [![Star History Chart](https://api.star-history.com/svg?repos=YYC-Cube/YYC3-CloudPivot-Intelli-Matrix&type=Date)](https://star-history.com/#YYC-Cube/YYC3-CloudPivot-Intelli-Matrix&Date)
 

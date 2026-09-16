@@ -112,15 +112,15 @@ class AudioPlayerService {
     });
 
     this.audioElement.addEventListener('canplaythrough', () => {
-      console.log('✅ Audio can play through:', this.currentSong?.title);
+      console.info('✅ Audio can play through:', this.currentSong?.title);
     });
 
     this.audioElement.addEventListener('waiting', () => {
-      console.log('⏳ Audio waiting for data...');
+      console.info('⏳ Audio waiting for data...');
     });
 
     this.audioElement.addEventListener('stalled', () => {
-      console.log('⚠️ Audio stalled');
+      console.warn('⚠️ Audio stalled');
     });
 
     this.audioElement.addEventListener('loadedmetadata', () => {
@@ -188,7 +188,7 @@ class AudioPlayerService {
     this.currentSong = song;
 
     const audioUrl = this.getAudioUrl(song);
-    console.log('🎵 Loading song:', song.title, 'Audio URL:', audioUrl);
+    console.info('🎵 Loading song:', song.title, 'Audio URL:', audioUrl);
     
     if (!audioUrl) {
       console.error('❌ No audio source for song:', song.title);
@@ -204,16 +204,16 @@ class AudioPlayerService {
 
   private getAudioUrl(song: MusicSong): string | null {
     if (song.audioUrl) {
-      console.log('✅ Using song.audioUrl:', song.audioUrl);
+      console.info('✅ Using song.audioUrl:', song.audioUrl);
       return song.audioUrl;
     }
 
     if (song.youtubeId) {
-      console.log('📺 Using YouTube ID:', song.youtubeId);
+      console.info('📺 Using YouTube ID:', song.youtubeId);
       return this.getYoutubeAudioUrl(song.youtubeId);
     }
 
-    console.log('⚠️ Falling back to demo audio for song:', song.id);
+    console.warn('⚠️ Falling back to demo audio for song:', song.id);
     return this.getDemoAudioUrl(song);
   }
 

@@ -18,9 +18,9 @@ export default defineConfig({
     testTimeout: 10000,
     env: {
       NODE_ENV: "test",
-      POSTGRES_PASSWORD: "test_password_12345",
-      DB_PASSWORD: "test_password_12345",
-      ZHIPU_API_KEY: "test_zhipu_key_12345",
+      POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD || "change_me_in_env",
+      DB_PASSWORD: process.env.DB_PASSWORD || "change_me_in_env",
+      ZHIPU_API_KEY: process.env.ZHIPU_API_KEY || "change_me_in_env",
       VITE_DEBUG_MODE: "false",
       OLLAMA_HOST: "host.docker.internal",
       OLLAMA_PORT: "11435",

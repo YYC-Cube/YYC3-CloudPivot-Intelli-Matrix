@@ -14,7 +14,9 @@
  */
 
 import { createLocalStore } from "../lib/create-local-store";
-import type { NodeData, LogLevel } from "../types";
+import type { LogLevel, NodeData } from "../types";
+
+export type { NodeData } from "../types";
 
 // ============================================================
 // 1. 节点存储
