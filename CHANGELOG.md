@@ -6,7 +6,12 @@
 
 ---
 
-## [未发布]
+## [1.0.0] - 2026-09-16
+
+### Security
+
+- **生产链安全审计归零**: `pnpm update --latest --prod` 修复 27 项漏洞（18 high），二轮合并后复审保持 **0 vulnerabilities**
+- 全局 secret 扫描通过：无硬编码密钥（env.config.ts 均为变量名映射，supabaseClient mock 密码已环境变量化）
 
 ### Fixed
 
@@ -16,10 +21,13 @@
   - `release.yml` 清理 `action-setup@v5` 漂移（→v4）与冗余 store-cache 步骤
   - lucide-react 1.8.0 移除品牌图标导致的 tsc 编译错误: `Figma`→`Frame`、`Github`→`GitBranch`
 - **TypeScript 7.0 兼容**: 移除三个 tsconfig 中已弃用的 `baseUrl`（`paths` 自 TS 4.1 起可独立使用）
-- **废弃 Vercel/Netlify 设计**（团队决策）: 部署手册、资源规划、AGENTS.md 统一收敛至 GitHub Pages（Pivot.yyc3.top）
+- Slack 通知 action 输入校验错误：`8398a7/action-slack@v3` → `slackapi/slack-github-action@v2`（官方维护）
+- Lighthouse job `pnpm dlx` 缺 pnpm 依赖：改为 `npx --yes` 直跑 + env 间接引用消除 Context access 警告
+- Tailwind v4 命名迁移：`bg-gradient-to-br` → `bg-linear-to-br`
 
 ### Added
 
+- **44 项 dependabot 依赖 PR 全部合并清零**（批量合并 + 锁文件对齐 + 单次推送策略）
 - **部署后域名自动验活（deploy.yml `verify-domain`）**
   - Pivot.yyc3.top 探活: HTTPS 200 + 品牌内容断言，10 次指数退避重试
   - 失败自动创建 P0 Issue（含 DNS/Pages 绑定排查流程）+ 诊断产物留存
@@ -29,7 +37,18 @@
 - **覆盖率渐进门禁（vitest.config.ts + ci.yml `coverage-gate` job）**
   - `COVERAGE_GATE` 环境变量驱动: phase1(26%) → phase2(45%) → phase3(60%) → final(80%)
   - CI 强制 phase1 门禁，只升不降（ratchet），本地开发不受影响
+- **v1.0.0 正式版标签发布**（annotated tag，含里程碑说明）
 - 完整的 CI/CD 自动化流程
+
+### Removed
+
+- **冗余 `package-lock.json`**：git rm + .gitignore 拦截，统一 pnpm-lock 单一依赖事实源
+- **冗余文档目录 `docs/13-智能演进-优化阶段`**（与 docs/11 同名重复）：3 篇有效文档归并至 11 体系对应子域（文档同步机制→0905、音乐音色系统→0902）
+
+### Verified
+
+- 全量测试基线: **135 文件 / 2023 用例全绿**（安全升级 + 44 项合并后复测通过）
+- YAML×3 + JSON 配置语法校验通过
 - GitHub Actions 工作流（质量门禁、安全审计、性能基准测试）
 - Docker 多阶段构建支持
 - 自动化部署到 Staging/Production 环境
