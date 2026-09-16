@@ -177,7 +177,7 @@ export function IDETopBar({
           );
         })}
         <div className="w-px h-4 bg-[rgba(0,180,255,0.15)] mx-1" />
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#00d4ff] to-[#7b61ff] flex items-center justify-center">
+        <div className="w-6 h-6 rounded-full bg-linear-to-br from-[#00d4ff] to-[#7b61ff] flex items-center justify-center">
           <span style={{ fontSize: "0.5rem", color: "#fff" }}>YY</span>
         </div>
       </div>

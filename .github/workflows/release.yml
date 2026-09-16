@@ -3,17 +3,17 @@ name: Release Automation
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to release (e.g., v0.1.0)'
+        description: "Version to release (e.g., v0.1.0)"
         required: true
         type: string
 
 env:
-  NODE_VERSION: '20.x'
-  PNPM_VERSION: '11.x'
+  NODE_VERSION: "20.x"
+  PNPM_VERSION: "11.x"
 
 jobs:
   validate-tag:
@@ -34,7 +34,7 @@ jobs:
             VERSION="${{ inputs.version }}"
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          
+
           # Validate semver format
           if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
             echo "::error::Invalid version format: $VERSION. Expected: vMAJOR.MINOR.PATCH"
@@ -60,7 +60,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -159,7 +159,7 @@ jobs:
             ```bash
             # Download and extract
             tar -xzf release-${{ needs.validate-tag.outputs.version }}.tar.gz
-            
+
             # Or use zip
             unzip release-${{ needs.validate-tag.outputs.version }}.zip
             ```
@@ -244,7 +244,7 @@ jobs:
             docker pull ghcr.io/${{ github.repository }}:${{ needs.validate-tag.outputs.version }}
             docker run -p 3118:8080 ghcr.io/${{ github.repository }}:${{ needs.validate-tag.outputs.version }}
             ```
-            
+
             ```bash
             # Latest
             docker pull ghcr.io/${{ github.repository }}:latest
@@ -262,14 +262,16 @@ jobs:
         run: |
           echo "Release ${{ needs.validate-tag.outputs.version }} completed!"
           echo "Status: ${{ needs.create-release.result }} / ${{ needs.publish-docker.result }}"
-          
+
       - name: Slack notification (optional)
         if: always() && vars.SLACK_WEBHOOK != ''
-        uses: 8398a7/action-slack@v3
+        uses: slackapi/slack-github-action@v2
         with:
-          status: ${{ job.status }}
-          text: |
-            Release ${{ needs.validate-tag.outputs.version }} ${{ job.status }}
-            View release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.validate-tag.outputs.version }}
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          method: chat.postMessage
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          payload: |
+            {
+              "channel": "${{ vars.SLACK_CHANNEL_ID }}",
+              "text": "Release ${{ needs.validate-tag.outputs.version }} ${{ job.status }} — https://github.com/${{ github.repository }}/releases/tag/${{ needs.validate-tag.outputs.version }}"
+            }
         continue-on-error: true
