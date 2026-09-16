@@ -1,4 +1,4 @@
-ARG NODE_VERSION=20
+ARG NODE_VERSION=22
 
 FROM node:${NODE_VERSION}-alpine AS base
 RUN apk add --no-cache libc6-compat
@@ -6,7 +6,9 @@ WORKDIR /app
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
-COPY package.json pnpm-lock.yaml* ./
+# pnpm-workspace.yaml（allowBuilds 构建脚本审批）与 .npmrc 必须随 lockfile
+# 一起就位，否则 pnpm 11 因依赖构建脚本未审批而报 ERR_PNPM_IGNORED_BUILDS
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 RUN corepack enable pnpm && corepack prepare pnpm@latest --activate
 RUN pnpm install --frozen-lockfile --prod=false
 
