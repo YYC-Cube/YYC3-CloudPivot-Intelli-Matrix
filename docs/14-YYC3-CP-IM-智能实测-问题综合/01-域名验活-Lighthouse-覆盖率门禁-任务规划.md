@@ -151,7 +151,7 @@ flowchart LR
 | **W1** | 09-17 ~ 09-24 | P0 三文件攻坚（db-queries/query-monitor/migrations） | **+8~10pp** → ~36% | 纯函数层单测（参数化查询 mock supabase），`migrations` 全量 SQL 语句快照 |
 | **W2** | 09-25 ~ 09-30 | P1 Hooks 收编（6 个零/低覆盖 hook） | **+5~6pp** → ~42% | jsdom + renderHook 标准范式；yyc3-icons 数据完整性断言（快赢 1 天） |
 | **W3** | 10-01 前 | 门禁切换 + 缺口回补 | 收尾 +3pp → **≥45%** | `vitest.config.ts` phase2 常量生效 + CI 验证 + 本文档勾验 |
-| **W4** | 10-02 ~ 10-08 | 缓冲 & 复盘 | — | phase2 运行一周稳定性观察，反哺 phase3（60%）路径修正 |
+| **W4** | 10-02 ~ 10-08 | 缓冲 & 复盘 + **dev 链周期治理** | — | ① phase2 稳定性观察，反哺 phase3（60%）路径修正；② `pnpm update --latest` 全量升级（清理 dev 链 98 项审计漏洞 + 顺带覆盖 vite ^8.0.3→8.0.16）；③ `no-explicit-any` 警告收敛（96→≤50，随补测重构顺带修复） |
 
 **成本预估**: W1/W2 各约 15~20 个新测试文件，新增用例约 **250~350 个**（按 hooks 平均 30 用例、lib 纯函数平均 20 用例估）。
 

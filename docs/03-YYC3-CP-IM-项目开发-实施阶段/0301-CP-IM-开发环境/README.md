@@ -45,9 +45,8 @@
 | 6 | [006-CP-IM-开发实施阶段-常见问题解决方案](03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/006-CP-IM-开发实施阶段-常见问题解决方案.md) | 开发 | ✅ 完成 |
 | 7 | [BUILD_FIX_REPORT](03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/BUILD_FIX_REPORT.md) | 开发 | ✅ 完成 |
 | 8 | [BUILD_OPTIMIZATION](03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/BUILD_OPTIMIZATION.md) | 开发 | ✅ 完成 |
-| 9 | [CP-IM-RES-DOC-001](03-YYC3-CP-IM-项目开发-实施阶段/0301-CP-IM-开发环境/CP-IM-RES-DOC-001.md) | 资源 | ✅ 完成 |
 
 ---
 
 *最后更新: 2026/3/7 03:07:28*
-*文档数量: 9*
+*文档数量: 8*
