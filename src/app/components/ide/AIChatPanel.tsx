@@ -11,8 +11,8 @@ import {
   Check,
   Clipboard,
   Copy,
-  Figma,
   FileCode,
+  Frame,
   Image as ImageIcon,
   Lightbulb,
   Link,
@@ -75,7 +75,7 @@ export function AIChatPanel() {
 
   const handleSend = (content?: string) => {
     const text = content || input.trim();
-    if (!text) {return;}
+    if (!text) { return; }
 
     const userMsg: ChatMessage = {
       id: `msg-${Date.now()}`,
@@ -105,7 +105,7 @@ export function AIChatPanel() {
   };
 
   const handleCopyMessage = (id: string, content: string) => {
-    navigator.clipboard?.writeText(content).catch(() => {});
+    navigator.clipboard?.writeText(content).catch(() => { });
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -114,7 +114,7 @@ export function AIChatPanel() {
     { icon: ImageIcon, label: "Upload Image", color: "#ff6b9d" },
     { icon: FileCode, label: "Code Snippet", color: "#00d4ff" },
     { icon: Link, label: "GitHub Link", color: "#7b61ff" },
-    { icon: Figma, label: "Figma File", color: "#00ff88" },
+    { icon: Frame, label: "Figma File", color: "#00ff88" },
     { icon: Clipboard, label: "Clipboard", color: "#ffaa00" },
   ];
 
@@ -173,11 +173,10 @@ export function AIChatPanel() {
               )}
             </div>
             <div
-              className={`relative max-w-[85%] rounded-lg px-2.5 py-2 group ${
-                msg.role === "user"
+              className={`relative max-w-[85%] rounded-lg px-2.5 py-2 group ${msg.role === "user"
                   ? "bg-[rgba(0,212,255,0.12)] border border-[rgba(0,212,255,0.2)]"
                   : "bg-[rgba(0,40,80,0.25)] border border-[rgba(0,180,255,0.08)]"
-              }`}
+                }`}
             >
               <p className="text-[#c0dcf0] whitespace-pre-wrap" style={{ fontSize: "0.68rem", lineHeight: "1.5" }}>
                 {msg.content}
@@ -299,11 +298,10 @@ export function AIChatPanel() {
           <button
             onClick={() => handleSend()}
             disabled={!input.trim() || isTyping}
-            className={`p-1.5 rounded-md transition-all ${
-              input.trim() && !isTyping
+            className={`p-1.5 rounded-md transition-all ${input.trim() && !isTyping
                 ? "text-[#00d4ff] hover:bg-[rgba(0,212,255,0.12)]"
                 : "text-[rgba(0,212,255,0.15)]"
-            }`}
+              }`}
           >
             <Send className="w-3.5 h-3.5" />
           </button>

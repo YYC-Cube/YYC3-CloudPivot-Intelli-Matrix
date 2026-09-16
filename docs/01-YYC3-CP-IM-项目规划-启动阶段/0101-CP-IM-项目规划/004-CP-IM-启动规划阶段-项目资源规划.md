@@ -255,7 +255,7 @@
 #### Web部署环境
 
 **部署方式**：
-- 静态文件部署（Vercel、Netlify、GitHub Pages）
+- 静态文件部署（GitHub Pages —— 唯一线上渠道，Pivot.yyc3.top）
 - Docker 容器部署
 - CDN 加速
 

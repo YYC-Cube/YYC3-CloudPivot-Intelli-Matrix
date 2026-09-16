@@ -392,38 +392,18 @@ curl http://localhost
 
 ### 3. 云平台部署
 
-#### Vercel 部署
+#### GitHub Pages 部署（本项目的唯一线上渠道）
 
-1. 安装 Vercel CLI：
-```bash
-npm install -g vercel
-```
+本项目统一使用 **GitHub Pages** 部署（域名 `Pivot.yyc3.top`），由 `.github/workflows/deploy.yml` 全自动完成：
 
-2. 部署：
-```bash
-vercel --prod
-```
+1. 推送到 `main` 分支自动触发构建部署
+2. 部署完成后自动执行域名验活（`verify-domain` job，失败自动创建 P0 Issue）
+3. 自定义域名由仓库根目录 `CNAME` 文件声明（内容：`Pivot.yyc3.top`）
+4. DNS 侧：`Pivot.yyc3.top CNAME → yyccube.github.io`
 
-3. 配置 `vercel.json`：
-```json
-{
-  "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
-      ]
-    }
-  ]
-}
-```
+> ❌ **Vercel / Netlify 方案已废弃**（团队决策 2026-09-16）：CI/CD 及其他有关 Vercel 的设计均已取消，统一收敛至 GitHub Pages 体系。历史章节中的 Vercel/Netlify 配置说明仅作归档参考，不再维护。
 
-#### Netlify 部署
+#### Netlify 部署（已废弃，仅存档）
 
 1. 配置 `netlify.toml`：
 ```toml

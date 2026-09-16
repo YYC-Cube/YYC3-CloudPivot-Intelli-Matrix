@@ -8,6 +8,16 @@
 
 ## [未发布]
 
+### Fixed
+
+- **CI 全线失败修复（根因: pnpm-workspace.yaml 为 config-only 缺 packages 字段，pnpm 9.x 不支持）**
+  - `pnpm-workspace.yaml` 补充 `packages: ["."]`，与 pnpm 11 config-only 语义兼容
+  - CI/deploy/release 三工作流 `PNPM_VERSION` 统一升级 `9.x/8.x → 11.x`（与本地及 lockfile v9 对齐）
+  - `release.yml` 清理 `action-setup@v5` 漂移（→v4）与冗余 store-cache 步骤
+  - lucide-react 1.8.0 移除品牌图标导致的 tsc 编译错误: `Figma`→`Frame`、`Github`→`GitBranch`
+- **TypeScript 7.0 兼容**: 移除三个 tsconfig 中已弃用的 `baseUrl`（`paths` 自 TS 4.1 起可独立使用）
+- **废弃 Vercel/Netlify 设计**（团队决策）: 部署手册、资源规划、AGENTS.md 统一收敛至 GitHub Pages（Pivot.yyc3.top）
+
 ### Added
 
 - **部署后域名自动验活（deploy.yml `verify-domain`）**

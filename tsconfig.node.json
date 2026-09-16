@@ -9,8 +9,7 @@
     "esModuleInterop": true,
     "strict": true,
     "types": ["node"],
-    "lib": ["ESNext"],
-    "baseUrl": "."
+    "lib": ["ESNext"]
   },
   "include": ["vite.config.ts", "vitest.config.ts"]
 }

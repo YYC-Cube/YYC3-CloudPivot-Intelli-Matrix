@@ -413,7 +413,7 @@ PNPM_VERSION=9.x
 
 1. Build: `pnpm build`
 2. Output: `dist/` directory
-3. Deploy to static hosting (Vercel, Netlify, S3, etc.)
+3. Deploy to GitHub Pages (Pivot.yyc3.top, automatic via deploy.yml)
 
 ### Electron Deployment
 

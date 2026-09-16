@@ -5,11 +5,19 @@
  * Logo + 项目标题 + AI 模型选择器 + 公共图标区 + 用户信息
  */
 
-import { useState } from "react";
 import {
-  FolderOpen, Bell, Settings, Github, Share2, Rocket,
-  Zap, ChevronDown, Bot, Circle,
+  Bell,
+  Bot,
+  ChevronDown,
+  Circle,
+  FolderOpen,
+  GitBranch,
+  Rocket,
+  Settings,
+  Share2,
+  Zap
 } from "lucide-react";
+import { useState } from "react";
 import { useI18n } from "../../hooks/useI18n";
 import { YYC3Logo } from "../YYC3Logo";
 import { AI_MODELS } from "./ide-mock-data";
@@ -117,11 +125,10 @@ export function IDETopBar({
                 <button
                   key={model.id}
                   onClick={() => { onModelChange(model.id); setShowModelSelect(false); }}
-                  className={`w-full flex items-center gap-2 px-3 py-2 transition-all ${
-                    model.id === selectedModel
-                      ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]"
-                      : "text-[#c0dcf0] hover:bg-[rgba(0,40,80,0.3)]"
-                  }`}
+                  className={`w-full flex items-center gap-2 px-3 py-2 transition-all ${model.id === selectedModel
+                    ? "bg-[rgba(0,212,255,0.1)] text-[#00d4ff]"
+                    : "text-[#c0dcf0] hover:bg-[rgba(0,40,80,0.3)]"
+                    }`}
                 >
                   <Circle
                     className="w-1.5 h-1.5 shrink-0"
@@ -150,7 +157,7 @@ export function IDETopBar({
           { icon: FolderOpen, label: t("ide.explorer"), onClick: onToggleExplorer },
           { icon: Bell, label: t("ide.notifications"), onClick: onToggleNotifications },
           { icon: Settings, label: t("ide.settings"), onClick: onOpenSettings },
-          { icon: Github, label: "GitHub", onClick: onOpenRepo },
+          { icon: GitBranch, label: "GitHub", onClick: onOpenRepo },
           { icon: Share2, label: t("ide.share"), onClick: onShare },
           { icon: Rocket, label: t("ide.deploy"), onClick: onDeploy, color: "#00ff88" },
         ].map((item) => {

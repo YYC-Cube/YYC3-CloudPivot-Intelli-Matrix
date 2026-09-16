@@ -1,229 +1,229 @@
-  name: CI/CD Pipeline                                                                                                                        
-                                                                                                                                              
-  on:
-    push:
-      branches: [main, master, develop]
-    pull_request:
-      branches: [main, master, develop]
-    workflow_dispatch:
+name: CI/CD Pipeline
 
-  env:
-    NODE_VERSION: '20.x'
-    PNPM_VERSION: '9.x'
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
 
-  concurrency:
-    group: ${{ github.workflow }}-${{ github.ref }}
-    cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+env:
+  NODE_VERSION: "20.x"
+  PNPM_VERSION: "11.x"
 
-  jobs:
-    dependency-review:
-      name: Dependency Review
-      runs-on: ubuntu-latest
-      if: github.event_name == 'pull_request'
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Dependency Review
-          uses: actions/dependency-review-action@v4
-          with:
-            fail-on-severity: high
-            deny-licenses: GPL-3.0, AGPL-3.0
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-    quality:
-      name: Code Quality
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-          with:
-            fetch-depth: 0
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: ${{ env.PNPM_VERSION }}
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ env.NODE_VERSION }}
-            cache: 'pnpm'
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
-        - name: Type check
-          run: pnpm exec tsc --noEmit
-        - name: Lint code
-          run: pnpm run lint:fix
-        - name: Check formatting
-          run: pnpm exec prettier --check "src/**/*.{ts,tsx}" || true
-        - name: Check documentation standards
-          run: pnpm run docs:smart-check
-          continue-on-error: true
-        - name: Audit IDE layout
-          run: pnpm run audit:ide-layout
-          continue-on-error: true
-        - name: Audit unified data source
-          run: pnpm run audit:unified-data-source
-          continue-on-error: true
-        - name: Audit AI pipeline
-          run: pnpm run audit:ai-pipeline
-          continue-on-error: true
-        - name: Generate comprehensive audit report
-          run: pnpm run audit:comprehensive
-          continue-on-error: true
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+          deny-licenses: GPL-3.0, AGPL-3.0
 
-    test:
-      name: Test (shard ${{ matrix.shard-index }})
-      runs-on: ubuntu-latest
-      strategy:
-        fail-fast: false
-        matrix:
-          node-version: [20.x]
-          shard-index: [1, 2, 3, 4]
-          shard-total: [4]
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: ${{ env.PNPM_VERSION }}
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ matrix.node-version }}
-            cache: 'pnpm'
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
-        - name: Run tests with coverage
-          run: pnpm test:ci --shard=${{ matrix.shard-index }}/${{ matrix.shard-total }} --coverage
-        - name: Upload coverage artifact
-          uses: actions/upload-artifact@v4
-          if: always()
-          with:
-            name: coverage-shard-${{ matrix.shard-index }}
-            path: coverage/
-            retention-days: 14
-        - name: Upload coverage to Codecov
-          uses: codecov/codecov-action@v5
-          if: always()
-          with:
-            token: ${{ secrets.CODECOV_TOKEN }}
-            files: ./coverage/lcov.info
-            flags: unittests
-            name: codecov-shard-${{ matrix.shard-index }}
+  quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+      - name: Lint code
+        run: pnpm run lint:fix
+      - name: Check formatting
+        run: pnpm exec prettier --check "src/**/*.{ts,tsx}" || true
+      - name: Check documentation standards
+        run: pnpm run docs:smart-check
+        continue-on-error: true
+      - name: Audit IDE layout
+        run: pnpm run audit:ide-layout
+        continue-on-error: true
+      - name: Audit unified data source
+        run: pnpm run audit:unified-data-source
+        continue-on-error: true
+      - name: Audit AI pipeline
+        run: pnpm run audit:ai-pipeline
+        continue-on-error: true
+      - name: Generate comprehensive audit report
+        run: pnpm run audit:comprehensive
+        continue-on-error: true
 
-    # ── 覆盖率门禁（单跑全量, 环境变量 COVERAGE_GATE 控制阶段阈值）──
-    coverage-gate:
-      name: Coverage Gate (phase1)
-      runs-on: ubuntu-latest
-      needs: [quality]
-      env:
-        COVERAGE_GATE: phase1
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: ${{ env.PNPM_VERSION }}
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ env.NODE_VERSION }}
-            cache: 'pnpm'
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
-        - name: Enforce coverage thresholds
-          run: pnpm test:ci --coverage
-        - name: Upload gate coverage artifact
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-            name: coverage-gate-report
-            path: coverage/
-            retention-days: 14
+  test:
+    name: Test (shard ${{ matrix.shard-index }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20.x]
+        shard-index: [1, 2, 3, 4]
+        shard-total: [4]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run tests with coverage
+        run: pnpm test:ci --shard=${{ matrix.shard-index }}/${{ matrix.shard-total }} --coverage
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-shard-${{ matrix.shard-index }}
+          path: coverage/
+          retention-days: 14
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-shard-${{ matrix.shard-index }}
 
-    # ── Lighthouse 性能预算（PR 阻断 + 报告产物）────────────────
-    lighthouse:
-      name: Lighthouse Budget (Pivot.yyc3.top)
-      runs-on: ubuntu-latest
-      if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ env.NODE_VERSION }}
-        - name: Run Lighthouse CI
-          run: |
-            pnpm dlx @lhci/cli@0.14.x autorun || \
-              echo "LHCI_ASSERT_FAILED=true" >> "$GITHUB_ENV"
-        - name: Generate Lighthouse reports (HTML)
-          if: always()
-          run: pnpm dlx @lhci/cli@0.14.x open-report --open=false || true
-        - name: Upload Lighthouse reports
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-            name: lighthouse-reports-${{ github.run_id }}
-            path: .lighthouseci/
-            retention-days: 14
-            if-no-files-found: ignore
-        - name: Fail on budget breach
-          if: env.LHCI_ASSERT_FAILED == 'true'
-          run: |
-            echo "❌ Lighthouse 性能预算超标 —— 阻断合并（详见 lighthouse-reports 产物）"
-            exit 1
+  # ── 覆盖率门禁（单跑全量, 环境变量 COVERAGE_GATE 控制阶段阈值）──
+  coverage-gate:
+    name: Coverage Gate (phase1)
+    runs-on: ubuntu-latest
+    needs: [quality]
+    env:
+      COVERAGE_GATE: phase1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Enforce coverage thresholds
+        run: pnpm test:ci --coverage
+      - name: Upload gate coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-gate-report
+          path: coverage/
+          retention-days: 14
 
-    build:
-      name: Build
-      runs-on: ubuntu-latest
-      needs: [quality, test, coverage-gate]
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: ${{ env.PNPM_VERSION }}
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ env.NODE_VERSION }}
-            cache: 'pnpm'
-        - name: Install dependencies
-          run: pnpm install --frozen-lockfile
-        - name: Build project
-          run: pnpm build
+  # ── Lighthouse 性能预算（PR 阻断 + 报告产物）────────────────
+  lighthouse:
+    name: Lighthouse Budget (Pivot.yyc3.top)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Run Lighthouse CI
+        run: |
+          pnpm dlx @lhci/cli@0.14.x autorun || \
+            echo "LHCI_ASSERT_FAILED=true" >> "$GITHUB_ENV"
+      - name: Generate Lighthouse reports (HTML)
+        if: always()
+        run: pnpm dlx @lhci/cli@0.14.x open-report --open=false || true
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports-${{ github.run_id }}
+          path: .lighthouseci/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Fail on budget breach
+        if: env.LHCI_ASSERT_FAILED == 'true'
+        run: |
+          echo "❌ Lighthouse 性能预算超标 —— 阻断合并（详见 lighthouse-reports 产物）"
+          exit 1
 
-    docker:
-      name: Docker Build & Push
-      runs-on: ubuntu-latest
-      needs: [build]
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
-      permissions:
-        contents: read
-        packages: write
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v6
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
-        - name: Login to GHCR
-          uses: docker/login-action@v3
-          with:
-            registry: ghcr.io
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
-        - name: Set lowercase image name
-          id: image-name
-          run: echo "name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
-        - name: Build and push
-          uses: docker/build-push-action@v5
-          with:
-            context: .
-            platforms: linux/amd64,linux/arm64
-            push: true
-            tags: ghcr.io/${{ steps.image-name.outputs.name }}:latest
-            cache-from: type=gha
-            cache-to: type=gha,mode=max
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [quality, test, coverage-gate]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build project
+        run: pnpm build
+
+  docker:
+    name: Docker Build & Push
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/'))
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set lowercase image name
+        id: image-name
+        run: echo "name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_OUTPUT
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/${{ steps.image-name.outputs.name }}:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
