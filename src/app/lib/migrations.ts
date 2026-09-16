@@ -13,6 +13,9 @@
 
 import { Migration } from './migration-manager';
 
+/** IndexedDB 记录动态结构：迁移过程对任意字段做增删改，使用索引签名承载 */
+type DbRecord = Record<string, unknown>;
+
 /**
  * 迁移 1: 初始化基础表结构
  */
@@ -79,7 +82,7 @@ export const migrationV2: Migration = {
       });
     }
 
-    const models = await new Promise<any[]>((resolve, reject) => {
+    const models = await new Promise<DbRecord[]>((resolve, reject) => {
       const request = modelStore.getAll();
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
@@ -100,7 +103,7 @@ export const migrationV2: Migration = {
       modelStore.deleteIndex('isEncrypted');
     }
 
-    const models = await new Promise<any[]>((resolve, reject) => {
+    const models = await new Promise<DbRecord[]>((resolve, reject) => {
       const request = modelStore.getAll();
       request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
@@ -131,7 +134,7 @@ export const migrationV3: Migration = {
         store.createIndex('version', 'version', { unique: false });
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -156,7 +159,7 @@ export const migrationV3: Migration = {
         store.deleteIndex('version');
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -194,7 +197,7 @@ export const migrationV4: Migration = {
         });
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -226,7 +229,7 @@ export const migrationV4: Migration = {
         store.deleteIndex('lastSyncedAt');
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -271,7 +274,7 @@ export const migrationV5: Migration = {
         });
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
@@ -300,7 +303,7 @@ export const migrationV5: Migration = {
         store.deleteIndex('tags');
       }
 
-      const items = await new Promise<any[]>((resolve, reject) => {
+      const items = await new Promise<DbRecord[]>((resolve, reject) => {
         const request = store.getAll();
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);

@@ -211,9 +211,7 @@ describe("supabaseClient (Mock)", () => {
 
   describe("from (Mock 查询)", () => {
     it("应返回空数据和 null 错误", async () => {
-      const result = await new Promise<{ data: never[]; error: null; count: number }>((resolve) => {
-        supabase.from("any_table").select("*").eq("id", "1").then(resolve);
-      });
+      const result = await supabase.from("any_table").select("*").eq("id", "1");
       expect(result.data).toEqual([]);
       expect(result.error).toBeNull();
     });

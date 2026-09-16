@@ -5,12 +5,12 @@
  * 管理异常模式检测、AI 推荐生成、应用/忽略
  */
 
-import { getNativeSupabaseClient } from "./native-supabase-client";
 import type {
-  DetectedPattern,
   AIRecommendation,
+  DetectedPattern,
   PatternSeverity,
 } from "../types";
+import { getNativeSupabaseClient } from "./native-supabase-client";
 
 // ============================================================
 // 类型定义
@@ -72,9 +72,9 @@ export class AISuggestionService {
         .eq('resolved', false)
         .order('detected_at', { ascending: false });
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      return (result.data || []).map((p: DatabasePattern) => this.toPattern(p));
+      return ((result.data || []) as DatabasePattern[]).map((p) => this.toPattern(p));
     } catch (error) {
       console.error('Failed to get patterns:', error);
       return this.getDefaultPatterns();
@@ -114,7 +114,7 @@ export class AISuggestionService {
         .select()
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       if (!result.data) {
         throw new Error('Failed to create pattern: no data returned');
@@ -144,7 +144,7 @@ export class AISuggestionService {
         .select()
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       return true;
     } catch (error) {
@@ -169,9 +169,9 @@ export class AISuggestionService {
         .eq('applied', false)
         .order('confidence', { ascending: false });
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      return (result.data || []).map((r: DatabaseRecommendation) => this.toRecommendation(r));
+      return ((result.data || []) as DatabaseRecommendation[]).map((r) => this.toRecommendation(r));
     } catch (error) {
       console.error('Failed to get recommendations:', error);
       return this.getDefaultRecommendations();
@@ -206,7 +206,7 @@ export class AISuggestionService {
         .select()
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       if (!result.data) {
         throw new Error('Failed to create recommendation: no data returned');
@@ -232,7 +232,7 @@ export class AISuggestionService {
         .eq('id', recId)
         .single();
 
-      if (fetchResult.error) {throw fetchResult.error;}
+      if (fetchResult.error) { throw fetchResult.error; }
 
       const updateResult = await this.supabase!
         .from('ai_suggestions')
@@ -245,7 +245,7 @@ export class AISuggestionService {
         .select()
         .single();
 
-      if (updateResult.error) {throw updateResult.error;}
+      if (updateResult.error) { throw updateResult.error; }
 
       return true;
     } catch (error) {
@@ -273,7 +273,7 @@ export class AISuggestionService {
         (result as any).then(resolve);
       });
 
-      if (deleteResult.error) {throw deleteResult.error;}
+      if (deleteResult.error) { throw deleteResult.error; }
 
       return true;
     } catch (error) {

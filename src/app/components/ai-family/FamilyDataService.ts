@@ -6,9 +6,9 @@
  */
 
 import { supabase } from '../../lib/supabaseClient';
-import { useFamilyStore } from './store/FamilyStore';
 import { FAMILY_MEMBERS } from './shared';
-import type { FamilyMember, FamilyActivity, FamilyMessage } from './store/FamilyStore';
+import type { FamilyActivity, FamilyMember, FamilyMessage } from './store/FamilyStore';
+import { useFamilyStore } from './store/FamilyStore';
 
 // ═══ 类型定义 ═══
 
@@ -273,7 +273,7 @@ class FamilyDataService {
       if (!data) { return 0; }
 
       // 更新 Store 中的活动数据
-      const activities: FamilyActivity[] = data.map((row: DatabaseSyncActivityRow) => ({
+      const activities: FamilyActivity[] = (data as DatabaseSyncActivityRow[]).map((row) => ({
         id: row.id,
         type: row.type as FamilyActivity['type'],
         memberId: row.member_id,
@@ -311,7 +311,7 @@ class FamilyDataService {
       if (!data) { return 0; }
 
       // 更新 Store 中的消息数据
-      const messages: FamilyMessage[] = data.map((row: DatabaseSyncMessageRow) => ({
+      const messages: FamilyMessage[] = (data as DatabaseSyncMessageRow[]).map((row) => ({
         id: row.id,
         fromMemberId: row.from_member_id,
         toMemberId: row.to_member_id || undefined,
@@ -348,7 +348,7 @@ class FamilyDataService {
 
       if (!data) { return []; }
 
-      return data.map((row: DatabaseSyncMemberRow) => ({
+      return (data as DatabaseSyncMemberRow[]).map((row) => ({
         id: row.id,
         name: row.name,
         shortName: row.short_name,
@@ -392,7 +392,7 @@ class FamilyDataService {
 
       if (!data) { return []; }
 
-      return data.map((row: DatabaseSyncActivityRow) => ({
+      return (data as DatabaseSyncActivityRow[]).map((row) => ({
         id: row.id,
         type: row.type as FamilyActivity['type'],
         memberId: row.member_id,
@@ -430,7 +430,7 @@ class FamilyDataService {
 
       if (!data) { return []; }
 
-      return data.map((row: DatabaseSyncMessageRow) => ({
+      return (data as DatabaseSyncMessageRow[]).map((row) => ({
         id: row.id,
         fromMemberId: row.from_member_id,
         toMemberId: row.to_member_id || undefined,

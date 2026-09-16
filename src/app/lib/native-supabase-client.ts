@@ -58,6 +58,19 @@ export interface DatabaseResponse<T> {
   count: number | null;
 }
 
+/** 查询构建器过滤器结构 */
+export interface QueryFilter {
+  column: string;
+  operator: string;
+  value: unknown;
+}
+
+/** 查询构建器排序结构 */
+export interface QueryOrder {
+  column: string;
+  ascending: boolean;
+}
+
 export interface RealtimeMessage {
   event: string;
   payload: {
@@ -356,10 +369,10 @@ export class NativeSupabaseClient {
   from(table: string) {
     return {
       select: (columns: string = "*") => {
-        const queryBuilder: any = {
+        const queryBuilder = {
           _columns: columns,
-          _filters: [] as Array<{ column: string; operator: string; value: unknown }>,
-          _orderBy: [] as Array<{ column: string; ascending: boolean }>,
+          _filters: [] as QueryFilter[],
+          _orderBy: [] as QueryOrder[],
           _limit: null as number | null,
           _offset: null as number | null,
           _single: false,
@@ -450,11 +463,11 @@ export class NativeSupabaseClient {
               select: queryBuilder._columns,
             };
 
-            queryBuilder._filters.forEach((filter: any) => {
+            queryBuilder._filters.forEach((filter) => {
               params[filter.column] = filter.value;
             });
 
-            queryBuilder._orderBy.forEach((order: any) => {
+            queryBuilder._orderBy.forEach((order) => {
               params[`order`] = `${order.column}.${order.ascending ? "asc" : "desc"}`;
             });
 

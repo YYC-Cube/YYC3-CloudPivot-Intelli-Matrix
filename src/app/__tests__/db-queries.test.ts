@@ -31,7 +31,9 @@ vi.mock("../lib/hybrid-storage-manager", () => ({
 vi.mock("../lib/query-monitor", () => ({
   queryMonitor: {
     wrapQuery: vi.fn(async (_name: string, _table: string, _operation: string, fn: () => any) => {
-      return await fn();
+      // 与真实实现一致：解构 fn 返回值并返回 data（Promise<T> 而非 Promise<{data, cacheHit}>）
+      const { data } = await fn();
+      return data;
     }),
   },
 }));

@@ -5,14 +5,15 @@
  * 管理巡查结果、巡查历史、巡查计划、手动/自动巡查
  */
 
-import { getNativeSupabaseClient } from "./native-supabase-client";
 import type {
-  PatrolStatus,
   CheckStatus,
   PatrolCheckItem,
+  PatrolInterval,
   PatrolResult,
   PatrolSchedule,
+  PatrolStatus,
 } from "../types";
+import { getNativeSupabaseClient } from "./native-supabase-client";
 
 // ============================================================
 // 类型定义
@@ -84,7 +85,7 @@ export class PatrolService {
         .select()
         .single();
 
-      if (dbResult.error) {throw dbResult.error;}
+      if (dbResult.error) { throw dbResult.error; }
 
       return result;
     } catch (error) {
@@ -105,9 +106,9 @@ export class PatrolService {
         .order('created_at', { ascending: false })
         .limit(limit);
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      return (result.data || []).map((p: DatabasePatrol) => this.toPatrolResult(p));
+      return ((result.data || []) as DatabasePatrol[]).map((p) => this.toPatrolResult(p));
     } catch (error) {
       console.error('Failed to get patrol history:', error);
       return this.getDefaultPatrolHistory();
@@ -126,9 +127,9 @@ export class PatrolService {
         .eq('id', patrolId)
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      if (!result.data) {return null;}
+      if (!result.data) { return null; }
 
       return this.toPatrolResult(result.data as unknown as DatabasePatrol[]);
     } catch (error) {
@@ -153,16 +154,16 @@ export class PatrolService {
         .eq('id', 'default')
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      if (!result.data) {return this.getDefaultSchedule();}
+      if (!result.data) { return this.getDefaultSchedule(); }
 
-      const schedule = result.data as unknown as DatabasePatrol[];
+      const schedule = result.data as unknown as Record<string, unknown>;
       return {
-        enabled: (schedule as any).enabled ?? true,
-        interval: (schedule as any).interval ?? 15,
-        lastRun: (schedule as any).last_run ? new Date((schedule as any).last_run).getTime() : null,
-        nextRun: (schedule as any).next_run ? new Date((schedule as any).next_run).getTime() : Date.now() + 15 * 60 * 1000,
+        enabled: (schedule.enabled as boolean) ?? true,
+        interval: (schedule.interval as PatrolInterval) ?? 15,
+        lastRun: schedule.last_run ? new Date(schedule.last_run as string).getTime() : null,
+        nextRun: schedule.next_run ? new Date(schedule.next_run as string).getTime() : Date.now() + 15 * 60 * 1000,
       };
     } catch (error) {
       console.error('Failed to get schedule:', error);
@@ -210,7 +211,7 @@ export class PatrolService {
           .single();
       }
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       return true;
     } catch (error) {
@@ -231,105 +232,105 @@ export class PatrolService {
       label: string;
       genValue: () => { value: string; status: CheckStatus; threshold?: string; detail?: string };
     }> = [
-      {
-        category: "节点健康",
-        label: "节点在线率",
-        genValue: () => {
-          const v = 90 + Math.floor(Math.random() * 11);
-          return {
-            value: `${v}%`,
-            status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
-            threshold: "≥95%",
-            detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
-          };
+        {
+          category: "节点健康",
+          label: "节点在线率",
+          genValue: () => {
+            const v = 90 + Math.floor(Math.random() * 11);
+            return {
+              value: `${v}%`,
+              status: v >= 95 ? "pass" : v >= 80 ? "warning" : "critical",
+              threshold: "≥95%",
+              detail: `${Math.floor(v * 13 / 100)}/13 节点在线`,
+            };
+          },
         },
-      },
-      {
-        category: "存储",
-        label: "存储容量",
-        genValue: () => {
-          const v = 60 + Math.floor(Math.random() * 35);
-          return {
-            value: `${v}%`,
-            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-            threshold: "<80%",
-          };
+        {
+          category: "存储",
+          label: "存储容量",
+          genValue: () => {
+            const v = 60 + Math.floor(Math.random() * 35);
+            return {
+              value: `${v}%`,
+              status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+              threshold: "<80%",
+            };
+          },
         },
-      },
-      {
-        category: "网络",
-        label: "平均网络延迟",
-        genValue: () => {
-          const v = 10 + Math.floor(Math.random() * 80);
-          return {
-            value: `${v}ms`,
-            status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
-            threshold: "<50ms",
-            detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
-          };
+        {
+          category: "网络",
+          label: "平均网络延迟",
+          genValue: () => {
+            const v = 10 + Math.floor(Math.random() * 80);
+            return {
+              value: `${v}ms`,
+              status: v < 50 ? "pass" : v < 100 ? "warning" : "critical",
+              threshold: "<50ms",
+              detail: `${Math.floor(Math.random() * 3)} 节点延迟 >100ms`,
+            };
+          },
         },
-      },
-      {
-        category: "GPU",
-        label: "GPU 平均利用率",
-        genValue: () => {
-          const v = 40 + Math.floor(Math.random() * 55);
-          return {
-            value: `${v}%`,
-            status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
-            threshold: "<85%",
-          };
+        {
+          category: "GPU",
+          label: "GPU 平均利用率",
+          genValue: () => {
+            const v = 40 + Math.floor(Math.random() * 55);
+            return {
+              value: `${v}%`,
+              status: v < 85 ? "pass" : v < 95 ? "warning" : "critical",
+              threshold: "<85%",
+            };
+          },
         },
-      },
-      {
-        category: "GPU",
-        label: "GPU 温度",
-        genValue: () => {
-          const v = 55 + Math.floor(Math.random() * 30);
-          return {
-            value: `${v}°C`,
-            status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
-            threshold: "<75°C",
-          };
+        {
+          category: "GPU",
+          label: "GPU 温度",
+          genValue: () => {
+            const v = 55 + Math.floor(Math.random() * 30);
+            return {
+              value: `${v}°C`,
+              status: v < 75 ? "pass" : v < 85 ? "warning" : "critical",
+              threshold: "<75°C",
+            };
+          },
         },
-      },
-      {
-        category: "内存",
-        label: "内存利用率",
-        genValue: () => {
-          const v = 50 + Math.floor(Math.random() * 45);
-          return {
-            value: `${v}%`,
-            status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
-            threshold: "<80%",
-          };
+        {
+          category: "内存",
+          label: "内存利用率",
+          genValue: () => {
+            const v = 50 + Math.floor(Math.random() * 45);
+            return {
+              value: `${v}%`,
+              status: v < 80 ? "pass" : v < 90 ? "warning" : "critical",
+              threshold: "<80%",
+            };
+          },
         },
-      },
-      {
-        category: "安全",
-        label: "安全事件",
-        genValue: () => {
-          const v = Math.floor(Math.random() * 5);
-          return {
-            value: `${v} 事件`,
-            status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
-            threshold: "0 事件",
-          };
+        {
+          category: "安全",
+          label: "安全事件",
+          genValue: () => {
+            const v = Math.floor(Math.random() * 5);
+            return {
+              value: `${v} 事件`,
+              status: v === 0 ? "pass" : v <= 2 ? "warning" : "critical",
+              threshold: "0 事件",
+            };
+          },
         },
-      },
-      {
-        category: "安全",
-        label: "证书有效性",
-        genValue: () => {
-          const days = 10 + Math.floor(Math.random() * 350);
-          return {
-            value: `${days} 天`,
-            status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
-            threshold: ">30 天",
-          };
+        {
+          category: "安全",
+          label: "证书有效性",
+          genValue: () => {
+            const days = 10 + Math.floor(Math.random() * 350);
+            return {
+              value: `${days} 天`,
+              status: days > 30 ? "pass" : days > 7 ? "warning" : "critical",
+              threshold: ">30 天",
+            };
+          },
         },
-      },
-    ];
+      ];
 
     templates.forEach((t, i) => {
       const gen = t.genValue();
@@ -375,17 +376,18 @@ export class PatrolService {
   private toPatrolResult(p: DatabasePatrol | DatabasePatrol[]): PatrolResult {
     const patrol = Array.isArray(p) ? p[0] : p;
     const checksData = patrol.checks as { items: PatrolCheckItem[] };
-    
+    const resultsData = (patrol.results ?? {}) as Record<string, unknown>;
+
     return {
       id: patrol.id,
       timestamp: new Date(patrol.created_at).getTime(),
       duration: patrol.completed_at ? Math.round((new Date(patrol.completed_at).getTime() - new Date(patrol.created_at).getTime()) / 1000) : 0,
       status: patrol.status as PatrolStatus,
-      healthScore: (patrol.results as any)?.healthScore ?? 100,
+      healthScore: (resultsData.healthScore as number) ?? 100,
       totalChecks: patrol.total_checks,
       passCount: patrol.passed_checks,
-      warningCount: (patrol.results as any)?.warningCount ?? 0,
-      criticalCount: (patrol.results as any)?.criticalCount ?? 0,
+      warningCount: (resultsData.warningCount as number) ?? 0,
+      criticalCount: (resultsData.criticalCount as number) ?? 0,
       skippedCount: 0,
       checks: checksData?.items ?? [],
       triggeredBy: 'manual',

@@ -2,7 +2,7 @@
  * advanced-db-operations.ts
  * ========================
  * YYC³ 高级数据库操作
- * 
+ *
  * 功能特性：
  * - 批量操作（批量插入、批量更新、批量删除）
  * - 事务支持（原子操作）
@@ -102,10 +102,10 @@ export async function batchInsert<T>(
 
   for (let i = 0; i < data.length; i += batchSize) {
     const batch = data.slice(i, i + batchSize);
-    
+
     try {
       const { data: result, error } = await client.from(table).insert(batch).select("*").single();
-      
+
       if (error) {
         errors.push(`Batch ${i / batchSize + 1}: ${error.message}`);
       } else if (result) {
@@ -143,11 +143,11 @@ export async function batchUpdate<T>(
 
   for (let i = 0; i < updates.length; i += batchSize) {
     const batch = updates.slice(i, i + batchSize);
-    
+
     for (const { id, data } of batch) {
       try {
         const { data: result, error } = await client.from(table).update(data).eq("id", id).select("*").single();
-        
+
         if (error) {
           errors.push(`Update ${id}: ${error.message}`);
         } else if (result) {
@@ -186,11 +186,11 @@ export async function batchDelete(
 
   for (let i = 0; i < ids.length; i += batchSize) {
     const batch = ids.slice(i, i + batchSize);
-    
+
     for (const id of batch) {
       try {
         const { error } = await client.from(table).delete().eq("id", id).then();
-        
+
         if (error) {
           errors.push(`Delete ${id}: ${error.message}`);
         } else {
@@ -308,28 +308,28 @@ export async function complexQuery<T>(
     if (options.filters) {
       Object.entries(options.filters).forEach(([column, value]) => {
         if (value !== undefined && value !== null) {
-          query = (query as any).eq(column, value);
+          query = query.eq(column, value);
         }
       });
     }
 
     if (options.orderBy) {
       options.orderBy.forEach((order) => {
-        query = (query as any).order(order.column, { ascending: order.ascending ?? true });
+        query = query.order(order.column, { ascending: order.ascending ?? true });
       });
     }
 
     if (options.limit) {
-      query = (query as any).limit(options.limit);
+      query = query.limit(options.limit);
     }
 
     if (options.offset) {
-      query = (query as any).offset(options.offset);
+      query = query.offset(options.offset);
     }
 
     const result = await new Promise<{ data: T[] | null; error: string | null }>((resolve) => {
-      query.then((response: any) => {
-        resolve({ data: response.data, error: response.error?.message || null });
+      query.then((response) => {
+        resolve({ data: (response.data as T[] | null), error: response.error?.message || null });
       });
     });
 
@@ -361,28 +361,28 @@ export async function joinQuery<T>(
     if (options.filters) {
       Object.entries(options.filters).forEach(([column, value]) => {
         if (value !== undefined && value !== null) {
-          query = (query as any).eq(column, value);
+          query = query.eq(column, value);
         }
       });
     }
 
     if (options.orderBy) {
       options.orderBy.forEach((order) => {
-        query = (query as any).order(order.column, { ascending: order.ascending ?? true });
+        query = query.order(order.column, { ascending: order.ascending ?? true });
       });
     }
 
     if (options.limit) {
-      query = (query as any).limit(options.limit);
+      query = query.limit(options.limit);
     }
 
     if (options.offset) {
-      query = (query as any).offset(options.offset);
+      query = query.offset(options.offset);
     }
 
     const result = await new Promise<{ data: T[] | null; error: string | null }>((resolve) => {
-      query.then((response: any) => {
-        resolve({ data: response.data, error: response.error?.message || null });
+      query.then((response) => {
+        resolve({ data: (response.data as T[] | null), error: response.error?.message || null });
       });
     });
 
@@ -422,7 +422,7 @@ export async function aggregateQuery<T>(
     if (options.filters) {
       Object.entries(options.filters).forEach(([column, value]) => {
         if (value !== undefined && value !== null) {
-          query = (query as any).eq(column, value);
+          query = query.eq(column, value);
         }
       });
     }
@@ -430,24 +430,24 @@ export async function aggregateQuery<T>(
     if (options.having) {
       Object.entries(options.having).forEach(([column, value]) => {
         if (value !== undefined && value !== null) {
-          query = (query as any).eq(column, value);
+          query = query.eq(column, value);
         }
       });
     }
 
     if (options.orderBy) {
       options.orderBy.forEach((order) => {
-        query = (query as any).order(order.column, { ascending: order.ascending ?? true });
+        query = query.order(order.column, { ascending: order.ascending ?? true });
       });
     }
 
     if (options.limit) {
-      query = (query as any).limit(options.limit);
+      query = query.limit(options.limit);
     }
 
     const result = await new Promise<{ data: T[] | null; error: string | null }>((resolve) => {
-      query.then((response: any) => {
-        resolve({ data: response.data, error: response.error?.message || null });
+      query.then((response) => {
+        resolve({ data: (response.data as T[] | null), error: response.error?.message || null });
       });
     });
 

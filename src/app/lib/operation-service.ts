@@ -5,15 +5,15 @@
  * 管理 CRUD 操作、模板执行、日志记录
  */
 
-import { getNativeSupabaseClient } from "./native-supabase-client";
-import { queryMonitor } from "./query-monitor";
 import type {
   OperationCategoryType,
   OperationItem,
-  OperationTemplateItem,
   OperationLogEntry,
   OperationStatus,
+  OperationTemplateItem,
 } from "../types";
+import { getNativeSupabaseClient } from "./native-supabase-client";
+import { queryMonitor } from "./query-monitor";
 
 // ============================================================
 // 类型定义
@@ -73,9 +73,9 @@ export class OperationService {
         .order('created_at', { ascending: false })
         .limit(50);
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      return (result.data || []).map((op: DatabaseOperation) => this.toOperationItem(op));
+      return ((result.data || []) as DatabaseOperation[]).map((op) => this.toOperationItem(op));
     } catch (error) {
       console.error('Failed to get actions:', error);
       return this.getDefaultActions();
@@ -96,7 +96,7 @@ export class OperationService {
         .eq('id', actionId)
         .single();
 
-      if (fetchResult.error) {throw fetchResult.error;}
+      if (fetchResult.error) { throw fetchResult.error; }
 
       const operationData = fetchResult.data as unknown as DatabaseOperation[];
       const operation = operationData[0];
@@ -108,7 +108,7 @@ export class OperationService {
         .select()
         .single();
 
-      if (updateResult.error) {throw updateResult.error;}
+      if (updateResult.error) { throw updateResult.error; }
 
       const success = Math.random() > 0.15;
       const duration = Date.now() - startTime;
@@ -127,7 +127,7 @@ export class OperationService {
         .select()
         .single();
 
-      if (finalUpdateResult.error) {throw finalUpdateResult.error;}
+      if (finalUpdateResult.error) { throw finalUpdateResult.error; }
 
       const logEntry: OperationLogEntry = {
         id: `log-${Date.now()}`,
@@ -163,9 +163,9 @@ export class OperationService {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
-      return (result.data || []).map((tpl: DatabaseTemplate) => this.toTemplateItem(tpl));
+      return ((result.data || []) as DatabaseTemplate[]).map((tpl) => this.toTemplateItem(tpl));
     } catch (error) {
       console.error('Failed to get templates:', error);
       return this.getDefaultTemplates();
@@ -197,7 +197,7 @@ export class OperationService {
         .select()
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       if (!result.data) {
         throw new Error('Failed to create template: no data returned');
@@ -230,7 +230,7 @@ export class OperationService {
         (result as any).then(resolve);
       });
 
-      if (deleteResult.error) {throw deleteResult.error;}
+      if (deleteResult.error) { throw deleteResult.error; }
 
       return true;
     } catch (error) {
@@ -251,7 +251,7 @@ export class OperationService {
         .eq('id', templateId)
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
 
       if (!result.data) {
         throw new Error('Template not found');
@@ -267,14 +267,14 @@ export class OperationService {
         .select()
         .single();
 
-      if (updateResult.error) {throw updateResult.error;}
+      if (updateResult.error) { throw updateResult.error; }
 
       const logs: OperationLogEntry[] = [];
       const steps = template.steps;
 
       for (let i = 0; i < steps.length; i++) {
         await new Promise((resolve) => setTimeout(resolve, 800));
-        
+
         const log: OperationLogEntry = {
           id: `log-tpl-${Date.now()}-${i}`,
           timestamp: Date.now(),
@@ -317,7 +317,7 @@ export class OperationService {
             .order('created_at', { ascending: false })
             .limit(limit);
 
-          if (result.error) {throw result.error;}
+          if (result.error) { throw result.error; }
 
           return { data: (result.data || []).map((log: any) => this.toLogEntry(log)), cacheHit: false };
         }
@@ -348,7 +348,7 @@ export class OperationService {
         .select()
         .single();
 
-      if (result.error) {throw result.error;}
+      if (result.error) { throw result.error; }
     } catch (error) {
       console.error('Failed to add log entry:', error);
     }
@@ -406,18 +406,18 @@ export class OperationService {
 
   private getDefaultActions(): OperationItem[] {
     return [
-      { id: "qa1", category: "node",   label: "重启节点",  description: "重启指定 GPU 计算节点",        icon: "RotateCw",    status: "pending" },
-      { id: "qa2", category: "model",  label: "部署模型",  description: "部署新模型到指定节点",          icon: "Upload",      status: "pending" },
-      { id: "qa3", category: "system", label: "清理缓存",  description: "清理推理缓存和临时文件",        icon: "Trash2",      status: "pending" },
-      { id: "qa4", category: "system", label: "导出日志",  description: "导出系统日志到本地文件",        icon: "Download",    status: "pending" },
-      { id: "qa5", category: "system", label: "生成报告",  description: "生成系统性能报告 (JSON/PDF)",   icon: "FileText",    status: "pending" },
-      { id: "qa6", category: "node",   label: "批量重启",  description: "批量重启所有异常节点",          icon: "RefreshCw",   status: "pending", dangerous: true },
-      { id: "qa7", category: "model",  label: "模型迁移",  description: "将模型迁移到负载更低的节点",     icon: "ArrowRightLeft", status: "pending" },
-      { id: "qa8", category: "task",   label: "暂停队列",  description: "暂停推理任务队列",              icon: "Pause",       status: "pending" },
-      { id: "qa9", category: "task",   label: "恢复队列",  description: "恢复推理任务队列",              icon: "Play",        status: "pending" },
-      { id: "qa10", category: "node",  label: "健康检查",  description: "对所有节点执行健康检查",        icon: "HeartPulse",  status: "pending" },
-      { id: "qa11", category: "system",label: "备份配置",  description: "备份当前系统配置到本地",        icon: "HardDrive",   status: "pending" },
-      { id: "qa12", category: "custom",label: "自定义脚本",description: "执行自定义运维脚本",           icon: "Terminal",    status: "pending" },
+      { id: "qa1", category: "node", label: "重启节点", description: "重启指定 GPU 计算节点", icon: "RotateCw", status: "pending" },
+      { id: "qa2", category: "model", label: "部署模型", description: "部署新模型到指定节点", icon: "Upload", status: "pending" },
+      { id: "qa3", category: "system", label: "清理缓存", description: "清理推理缓存和临时文件", icon: "Trash2", status: "pending" },
+      { id: "qa4", category: "system", label: "导出日志", description: "导出系统日志到本地文件", icon: "Download", status: "pending" },
+      { id: "qa5", category: "system", label: "生成报告", description: "生成系统性能报告 (JSON/PDF)", icon: "FileText", status: "pending" },
+      { id: "qa6", category: "node", label: "批量重启", description: "批量重启所有异常节点", icon: "RefreshCw", status: "pending", dangerous: true },
+      { id: "qa7", category: "model", label: "模型迁移", description: "将模型迁移到负载更低的节点", icon: "ArrowRightLeft", status: "pending" },
+      { id: "qa8", category: "task", label: "暂停队列", description: "暂停推理任务队列", icon: "Pause", status: "pending" },
+      { id: "qa9", category: "task", label: "恢复队列", description: "恢复推理任务队列", icon: "Play", status: "pending" },
+      { id: "qa10", category: "node", label: "健康检查", description: "对所有节点执行健康检查", icon: "HeartPulse", status: "pending" },
+      { id: "qa11", category: "system", label: "备份配置", description: "备份当前系统配置到本地", icon: "HardDrive", status: "pending" },
+      { id: "qa12", category: "custom", label: "自定义脚本", description: "执行自定义运维脚本", icon: "Terminal", status: "pending" },
     ];
   }
 
@@ -455,18 +455,18 @@ export class OperationService {
 
   private getDefaultLogs(): OperationLogEntry[] {
     const actions = [
-      { category: "node" as const,   action: "重启节点 GPU-A100-03",     user: "admin" },
-      { category: "model" as const,  action: "部署 LLaMA-70B 到 GPU-H100-01", user: "dev_yang" },
-      { category: "system" as const, action: "清理推理缓存",             user: "admin" },
-      { category: "task" as const,   action: "暂停推理队列 #847",        user: "admin" },
-      { category: "model" as const,  action: "更新 DeepSeek-V3 参数",   user: "dev_li" },
-      { category: "node" as const,   action: "健康检查 全节点",          user: "system" },
-      { category: "system" as const, action: "导出日志 2025-02-24",      user: "admin" },
-      { category: "system" as const, action: "备份 PostgreSQL",          user: "system" },
-      { category: "task" as const,   action: "恢复推理队列",             user: "admin" },
-      { category: "custom" as const, action: "执行自定义脚本 cleanup.sh",user: "dev_yang" },
-      { category: "node" as const,   action: "GPU-A100-01 温度告警检查", user: "system" },
-      { category: "model" as const,  action: "模型冒烟测试 Qwen-72B",   user: "dev_li" },
+      { category: "node" as const, action: "重启节点 GPU-A100-03", user: "admin" },
+      { category: "model" as const, action: "部署 LLaMA-70B 到 GPU-H100-01", user: "dev_yang" },
+      { category: "system" as const, action: "清理推理缓存", user: "admin" },
+      { category: "task" as const, action: "暂停推理队列 #847", user: "admin" },
+      { category: "model" as const, action: "更新 DeepSeek-V3 参数", user: "dev_li" },
+      { category: "node" as const, action: "健康检查 全节点", user: "system" },
+      { category: "system" as const, action: "导出日志 2025-02-24", user: "admin" },
+      { category: "system" as const, action: "备份 PostgreSQL", user: "system" },
+      { category: "task" as const, action: "恢复推理队列", user: "admin" },
+      { category: "custom" as const, action: "执行自定义脚本 cleanup.sh", user: "dev_yang" },
+      { category: "node" as const, action: "GPU-A100-01 温度告警检查", user: "system" },
+      { category: "model" as const, action: "模型冒烟测试 Qwen-72B", user: "dev_li" },
     ];
 
     const statuses: OperationStatus[] = ["success", "success", "success", "success", "failed", "running"];

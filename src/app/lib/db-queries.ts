@@ -15,17 +15,18 @@
  *   3. 首次启动 → 从数据库加载初始数据
  */
 
-import { getNativeSupabaseClient } from "./native-supabase-client";
-import { getHybridStorage, initHybridStorage } from "./hybrid-storage-manager";
-import { queryMonitor } from "./query-monitor";
-import { queryCache, generateCacheKey } from "./query-cache";
 import type {
-  Model,
   Agent,
   InferenceLog,
-  NodeStatusRecord,
+  Model,
   ModelStats,
+  NodeStatusRecord,
 } from "../types/index";
+import type { MinimalSupabaseClient } from "./hybrid-storage-manager";
+import { getHybridStorage, initHybridStorage } from "./hybrid-storage-manager";
+import { getNativeSupabaseClient } from "./native-supabase-client";
+import { generateCacheKey, queryCache } from "./query-cache";
+import { queryMonitor } from "./query-monitor";
 
 // ============================================================
 // Storage Keys
@@ -57,9 +58,11 @@ function initializeStorage(): void {
   }
 
   const supabaseClient = getNativeSupabaseClient();
-  
+
   if (supabaseClient) {
-    initHybridStorage(supabaseClient, {
+    // 边界适配：NativeSupabaseClient 的 insert/update/delete 嵌套于 from() 返回值内，
+    // 而 HybridStorageManager 仅消费 from()/channel() 链，结构兼容，此处做一次性断言
+    initHybridStorage(supabaseClient as unknown as MinimalSupabaseClient, {
       enableLocalStorage: true,
       enableSupabase: true,
       syncInterval: 30000,
@@ -77,7 +80,7 @@ function getStorage() {
   }
 
   const storage = getHybridStorage();
-  
+
   if (!storage) {
     throw new Error("Storage not initialized");
   }
@@ -92,7 +95,7 @@ function getStorage() {
 function loadData<T>(key: string, defaults: T[]): T[] {
   try {
     const raw = localStorage.getItem(key);
-    if (raw) {return JSON.parse(raw);}
+    if (raw) { return JSON.parse(raw); }
   } catch { /* ignore */ }
   try { localStorage.setItem(key, JSON.stringify(defaults)); } catch { /* ignore */ }
   return [...defaults];
@@ -107,23 +110,23 @@ let _agents: Agent[] | null = null;
 let _nodes: NodeStatusRecord[] | null = null;
 
 function getLocalModels(): Model[] {
-  if (!_models) {_models = loadData<Model>(MODELS_KEY, DEFAULT_MODELS);}
+  if (!_models) { _models = loadData<Model>(MODELS_KEY, DEFAULT_MODELS); }
   return _models;
 }
 
 function getLocalAgents(): Agent[] {
-  if (!_agents) {_agents = loadData<Agent>(AGENTS_KEY, DEFAULT_AGENTS);}
+  if (!_agents) { _agents = loadData<Agent>(AGENTS_KEY, DEFAULT_AGENTS); }
   return _agents;
 }
 
 function getLocalNodes(): NodeStatusRecord[] {
-  if (!_nodes) {_nodes = loadData<NodeStatusRecord>(NODES_KEY, DEFAULT_NODES);}
+  if (!_nodes) { _nodes = loadData<NodeStatusRecord>(NODES_KEY, DEFAULT_NODES); }
   return _nodes;
 }
 
 function persistLocalModels() { saveData(MODELS_KEY, getLocalModels()); }
 function persistLocalAgents() { saveData(AGENTS_KEY, getLocalAgents()); }
-function persistLocalNodes()  { saveData(NODES_KEY, getLocalNodes()); }
+function persistLocalNodes() { saveData(NODES_KEY, getLocalNodes()); }
 
 // ============================================================
 // CRUD — Models
@@ -150,7 +153,7 @@ export async function updateDbModel(id: string, updates: Partial<Model>): Promis
   } catch {
     const models = getLocalModels();
     const idx = models.findIndex((m) => m.id === id);
-    if (idx < 0) {return null;}
+    if (idx < 0) { return null; }
     models[idx] = { ...models[idx], ...updates };
     persistLocalModels();
     return models[idx];
@@ -164,7 +167,7 @@ export async function deleteDbModel(id: string): Promise<boolean> {
   } catch {
     const models = getLocalModels();
     const idx = models.findIndex((m) => m.id === id);
-    if (idx < 0) {return false;}
+    if (idx < 0) { return false; }
     models.splice(idx, 1);
     persistLocalModels();
     return true;
@@ -196,7 +199,7 @@ export async function updateDbAgent(id: string, updates: Partial<Agent>): Promis
   } catch {
     const agents = getLocalAgents();
     const idx = agents.findIndex((a) => a.id === id);
-    if (idx < 0) {return null;}
+    if (idx < 0) { return null; }
     agents[idx] = { ...agents[idx], ...updates };
     persistLocalAgents();
     return agents[idx];
@@ -210,7 +213,7 @@ export async function deleteDbAgent(id: string): Promise<boolean> {
   } catch {
     const agents = getLocalAgents();
     const idx = agents.findIndex((a) => a.id === id);
-    if (idx < 0) {return false;}
+    if (idx < 0) { return false; }
     agents.splice(idx, 1);
     persistLocalAgents();
     return true;
@@ -242,7 +245,7 @@ export async function updateDbNode(id: string, updates: Partial<NodeStatusRecord
   } catch {
     const nodes = getLocalNodes();
     const idx = nodes.findIndex((n) => n.id === id);
-    if (idx < 0) {return null;}
+    if (idx < 0) { return null; }
     nodes[idx] = { ...nodes[idx], ...updates };
     persistLocalNodes();
     return nodes[idx];
@@ -256,7 +259,7 @@ export async function deleteDbNode(id: string): Promise<boolean> {
   } catch {
     const nodes = getLocalNodes();
     const idx = nodes.findIndex((n) => n.id === id);
-    if (idx < 0) {return false;}
+    if (idx < 0) { return false; }
     nodes.splice(idx, 1);
     persistLocalNodes();
     return true;
@@ -304,7 +307,7 @@ export function importDbData(jsonStr: string): boolean {
     const data = JSON.parse(jsonStr);
     if (data.models) { _models = data.models; persistLocalModels(); }
     if (data.agents) { _agents = data.agents; persistLocalAgents(); }
-    if (data.nodes)  { _nodes = data.nodes; persistLocalNodes(); }
+    if (data.nodes) { _nodes = data.nodes; persistLocalNodes(); }
     return true;
   } catch {
     return false;
@@ -318,7 +321,7 @@ export function importDbData(jsonStr: string): boolean {
 /** 获取最近推理日志 */
 export async function getRecentLogs(limit = 100): Promise<{ data: InferenceLog[]; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -336,9 +339,9 @@ export async function getRecentLogs(limit = 100): Promise<{ data: InferenceLog[]
       .order('created_at', { ascending: false })
       .limit(limit);
 
-    if (error) {throw error;}
+    if (error) { throw error; }
 
-    return { data: data || [], error: null };
+    return { data: (data as InferenceLog[]) || [], error: null };
   } catch (error) {
     console.error('Failed to get recent logs:', error);
     return { data: [], error: null };
@@ -348,12 +351,12 @@ export async function getRecentLogs(limit = 100): Promise<{ data: InferenceLog[]
 /** 添加推理日志 */
 export async function addInferenceLog(log: Omit<InferenceLog, 'id'>): Promise<InferenceLog> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
-      const newLog: InferenceLog = { 
-        ...log, 
+      const newLog: InferenceLog = {
+        ...log,
         id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
         created_at: new Date().toISOString(),
       };
@@ -375,7 +378,7 @@ export async function addInferenceLog(log: Omit<InferenceLog, 'id'>): Promise<In
       .select()
       .single();
 
-    if (error) {throw error;}
+    if (error) { throw error; }
 
     return data as InferenceLog;
   } catch (error) {
@@ -392,13 +395,13 @@ export async function addInferenceLog(log: Omit<InferenceLog, 'id'>): Promise<In
 export async function getActiveModels(): Promise<{ data: Model[]; error: null }> {
   const cacheKey = generateCacheKey('models', 'getActiveModels', { status: 'active' });
   const cached = queryCache.get<Model[]>(cacheKey);
-  
+
   if (cached) {
     return { data: cached, error: null };
   }
 
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -412,7 +415,7 @@ export async function getActiveModels(): Promise<{ data: Model[]; error: null }>
   }
 
   try {
-    const result = await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<Model[]>(
       'SELECT * FROM models WHERE status = $1',
       'models',
       'get',
@@ -423,14 +426,14 @@ export async function getActiveModels(): Promise<{ data: Model[]; error: null }>
           .eq('status', 'active')
           .order('created_at', { ascending: false });
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || [], cacheHit: false };
+        return { data: (data as Model[]) || [], cacheHit: false };
       }
     );
 
-    queryCache.set(cacheKey, result.data, 30000);
-    return { data: result.data, error: null };
+    queryCache.set(cacheKey, result, 30000);
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get active models:', error);
     return { data: [], error: null };
@@ -442,14 +445,14 @@ export async function getModelStats(
   modelId: string
 ): Promise<{ data: ModelStats | null; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
       const models = await storage.get<Model>("models");
       const model = models.find((m) => m.id === modelId);
-      
-      if (!model) {return { data: null, error: null };}
+
+      if (!model) { return { data: null, error: null }; }
 
       return {
         data: {
@@ -466,21 +469,23 @@ export async function getModelStats(
   }
 
   try {
-    const { data: logs, error: logsError } = await supabase
+    const { data: rawLogs, error: logsError } = await supabase
       .from('inference_logs')
       .select('tokens_used, duration, status')
       .eq('model_id', modelId);
 
-    if (logsError) {throw logsError;}
+    if (logsError) { throw logsError; }
 
-    if (!logs || logs.length === 0) {
+    const logs = (rawLogs || []) as InferenceLog[];
+
+    if (logs.length === 0) {
       return { data: null, error: null };
     }
 
-    const successfulLogs = logs.filter((log: InferenceLog) => log.status === 'success');
-    const avgLatency = successfulLogs.reduce((sum: number, log: InferenceLog) => sum + (log.duration || 0), 0) / successfulLogs.length;
+    const successfulLogs = logs.filter((log) => log.status === 'success');
+    const avgLatency = successfulLogs.reduce((sum, log) => sum + (log.duration || 0), 0) / successfulLogs.length;
     const totalRequests = logs.length;
-    const totalTokens = logs.reduce((sum: number, log: InferenceLog) => sum + (log.tokens_used || 0), 0);
+    const totalTokens = logs.reduce((sum, log) => sum + (log.tokens_used || 0), 0);
     const successRate = (successfulLogs.length / totalRequests) * 100;
 
     return {
@@ -501,7 +506,7 @@ export async function getModelStats(
 /** 获取节点状态 */
 export async function getNodesStatus(): Promise<{ data: NodeStatusRecord[]; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -513,7 +518,7 @@ export async function getNodesStatus(): Promise<{ data: NodeStatusRecord[]; erro
   }
 
   try {
-    return await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<NodeStatusRecord[]>(
       'SELECT * FROM nodes',
       'nodes',
       'get',
@@ -523,11 +528,12 @@ export async function getNodesStatus(): Promise<{ data: NodeStatusRecord[]; erro
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || [], cacheHit: false };
+        return { data: (data as NodeStatusRecord[]) || [], cacheHit: false };
       }
     );
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get nodes status:', error);
     return { data: [], error: null };
@@ -538,13 +544,13 @@ export async function getNodesStatus(): Promise<{ data: NodeStatusRecord[]; erro
 export async function getActiveAgents(): Promise<{ data: Agent[]; error: null }> {
   const cacheKey = generateCacheKey('agents', 'getActiveAgents', { is_active: true });
   const cached = queryCache.get<Agent[]>(cacheKey);
-  
+
   if (cached) {
     return { data: cached, error: null };
   }
 
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -558,7 +564,7 @@ export async function getActiveAgents(): Promise<{ data: Agent[]; error: null }>
   }
 
   try {
-    const result = await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<Agent[]>(
       'SELECT * FROM agents WHERE is_active = true',
       'agents',
       'get',
@@ -569,14 +575,14 @@ export async function getActiveAgents(): Promise<{ data: Agent[]; error: null }>
           .eq('is_active', true)
           .order('created_at', { ascending: false });
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || [], cacheHit: false };
+        return { data: (data as Agent[]) || [], cacheHit: false };
       }
     );
 
-    queryCache.set(cacheKey, result.data, 30000);
-    return { data: result.data, error: null };
+    queryCache.set(cacheKey, result, 30000);
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get active agents:', error);
     return { data: [], error: null };
@@ -586,7 +592,7 @@ export async function getActiveAgents(): Promise<{ data: Agent[]; error: null }>
 /** 获取所有 Agent 列表 */
 export async function getAllAgents(): Promise<{ data: Agent[]; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -598,7 +604,7 @@ export async function getAllAgents(): Promise<{ data: Agent[]; error: null }> {
   }
 
   try {
-    return await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<Agent[]>(
       'SELECT * FROM agents',
       'agents',
       'get',
@@ -608,11 +614,12 @@ export async function getAllAgents(): Promise<{ data: Agent[]; error: null }> {
           .select('*')
           .order('created_at', { ascending: false });
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || [], cacheHit: false };
+        return { data: (data as Agent[]) || [], cacheHit: false };
       }
     );
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get all agents:', error);
     return { data: [], error: null };
@@ -622,7 +629,7 @@ export async function getAllAgents(): Promise<{ data: Agent[]; error: null }> {
 /** 获取单个模型 */
 export async function getModelById(id: string): Promise<{ data: Model | null; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -635,7 +642,7 @@ export async function getModelById(id: string): Promise<{ data: Model | null; er
   }
 
   try {
-    return await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<Model | null>(
       'SELECT * FROM models WHERE id = $1',
       'models',
       'get',
@@ -646,11 +653,13 @@ export async function getModelById(id: string): Promise<{ data: Model | null; er
           .eq('id', id)
           .single();
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || null, cacheHit: false };
+        const rows = (data as unknown[] | null) || [];
+        return { data: (rows[0] as Model | undefined) ?? null, cacheHit: false };
       }
     );
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get model by id:', error);
     return { data: null, error: null };
@@ -660,7 +669,7 @@ export async function getModelById(id: string): Promise<{ data: Model | null; er
 /** 获取单个节点 */
 export async function getNodeById(id: string): Promise<{ data: NodeStatusRecord | null; error: null }> {
   const supabase = getNativeSupabaseClient();
-  
+
   if (!supabase) {
     try {
       const storage = getStorage();
@@ -673,7 +682,7 @@ export async function getNodeById(id: string): Promise<{ data: NodeStatusRecord 
   }
 
   try {
-    return await queryMonitor.wrapQuery(
+    const result = await queryMonitor.wrapQuery<NodeStatusRecord | null>(
       'SELECT * FROM nodes WHERE id = $1',
       'nodes',
       'get',
@@ -684,11 +693,13 @@ export async function getNodeById(id: string): Promise<{ data: NodeStatusRecord 
           .eq('id', id)
           .single();
 
-        if (error) {throw error;}
+        if (error) { throw error; }
 
-        return { data: data || null, cacheHit: false };
+        const rows = (data as unknown[] | null) || [];
+        return { data: (rows[0] as NodeStatusRecord | undefined) ?? null, cacheHit: false };
       }
     );
+    return { data: result, error: null };
   } catch (error) {
     console.error('Failed to get node by id:', error);
     return { data: null, error: null };

@@ -2,7 +2,7 @@
  * hybrid-storage-manager.ts
  * =======================
  * YYC³ 混合存储管理器
- * 
+ *
  * 架构设计：
  * ┌─────────────────────────────────────────────────────────────┐
  * │                    应用层 (Components)                     │
@@ -34,6 +34,39 @@ export interface StorageConfig {
   syncInterval: number;
   syncOnWrite: boolean;
   conflictResolution: "local" | "remote" | "manual";
+}
+
+/** 存储记录最小结构约定：所有表记录必须携带 id，同步冲突判定依赖 updated_at */
+interface StorageRecord {
+  id: string;
+  updated_at?: string | number;
+  [key: string]: unknown;
+}
+
+/** Supabase 客户端最小结构：覆盖 from 惰性链（select/eq/limit/insert/update/delete）与 channel 订阅 */
+interface SupabaseQueryLike {
+  eq: (col: string, val: unknown) => SupabaseQueryLike;
+  limit: (count: number) => SupabaseQueryLike;
+  select: (columns?: string) => SupabaseQueryLike;
+  single: () => PromiseLike<{ data: unknown; error: unknown }>;
+  then: <R>(
+    onfulfilled?: (value: { data: unknown[] | null; error: unknown }) => R | PromiseLike<R>
+  ) => PromiseLike<R>;
+}
+
+export interface MinimalSupabaseClient {
+  from: (table: string) => SupabaseQueryLike &
+    Pick<MinimalSupabaseClient, "insert" | "update" | "delete">;
+  insert: (data: unknown) => SupabaseQueryLike;
+  update: (data: unknown) => SupabaseQueryLike;
+  delete: () => SupabaseQueryLike;
+  channel: (name: string) => {
+    on: (
+      event: string,
+      config: { event: string; schema: string; table: string },
+      callback: () => void | Promise<void>
+    ) => { subscribe: () => { unsubscribe: () => void } };
+  };
 }
 
 export interface SyncStatus {
@@ -82,17 +115,17 @@ class LocalStorageStore implements IStorage {
 
   async get<T>(table: string, id?: string): Promise<T[]> {
     const key = this.getStorageKey(table);
-    
+
     if (this.cache.has(key)) {
       const cachedData = this.cache.get(key) as T[];
-      return id ? cachedData.filter((item: any) => item.id === id) : cachedData;
+      return id ? cachedData.filter((item) => (item as StorageRecord).id === id) : cachedData;
     }
 
     try {
       const raw = localStorage.getItem(key);
       const parsedData = raw ? JSON.parse(raw) : [];
       this.cache.set(key, parsedData);
-      return id ? (parsedData as T[]).filter((item: any) => item.id === id) : parsedData;
+      return id ? (parsedData as T[]).filter((item) => (item as StorageRecord).id === id) : parsedData;
     } catch {
       return [];
     }
@@ -100,50 +133,51 @@ class LocalStorageStore implements IStorage {
 
   async add<T>(table: string, data: T): Promise<T> {
     const items = await this.get<T>(table);
-    const newItem = { ...data, id: (data as any).id || `local_${Date.now()}` };
+    const newItem = { ...data, id: (data as StorageRecord).id || `local_${Date.now()}` };
     items.push(newItem);
-    
+
     const key = this.getStorageKey(table);
     localStorage.setItem(key, JSON.stringify(items));
     this.cache.set(key, items);
-    
+
     return newItem;
   }
 
   async update<T>(table: string, id: string, data: Partial<T>): Promise<T | null> {
     const items = await this.get<T>(table);
-    const index = items.findIndex((item: any) => item.id === id);
-    
-    if (index === -1) {return null;}
-    
+    const index = items.findIndex((item) => (item as StorageRecord).id === id);
+
+    if (index === -1) { return null; }
+
     items[index] = { ...items[index], ...data };
     const key = this.getStorageKey(table);
     localStorage.setItem(key, JSON.stringify(items));
     this.cache.set(key, items);
-    
+
     return items[index];
   }
 
   async delete(table: string, id: string): Promise<boolean> {
     const items = await this.get(table);
-    const filtered = items.filter((item: any) => item.id !== id);
-    
-    if (filtered.length === items.length) {return false;}
-    
+    const filtered = items.filter((item) => (item as StorageRecord).id !== id);
+
+    if (filtered.length === items.length) { return false; }
+
     const key = this.getStorageKey(table);
     localStorage.setItem(key, JSON.stringify(filtered));
     this.cache.set(key, filtered);
-    
+
     return true;
   }
 
   async query<T>(table: string, filters?: Record<string, unknown>): Promise<T[]> {
     const items = await this.get<T>(table);
-    
-    if (!filters) {return items;}
-    
-    return items.filter((item: any) => {
-      return Object.entries(filters).every(([key, value]) => item[key] === value);
+
+    if (!filters) { return items; }
+
+    return items.filter((item) => {
+      const record = item as StorageRecord;
+      return Object.entries(filters).every(([key, value]) => record[key] === value);
     });
   }
 
@@ -155,7 +189,7 @@ class LocalStorageStore implements IStorage {
           const data = JSON.parse(event.newValue) as T[];
           this.cache.set(key, data);
           callback(data);
-        } catch {}
+        } catch { }
       }
     };
 
@@ -169,10 +203,10 @@ class LocalStorageStore implements IStorage {
 // ============================================================
 
 class SupabaseStore implements IStorage {
-  private client: any;
+  private client: MinimalSupabaseClient;
   private isConnected = false;
 
-  constructor(client: any) {
+  constructor(client: MinimalSupabaseClient) {
     this.client = client;
     this.checkConnection();
   }
@@ -189,19 +223,19 @@ class SupabaseStore implements IStorage {
   }
 
   async get<T>(table: string, id?: string): Promise<T[]> {
-    if (!this.isConnected) {return [];}
+    if (!this.isConnected) { return []; }
 
     try {
       let query = this.client.from(table).select("*");
-      
+
       if (id) {
         query = query.eq("id", id);
       }
-      
+
       const { data: responseData, error } = await query;
-      
-      if (error) {throw error;}
-      
+
+      if (error) { throw error; }
+
       return (responseData || []) as T[];
     } catch {
       return [];
@@ -209,7 +243,7 @@ class SupabaseStore implements IStorage {
   }
 
   async add<T>(table: string, data: T): Promise<T> {
-    if (!this.isConnected) {throw new Error("Supabase not connected");}
+    if (!this.isConnected) { throw new Error("Supabase not connected"); }
 
     const { data: responseData, error } = await this.client
       .from(table)
@@ -217,13 +251,13 @@ class SupabaseStore implements IStorage {
       .select()
       .single();
 
-    if (error) {throw error;}
-    
+    if (error) { throw error; }
+
     return responseData as T;
   }
 
   async update<T>(table: string, id: string, data: Partial<T>): Promise<T | null> {
-    if (!this.isConnected) {throw new Error("Supabase not connected");}
+    if (!this.isConnected) { throw new Error("Supabase not connected"); }
 
     const { data: responseData, error } = await this.client
       .from(table)
@@ -232,37 +266,37 @@ class SupabaseStore implements IStorage {
       .select()
       .single();
 
-    if (error) {throw error;}
-    
+    if (error) { throw error; }
+
     return responseData as T;
   }
 
   async delete(table: string, id: string): Promise<boolean> {
-    if (!this.isConnected) {throw new Error("Supabase not connected");}
+    if (!this.isConnected) { throw new Error("Supabase not connected"); }
 
     const { error } = await this.client.from(table).delete().eq("id", id);
 
-    if (error) {throw error;}
-    
+    if (error) { throw error; }
+
     return true;
   }
 
   async query<T>(table: string, filters?: Record<string, unknown>): Promise<T[]> {
-    if (!this.isConnected) {return [];}
+    if (!this.isConnected) { return []; }
 
     try {
       let query = this.client.from(table).select("*");
-      
+
       if (filters) {
         Object.entries(filters).forEach(([key, value]) => {
           query = query.eq(key, value);
         });
       }
-      
+
       const { data: responseData, error } = await query;
-      
-      if (error) {throw error;}
-      
+
+      if (error) { throw error; }
+
       return (responseData || []) as T[];
     } catch {
       return [];
@@ -271,7 +305,7 @@ class SupabaseStore implements IStorage {
 
   subscribe<T>(table: string, callback: (data: T[]) => void): () => void {
     if (!this.isConnected) {
-      return () => {};
+      return () => { };
     }
 
     const channel = this.client
@@ -314,7 +348,7 @@ export class HybridStorageManager {
   private subscribers: Map<string, Set<(data: unknown[]) => void>> = new Map();
 
   constructor(
-    supabaseClient: any,
+    supabaseClient: MinimalSupabaseClient | null,
     config: Partial<StorageConfig> = {}
   ) {
     this.config = {
@@ -436,7 +470,7 @@ export class HybridStorageManager {
 
     if (this.remoteStore) {
       const remoteUnsubscribe = this.remoteStore.subscribe<T>(table, (tableData) => {
-        this.localStore.add(table, tableData[0]).catch(() => {});
+        this.localStore.add(table, tableData[0]).catch(() => { });
         this.notifySubscribers(table, tableData);
       });
 
@@ -462,7 +496,7 @@ export class HybridStorageManager {
       subs.forEach((callback) => {
         try {
           callback(data);
-        } catch {}
+        } catch { }
       });
     }
   }
@@ -478,33 +512,33 @@ export class HybridStorageManager {
       const localData = await this.localStore.get(table);
       const remoteData = await this.remoteStore.get(table);
 
-      const localIds = new Set(localData.map((item: any) => item.id));
-      const remoteIds = new Set(remoteData.map((item: any) => item.id));
+      const localIds = new Set(localData.map((item) => (item as StorageRecord).id));
+      const remoteIds = new Set(remoteData.map((item) => (item as StorageRecord).id));
 
       for (const item of localData) {
-        const id = (item as any).id;
-        
+        const id = (item as StorageRecord).id;
+
         if (!remoteIds.has(id)) {
           await this.remoteStore!.add(table, item);
         } else {
-          const remoteItem = remoteData.find((r: any) => r.id === id);
-          
+          const remoteItem = remoteData.find((r) => (r as StorageRecord).id === id);
+
           if (this.config.conflictResolution === "remote" && remoteItem) {
-            const localTimestamp = (item as any).updated_at || 0;
-            const remoteTimestamp = (remoteItem as any).updated_at || 0;
-            
+            const localTimestamp = (item as StorageRecord).updated_at || 0;
+            const remoteTimestamp = (remoteItem as StorageRecord).updated_at || 0;
+
             if (remoteTimestamp > localTimestamp) {
-              await this.localStore.update(table, id, remoteItem as any);
+              await this.localStore.update(table, id, remoteItem as Partial<typeof item>);
             } else {
-              await this.remoteStore!.update(table, id, item as any);
+              await this.remoteStore!.update(table, id, item as Partial<StorageRecord>);
             }
           }
         }
       }
 
       for (const item of remoteData) {
-        const id = (item as any).id;
-        
+        const id = (item as StorageRecord).id;
+
         if (!localIds.has(id)) {
           await this.localStore.add(table, item);
         }
@@ -520,7 +554,7 @@ export class HybridStorageManager {
 
   async syncAll(): Promise<void> {
     const tables = ["models", "agents", "nodes", "inference_logs"];
-    
+
     for (const table of tables) {
       await this.syncTable(table);
     }
@@ -532,7 +566,7 @@ export class HybridStorageManager {
 
   async getStats(): Promise<StorageStats> {
     let localStorageUsed = 0;
-    
+
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i);
@@ -540,7 +574,7 @@ export class HybridStorageManager {
           localStorageUsed += localStorage.getItem(key)?.length || 0;
         }
       }
-    } catch {}
+    } catch { }
 
     const supabaseConnected = this.remoteStore ? await this.remoteStore.checkConnection() : false;
 
@@ -579,7 +613,7 @@ export class HybridStorageManager {
 let hybridManagerInstance: HybridStorageManager | null = null;
 
 export function initHybridStorage(
-  supabaseClient: any,
+  supabaseClient: MinimalSupabaseClient | null,
   config?: Partial<StorageConfig>
 ): HybridStorageManager {
   if (!hybridManagerInstance) {
