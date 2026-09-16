@@ -142,40 +142,40 @@ jobs:
           path: coverage/
           retention-days: 14
 
-    # ── Lighthouse 性能预算（PR 阻断 + 报告产物）────────────────
-    lighthouse:
-      name: Lighthouse Budget (Pivot.yyc3.top)
-      runs-on: ubuntu-latest
-      if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
-      env:
-        LHCI_ASSERT_FAILED: "false"
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v7
-        - name: Setup Node.js
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ env.NODE_VERSION }}
-        - name: Run Lighthouse CI
-          run: |
-            npx --yes @lhci/cli@0.14.x autorun || LHCI_ASSERT_FAILED=true
-            echo "LHCI_ASSERT_FAILED=$LHCI_ASSERT_FAILED" >> "$GITHUB_ENV"
-        - name: Generate Lighthouse reports (HTML)
-          if: always()
-          run: npx --yes @lhci/cli@0.14.x open-report --open=false || true
-        - name: Upload Lighthouse reports
-          if: always()
-          uses: actions/upload-artifact@v4
-          with:
-            name: lighthouse-reports-${{ github.run_id }}
-            path: .lighthouseci/
-            retention-days: 14
-            if-no-files-found: ignore
-        - name: Fail on budget breach
-          if: env.LHCI_ASSERT_FAILED == 'true'
-          run: |
-            echo "❌ Lighthouse 性能预算超标 —— 阻断合并（详见 lighthouse-reports 产物）"
-            exit 1
+  # ── Lighthouse 性能预算（PR 阻断 + 报告产物）────────────────
+  lighthouse:
+    name: Lighthouse Budget (Pivot.yyc3.top)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch'
+    env:
+      LHCI_ASSERT_FAILED: "false"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Run Lighthouse CI
+        run: |
+          npx --yes @lhci/cli@0.14.x autorun || LHCI_ASSERT_FAILED=true
+          echo "LHCI_ASSERT_FAILED=$LHCI_ASSERT_FAILED" >> "$GITHUB_ENV"
+      - name: Generate Lighthouse reports (HTML)
+        if: always()
+        run: npx --yes @lhci/cli@0.14.x open-report --open=false || true
+      - name: Upload Lighthouse reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports-${{ github.run_id }}
+          path: .lighthouseci/
+          retention-days: 14
+          if-no-files-found: ignore
+      - name: Fail on budget breach
+        if: env.LHCI_ASSERT_FAILED == 'true'
+        run: |
+          echo "❌ Lighthouse 性能预算超标 —— 阻断合并（详见 lighthouse-reports 产物）"
+          exit 1
 
   build:
     name: Build
