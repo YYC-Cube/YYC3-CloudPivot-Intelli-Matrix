@@ -330,19 +330,31 @@ pnpm test:ci
 
 ### 项目级文档 (`docs/`)
 
+完整索引见 [docs/README.md](./docs/README.md)（v4.0.0，全生命周期 00-15 导航）
+
 | 文档 | 内容 |
 |:-----|:-----|
-| [项目总览手册](./docs/) | 项目完整介绍与技术选型 |
-| [系统架构设计](./docs/02-YYC³-CP-IM-项目设计阶段/) | 架构详细设计与决策 |
-| [开发环境搭建](./docs/03-YYC³-CP-IM-开发实施阶段/) | 环境配置与初始化 |
+| [项目总览](./docs/00-YYC3-CP-IM-项目总览-目录索引/) | 项目完整介绍与快速开始 |
+| [系统架构设计](./docs/02-YYC3-CP-IM-项目规划-设计阶段/) | 架构详细设计与决策 |
+| [开发实施](./docs/03-YYC3-CP-IM-项目开发-实施阶段/) | 环境/规范/API/集成 |
 | [API 文档](./src/app/docs/API-REFERENCE.ts) | 接口参考与调用示例 |
 | [组件文档](./src/app/docs/COMPONENT-REFERENCE.ts) | 组件 API 与使用指南 |
 | [测试指南](./src/app/docs/TESTING-GUIDE.ts) | 测试规范与最佳实践 |
 
 ### 在线访问
 
-- **生产环境**: <https://cpim.yyccube.xin/>
-- **GitHub Pages**: <https://yyccube.github.io/YYC3-CloudPivot-Intelli-Matrix/>
+- **生产环境**: <https://pivot.yyc3.top/>（域名验活自动化守护）
+- **GitHub Pages**: <https://yyc-cube.github.io/YYC3-CloudPivot-Intelli-Matrix/>
+- **容器镜像**: `ghcr.io/yyc-cube/yyc3-cloudpivot-intelli-matrix:latest`
+
+### 版本发布
+
+| 版本 | 日期 | 亮点 |
+|:-----|:-----|:-----|
+| v1.0.1 | 2026-09-17 | CI 全链绿灯（react-day-picker v10 迁移/分片覆盖率/Docker 修复） |
+| v1.0.0 | 2026-09-16 | 首个正式版（漏洞归零/44 项依赖合并/域名锁定/三重门禁） |
+
+完整记录见 [CHANGELOG.md](./CHANGELOG.md)。
 
 ---
 

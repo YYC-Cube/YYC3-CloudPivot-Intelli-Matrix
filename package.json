@@ -1,6 +1,6 @@
 {
   "name": "yyc3-cloudpivot-intelli-matrix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "YYC³ Family 本地闭环多端推理矩阵数据看盘系统",
   "main": "dist-electron/main.js",
   "author": "YanYuCloudCube Team <admin@0379.email>",
