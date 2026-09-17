@@ -16,7 +16,7 @@ concurrency:
 
 env:
   NODE_VERSION: '22.x'
-  PNPM_VERSION: '9.x'
+  PNPM_VERSION: '11.x'
 
 jobs:
   build:

@@ -44,7 +44,7 @@
 YYC³ CloudPivot Intelli-Matrix 前端应用基于以下技术栈：
 
 | 技术 | 版本 | 用途 |
-|------|------|------|
+| ------ | ------ | ------ |
 | **React** | 19.2.4 | 前端框架 |
 | **TypeScript** | 5.9.3 | 类型系统 |
 | **Vite** | 7.3.1 | 构建工具 |
@@ -154,31 +154,31 @@ VITE_APP_VERSION=1.0.0
 ```typescript
 export default defineConfig({
   base: './',  // 相对路径，适配 Electron 和静态部署
-  
+
   plugins: [
     react(),
     tailwindcss(),
   ],
-  
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
-  
+
   build: {
     target: 'esnext',
     minify: 'esbuild',
     sourcemap: false,  // 生产环境不生成 sourcemap
     chunkSizeWarningLimit: 500,
-    
+
     rollupOptions: {
       output: {
         // 文件命名规则
         entryFileNames: 'assets/[name]-[hash].js',
         chunkFileNames: 'assets/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash].[ext]',
-        
+
         // 手动代码分割
         manualChunks: {
           'react-vendor': ['react', 'react-dom', 'react-router', 'react-router-dom'],
@@ -198,7 +198,7 @@ export default defineConfig({
         },
       },
     },
-    
+
     // 生产环境优化
     esbuild: {
       drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
@@ -209,7 +209,7 @@ export default defineConfig({
       target: 'esnext',
     },
   },
-  
+
   // 依赖预构建
   optimizeDeps: {
     include: [
@@ -276,13 +276,13 @@ dist/
 server {
     listen 80;
     server_name yourdomain.com;
-    
+
     # 启用 Gzip 压缩
     gzip on;
     gzip_vary on;
     gzip_min_length 1024;
     gzip_types text/plain text/css text/xml text/javascript application/x-javascript application/xml+rss application/javascript application/json;
-    
+
     # 静态资源缓存
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         root /var/www/yyc3-cloudpivot/dist;
@@ -290,20 +290,20 @@ server {
         add_header Cache-Control "public, immutable";
         access_log off;
     }
-    
+
     # HTML 文件不缓存
     location ~* \.html$ {
         root /var/www/yyc3-cloudpivot/dist;
         expires -1;
         add_header Cache-Control "no-cache, no-store, must-revalidate";
     }
-    
+
     # SPA 路由处理
     location / {
         root /var/www/yyc3-cloudpivot/dist;
         try_files $uri $uri/ /index.html;
     }
-    
+
     # 安全头
     add_header X-Frame-Options "SAMEORIGIN" always;
     add_header X-Content-Type-Options "nosniff" always;
@@ -401,32 +401,7 @@ curl http://localhost
 3. 自定义域名由仓库根目录 `CNAME` 文件声明（内容：`Pivot.yyc3.top`）
 4. DNS 侧：`Pivot.yyc3.top CNAME → yyccube.github.io`
 
-> ❌ **Vercel / Netlify 方案已废弃**（团队决策 2026-09-16）：CI/CD 及其他有关 Vercel 的设计均已取消，统一收敛至 GitHub Pages 体系。历史章节中的 Vercel/Netlify 配置说明仅作归档参考，不再维护。
-
-#### Netlify 部署（已废弃，仅存档）
-
-1. 配置 `netlify.toml`：
-```toml
-[build]
-  command = "pnpm build"
-  publish = "dist"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
-[[headers]]
-  for = "/assets/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-```
-
-2. 部署：
-```bash
-npm install -g netlify-cli
-netlify deploy --prod
-```
+> 🗑️ **Vercel / Netlify 方案已彻底移除**（团队决策 2026-09-16，09-17 清理归档内容）：CI/CD 及其他有关 Vercel 的设计与配置均已取消，统一收敛至 GitHub Pages 体系，历史配置说明不再保留。
 
 ---
 
@@ -805,8 +780,8 @@ add_header Access-Control-Allow-Headers "Origin, X-Requested-With, Content-Type,
 
 如果遇到问题，请通过以下方式获取帮助：
 
-- **GitHub Issues**：https://github.com/YanYuCloudCube/CloudPivot-Intelli-Matrix/issues
-- **邮件联系**：admin@0379.email
+- **GitHub Issues**：<https://github.com/YanYuCloudCube/CloudPivot-Intelli-Matrix/issues>
+- **邮件联系**：<admin@0379.email>
 - **团队沟通**：通过团队内部沟通渠道
 
 ---
