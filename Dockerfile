@@ -6,6 +6,9 @@ WORKDIR /app
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
+# 镜像仅承载 Web 构建（nginx 静态托管），无需 electron 二进制；
+# 且 QEMU 跨架构模拟下 electron install.js 会 SIGILL 崩溃，官方变量跳过下载
+ENV ELECTRON_SKIP_BINARY_DOWNLOAD=1
 # pnpm-workspace.yaml（allowBuilds 构建脚本审批）与 .npmrc 必须随 lockfile
 # 一起就位，否则 pnpm 11 因依赖构建脚本未审批而报 ERR_PNPM_IGNORED_BUILDS
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
