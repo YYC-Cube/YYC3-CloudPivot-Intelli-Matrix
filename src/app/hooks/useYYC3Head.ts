@@ -104,12 +104,14 @@ export function useYYC3Head() {
     const faviconLinks = document.querySelectorAll<HTMLLinkElement>(
       'link[rel="icon"], link[rel="apple-touch-icon"]'
     );
+    // 注: 使用 getAttribute 而非 link.sizes (jsdom 未实现该属性)
     faviconLinks.forEach((link) => {
-      if (link.sizes?.value === "16x16") {
+      const sizes = link.getAttribute("sizes");
+      if (sizes === "16x16") {
         link.onerror = () => { link.href = iconsCDN.favicon16; };
-      } else if (link.sizes?.value === "32x32") {
+      } else if (sizes === "32x32") {
         link.onerror = () => { link.href = iconsCDN.favicon32; };
-      } else if (link.sizes?.value === "180x180") {
+      } else if (sizes === "180x180") {
         link.onerror = () => { link.href = iconsCDN.webAppAppleTouch; };
       }
     });

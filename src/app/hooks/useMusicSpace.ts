@@ -5,17 +5,17 @@
  * @version 2.0.0 - 集成真实音频播放
  */
 
-import { useState, useCallback, useEffect, useRef } from 'react';
-import type { 
-  MusicSong, 
-  MusicPlayerState, 
-  MusicEmotionProfile,
-  MusicRecommendation,
-  MusicActivity,
-  MusicMood,
-} from '../lib/music/types';
-import { emotionMusicService } from '../lib/music/EmotionMusicService';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { audioPlayerService, type AudioAnalyzerData } from '../lib/music/AudioPlayerService';
+import { emotionMusicService } from '../lib/music/EmotionMusicService';
+import type {
+  MusicActivity,
+  MusicEmotionProfile,
+  MusicMood,
+  MusicPlayerState,
+  MusicRecommendation,
+  MusicSong,
+} from '../lib/music/types';
 import { useVoiceService } from './useVoiceService';
 
 interface UseMusicSpaceOptions {
@@ -88,6 +88,10 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
   const [analyzerData, setAnalyzerData] = useState<AudioAnalyzerData | null>(null);
 
   const isInitializedRef = useRef(false);
+  // repeat 的可变镜像: init effect 仅运行一次（isInitializedRef 守卫），
+  // onEnded 闭包须始终读到最新 repeat，否则单曲循环在运行时失效
+  const repeatRef = useRef(playerState.repeat);
+  repeatRef.current = playerState.repeat;
 
   const {
     isInitialized: _voiceInitialized,
@@ -109,7 +113,7 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
   });
 
   useEffect(() => {
-    if (isInitializedRef.current) {return;}
+    if (isInitializedRef.current) { return; }
     isInitializedRef.current = true;
 
     audioPlayerService.on('onPlay', () => {
@@ -129,7 +133,7 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
     });
 
     audioPlayerService.on('onEnded', async () => {
-      if (playerState.repeat === 'one') {
+      if (repeatRef.current === 'one') {
         await audioPlayerService.play();
       } else {
         await nextSong();
@@ -155,7 +159,7 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
     return () => {
       audioPlayerService.stopVisualization();
     };
-  }, [onSongChange, playerState.repeat]);
+  }, [onSongChange]);
 
   const updateEmotionProfileFromEmotion = useCallback(
     (emotion: string, confidence: number) => {
@@ -225,19 +229,14 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
         },
       ];
 
-      for (const { pattern, action } of commandPatterns) {
-        if (pattern.test(lowerText)) {
-          action();
-          return;
-        }
-      }
-
+      // 具名意图（歌手/心情）优先，避免被泛化的「播放」模式提前拦截
       const searchMatch = lowerText.match(/播放(.+)的歌/);
       if (searchMatch) {
         const artist = searchMatch[1];
         const songs = emotionMusicService.searchSongs(artist);
         if (songs.length > 0) {
           playSong(songs[0]);
+          return; // 命中歌手意图后不再执行泛化命令
         }
       }
 
@@ -259,7 +258,15 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
           const songs = emotionMusicService.recommendByMood(mood);
           if (songs.length > 0) {
             playSong(songs[0]);
+            return; // 命中心情意图后不再执行泛化命令
           }
+        }
+      }
+
+      for (const { pattern, action } of commandPatterns) {
+        if (pattern.test(lowerText)) {
+          action();
+          return;
         }
       }
     },
@@ -310,7 +317,7 @@ export function useMusicSpace(options: UseMusicSpaceOptions = {}): UseMusicSpace
     async (song: MusicSong, index?: number) => {
       await audioPlayerService.playSong(song, index);
       emotionMusicService.markAsPlayed(song.id);
-      
+
       setPlayerState((prev) => ({
         ...prev,
         currentSong: song,
