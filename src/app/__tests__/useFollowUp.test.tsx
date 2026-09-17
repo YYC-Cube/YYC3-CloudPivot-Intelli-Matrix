@@ -168,6 +168,28 @@ describe("useFollowUp", () => {
       });
       expect(result.current.drawerOpen).toBe(false);
     });
+
+    it("closeDrawer 应延迟 300ms 清空 drawerItem（W3 分支补齐）", () => {
+      vi.useFakeTimers();
+      try {
+        const { result } = renderHook(() => useFollowUp());
+        act(() => {
+          result.current.openDrawer(result.current.allItems[0]);
+        });
+        act(() => {
+          result.current.closeDrawer();
+        });
+        // 关闭瞬间 drawerItem 保留（供离场动画）
+        expect(result.current.drawerItem).not.toBeNull();
+
+        act(() => {
+          vi.advanceTimersByTime(300);
+        });
+        expect(result.current.drawerItem).toBeNull();
+      } finally {
+        vi.useRealTimers();
+      }
+    });
   });
 
   // ----------------------------------------------------------

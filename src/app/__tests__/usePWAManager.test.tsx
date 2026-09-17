@@ -15,8 +15,8 @@
  * - pwaState 概览
  */
 
-import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { renderHook, act, cleanup } from "@testing-library/react";
+import { act, cleanup, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { usePWAManager } from "../hooks/usePWAManager";
 
 vi.mock("sonner", () => ({
@@ -146,6 +146,45 @@ describe("usePWAManager", () => {
       expect(state.swVersion).toBe("1.4.2");
       expect(state.offlineReady).toBe(true);
       expect(state.cacheEntries.length).toBe(5);
+    });
+  });
+
+  // ----------------------------------------------------------
+  // 分支补齐（W3 快赢: 98%→100%）
+  // ----------------------------------------------------------
+
+  describe("分支补齐", () => {
+    it("updateSW: 无可用更新时应早退且版本不变", async () => {
+      const { result } = renderHook(() => usePWAManager());
+      // 先完成一次更新 → updateAvailable 变 false
+      await act(async () => {
+        await result.current.updateSW();
+      });
+      expect(result.current.updateAvailable).toBe(false);
+
+      // 再次调用 → 走 !updateAvailable 早退分支（L85），版本不变、无新 toast
+      const { toast } = await import("sonner");
+      const infoCalls = (toast.info as ReturnType<typeof vi.fn>).mock.calls.length;
+      await act(async () => {
+        await result.current.updateSW();
+      });
+      expect(result.current.swVersion).toBe("1.5.0");
+      expect((toast.info as ReturnType<typeof vi.fn>).mock.calls.length).toBe(infoCalls);
+    });
+
+    it("navigator 缺失时 isOnline 回落 true（SSR 兜底分支 L42）", async () => {
+      const navDesc = Object.getOwnPropertyDescriptor(window, "navigator");
+      delete (window as { navigator?: unknown }).navigator;
+      try {
+        const { renderHook: rh } = await import("@testing-library/react");
+        const hook = rh(() => usePWAManager());
+        expect(hook.result.current.isOnline).toBe(true);
+        hook.unmount();
+      } finally {
+        if (navDesc) {
+          Object.defineProperty(window, "navigator", navDesc);
+        }
+      }
     });
   });
 });
