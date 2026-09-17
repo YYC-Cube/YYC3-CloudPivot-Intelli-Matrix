@@ -175,7 +175,7 @@ flowchart LR
 | :----- | :----- | :----- |
 | M5: P0 三文件测试合入 | 09-24 | ✅ 提前（09-17，commit 30789d703） |
 | M6: P1 Hooks 收编完成 | 09-30 | ✅ 提前（09-17，commit 591f60afc） |
-| M7: **phase2 门禁切换** | **10-01** | 🔄 推进中（批一~批四完成 09-17：累计 171 用例，全局 Lines 33.09→**40.49%**（+7.4pp），最新 commit 1713bc1f0；距 45% 还差 ~4.5pp） |
+| M7: **phase2 门禁切换** | **10-01** | 🔄 推进中（批一~批六完成 09-17：累计 218 用例，全局 Lines 33.09→**41.51%**（+8.42pp），最新 commit 65d10c3fd；距 45% 还差 ~3.5pp） |
 | M8: phase2 稳定性复盘 | 10-08 | ⬜ |
 
 ---
@@ -201,6 +201,7 @@ flowchart LR
 | 2026-09-17 | 新增 Coverage Gate phase2 专项推进计划（现状矩阵/四周冲刺/快赢清单/执行纪律/M5-M8 里程碑）；确认 M2 全链绿灯（run 35133374332） | v1.0.1 CI 全绿后基于模块级实测数据制定 |
 | 2026-09-17 | M7 组件域攻坚批一+批二闭环勾验（88 用例 / +3.33pp / id 碰撞缺陷修复，commit 72ac0834c）；M7 状态 ⏸→🔄 | phase2 门禁切换前置方案执行 |
 | 2026-09-17 | M7 批三+批四闭环勾验（lib 域 ollama-config/VoiceCreator + IDE 大件 5 组件 83 用例 / 全局 Lines 36.42→**40.49%**，commit 1713bc1f0）；剩余缺口 ~4.5pp（CodePreviewPanel/IDETopBar/IDEViewSwitcher/IDEStatusBar/lib 其余低覆盖文件） | IDE 大件与 lib 域攻坚计划执行 |
+| 2026-09-17 | M7 批五+批六闭环勾验（IDE 中件 CodePreviewPanel 90%/IDETopBar 90%/IDEViewSwitcher 84% + lib MusicEmotionAnalyzer 94%/voice profiles 100%/network-utils 93% 共 47 用例 / 全局 Lines 40.49→**41.51%**，commit 65d10c3fd）；剩余缺口 ~3.5pp（IDELayout 61%/PanelManager 23%/lib/music 16%/voice core 24%/visualization 10%）；发现本机并行模式 v8 覆盖率汇聚资源竞争导致偶发超时（基线亦复现，CI shard 模式不受影响） | IDE 中件与 lib 域剩余模块攻坚计划执行 |
 
 ## 六、会话收尾检查
 
