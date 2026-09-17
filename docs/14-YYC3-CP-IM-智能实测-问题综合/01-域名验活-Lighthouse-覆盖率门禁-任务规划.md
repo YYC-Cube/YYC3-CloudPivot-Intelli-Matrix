@@ -148,7 +148,7 @@ flowchart LR
 
 | 周 | 时间窗 | 冲刺目标 | 预期 Lines 增量 | 关键交付 |
 | :--- | :------- | :--------- | :--------------- | :--------- |
-| **W1** | 09-17 ~ 09-24 | P0 三文件攻坚（db-queries/query-monitor/migrations） | **+8~10pp** → ~36% | 纯函数层单测（参数化查询 mock supabase），`migrations` 全量 SQL 语句快照 |
+| **W1** | 09-17 ~ 09-24 | P0 三文件攻坚（db-queries/query-monitor/migrations） | **+8~10pp** → ~36% | ✅ **提前完成（09-17）**: db-queries 25.14→**90.53%** / migrations 0→**94.93%** / query-monitor 8.02→**100%**，全局 25.95→28.70%，+83 用例（2106 全过）——commit 30789d703 |
 | **W2** | 09-25 ~ 09-30 | P1 Hooks 收编（6 个零/低覆盖 hook） | **+5~6pp** → ~42% | jsdom + renderHook 标准范式；yyc3-icons 数据完整性断言（快赢 1 天） |
 | **W3** | 10-01 前 | 门禁切换 + 缺口回补 | 收尾 +3pp → **≥45%** | `vitest.config.ts` phase2 常量生效 + CI 验证 + 本文档勾验 |
 | **W4** | 10-02 ~ 10-08 | 缓冲 & 复盘 + **dev 链周期治理** | — | ① phase2 稳定性观察，反哺 phase3（60%）路径修正；② ~~`pnpm update --latest` 全量升级（清理 dev 链 98 项审计漏洞 + 顺带覆盖 vite ^8.0.3→8.0.16）~~ ✅ **提前完成（09-17）**: audit 98→1（2C/56H 全清，prod 0），electron-builder 24→26 + overrides 三连钉版；rolldown/e2c 因 CI 满龄策略回钉；③ ~~`no-explicit-any` 警告收敛（96→≤50）~~ ✅ **提前完成（09-17）**: 96→**42**，7 高发文件类型化清零 |
