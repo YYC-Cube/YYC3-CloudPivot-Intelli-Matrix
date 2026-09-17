@@ -9,13 +9,13 @@
  * @tags: [ide],[layout],[context]
  */
 
-import React, { createContext, useContext, useReducer, useCallback, useEffect, type ReactNode } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useReducer, type ReactNode } from 'react';
 import type {
-  Panel,
-  LayoutConfig,
-  Tab,
   DraggingState,
+  LayoutConfig,
+  Panel,
   ResizingState,
+  Tab,
 } from './ide-layout-types';
 
 interface LayoutState {
@@ -43,6 +43,14 @@ type LayoutAction =
   | { type: 'UPDATE_LAYOUT_CONFIG'; payload: Partial<LayoutConfig> }
   | { type: 'RESET_LAYOUT' }
   | { type: 'LOAD_LAYOUT'; payload: LayoutConfig };
+
+// 唯一 id 计数器: Date.now() 在同一毫秒内连续添加会碰撞，
+// 导致同毫秒双 tab 共享 id（激活态互串、removeTab 一次删俩）
+let idCounter = 0;
+function nextId(prefix: string): string {
+  idCounter += 1;
+  return `${prefix}-${Date.now()}-${idCounter}`;
+}
 
 const initialState: LayoutState = {
   layout: {
@@ -131,7 +139,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
     case 'ADD_PANEL': {
       const newPanel: Panel = {
         ...action.payload,
-        id: `panel-${Date.now()}`,
+        id: nextId('panel'),
         zIndex: state.layout.panels.length + 1,
         tabs: [],
         activeTabId: '',
@@ -182,7 +190,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
 
     case 'START_DRAG': {
       const panel = state.layout.panels.find((p) => p.id === action.payload.panelId);
-      if (!panel) {return state;}
+      if (!panel) { return state; }
 
       return {
         ...state,
@@ -198,7 +206,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
 
     case 'ON_DRAG': {
       const { dragging, layout } = state;
-      if (!dragging.panelId) {return state;}
+      if (!dragging.panelId) { return state; }
 
       let newX = action.payload.clientX - dragging.offsetX;
       let newY = action.payload.clientY - dragging.offsetY;
@@ -239,7 +247,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
 
     case 'START_RESIZE': {
       const panel = state.layout.panels.find((p) => p.id === action.payload.panelId);
-      if (!panel) {return state;}
+      if (!panel) { return state; }
 
       return {
         ...state,
@@ -258,7 +266,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
 
     case 'ON_RESIZE': {
       const { resizing, layout } = state;
-      if (!resizing.panelId) {return state;}
+      if (!resizing.panelId) { return state; }
 
       const deltaX = action.payload.clientX - resizing.startX;
       const deltaY = action.payload.clientY - resizing.startY;
@@ -307,10 +315,10 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
           panels: state.layout.panels.map((p) =>
             p.id === resizing.panelId
               ? {
-                  ...p,
-                  size: { width: newWidth, height: newHeight },
-                  position: { ...p.position, x: newLeft, y: newTop },
-                }
+                ...p,
+                size: { width: newWidth, height: newHeight },
+                position: { ...p.position, x: newLeft, y: newTop },
+              }
               : p
           ),
         },
@@ -337,7 +345,7 @@ function layoutReducer(state: LayoutState, action: LayoutAction): LayoutState {
       const { panelId, tab } = action.payload;
       const newTab: Tab = {
         ...tab,
-        id: `tab-${Date.now()}`,
+        id: nextId('tab'),
         isActive: true,
       };
 
