@@ -111,7 +111,7 @@ flowchart LR
 
 1. P0: `lib/db-queries` + GlobalStore 新架构补测（成本最低收益最高）
 2. P1: `useHostFileSystem`(0%) / `useBigModelSDK`(1%) 等 Hooks 收编
-3. P2: `ai-family` / `ide` 组件域攻坚
+3. P2: `ai-family` / `ide` 组件域攻坚 ✅ **批一+批二完成（09-17）**: panel 家族 34 例 + toolbar/workspace 14 例 + canvas/theme/FloatingCD 40 例 = 88 用例全绿；顺带修复 LayoutContext ADD_PANEL/ADD_TAB 同毫秒 id 碰撞缺陷（nextId 计数器）；全局 Lines 33.09→**36.42%**（+3.33pp）——commit 72ac0834c。⚠️ 四目录组件域全满理论上限 ~+4.3pp，剩余缺口转向 IDE 大件（IDELayout/AIChatPanel/GitPanel/FileExplorer 等）与 lib 域（ollama-config 10.95%、VoiceCreator 0%）
 
 ---
 
@@ -175,7 +175,7 @@ flowchart LR
 | :----- | :----- | :----- |
 | M5: P0 三文件测试合入 | 09-24 | ✅ 提前（09-17，commit 30789d703） |
 | M6: P1 Hooks 收编完成 | 09-30 | ✅ 提前（09-17，commit 591f60afc） |
-| M7: **phase2 门禁切换** | **10-01** | ⏸ 暂缓（Lines 33.09% < 45%，待组件域攻坚后推进） |
+| M7: **phase2 门禁切换** | **10-01** | 🔄 推进中（组件域攻坚批一+批二完成 09-17：88 用例 + 全局 Lines 33.09→**36.42%**，commit 72ac0834c；距 45% 还差 ~8.6pp，待 IDE 大件补测） |
 | M8: phase2 稳定性复盘 | 10-08 | ⬜ |
 
 ---
@@ -196,9 +196,10 @@ flowchart LR
 ## 五、变更记录
 
 | 日期 | 变更内容 | 原因 |
-|:-----|:---------|:-----|
+| :----- | :--------- | :----- |
 | 2026-09-16 | 初始规划 + Phase 1 全部落地 | 用户需求：三项运维机制实施与文档同步 |
 | 2026-09-17 | 新增 Coverage Gate phase2 专项推进计划（现状矩阵/四周冲刺/快赢清单/执行纪律/M5-M8 里程碑）；确认 M2 全链绿灯（run 35133374332） | v1.0.1 CI 全绿后基于模块级实测数据制定 |
+| 2026-09-17 | M7 组件域攻坚批一+批二闭环勾验（88 用例 / +3.33pp / id 碰撞缺陷修复，commit 72ac0834c）；M7 状态 ⏸→🔄 | phase2 门禁切换前置方案执行 |
 
 ## 六、会话收尾检查
 
