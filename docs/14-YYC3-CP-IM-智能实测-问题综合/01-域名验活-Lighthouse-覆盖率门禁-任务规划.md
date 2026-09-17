@@ -150,7 +150,7 @@ flowchart LR
 | :--- | :------- | :--------- | :--------------- | :--------- |
 | **W1** | 09-17 ~ 09-24 | P0 三文件攻坚（db-queries/query-monitor/migrations） | **+8~10pp** → ~36% | ✅ **提前完成（09-17）**: db-queries 25.14→**90.53%** / migrations 0→**94.93%** / query-monitor 8.02→**100%**，全局 25.95→28.70%，+83 用例（2106 全过）——commit 30789d703 |
 | **W2** | 09-25 ~ 09-30 | P1 Hooks 收编（6 个零/低覆盖 hook） | **+5~6pp** → ~42% | ✅ **提前完成（09-17）**: 5 个测试文件 107 用例全绿——useMusicSpace 0.61→**93.97%** / useYYC3Head 0→**100%** / useMobileView 0→**100%** / useValidation 0→**100%** / yyc3-icons 快赢 15 用例；全局 28.70→**30.59%**；顺带修复 3 处源码缺陷（语音命令优先级/单曲循环 repeatRef/JS DOM link.sizes 回退）——commit 591f60afc |
-| **W3** | 10-01 前 | 门禁切换 + 缺口回补 | 收尾 +3pp → **≥45%** | `vitest.config.ts` phase2 常量生效 + CI 验证 + 本文档勾验 |
+| **W3** | 10-01 前 | 门禁切换 + 缺口回补 | 收尾 +3pp → **≥45%** | ✅ **缺口回补完成（09-17）**: useTerminal 39.19→**99.38%** Stmts（Lines/Funcs 100%）+ 快赢清单全勾（usePWAManager/useFollowUp 四维 100%、voice types 13 用例）；全局 30.59→**31.69%** Stmts / **33.09%** Lines，2308 用例全绿；顺带修复 2 处补全缺陷（尾随空格上下文丢失/大小写敏感）——commit 30db9b5cf。⚠️ **phase2 切换暂缓**: Lines 33.09% < 45% 未达切换条件，按「执行纪律」不硬凑，剩余缺口（components/ide 1.16%、components/music 2.56% 等组件域）移交 phase2→3 路线图 |
 | **W4** | 10-02 ~ 10-08 | 缓冲 & 复盘 + **dev 链周期治理** | — | ① phase2 稳定性观察，反哺 phase3（60%）路径修正；② ~~`pnpm update --latest` 全量升级（清理 dev 链 98 项审计漏洞 + 顺带覆盖 vite ^8.0.3→8.0.16）~~ ✅ **提前完成（09-17）**: audit 98→1（2C/56H 全清，prod 0），electron-builder 24→26 + overrides 三连钉版；rolldown/e2c 因 CI 满龄策略回钉；③ ~~`no-explicit-any` 警告收敛（96→≤50）~~ ✅ **提前完成（09-17）**: 96→**42**，7 高发文件类型化清零 |
 
 **成本预估**: W1/W2 各约 15~20 个新测试文件，新增用例约 **250~350 个**（按 hooks 平均 30 用例、lib 纯函数平均 20 用例估）。
@@ -158,9 +158,9 @@ flowchart LR
 #### 3. 快赢清单（半天内可完成，先行造血）
 
 - [x] `yyc3-icons.ts`（0%→80%+，纯映射表遍历断言，+1pp）✅ 已完成（09-17，15 用例，含 iconsCDN/清单/handleIconError 全路径）
-- [ ] `voice/emotion/types.ts` + `voice/core/types.ts`（类型守卫函数补测，+0.5pp）
-- [ ] `hooks/usePWAManager.ts` 98%→100%（补 42/85 两行分支，示范文件）
-- [ ] `useFollowUp.ts`（97.5%→100%，补状态机残余路径）
+- [x] `voice/emotion/types.ts` + `voice/core/types.ts`（类型守卫函数补测，+0.5pp）✅ 已完成（09-17，13 用例，运行时常量契约：EMOTION_COLORS 全覆盖/MUSIC_EMOTION_MAPPINGS 区间合法性）
+- [x] `hooks/usePWAManager.ts` 98%→100%（补 42/85 两行分支，示范文件）✅ 已完成（09-17，四维 100%）
+- [x] `useFollowUp.ts`（97.5%→100%，补状态机残余路径）✅ 已完成（09-17，closeDrawer 延迟清空路径，四维 100%）
 
 #### 4. 执行纪律（五高对齐）
 
@@ -173,9 +173,9 @@ flowchart LR
 
 | 节点 | 时间 | 状态 |
 | :----- | :----- | :----- |
-| M5: P0 三文件测试合入 | 09-24 | ⬜ |
-| M6: P1 Hooks 收编完成 | 09-30 | ⬜ |
-| M7: **phase2 门禁切换** | **10-01** | ⬜ |
+| M5: P0 三文件测试合入 | 09-24 | ✅ 提前（09-17，commit 30789d703） |
+| M6: P1 Hooks 收编完成 | 09-30 | ✅ 提前（09-17，commit 591f60afc） |
+| M7: **phase2 门禁切换** | **10-01** | ⏸ 暂缓（Lines 33.09% < 45%，待组件域攻坚后推进） |
 | M8: phase2 稳定性复盘 | 10-08 | ⬜ |
 
 ---
