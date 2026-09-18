@@ -203,6 +203,7 @@ flowchart LR
 | 2026-09-17 | M7 批三+批四闭环勾验（lib 域 ollama-config/VoiceCreator + IDE 大件 5 组件 83 用例 / 全局 Lines 36.42→**40.49%**，commit 1713bc1f0）；剩余缺口 ~4.5pp（CodePreviewPanel/IDETopBar/IDEViewSwitcher/IDEStatusBar/lib 其余低覆盖文件） | IDE 大件与 lib 域攻坚计划执行 |
 | 2026-09-17 | M7 批五+批六闭环勾验（IDE 中件 CodePreviewPanel 90%/IDETopBar 90%/IDEViewSwitcher 84% + lib MusicEmotionAnalyzer 94%/voice profiles 100%/network-utils 93% 共 47 用例 / 全局 Lines 40.49→**41.51%**，commit 65d10c3fd）；剩余缺口 ~3.5pp（IDELayout 61%/PanelManager 23%/lib/music 16%/voice core 24%/visualization 10%）；发现本机并行模式 v8 覆盖率汇聚资源竞争导致偶发超时（基线亦复现，CI shard 模式不受影响） | IDE 中件与 lib 域剩余模块攻坚计划执行 |
 | 2026-09-17 | M7 批七闭环勾验（IDELayout 61.7→**89.1%** TopBar 全回调/文件开关 tab 流 + PanelManager 23.1→**94.04%** split/塌缩/浮动/最大化/重置/持久化/拖拽调宽/双 store 共 35 用例 / 全局 Lines 41.51→**42.7%**，commit 7a5e1fbdf）；剩余缺口 ~2.3pp（lib/music 16%/voice core 24%/visualization 10%/CoverFlow 1%/FamilyMusic 0%） | IDELayout+PanelManager 攻坚计划执行 |
+| 2026-09-18 | M7 批八闭环勾验（lib/music 四大件 AudioPlayerService 17→**81.12%**/EmotionMusicService 11.5→**100%**/MusicSourceManager 9.8→**91.01%**/MusicData 38.5→**100%** 共 42 用例 / 全局 Lines 42.7→**44.42%**，commit 8e849547b）；距 phase2 仅剩 0.58pp（剩余低覆盖：visualization 10%/CoverFlow 1%/FamilyMusic 0%/voice core 24%）；关键技法 vi.hoisted+defineProperty 覆盖 jsdom Audio、src setter 宏任务触发 onerror | lib/music 域攻坚计划执行 |
 
 ## 六、会话收尾检查
 
