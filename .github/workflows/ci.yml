@@ -101,7 +101,7 @@ jobs:
           VITEST_SHARD: "1"
           COVERAGE_GATE: ""
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: coverage-shard-${{ matrix.shard-index }}
@@ -141,7 +141,7 @@ jobs:
         run: pnpm test:ci --coverage
       - name: Upload gate coverage artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-gate-report
           path: coverage/
@@ -170,7 +170,7 @@ jobs:
         run: npx --yes @lhci/cli@0.14.x open-report --open=false || true
       - name: Upload Lighthouse reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: lighthouse-reports-${{ github.run_id }}
           path: .lighthouseci/
