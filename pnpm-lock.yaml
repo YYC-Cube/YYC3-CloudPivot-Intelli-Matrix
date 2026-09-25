@@ -322,10 +322,10 @@ importers:
         version: 8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)
       vite-plugin-electron:
         specifier: ^1.1.2
-        version: 1.1.2(vite-plugin-electron-renderer@0.14.6)(vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1))
+        version: 1.1.2(vite-plugin-electron-renderer@1.0.0)(vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1))
       vite-plugin-electron-renderer:
-        specifier: ^0.14.0
-        version: 0.14.6
+        specifier: ^1.0.0
+        version: 1.0.0
       vitest:
         specifier: ^5.0.1
         version: 5.0.1(@types/node@25.5.0)(@vitest/coverage-v8@4.1.11)(jsdom@29.0.1(@noble/hashes@2.4.0))(vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1))
@@ -4924,8 +4924,8 @@ packages:
   victory-vendor@37.3.6:
     resolution: {integrity: sha512-SbPDPdDBYp+5MJHhBCAyI7wKM3d5ivekigc2Dk2s7pgbZ9wIgIBYGVw4zGHBml/qTFbexrofXW6Gu4noGxrOwQ==}
 
-  vite-plugin-electron-renderer@0.14.6:
-    resolution: {integrity: sha512-oqkWFa7kQIkvHXG7+Mnl1RTroA4sP0yesKatmAy0gjZC4VwUqlvF9IvOpHd1fpLWsqYX/eZlVxlhULNtaQ78Jw==}
+  vite-plugin-electron-renderer@1.0.0:
+    resolution: {integrity: sha512-/9CBdUqnCgwWXn61v5PErWnR5q3Bfne2oI52uHzgJnKnlaoNgEKvxOzS0/XssDXWMK3ElStM2+J/Ko4Q63XhMA==}
 
   vite-plugin-electron@1.1.2:
     resolution: {integrity: sha512-EAHs3zhK+33FhdasevCRVMMOFIHT+MDg5EcD47CCwxDcJ1REYqb7EeR0RHOjCKS7P2ip/q1ISzzMpK3H+p8uTA==}
@@ -10135,14 +10135,14 @@ snapshots:
       d3-time: 3.1.0
       d3-timer: 3.0.1
 
-  vite-plugin-electron-renderer@0.14.6: {}
+  vite-plugin-electron-renderer@1.0.0: {}
 
-  vite-plugin-electron@1.1.2(vite-plugin-electron-renderer@0.14.6)(vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)):
+  vite-plugin-electron@1.1.2(vite-plugin-electron-renderer@1.0.0)(vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)):
     dependencies:
       local-pkg: 1.2.1
       vite: 8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1)
     optionalDependencies:
-      vite-plugin-electron-renderer: 0.14.6
+      vite-plugin-electron-renderer: 1.0.0
 
   vite@8.3.0(@types/node@25.5.0)(esbuild@0.27.3)(jiti@2.6.1):
     dependencies:
