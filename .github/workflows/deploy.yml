@@ -58,7 +58,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # ── 部署后域名自动验活（YYC³ 家族域名巡检规范）──────────────
   # 成功标准: HTTPS 200 + 返回体含 YYC³ 品牌标识 + 响应 < 15s
