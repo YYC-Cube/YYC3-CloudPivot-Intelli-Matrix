@@ -265,7 +265,7 @@ jobs:
 
       - name: Slack notification (optional)
         if: always() && vars.SLACK_WEBHOOK != ''
-        uses: slackapi/slack-github-action@v2
+        uses: slackapi/slack-github-action@v4
         with:
           method: chat.postMessage
           token: ${{ secrets.SLACK_BOT_TOKEN }}
