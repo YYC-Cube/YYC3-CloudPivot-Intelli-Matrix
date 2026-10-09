@@ -28,13 +28,15 @@ describe("RF-011: 404 通配路由", () => {
     expect(typeof mod.NotFound).toBe("function");
   });
 
-  it("routes.ts 导出 router 对象", async () => {
+  // 注意: routes.ts 为全静态导入（40+ 重组件），jsdom 下首次转换整个模块图耗时较长，
+  // 故单独放宽超时；长期方案是恢复路由级代码分割（见技术债清单）
+  it("routes.ts 导出 router 对象", { timeout: 60000 }, async () => {
     const routesMod = await import("../routes");
     const router = routesMod.router;
     expect(router).toBeDefined();
   });
 
-  it("routes.ts 包含 * 通配路由", async () => {
+  it("routes.ts 包含 * 通配路由", { timeout: 60000 }, async () => {
     // 验证路由配置中包含 path: "*"
     const routesMod = await import("../routes");
     const router = routesMod.router;

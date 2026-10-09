@@ -140,6 +140,10 @@ imports/
 变形金刚.zip
 releases/
 dist-electron/
+coverage-comp/
+
+# 审计/文档检查生成的时间戳报告（重新运行脚本即可再生）
+.archive/reports/*-[0-9]*.json
 
 # Local development docs (不提交的本地开发文档)
 docs/.docs-local/

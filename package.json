@@ -1,6 +1,7 @@
 {
   "name": "yyc3-cloudpivot-intelli-matrix",
   "version": "1.0.1",
+  "packageManager": "pnpm@11.28.5",
   "description": "YYC³ Family 本地闭环多端推理矩阵数据看盘系统",
   "main": "dist-electron/main.js",
   "author": "YanYuCloudCube Team <admin@0379.email>",
@@ -38,6 +39,8 @@
     "audit:unified-data-source": "node scripts/util/unified-data-source-audit.js",
     "audit:ai-pipeline": "node scripts/util/ai-pipeline-audit.js",
     "audit:all": "node scripts/util/ide-layout-audit.js && node scripts/util/unified-data-source-audit.js && node scripts/util/ai-pipeline-audit.js",
+    "cov:gap": "node scripts/coverage-gap.cjs",
+    "cov:domain": "node scripts/comp-cov.cjs",
     "audit:comprehensive": "node scripts/util/comprehensive-audit.js",
     "setup-git-hooks": "bash scripts/setup-git-hooks.sh",
     "clean": "rm -rf dist dist-electron node_modules/.vite .vite"

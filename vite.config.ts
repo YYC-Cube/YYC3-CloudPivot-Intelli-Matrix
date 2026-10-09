@@ -26,6 +26,7 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
+import electron from 'vite-plugin-electron/simple'
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
@@ -35,6 +36,31 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       tailwindcss(),
+      // Electron 主进程 / 预加载脚本构建链：
+      // 输出至根目录 dist-electron/（main.js = ESM，preload.cjs = CJS），
+      // 与 package.json 的 main 字段及 electron-builder files 配置对齐
+      electron({
+        main: {
+          entry: 'electron/main.ts',
+        },
+        preload: [
+          {
+            input: 'electron/preload.ts',
+            vite: {
+              build: {
+                rolldownOptions: {
+                  output: {
+                    // 覆盖默认的 preload.mjs（CJS 内容 + mjs 后缀在 sandbox:false 下
+                    // 会被 Electron 按 ESM 解析导致启动失败），改用无歧义的 .cjs
+                    entryFileNames: '[name].cjs',
+                    chunkFileNames: '[name].cjs',
+                  },
+                },
+              },
+            },
+          },
+        ],
+      }),
     ].filter(Boolean),
     resolve: {
       alias: {
