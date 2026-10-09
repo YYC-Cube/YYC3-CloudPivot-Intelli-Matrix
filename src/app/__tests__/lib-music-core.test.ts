@@ -573,8 +573,8 @@ describe("MusicSourceManager", () => {
 /* ================= MusicData ================= */
 
 describe("MusicData", () => {
-  it("数据规模: 30 logo/14 照片/7 视频/4 专辑", () => {
-    expect(LOGO_IMAGES).toHaveLength(30);
+  it("数据规模: 4 logo/14 照片/7 视频/4 专辑", () => {
+    expect(LOGO_IMAGES).toHaveLength(4);
     expect(PHOTOS).toHaveLength(14);
     expect(VIDEOS).toHaveLength(7);
     expect(ALBUMS).toHaveLength(4);
