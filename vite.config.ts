@@ -28,8 +28,14 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import electron from 'vite-plugin-electron/simple'
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd(), '')
+
+  // Electron 插件仅在构建期或显式开启时加载：
+  // `pnpm dev` 为纯 Web 开发（插件在 serve 期会尝试 spawn electron 二进制，
+  // 而 pnpm 环境下该二进制可能尚未下载，导致 dev 直接崩溃）；
+  // 桌面联调请用 `pnpm electron:dev`（依赖已构建的 dist-electron/）。
+  const enableElectron = command === 'build' || process.env.ELECTRON_ENABLE === 'true'
 
   return {
     base: './',
@@ -39,6 +45,7 @@ export default defineConfig(({ mode }) => {
       // Electron 主进程 / 预加载脚本构建链：
       // 输出至根目录 dist-electron/（main.js = ESM，preload.cjs = CJS），
       // 与 package.json 的 main 字段及 electron-builder files 配置对齐
+      enableElectron &&
       electron({
         main: {
           entry: 'electron/main.ts',
@@ -70,6 +77,13 @@ export default defineConfig(({ mode }) => {
     server: {
       port: parseInt(env.VITE_PORT || '3218'),
       host: true,
+      proxy: {
+        // music-api @ NAS（Tailscale）；生产构建用 VITE_MUSIC_API_BASE 直连
+        '/api/music': {
+          target: 'http://100.65.172.88:3113',
+          changeOrigin: true,
+        },
+      },
     },
 
     assetsInclude: ['**/*.svg', '**/*.csv'],

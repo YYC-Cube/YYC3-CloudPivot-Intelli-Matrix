@@ -255,5 +255,10 @@
       "repo": "CloudPivot-Intelli-Matrix",
       "private": false
     }
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron"
+    ]
   }
 }

@@ -36,11 +36,13 @@ import {
   Disc,
   User,
   Video,
+  Library,
 } from 'lucide-react';
 import { CoverFlow } from './CoverFlow';
 import { AudioVisualizer } from './AudioVisualizer';
 import { MusicSourcePanel } from './MusicSourcePanel';
 import { FloatingCD } from './FloatingCD';
+import { MusicLibraryPanel } from './MusicLibraryPanel';
 import { useMusicSpace } from '../../hooks/useMusicSpace';
 import { useI18n } from '../../hooks/useI18n';
 import type { MusicSong, MusicActivity, MusicMood } from '../../lib/music/types';
@@ -52,7 +54,7 @@ import {
   getAllSongs
 } from '../../lib/music/MusicData';
 
-type TabType = 'recommend' | 'mood' | 'activity' | 'albums' | 'artist' | 'search' | 'equalizer' | 'source';
+type TabType = 'recommend' | 'library' | 'mood' | 'activity' | 'albums' | 'artist' | 'search' | 'equalizer' | 'source';
 
 const MOOD_ICONS: Record<MusicMood, React.ReactNode> = {
   happy: <Sparkles className="w-4 h-4" />,
@@ -151,6 +153,16 @@ export const MusicSpacePage: React.FC = () => {
       await playSong(song, index);
     },
     [playSong]
+  );
+
+  const handleLibraryPlay = useCallback(
+    async (songs: MusicSong[], startIndex: number, _playedTrackId: string) => {
+      setDisplaySongs(songs);
+      setCurrentIndex(startIndex);
+      loadPlaylist(songs);
+      await playSong(songs[startIndex], startIndex);
+    },
+    [playSong, loadPlaylist]
   );
 
   const handlePlayPause = useCallback(async () => {
@@ -289,6 +301,7 @@ export const MusicSpacePage: React.FC = () => {
         <div className="flex gap-2 p-1 rounded-xl bg-white/5 overflow-x-auto">
           {[
             { key: 'recommend', label: '推荐', icon: <Sparkles className="w-4 h-4" /> },
+            { key: 'library', label: '曲库', icon: <Library className="w-4 h-4" /> },
             { key: 'albums', label: '专辑', icon: <Disc className="w-4 h-4" /> },
             { key: 'artist', label: '艺人', icon: <User className="w-4 h-4" /> },
             { key: 'mood', label: '心情', icon: <Heart className="w-4 h-4" /> },
@@ -324,6 +337,17 @@ export const MusicSpacePage: React.FC = () => {
               <div className="p-4 rounded-xl bg-white/5 border border-white/10">
                 <p className="text-white/70 text-sm">{recommendation.reason}</p>
               </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'library' && (
+            <motion.div
+              key="library"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <MusicLibraryPanel onSongsPlay={handleLibraryPlay} />
             </motion.div>
           )}
 

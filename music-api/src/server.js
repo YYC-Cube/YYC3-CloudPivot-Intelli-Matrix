@@ -55,7 +55,7 @@ app.addHook("onRequest", (req, reply, done) => {
 });
 
 // ── 健康检查 ──────────────────────────────
-app.get("/healthz", async () => {
+async function healthHandler() {
   let db = "up";
   try {
     await readPool.query("SELECT 1");
@@ -65,7 +65,10 @@ app.get("/healthz", async () => {
   const mediaReady = fs.existsSync(MUSIC_ROOT);
   const status = db === "up" && mediaReady ? "ok" : "degraded";
   return { status, db, mediaReady, uptime: Math.round(process.uptime()) };
-});
+}
+app.get("/healthz", healthHandler);
+// 前端服务层以 /api/music 为基址，提供同路径别名（经 Vite 代理/反代时可用）
+app.get("/api/music/healthz", healthHandler);
 
 // ── 专辑列表 ──────────────────────────────
 app.get("/api/music/albums", async () => {
