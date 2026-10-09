@@ -1,0 +1,19 @@
+{
+  "name": "yyc3-music-api",
+  "version": "1.0.0",
+  "description": "YYC³ Music 流媒体 API — 读 NAS 备库, 写转发 Mac 主库",
+  "private": true,
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "fastify": "^5.2.0",
+    "pg": "^8.13.1"
+  }
+}

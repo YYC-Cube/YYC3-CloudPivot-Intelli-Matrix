@@ -1,0 +1,26 @@
+# YYC³ Music API · NAS 部署编排
+# 位置: /Volume1/yyc3_hd/music-api/compose.yml
+# 管理: /Volume3/@apps/DockerEngine/dockerd/bin/docker-compose -f compose.yml up -d
+services:
+  music-api:
+    build: .
+    image: yyc3-music-api:latest
+    container_name: yyc3-music-api
+    restart: unless-stopped
+    # host 网络：源 IP 保留为 192.168.3.45/100.65.172.88，NAS pg_hba 已有信任规则；
+    # 若用默认 bridge，回环访问宿主 IP 不做 SNAT，pg 看到的是 172.24.0.2 被拒。
+    # 服务自身监听 0.0.0.0:3113，Tailscale 与 LAN 均可达。
+    network_mode: host
+    # UGOS 启用 SMACK 安全模块：容器默认用户访问宿主媒体目录被 EACCES，
+    # 实测仅 root 与属主 uid 501 可读。以 501:101（音乐文件属主）运行，免 root。
+    user: "501:101"
+    environment:
+      PORT: 3113
+      MUSIC_ROOT: /music
+      # 读: NAS 本机备库（LAN 低延迟）
+      DATABASE_READ_URL: postgres://yanyu@192.168.3.45:5433/yyc3_music
+      # 写: 经 Tailscale 转发 Mac 主库（Mac 离线时自动 503 降级）
+      DATABASE_WRITE_URL: postgres://yanyu@100.87.159.21:5433/yyc3_music
+      CORS_ORIGINS: "http://localhost:3218,http://localhost:3118,https://yyc-cube.github.io"
+    volumes:
+      - /Volume1/yyc3_hd/Music:/music:ro
