@@ -17,6 +17,9 @@
 
 ### Changed
 
+- **仓库可视化（GitHub Topics）**：设置 17 个主题标签（react / typescript / electron / vite / pwa / monitoring / observability / dashboard / tailwindcss / radix-ui / recharts / supabase / docker / github-pages / ai-ops / cyberpunk / yyc3）
+- **CI 增强**（ci.yml）：quality 门禁补充 Electron 主进程类型检查（`tsc -p electron/tsconfig.json`）；Docker 镜像增加 `${{ github.sha }}` 可追溯标签
+- **README.md 版本基线对齐实际安装**：React 19.3.0、Vite 8.3.4、Tailwind 4.3.3、Electron 41.10.7、Vitest 5.0.3、Router 7.18.4、Motion 13.5.1、Recharts 3.10.1、Lucide 1.48.0、Supabase 2.117.3；前置条件修正为 Node ≥ 22.13 / pnpm ≥ 11；ASCII 架构图等宽对齐同步更新
 - **未跟踪文档目录纳入版本管理（审计后折中方案）**
   - `docs/16-CP-IM-后端设计规划/`：后端建设依据评审稿入库（原 15 号与既有「15-存储架构-数据协同」冲突，顺延改 16 号，13 号此前已归并入 11 不复用）；`docs/README.md` 全生命周期索引登记 00-16
   - `docs/agent-memory/YYC3-三枢纽-长久记忆.md`：跨会话记忆主文件入库；`refs/` 外部资料副本（~920KB 大文件、含本机路径与内网拓扑）加入 `.gitignore` 仅本地留存

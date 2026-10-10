@@ -19,10 +19,10 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-19.2.4-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React">
+  <img src="https://img.shields.io/badge/React-19.3.0-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React">
   <img src="https://img.shields.io/badge/TypeScript-5.9.3-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript">
-  <img src="https://img.shields.io/badge/Vite-8.0.3-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite">
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4.2.1-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
+  <img src="https://img.shields.io/badge/Vite-8.3.4-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite">
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4.3.3-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
   <img src="https://img.shields.io/badge/Electron-41-47848F?style=flat-square&logo=electron&logoColor=white" alt="Electron">
   <br>
   <img src="https://img.shields.io/github/actions/workflow/status/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix/ci.yml?branch=main&style=flat-square&logo=github-actions&label=CI%2FCD" alt="CI/CD">
@@ -129,19 +129,19 @@
 │   ┌──────────────────┐    ┌──────────────────────────────┐ │
 │   │  Presentation    │    │       Interaction Layer      │ │
 │   │     Layer        │    │                              │ │
-│   │ ┌────┐┌────┐┌───┐│    │  React 19.2  TS Strict     │ │
+│   │ ┌────┐┌────┐┌───┐│    │  React 19.3  TS Strict     │ │
 │   │ │Web ││Elec││PWA││    │  Router v7   Context API    │ │
 │   │ └────┘└────┘└───┘│    └──────────────────────────────┘ │
 │   └──────────────────┘              ▲                      │
 │                    │               │                       │
 │   ┌────────────────────────────────┼──────────────────────┐ │
 │   │           Styling Layer        │                      │ │
-│   │  Tailwind 4.2  Motion 12  Radix UI 1.x               │ │
+│   │  Tailwind 4.3  Motion 13  Radix UI 1.x               │ │
 │   └────────────────────────────────┼──────────────────────┘ │
 │                                     │                       │
 │   ┌────────────────────────────────┼──────────────────────┐ │
 │   │         Data Layer             │                      │ │
-│   │  Recharts 3.8  Lucide 0.576  WebSocket  Supabase     │ │
+│   │  Recharts 3.10  Lucide 1.48  WebSocket  Supabase     │ │
 │   └────────────────────────────────┼──────────────────────┘ │
 │                                     │                       │
 │   ┌────────────────────────────────┼──────────────────────┐ │
@@ -151,7 +151,7 @@
 │                                     │                       │
 │   ┌────────────────────────────────▼──────────────────────┐ │
 │   │         Utility Layer                               │ │
-│   │  Vite 8.0  Vitest 4.1  ESLint 10  Prettier          │ │
+│   │  Vite 8.3  Vitest 5.0  ESLint 10  Prettier          │ │
 │   └───────────────────────────────────────────────────────┘ │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
@@ -160,20 +160,20 @@
 ### 核心依赖
 
 | 类别 | 技术 | 版本 | 说明 |
-|:-----|:-----|:-----|:-----|
-| **框架** | ![React](https://img.shields.io/badge/-19.2.4-61DAFB?style=flat-square&logo=react) | 19.2.4 | UI 框架，并发特性 |
+| :----- | :----- | :----- | :----- |
+| **框架** | ![React](https://img.shields.io/badge/-19.3.0-61DAFB?style=flat-square&logo=react) | 19.3.0 | UI 框架，并发特性 |
 | | ![TypeScript](https://img.shields.io/badge/-5.9.3-3178C6?style=flat-square&logo=typescript) | 5.9.3 | 类型安全 (Strict) |
-| | ![Router](https://img.shields.io/badge/-7.13.0-CA4245?style=flat-square&logo=reactrouter) | 7.13.1 | Hash 路由管理 |
-| **样式** | ![Tailwind](https://img.shields.io/badge/-4.2.1-38B2AC?style=flat-square&logo=tailwindcss) | 4.2.1 | 原子化 CSS JIT |
-| | ![Motion](https://img.shields.io/badge/-12.34.5-FF6B6B?style=flat-square) | 12.34.5 | 高性能动画 |
+| | ![Router](https://img.shields.io/badge/-7.18.4-CA4245?style=flat-square&logo=reactrouter) | 7.18.4 | Hash 路由管理 |
+| **样式** | ![Tailwind](https://img.shields.io/badge/-4.3.3-38B2AC?style=flat-square&logo=tailwindcss) | 4.3.3 | 原子化 CSS JIT |
+| | ![Motion](https://img.shields.io/badge/-13.5.1-FF6B6B?style=flat-square) | 13.5.1 | 高性能动画 |
 | | ![Radix](https://img.shields.io/badge/-1.x-18181B?style=flat-square) | 1.x | 无头组件库 |
-| **构建** | ![Vite](https://img.shields.io/badge/-8.0.3-646CFF?style=flat-square&logo=vite) | 8.0.3 | 极速构建工具 |
-| | ![Electron](https://img.shields.io/badge/-41-47848F?style=flat-square&logo=electron) | 41.1.1 | 桌面端支持 |
-| **测试** | ![Vitest](https://img.shields.io/badge/-4.1.2-FECD3E?style=flat-square&logo=vitest) | 4.1.2 | 单元测试框架 |
+| **构建** | ![Vite](https://img.shields.io/badge/-8.3.4-646CFF?style=flat-square&logo=vite) | 8.3.4 | 极速构建工具 |
+| | ![Electron](https://img.shields.io/badge/-41-47848F?style=flat-square&logo=electron) | 41.10.7 | 桌面端支持 |
+| **测试** | ![Vitest](https://img.shields.io/badge/-5.0.3-FECD3E?style=flat-square&logo=vitest) | 5.0.3 | 单元测试框架 |
 | | ![Testing Lib](https://img.shields.io/badge/-16.x-E535AB?style=flat-square) | 16.x | React 测试工具 |
-| **图表** | ![Recharts](https://img.shields.io/badge/-3.8.1-FF5722?style=flat-square) | 3.8.1 | 响应式图表 |
-| **图标** | ![Lucide](https://img.shields.io/badge/-0.576.0-FFA500?style=flat-square) | 0.576.0 | 现代化图标 |
-| **数据库** | ![Supabase](https://img.shields.io/badge/-2.98.0-3FCF8D?style=flat-square) | 2.98.0 | BaaS 后端服务 |
+| **图表** | ![Recharts](https://img.shields.io/badge/-3.10.1-FF5722?style=flat-square) | 3.10.1 | 响应式图表 |
+| **图标** | ![Lucide](https://img.shields.io/badge/-1.48.0-FFA500?style=flat-square) | 1.48.0 | 现代化图标 |
+| **数据库** | ![Supabase](https://img.shields.io/badge/-2.117.3-3FCF8D?style=flat-square) | 2.117.3 | BaaS 后端服务 |
 
 ---
 
@@ -182,11 +182,11 @@
 ### 前置条件
 
 ```bash
-# Node.js ≥ 20.x LTS
-node --version  # v20.x.x
+# Node.js ≥ 22.13 LTS（pnpm 11 硬性要求）
+node --version  # v22.x.x
 
-# pnpm ≥ 9.x
-pnpm --version  # 9.x.x
+# pnpm ≥ 11.x
+pnpm --version  # 11.x.x
 ```
 
 ### 安装运行
@@ -210,7 +210,7 @@ pnpm dev
 ### 常用命令
 
 | 命令 | 说明 |
-|:-----|:-----|
+| :----- | :----- |
 | `pnpm dev` | 启动开发服务器 (:3218) |
 | `pnpm electron:dev` | 启动 Electron 桌面应用 |
 | `pnpm build` | 生产构建 (Vite + Electron TS) |
@@ -279,7 +279,7 @@ YYC3-CloudPivot-Intelli-Matrix/
 ### 测试策略
 
 | 层级 | 框架 | 覆盖范围 |
-|:-----|:-----|:---------|
+| :----- | :----- | :--------- |
 | 单元测试 | Vitest + Testing Library | Hooks, Utils, Stores |
 | 组件测试 | Vitest + @testing-library/react | UI Components |
 | 集成测试 | Vitest (jsdom) | 业务流程 |
@@ -303,7 +303,7 @@ pnpm test:ci
 ### 质量指标
 
 | 指标 | 当前状态 | 目标 |
-|:-----|:--------|:-----|
+| :----- | :-------- | :----- |
 | TypeScript 错误 | 0 ✅ | 0 |
 | ESLint 错误 | 0 ✅ | 0 |
 | 测试通过率 | 100% ✅ | 100% |
@@ -314,7 +314,7 @@ pnpm test:ci
 ## 🔌 端口与服务
 
 | 服务 | 端口 | 用途 |
-|:-----|:-----|:-----|
+| :----- | :----- | :----- |
 | Dev Server | **3218** | 开发服务器 (Vite) |
 | Production | **3118** | 生产部署 (GitHub Pages) |
 | WebSocket | 3113 | 实时数据推送 |
@@ -333,7 +333,7 @@ pnpm test:ci
 完整索引见 [docs/README.md](./docs/README.md)（v4.0.0，全生命周期 00-15 导航）
 
 | 文档 | 内容 |
-|:-----|:-----|
+| :----- | :----- |
 | [项目总览](./docs/00-YYC3-CP-IM-项目总览-目录索引/) | 项目完整介绍与快速开始 |
 | [系统架构设计](./docs/02-YYC3-CP-IM-项目规划-设计阶段/) | 架构详细设计与决策 |
 | [开发实施](./docs/03-YYC3-CP-IM-项目开发-实施阶段/) | 环境/规范/API/集成 |
@@ -377,7 +377,7 @@ graph LR
 ### 开发规范
 
 | 规范 | 要求 |
-|:-----|:-----|
+| :----- | :----- |
 | **TypeScript** | Strict Mode，禁止 `any` |
 | **代码风格** | Prettier 格式化 + ESLint 检查 |
 | **提交信息** | [Conventional Commits](https://www.conventionalcommits.org/) 规范 |
@@ -437,7 +437,7 @@ copies of the Software...
 ## 👥 团队与联系
 
 | 方式 | 信息 |
-|:-----|:-----|
+| :----- | :----- |
 | **邮箱** | <admin@0379.email> |
 | **组织** | [YanYuCloudCube](https://github.com/YYC-Cube) |
 | **仓库** | [YYC³ CP-IM](https://github.com/YYC-Cube/YYC3-CloudPivot-Intelli-Matrix) |

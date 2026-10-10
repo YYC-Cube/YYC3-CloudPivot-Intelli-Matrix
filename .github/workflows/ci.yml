@@ -50,6 +50,8 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Type check
         run: pnpm exec tsc --noEmit
+      - name: Type check (Electron main process)
+        run: pnpm exec tsc -p electron/tsconfig.json
       - name: Lint code
         run: pnpm run lint:fix
       - name: Check formatting
@@ -231,6 +233,8 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/${{ steps.image-name.outputs.name }}:latest
+          tags: |
+            ghcr.io/${{ steps.image-name.outputs.name }}:latest
+            ghcr.io/${{ steps.image-name.outputs.name }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
