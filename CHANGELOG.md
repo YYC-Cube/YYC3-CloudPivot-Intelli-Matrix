@@ -17,6 +17,9 @@
 
 ### Changed
 
+- **未跟踪文档目录纳入版本管理（审计后折中方案）**
+  - `docs/16-CP-IM-后端设计规划/`：后端建设依据评审稿入库（原 15 号与既有「15-存储架构-数据协同」冲突，顺延改 16 号，13 号此前已归并入 11 不复用）；`docs/README.md` 全生命周期索引登记 00-16
+  - `docs/agent-memory/YYC3-三枢纽-长久记忆.md`：跨会话记忆主文件入库；`refs/` 外部资料副本（~920KB 大文件、含本机路径与内网拓扑）加入 `.gitignore` 仅本地留存
 - **package.json 移除失效的 `pnpm.onlyBuiltDependencies` 字段**：pnpm 11 不再读取，消除安装告警；构建审批由 `pnpm-workspace.yaml` 的 `allowBuilds` 承接
 - **AGENTS.md 版本基线与实际安装对齐**：Electron 28→41.10.7、React 19.2.4→19.3.0、Vite 7.3.1→8.3.4、TailwindCSS 4.2.1→4.3.3、React Router 7.13.1→7.18.4、Recharts 3.7.0→3.10.1、MUI 7.3.8→9.4.0、Lucide 0.576.0→1.48.0、Motion 12.34.5→13.5.1、Supabase 2.98.0→2.117.3、Node 20.x→22.x、PNPM 9.x→11.x；修复 markdown lint（MD040 围栏语言标识 / MD060 表格分隔行样式）
 

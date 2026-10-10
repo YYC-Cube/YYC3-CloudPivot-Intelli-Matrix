@@ -147,4 +147,6 @@ coverage-comp/
 
 # Local development docs (不提交的本地开发文档)
 docs/.docs-local/
+# Agent 记忆外部资料副本（大文件 ~920KB，仅本地留存；主记忆文件单独入库）
+docs/agent-memory/refs/
 package-lock.json
