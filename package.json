@@ -130,7 +130,6 @@
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.1",
-    "@types/electron": "^1.6.10",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.2.3",
@@ -255,10 +254,5 @@
       "repo": "CloudPivot-Intelli-Matrix",
       "private": false
     }
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "electron"
-    ]
   }
 }

@@ -6,6 +6,29 @@
 
 ---
 
+## [Unreleased]
+
+### Fixed
+
+- **`pnpm electron:dev` 安装失败（Electron postinstall HTTP 400）**：`@electron/get` 默认从 GitHub Releases 拉二进制，当前网络不可达
+  - `.npmrc` 新增 `electron_mirror=https://cdn.npmmirror.com/binaries/electron/`
+  - `~/.zshrc` 追加 `ELECTRON_MIRROR` 环境变量（pnpm 11 不透传 `.npmrc` 自定义键给安装脚本，环境变量为必需兜底）
+- **清理废弃依赖 `@types/electron@^1.6.10`**：2017 年起停止维护的桩包，Electron ≥10 自带官方类型（`electron.d.ts`），删除后 type-check 与 electron tsconfig 编译均归零
+
+### Changed
+
+- **package.json 移除失效的 `pnpm.onlyBuiltDependencies` 字段**：pnpm 11 不再读取，消除安装告警；构建审批由 `pnpm-workspace.yaml` 的 `allowBuilds` 承接
+- **AGENTS.md 版本基线与实际安装对齐**：Electron 28→41.10.7、React 19.2.4→19.3.0、Vite 7.3.1→8.3.4、TailwindCSS 4.2.1→4.3.3、React Router 7.13.1→7.18.4、Recharts 3.7.0→3.10.1、MUI 7.3.8→9.4.0、Lucide 0.576.0→1.48.0、Motion 12.34.5→13.5.1、Supabase 2.98.0→2.117.3、Node 20.x→22.x、PNPM 9.x→11.x；修复 markdown lint（MD040 围栏语言标识 / MD060 表格分隔行样式）
+
+### Verified
+
+- `pnpm type-check` / `tsc -p electron/tsconfig.json` 均 0 错误
+- IDE 诊断归零（AGENTS.md markdown lint 无警告）
+- `pnpm electron:dev` 全链启动成功（Vite 3218 + Electron 窗口进程拉起）
+- Electron 版本三方一致：package.json `^41.10.7` = lockfile `41.10.7` = 运行时 `v41.10.7`
+
+---
+
 ## [1.0.1] - 2026-09-17
 
 ### Fixed

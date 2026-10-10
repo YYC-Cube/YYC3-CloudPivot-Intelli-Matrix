@@ -8,12 +8,12 @@ Guide for AI agents working on the YYC³ CloudPivot Intelli-Matrix codebase.
 
 ### Tech Stack
 
-- **Frontend**: React 19.2.4, TypeScript 5.9.3 (strict mode), Vite 7.3.1
+- **Frontend**: React 19.3.0, TypeScript 5.9.3 (strict mode), Vite 8.3.4
 - **Routing**: React Router v7 with hash routing (`createHashRouter`)
-- **Styling**: TailwindCSS v4.2.1 with custom cyberpunk theme
+- **Styling**: TailwindCSS v4.3.3 with custom cyberpunk theme
 - **UI Components**: Radix UI primitives, MUI Material (limited), Lucide icons
 - **Data Visualization**: Recharts
-- **Desktop**: Electron 28 (auto-updater, tray, native notifications)
+- **Desktop**: Electron 41 (auto-updater, tray, native notifications)
 - **Testing**: Vitest with jsdom, React Testing Library
 - **Auth**: Supabase with mock mode fallback (Ghost Mode)
 - **PWA**: Service Worker, offline-first architecture
@@ -104,7 +104,7 @@ pnpm docker:run
 
 ## Project Structure
 
-```
+```text
 src/
 ├── main.tsx                    # Entry point (ReactDOM.createRoot)
 ├── styles/                     # Global styles (fonts, tailwind, theme)
@@ -316,8 +316,8 @@ describe("ComponentName", () => {
 ### Environment Variables
 
 ```bash
-NODE_VERSION=20.x
-PNPM_VERSION=9.x
+NODE_VERSION=22.x
+PNPM_VERSION=11.x
 ```
 
 ### Quality Gates
@@ -389,23 +389,23 @@ PNPM_VERSION=9.x
 
 - **Package Manager**: pnpm (workspace configured)
 - **Lockfile**: `pnpm-lock.yaml` (commit this file)
-- **Node Version**: 20.x
+- **Node Version**: 22.x (pnpm 11 要求 ≥ 22.13)
 - **Install**: `pnpm install --frozen-lockfile` (CI) or `pnpm install` (local)
 
 ### Key Dependencies
 
-- React 19.2.4, React DOM 19.2.4
-- React Router 7.13.1
+- React 19.3.0, React DOM 19.3.0
+- React Router 7.18.4
 - TypeScript 5.9.3
-- Vite 7.3.1
-- Electron 28.0.0
-- TailwindCSS 4.2.1
-- Recharts 3.7.0
+- Vite 8.3.4
+- Electron 41.10.7
+- TailwindCSS 4.3.3
+- Recharts 3.10.1
 - Radix UI components (@radix-ui/*)
-- MUI Material 7.3.8
-- Lucide icons 0.576.0
-- Motion 12.34.5
-- Supabase 2.98.0
+- MUI Material 9.4.0
+- Lucide icons 1.48.0
+- Motion 13.5.1
+- Supabase 2.117.3
 
 ## Deployment
 
@@ -470,7 +470,7 @@ import { cn } from "../components/ui/utils";
 ### Common Hooks
 
 | Hook | Purpose | Returns |
-|------|---------|---------|
+| ------ | --------- | --------- |
 | `useI18n()` | Internationalization | `{ locale, setLocale, t, locales }` |
 | `useWebSocketData()` | Real-time data | Full WebSocket state object |
 | `useMobileView()` | Responsive detection | `{ breakpoint, isMobile, isTablet, isDesktop }` |
@@ -495,5 +495,5 @@ import { Button } from "../components/ui/button";
 
 ---
 
-Last updated: March 4, 2026
+Last updated: October 10, 2026
 Generated from codebase analysis
