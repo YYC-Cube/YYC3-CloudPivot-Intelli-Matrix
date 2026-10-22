@@ -152,7 +152,7 @@
     "vite-plugin-electron-renderer": "^1.0.0",
     "vitest": "^5.0.3",
     "vitest-axe": "^0.1.0",
-    "wait-on": "^9.1.0"
+    "wait-on": "^9.5.1"
   },
   "build": {
     "appId": "com.yyc3.cloudpivot.intelli-matrix",
