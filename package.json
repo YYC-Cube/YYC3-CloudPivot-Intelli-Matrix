@@ -136,7 +136,7 @@
     "@vitejs/plugin-react": "^6.1.2",
     "@vitest/coverage-v8": "5.0.3",
     "concurrently": "^8.2.0",
-    "electron": "^42.11.3",
+    "electron": "^45.0.0",
     "electron-builder": "^26.15.3",
     "eslint": "^10.11.0",
     "eslint-plugin-react": "^7.37.5",
